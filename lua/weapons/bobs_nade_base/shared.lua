@@ -65,13 +65,13 @@ SWEP.RunSightsAng = Vector(0, 0, 0)
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-	if self.Owner:IsNPC() then return end
+	if self:GetOwner():IsNPC() then return end
 	if self:CanPrimaryAttack() then
-		self.Weapon:SendWeaponAnim(ACT_VM_PULLPIN)
+		self:SendWeaponAnim(ACT_VM_PULLPIN)
 
-		self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+		self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
 		timer.Simple( 0.6, function() if SERVER then if not IsValid(self) then return end
-			if IsValid(self.Owner) then
+			if IsValid(self:GetOwner()) then
 				if (self:AllIsWell()) then
 					self:Throw()
 				end
@@ -84,36 +84,36 @@ function SWEP:Throw()
 
 	if SERVER then
 
-	if self.Owner != nil and self.Weapon != nil then
-	if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+	if self:GetOwner() != nil and self != nil then
+	if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
 
-	self.Weapon:SendWeaponAnim(ACT_VM_THROW)
+	self:SendWeaponAnim(ACT_VM_THROW)
 	timer.Simple( 0.35, function() if not IsValid(self) then return end
-	if self.Owner != nil
-	and self.Weapon != nil
+	if self:GetOwner() != nil
+	and self != nil
 	then if(self:AllIsWell()) then
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
-			aim = self.Owner:GetAimVector()
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+			aim = self:GetOwner():GetAimVector()
 			side = aim:Cross(Vector(0,0,1))
 			up = side:Cross(aim)
-			pos = self.Owner:GetShootPos() + side * 5 + up * -1
+			pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
 			if SERVER then
 				local rocket = ents.Create(self.Primary.Round)
 				if !rocket:IsValid() then return false end
-				rocket:SetNWEntity("Owner", self.Owner)
+				rocket:SetNWEntity("Owner", self:GetOwner())
 				rocket:SetAngles(aim:Angle()+Angle(90,0,0))
 				rocket:SetPos(pos)
-				rocket:SetOwner(self.Owner)
-				rocket.Owner = self.Owner	-- redundancy department of redundancy checking in
-				rocket:SetNWEntity("Owner", self.Owner)
+				rocket:SetOwner(self:GetOwner())
+				rocket.Owner = self:GetOwner()	-- redundancy department of redundancy checking in
+				rocket:SetNWEntity("Owner", self:GetOwner())
 				rocket:Spawn()
 				local phys = rocket:GetPhysicsObject()
-				if self.Owner:KeyDown(IN_ATTACK2) and (phys:IsValid()) then
-					if phys != nil then phys:ApplyForceCenter(self.Owner:GetAimVector() * 2000) end
+				if self:GetOwner():KeyDown(IN_ATTACK2) and (phys:IsValid()) then
+					if phys != nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 2000) end
 				else
-					if phys != nil then phys:ApplyForceCenter(self.Owner:GetAimVector() * 5500) end
+					if phys != nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 5500) end
 				end
-				self.Weapon:TakePrimaryAmmo(1)
+				self:TakePrimaryAmmo(1)
 		end
 		self:checkitycheckyoself()
 		end end
@@ -129,13 +129,13 @@ end
 
 function SWEP:checkitycheckyoself()
 	timer.Simple(.15, function() if not IsValid(self) then return end
-	if IsValid(self.Owner) then
+	if IsValid(self:GetOwner()) then
 	if SERVER and (self:AllIsWell()) then
-		if self.Weapon:Clip1() == 0
-			and self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
-				self.Owner:StripWeapon(self.Gun)
+		if self:Clip1() == 0
+			and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+				self:GetOwner():StripWeapon(self.Gun)
 			else
-				self.Weapon:DefaultReload( ACT_VM_DRAW )
+				self:DefaultReload( ACT_VM_DRAW )
 			end
 		end
 	end end)
@@ -143,8 +143,8 @@ end
 
 function SWEP:AllIsWell()
 
-	if self.Owner != nil and self.Weapon != nil then
-		if self.Weapon:GetClass() == self.Gun and self.Owner:Alive() then
+	if self:GetOwner() != nil and self != nil then
+		if self:GetClass() == self.Gun and self:GetOwner():Alive() then
 			return true
 			else return false
 		end

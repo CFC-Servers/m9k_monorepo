@@ -52,12 +52,12 @@ SWEP.NextReload	=	0
 ---------------------------------------------------------*/
 function SWEP:Think()
 	if not IsValid(self) then return end
-	if not IsValid(self.Owner) then return end
-	if not self.Owner:IsPlayer() then return end
-	if self.Owner.NextReload == nil then self.Owner.NextReload = CurTime() + 1 end
-	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
+	if not IsValid(self:GetOwner()) then return end
+	if not self:GetOwner():IsPlayer() then return end
+	if self:GetOwner().NextReload == nil then self:GetOwner().NextReload = CurTime() + 1 end
+	local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
 	--if the owner presses shoot while the timer is in effect, then...
-	if (self.Owner:KeyPressed(IN_ATTACK)) and (self.Weapon:GetNextPrimaryFire() <= CurTime()) and (timer.Exists(timerName)) and not (self.Owner:KeyDown(IN_SPEED)) then
+	if (self:GetOwner():KeyPressed(IN_ATTACK)) and (self:GetNextPrimaryFire() <= CurTime()) and (timer.Exists(timerName)) and not (self:GetOwner():KeyDown(IN_SPEED)) then
 		if self:CanPrimaryAttack() then --well first, if we actually can attack, then...
 
 			timer.Destroy(timerName) -- kill the timer, and
@@ -66,8 +66,8 @@ function SWEP:Think()
 		end
 	end
 
-	if self.InsertingShell == true and self.Owner:Alive() then
-		vm = self.Owner:GetViewModel()-- its a messy way to do it, but holy shit, it works!
+	if self.InsertingShell == true and self:GetOwner():Alive() then
+		vm = self:GetOwner():GetViewModel()-- its a messy way to do it, but holy shit, it works!
 		vm:ResetSequence(vm:LookupSequence("after_reload")) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
 		vm:SetPlaybackRate(.01) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
 		self.InsertingShell = false -- You get paid for this, what's your excuse?
@@ -83,27 +83,27 @@ end
 ---------------------------------------------------------*/
 function SWEP:Deploy()
 	if not IsValid(self) then return end
-	if not IsValid(self.Owner) then return end
-	if not self.Owner:IsPlayer() then return end
+	if not IsValid(self:GetOwner()) then return end
+	if not self:GetOwner():IsPlayer() then return end
 
 	self:SetHoldType(self.HoldType)
 
-	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
+	local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
 	if (timer.Exists(timerName)) then
 		timer.Destroy(timerName)
 	end
 
-	self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+	self:SendWeaponAnim(ACT_VM_DRAW)
 
-	self.Weapon:SetNextPrimaryFire(CurTime() + .25)
-	self.Weapon:SetNextSecondaryFire(CurTime() + .25)
+	self:SetNextPrimaryFire(CurTime() + .25)
+	self:SetNextSecondaryFire(CurTime() + .25)
 	self.ActionDelay = (CurTime() + .25)
 
 	if (SERVER) then
 		self:SetIronsights(false)
 	end
 
-	self.Owner.NextReload = CurTime() + 1
+	self:GetOwner().NextReload = CurTime() + 1
 
 	return true
 end
@@ -115,45 +115,45 @@ end
 function SWEP:Reload()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Owner) then return end
-	if not self.Owner:IsPlayer() then return end
+	if not IsValid(self:GetOwner()) then return end
+	if not self:GetOwner():IsPlayer() then return end
 
 	local maxcap = self.Primary.ClipSize
-	local spaceavail = self.Weapon:Clip1()
+	local spaceavail = self:Clip1()
 	local shellz = (maxcap) - (spaceavail) + 1
 
-	if (timer.Exists("ShotgunReload_" ..  self.Owner:UniqueID())) or self.Owner.NextReload > CurTime() or maxcap == spaceavail then return end
+	if (timer.Exists("ShotgunReload_" ..  self:GetOwner():UniqueID())) or self:GetOwner().NextReload > CurTime() or maxcap == spaceavail then return end
 
-	if self.Owner:IsPlayer() then
+	if self:GetOwner():IsPlayer() then
 
-		if self.Weapon:GetNextPrimaryFire() <= (CurTime()+2) then
-			self.Weapon:SetNextPrimaryFire(CurTime() + 2) -- wait TWO seconds before you can shoot again
+		if self:GetNextPrimaryFire() <= (CurTime()+2) then
+			self:SetNextPrimaryFire(CurTime() + 2) -- wait TWO seconds before you can shoot again
 		end
-		self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
-		self.Owner:SetAnimation( PLAYER_RELOAD )
+		self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
+		self:GetOwner():SetAnimation( PLAYER_RELOAD )
 
-		self.Owner.NextReload = CurTime() + 1
+		self:GetOwner().NextReload = CurTime() + 1
 
 		if (SERVER) then
-			self.Owner:SetFOV( 0, 0.15 )
+			self:GetOwner():SetFOV( 0, 0.15 )
 			self:SetIronsights(false)
 		end
 
-		if SERVER and self.Owner:Alive() then
-			local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
+		if SERVER and self:GetOwner():Alive() then
+			local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
 			timer.Create(timerName,
 			(self.ShellTime + .05),
 			shellz,
 			function() if not IsValid(self) then return end
-			if IsValid(self.Owner) and IsValid(self.Weapon) then
-				if self.Owner:Alive() then
+			if IsValid(self:GetOwner()) and IsValid(self) then
+				if self:GetOwner():Alive() then
 					self:InsertShell()
 				end
 			end end)
 		end
 
-	elseif self.Owner:IsNPC() then
-		self.Weapon:DefaultReload(ACT_VM_RELOAD)
+	elseif self:GetOwner():IsNPC() then
+		self:DefaultReload(ACT_VM_RELOAD)
 	end
 
 end
@@ -161,25 +161,25 @@ end
 function SWEP:InsertShell()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Owner) then return end
-	if not self.Owner:IsPlayer() then return end
+	if not IsValid(self:GetOwner()) then return end
+	if not self:GetOwner():IsPlayer() then return end
 
-	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
-	if self.Owner:Alive() then
-		local curwep = self.Owner:GetActiveWeapon()
+	local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
+	if self:GetOwner():Alive() then
+		local curwep = self:GetOwner():GetActiveWeapon()
 		if curwep:GetClass() != self.Gun then
 			timer.Destroy(timerName)
 		return end
 
-		if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
+		if (self:Clip1() >= self.Primary.ClipSize or self:GetOwner():GetAmmoCount(self.Primary.Ammo) <= 0) then
 		-- if clip is full or ammo is out, then...
-			self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
+			self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
 			timer.Destroy(timerName) -- kill the timer
-		elseif (self.Weapon:Clip1() <= self.Primary.ClipSize and self.Owner:GetAmmoCount(self.Primary.Ammo) >= 0) then
+		elseif (self:Clip1() <= self.Primary.ClipSize and self:GetOwner():GetAmmoCount(self.Primary.Ammo) >= 0) then
 			self.InsertingShell = true --well, I tried!
 			timer.Simple( .05, function() self:ShellAnimCaller() end)
-			self.Owner:RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-			self.Weapon:SetClip1(self.Weapon:Clip1() + 1) --  into the fire
+			self:GetOwner():RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
+			self:SetClip1(self:Clip1() + 1) --  into the fire
 		end
 	else
 		timer.Destroy(timerName) -- kill the timer
@@ -188,5 +188,5 @@ function SWEP:InsertShell()
 end
 
 function SWEP:ShellAnimCaller()
-	self.Weapon:SendWeaponAnim(ACT_VM_RELOAD)
+	self:SendWeaponAnim(ACT_VM_RELOAD)
 end
