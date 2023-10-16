@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Double Barrel Shotgun"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Double Barrel Shotgun"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 21			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "shotgun"	-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -43,7 +43,7 @@ SWEP.Primary.Automatic			= false		-- Automatic/Semi Auto
 SWEP.Primary.Ammo			= "buckshot"	-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -67,7 +67,7 @@ SWEP.RunSightsAng = Vector(0.574, 51.638, 5.737)
 SWEP.Secondary.Sound = Sound("dbarrel_dblast")
 
 local PainMulti = 1
- 
+
 if GetConVar("M9KDamageMultiplier") == nil then
 		PainMulti = 1
 		print("M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1.")
@@ -96,7 +96,7 @@ cvars.AddChangeCallback("M9KDamageMultiplier", NewM9KDamageMultiplierDB)
 function SWEP:SecondaryAttack()
 	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
 	if (timer.Exists(timerName)) then return end
-	
+
 	if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
 	if self.Weapon:Clip1() == 2 then
 		if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
@@ -105,14 +105,14 @@ function SWEP:SecondaryAttack()
 			self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 			self.Weapon:EmitSound(self.Secondary.Sound)
 			--self.Owner:ViewPunch(Angle(-15, math.Rand(-20,-25), 0))
-	
+
 			local fx 		= EffectData()
 			fx:SetEntity(self.Weapon)
 			fx:SetOrigin(self.Owner:GetShootPos())
 			fx:SetNormal(self.Owner:GetAimVector())
 			fx:SetAttachment(self.MuzzleAttachment)
 			if GetConVar("M9KGasEffect") != nil then
-				if GetConVar("M9KGasEffect"):GetBool() then 
+				if GetConVar("M9KGasEffect"):GetBool() then
 					util.Effect("m9k_rg_muzzle_rifle",fx)
 				end
 			end
@@ -128,7 +128,7 @@ function SWEP:SecondaryAttack()
 		self.Weapon:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
 	elseif self.Weapon:Clip1() == 0 then
 		self:Reload()
-	end	
+	end
 	end
 end
 
@@ -139,22 +139,22 @@ function SWEP:PrimaryAttack()
 	if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
 		self:ShootBulletInformation()
 		self.Weapon:TakePrimaryAmmo(1)
-		
+
 		if self.Silenced then
 			self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
 			self.Weapon:EmitSound(self.Primary.SilencedSound)
 		else
 			self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 			self.Weapon:EmitSound(self.Primary.Sound)
-		end	
-	
+		end
+
 		local fx 		= EffectData()
 		fx:SetEntity(self.Weapon)
 		fx:SetOrigin(self.Owner:GetShootPos())
 		fx:SetNormal(self.Owner:GetAimVector())
 		fx:SetAttachment(self.MuzzleAttachment)
 		if GetConVar("M9KGasEffect") != nil then
-			if GetConVar("M9KGasEffect"):GetBool() then 
+			if GetConVar("M9KGasEffect"):GetBool() then
 				util.Effect("m9k_rg_muzzle_rifle",fx)
 			end
 		end
@@ -184,17 +184,17 @@ function SWEP:ShootBulletInformation2()
 	local CurrentRecoil
 	local CurrentCone
 	local basedamage
-	
+
 	CurrentCone = self.Primary.Spread
-	
+
 	local damagedice = math.Rand(.85,1.3)
-	
+
 	basedamage = PainMulti * self.Primary.Damage
 	CurrentDamage = basedamage * damagedice
 	CurrentRecoil = self.Primary.Recoil
-	
+
 		self:ShootBullet(CurrentDamage, CurrentRecoil, 31, .06)
-	
+
 end
 
 /*---------------------------------------------------------
@@ -212,37 +212,37 @@ function SWEP:Reload()
 	local shellz = (maxcap) - (spaceavail) + 1
 
 	if (timer.Exists("ShotgunReload")) or self.Owner.NextReload > CurTime() or maxcap == spaceavail then return end
-	
-	if self.Owner:IsPlayer() then 
+
+	if self.Owner:IsPlayer() then
 
 		self.Weapon:SetNextPrimaryFire(CurTime() + 1) -- wait one second before you can shoot again
 		self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
 		self.Owner:SetAnimation( PLAYER_RELOAD )
-		
+
 		self.Owner.NextReload = CurTime() + 1
-	
+
 		if (SERVER) then
 			self.Owner:SetFOV( 0, 0.15 )
 			self:SetIronsights(false)
 		end
-	
+
 		if SERVER and self.Owner:Alive() then
 			local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
-			timer.Create(timerName, 
-			(self.ShellTime + .05), 
+			timer.Create(timerName,
+			(self.ShellTime + .05),
 			shellz,
-			function() if not IsValid(self) then return end 
-			if IsValid(self.Owner) and IsValid(self.Weapon) then 
-				if self.Owner:Alive() then 
+			function() if not IsValid(self) then return end
+			if IsValid(self.Owner) and IsValid(self.Weapon) then
+				if self.Owner:Alive() then
 					self:InsertShell()
-				end 
+				end
 			end end)
 		end
-	
+
 	elseif self.Owner:IsNPC() then
-		self.Weapon:DefaultReload(ACT_VM_RELOAD) 
+		self.Weapon:DefaultReload(ACT_VM_RELOAD)
 	end
-	
+
 end
 
 function SWEP:Think()
@@ -258,16 +258,16 @@ function SWEP:Think()
 			-- self:PrimaryAttack()-- ATTAAAAACK!
 		-- end
 	-- end
-	
+
 	if self.InsertingShell == true and self.Owner:Alive() then
 		vm = self.Owner:GetViewModel()-- its a messy way to do it, but holy shit, it works!
 		vm:ResetSequence(vm:LookupSequence("after_reload")) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
 		vm:SetPlaybackRate(.01) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
 		self.InsertingShell = false -- You get paid for this, what's your excuse?
 	end
-	
+
 	self:IronSight()
-	
+
 end
 
 function SWEP:InsertShell()
@@ -275,14 +275,14 @@ function SWEP:InsertShell()
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then return end
 	if not self.Owner:IsPlayer() then return end
-	
+
 	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
 	if self.Owner:Alive() then
 		local curwep = self.Owner:GetActiveWeapon()
-		if curwep:GetClass() != self.Gun then 
+		if curwep:GetClass() != self.Gun then
 			timer.Destroy(timerName)
 		return end
-	
+
 		if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
 		-- if clip is full or ammo is out, then...
 			self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
@@ -298,7 +298,7 @@ function SWEP:InsertShell()
 	else
 		timer.Destroy(timerName) -- kill the timer
 	end
-	
+
 end
 
 if GetConVar("M9KDefaultClip") == nil then
@@ -310,7 +310,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

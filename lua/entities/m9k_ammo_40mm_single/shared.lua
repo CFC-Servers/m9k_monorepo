@@ -13,16 +13,16 @@ AddCSLuaFile("shared.lua")
 function ENT:SpawnFunction(ply, tr)
 
 	if (!tr.Hit) then return end
-	
+
 	local SpawnPos = tr.HitPos + tr.HitNormal * 16
-	
+
 	local ent = ents.Create("m9k_ammo_40mm_single")
-	
+
 	ent:SetPos(SpawnPos)
 	ent:Spawn()
 	ent:Activate()
 	ent.Planted = false
-	
+
 	return ent
 end
 
@@ -34,18 +34,18 @@ function ENT:Initialize()
 	self.CanTool = false
 
 	local model = ("models/weapons/w_40mm_grenade_launched.mdl")
-	
+
 	self.Entity:SetModel(model)
-	
+
 	self.Entity:PhysicsInit(SOLID_VPHYSICS)
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
 	self.Entity:SetSolid(SOLID_VPHYSICS)
 	self.Entity:DrawShadow(false)
-	
+
 	self.Entity:SetCollisionGroup(COLLISION_GROUP_NONE)
-	
+
 	local phys = self.Entity:GetPhysicsObject()
-	
+
 	if (phys:IsValid()) then
 		phys:Wake()
 		phys:SetMass(40)
@@ -59,7 +59,7 @@ end
    Name: PhysicsCollide
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data, physobj)
-				
+
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
 		self.Entity:EmitSound(Sound("Wood.ImpactHard"))
 	end
@@ -94,12 +94,12 @@ if not IsValid(self) then return end
 		effectdata:SetRadius(1000)
 		effectdata:SetMagnitude(1000)
 	util.Effect("HelicopterMegaBomb", effectdata)
-	
+
 	local exploeffect = EffectData()
 		exploeffect:SetOrigin(self.Entity:GetPos())
 		exploeffect:SetStart(self.Entity:GetPos())
 	util.Effect("Explosion", exploeffect, true, true)
-	
+
 	local effectdata = EffectData()
 	effectdata:SetOrigin(self.Entity:GetPos())			// Where is hits
 	effectdata:SetNormal(self:Normalizer())		// Direction of particles
@@ -109,9 +109,9 @@ if not IsValid(self) then return end
 	effectdata:SetMagnitude(9)			// Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
-	
+
 	util.BlastDamage(self.Entity, (self:OwnerCheck(attacker)), self.Entity:GetPos(), 500, 400)
-	
+
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self:OwnerCheck(attacker))
 		shake:SetPos(self.Entity:GetPos())
@@ -124,7 +124,7 @@ if not IsValid(self) then return end
 		shake:Activate()
 		shake:Fire("StartShake", "", 0)
 		shake:Fire("Kill", "", 3)
-		
+
 	local push = ents.Create("env_physexplosion")
 		push:SetOwner(self:OwnerCheck(attacker))
 		push:SetPos(self.Entity:GetPos())
@@ -135,7 +135,7 @@ if not IsValid(self) then return end
 		push:Activate()
 		push:Fire("Explode", "", 0)
 		push:Fire("Kill", "", .25)
-		
+
 
 	self.Entity:EmitSound(Sound("C4.Explode"))
 
@@ -155,24 +155,24 @@ end
 function ENT:Normalizer()
 
 	local startpos = self.Entity:GetPos()
-	
+
 	local downtrace = {}
 	downtrace.start = startpos
 	downtrace.endpos = startpos + self.Entity:GetUp()*-5
 	downtrace.filter = self.Entity
-	tracedown = util.TraceLine(downtrace) 
-	
+	tracedown = util.TraceLine(downtrace)
+
 	if (tracedown.Hit) then
 		return (tracedown.HitNormal)
 	else return (Vector(0,0,1))
 	end
-	
+
 end
 /*---------------------------------------------------------
    Name: Use
 ---------------------------------------------------------*/
 function ENT:Use(activator, caller)
-	
+
 	if (activator:IsPlayer()) and not self.Planted then
 		// Give the collecting player some free health
 		activator:GiveAmmo(1, "40mmGrenade")
@@ -194,9 +194,9 @@ end
    Name: DrawPre
 ---------------------------------------------------------*/
 function ENT:Draw()
-	
+
 	self.Entity:DrawModel()
-	
+
 end
 
 end

@@ -3,5 +3,5 @@
 	"$basetexture" "VGUI/entities/ak74"
 	"$nolod" 1
 	"$vertexalpha" 1
-	"$vertexcolor" 1 
+	"$vertexcolor" 1
 }

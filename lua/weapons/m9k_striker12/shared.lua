@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Striker 12"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Striker 12"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 28			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -40,7 +40,7 @@ SWEP.Primary.KickHorizontal			= .6	-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= true		-- Automatic/Semi Auto
 SWEP.Primary.Ammo			= "buckshot"
 
-SWEP.Secondary.IronFOV			= 60		-- How much you 'zoom' in. Less is more! 
+SWEP.Secondary.IronFOV			= 60		-- How much you 'zoom' in. Less is more!
 
 SWEP.ShellTime			= .3
 
@@ -68,7 +68,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Milkor Mk1"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Milkor Mk1"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 30			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "shotgun"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -41,13 +41,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "40mmGrenade"				
+SWEP.Primary.Ammo			= "40mmGrenade"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_milkor_nade")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 50		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 50		-- How much you 'zoom' in. Less is more!
 SWEP.ShellTime			= .5
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
@@ -107,7 +107,7 @@ function SWEP:FireRocket()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-	if SERVER and self.Weapon != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then 
+	if SERVER and self.Weapon != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
 			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
 				if not IsValid(self.Owner) then return end
@@ -127,7 +127,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

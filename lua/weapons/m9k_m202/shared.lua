@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "M202"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "M202"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 32			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "rpg"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -42,13 +42,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= true		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "RPG_Round"				
+SWEP.Primary.Ammo			= "RPG_Round"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_m202_rocket")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 40		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 40		-- How much you 'zoom' in. Less is more!
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage		= 0	-- Base damage per bullet
@@ -101,8 +101,8 @@ end
 
 function SWEP:Reload()
 
-		self.Weapon:DefaultReload(ACT_VM_DRAW) 
-	
+		self.Weapon:DefaultReload(ACT_VM_DRAW)
+
 	if !self.Owner:IsNPC() then
 		self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
 	if SERVER and self.Weapon != nil then
@@ -112,12 +112,12 @@ function SWEP:Reload()
 			self.Weapon:SetNWBool("Reloading", true)
 		end
 	local waitdammit = (self.Owner:GetViewModel():SequenceDuration())
-	timer.Simple(waitdammit + .1, 
-		function() 
-		if IsValid(self.Weapon) and IsValid(self.Owner) then 
+	timer.Simple(waitdammit + .1,
+		function()
+		if IsValid(self.Weapon) and IsValid(self.Owner) then
 			if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 				self.Weapon:SetNWBool("Reloading", false)
-				if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then 
+				if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
 					if CLIENT then return end
 					if self.Scoped == false then
 					self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -126,7 +126,7 @@ function SWEP:Reload()
 					self:SetIronsights(true, self.Owner)
 					self.DrawCrosshair = false
 					else return end
-				elseif self.Owner:KeyDown(IN_SPEED) and self.Weapon:GetClass() == self.Gun then 
+				elseif self.Owner:KeyDown(IN_SPEED) and self.Weapon:GetClass() == self.Gun then
 					self.Weapon:SetNextPrimaryFire(CurTime()+0.3)			-- Make it so you can't shoot for another quarter second
 					self.IronSightsPos = self.RunSightsPos					-- Hold it down
 					self.IronSightsAng = self.RunSightsAng					-- Hold it down
@@ -139,10 +139,10 @@ function SWEP:Reload()
 end
 
 function SWEP:SecondaryAttack()
-end	
+end
 
 function SWEP:CheckWeaponsAndAmmo()
-	if SERVER and self.Weapon != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then 
+	if SERVER and self.Weapon != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
 			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
 				if not IsValid(self.Owner) then return end
@@ -162,7 +162,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

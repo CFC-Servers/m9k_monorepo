@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Prox Mine"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Prox Mine"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 26			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 2			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "slam"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -41,13 +41,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "ProxMine"				
+SWEP.Primary.Ammo			= "ProxMine"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_proxy_mine")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage		= 0	-- Base damage per bullet
@@ -70,7 +70,7 @@ SWEP.RunSightsAng = Vector(0, 0, 0)
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-	if self:CanPrimaryAttack() then	
+	if self:CanPrimaryAttack() then
 	self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 	self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
 	plant = self.Owner:GetViewModel():SequenceDuration()
@@ -90,7 +90,7 @@ function SWEP:PrimaryAttack()
 				proxy:SetAngles(trace.HitNormal:Angle() - Angle(90, 180, 0))
 				proxy.Owner = self.Owner
 				proxy:Spawn()
-			
+
 			local boxes
 			parentme = {}
 			parentme[1] = "m9k_ammo_40mm"
@@ -109,7 +109,7 @@ function SWEP:PrimaryAttack()
 			parentme[14] = "m9k_ammo_smg"
 			parentme[15] = "m9k_ammo_sniper_rounds"
 			parentme[16] = "m9k_ammo_winchester"
-			
+
 				if trace.Entity != nil and trace.Entity:IsValid() then
 					for k, v in pairs (parentme) do
 						if trace.Entity:GetClass() == v then
@@ -117,7 +117,7 @@ function SWEP:PrimaryAttack()
 						end
 					end
 				end
-			
+
 				if trace.Entity and trace.Entity:IsValid() then
 					if trace.Entity and trace.Entity:IsValid() then
 						if boxes and trace.Entity:GetPhysicsObject():IsValid() then
@@ -129,7 +129,7 @@ function SWEP:PrimaryAttack()
 					end
 				else
 					proxy:SetMoveType(MOVETYPE_NONE)
-				end	
+				end
 				if not trace.Hit then
 					proxy:SetMoveType(MOVETYPE_VPHYSICS)
 				end
@@ -141,7 +141,7 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
 	timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
-		if SERVER and IsValid(self.Weapon) then 
+		if SERVER and IsValid(self.Weapon) then
 			if IsValid(self.Owner) and self.Weapon:GetClass() == self.Gun then
 				if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
 					self.Owner:StripWeapon(self.Gun)
@@ -152,16 +152,16 @@ function SWEP:CheckWeaponsAndAmmo()
 		end
 	end)
 end
-		
+
 
 function SWEP:SecondaryAttack()
-end	
+end
 function SWEP:Think()
 end
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

@@ -14,7 +14,7 @@ function EFFECT:Init(data)
 			particle:SetEndSize( 2000 )
 			particle:SetRoll(0)
 			particle:SetRollDelta( 0)
- 			particle:SetAirResistance( 0 ) 
+ 			particle:SetAirResistance( 0 )
 			particle:SetCollide( false )
 			particle:SetBounce( 0 )
 		end
@@ -29,12 +29,12 @@ function EFFECT:Init(data)
 				particle:SetEndSize( 1 )
 				particle:SetRoll(0)
 				particle:SetRollDelta( 0)
-				particle:SetAirResistance( 0 ) 
+				particle:SetAirResistance( 0 )
 				particle:SetCollide( false )
 				particle:SetBounce( 0 )
 			end
 		end)
-			
+
 	end
 end
 
@@ -58,8 +58,8 @@ function EFFECT:RingBlast()
 			particle:SetEndSize( math.Rand( 300,350) )
 			particle:SetRoll( math.Rand(0, 360) )
 			particle:SetRollDelta( math.Rand(-1, 1) )
-			particle:SetColor(  90,83,68 ) 
- 			particle:SetAirResistance( 50 ) 
+			particle:SetColor(  90,83,68 )
+ 			particle:SetAirResistance( 50 )
 			particle:SetCollide( false )
 			particle:SetBounce( 0 )
 		end

@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_g3a3") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then 
+if (GetConVar(SWEP.Gun.."_allowed")) != nil then
 	if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category				= "M9K Assault Rifles"
@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "HK G3A3"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "HK G3A3"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 2				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 30			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,14 +21,14 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "ar2"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
 SWEP.ViewModelFlip			= false
 SWEP.ViewModel				= "models/weapons/v_hk_g3_rif.mdl"	-- Weapon view model
 SWEP.WorldModel				= "models/weapons/w_hk_g3.mdl"	-- Weapon world model
-SWEP.ShowWorldModel			= true	
+SWEP.ShowWorldModel			= true
 SWEP.Base				= "bobs_gun_base"
 SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
@@ -47,7 +47,7 @@ SWEP.Primary.Ammo			= "ar2"			-- pistol, 357, smg1, ar2, buckshot, slam, SniperP
 
 SWEP.SelectiveFire		= true
 
-SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -75,7 +75,7 @@ end
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

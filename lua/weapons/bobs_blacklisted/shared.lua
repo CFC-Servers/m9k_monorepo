@@ -7,7 +7,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "you're holding a blacklisted weapon!"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "you're holding a blacklisted weapon!"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 2				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 1			-- Position in the slot
 SWEP.DrawAmmo				= false		-- Should draw the default HL2 ammo counter
@@ -18,7 +18,7 @@ SWEP.Weight				= 0			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= false		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "normal"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.SelectiveFire		= false
@@ -43,7 +43,7 @@ SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= "false"			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1

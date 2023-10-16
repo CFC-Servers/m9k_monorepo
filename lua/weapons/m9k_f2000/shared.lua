@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_f2000") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then 
+if (GetConVar(SWEP.Gun.."_allowed")) != nil then
 	if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category				= "M9K Assault Rifles"
@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "F2000"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "F2000"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 2				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 27			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -23,7 +23,7 @@ SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.BoltAction				= false		-- Is this a bolt action rifle?
 SWEP.HoldType 				= "ar2"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -46,13 +46,13 @@ SWEP.Primary.Ammo			= "smg1"	-- pistol, 357, smg1, ar2, buckshot, slam, SniperPe
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 SWEP.SelectiveFire		= true
 
-SWEP.Secondary.ScopeZoom			= 4	
+SWEP.Secondary.ScopeZoom			= 4
 SWEP.Secondary.UseACOG			= true -- Choose one scope type
-SWEP.Secondary.UseMilDot		= false	-- I mean it, only one	
+SWEP.Secondary.UseMilDot		= false	-- I mean it, only one
 SWEP.Secondary.UseSVD			= false	-- If you choose more than one, your scope will not show up at all
-SWEP.Secondary.UseParabolic		= false	
+SWEP.Secondary.UseParabolic		= false
 SWEP.Secondary.UseElcan			= false
-SWEP.Secondary.UseGreenDuplex	= false	
+SWEP.Secondary.UseGreenDuplex	= false
 SWEP.Secondary.UseAimpoint		= false
 SWEP.Secondary.UseMatador		= false
 
@@ -84,7 +84,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

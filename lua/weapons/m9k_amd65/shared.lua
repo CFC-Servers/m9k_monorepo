@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_amd65")					-- must be the name of your swep
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then 
+if (GetConVar(SWEP.Gun.."_allowed")) != nil then
 	if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category				= "M9K Assault Rifles"
@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "AMD 65"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "AMD 65"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 2				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 24			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -41,7 +41,7 @@ SWEP.Primary.KickHorizontal		= 0.4		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= true		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= "ar2"
 
-SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -76,7 +76,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

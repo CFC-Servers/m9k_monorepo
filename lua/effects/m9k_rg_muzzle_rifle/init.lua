@@ -1,26 +1,26 @@
 function EFFECT:Init(data)
-	
+
 	if not IsValid(data:GetEntity()) then return end
 	if not IsValid(data:GetEntity():GetOwner()) then return end
 	self.WeaponEnt = data:GetEntity()
 	self.Attachment = data:GetAttachment()
-	
-	if self.WeaponEnt == nil or self.WeaponEnt:GetOwner() == nil or self.WeaponEnt:GetOwner():GetVelocity() == nil then 
+
+	if self.WeaponEnt == nil or self.WeaponEnt:GetOwner() == nil or self.WeaponEnt:GetOwner():GetVelocity() == nil then
 		return
 	else
-	
+
 	self.Position = self:GetTracerShootPos(data:GetOrigin(), self.WeaponEnt, self.Attachment)
 	self.Forward = data:GetNormal()
 	self.Angle = self.Forward:Angle()
 	self.Right = self.Angle:Right()
-	
+
 	local AddVel = self.WeaponEnt:GetOwner():GetVelocity()
-	
+
 	local emitter = ParticleEmitter(self.Position)
-	if emitter != nil then	
+	if emitter != nil then
 		local particle = emitter:Add( "sprites/heatwave", self.Position - self.Forward * 4 )
 		if particle != nil then
-	
+
 			particle:SetVelocity( 80 * self.Forward + 20 * VectorRand() + 1.05 * AddVel )
 			particle:SetGravity( Vector( 0, 0, 100 ) )
 			particle:SetAirResistance( 160 )
@@ -32,7 +32,7 @@ function EFFECT:Init(data)
 
 			particle:SetRoll( math.Rand( 180, 480 ) )
 			particle:SetRollDelta( math.Rand( -1, 1 ) )
-		
+
 		for i = 1,4 do
 			local particle = emitter:Add( "particle/particle_smokegrenade", self.Position )
 
@@ -53,12 +53,12 @@ function EFFECT:Init(data)
 
 				particle:SetColor( 120, 120, 120 )
 		end
-		
+
 		if math.random( 1, 2 ) == 1 then
 
 			for j = 1,2 do
 
-				for i = -1,1,2 do 
+				for i = -1,1,2 do
 
 					local particle = emitter:Add( "effects/muzzleflash"..math.random( 1, 4 ), self.Position - 3 * self.Forward + 2 * j * i * self.Right)
 
@@ -75,11 +75,11 @@ function EFFECT:Init(data)
 						particle:SetRoll( math.Rand( 180, 480 ) )
 						particle:SetRollDelta( math.Rand( -1, 1 ) )
 
-						particle:SetColor( 255, 255, 255 )	
+						particle:SetColor( 255, 255, 255 )
 				end
 			end
 
-			for i = 1,2 do 
+			for i = 1,2 do
 
 				local particle = emitter:Add( "effects/muzzleflash"..math.random( 1, 4 ), self.Position + 8 * self.Forward )
 
@@ -97,7 +97,7 @@ function EFFECT:Init(data)
 					particle:SetRoll( math.Rand( 180, 480 ) )
 					particle:SetRollDelta( math.Rand( -1, 1) )
 
-					particle:SetColor( 255, 255, 255 )	
+					particle:SetColor( 255, 255, 255 )
 			end
 		end
 		end

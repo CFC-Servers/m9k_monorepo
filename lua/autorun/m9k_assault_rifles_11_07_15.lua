@@ -1,13 +1,13 @@
 /*------------------------------------------------------
 
-If you're reading this, then that mean's you've extracted this addon, probably with intentions 
+If you're reading this, then that mean's you've extracted this addon, probably with intentions
 of editing it for your own needs, or that you're using a legacy addon.
 
 I have no problem with that, but you must understand that I cannot offer support for legacy addons.
 If you've extracted this addon, I cannot offer any help fixing problems that come up. It's impossible
 to know what you've changed, and thus impossible to know what to fix.
 
-"But Bob!" you might say. "I only changed one thing!" 
+"But Bob!" you might say. "I only changed one thing!"
 
 Well, that's a shame. Everybody is going to say this, and I know that some of those people will be
 lying to me. The only thing I can do is to refuse support to everyone using legacy addons.
@@ -17,7 +17,7 @@ So, by using a legacy addon, you accept the fact that I cannot help fix anything
 I know it's tough love, but that's the way it's got to be.
 
 ------------------------------------------------------*/
-local icol = Color( 255, 255, 255, 255 ) 
+local icol = Color( 255, 255, 255, 255 )
 if CLIENT then
 
 	killicon.Add(  "m9k_acr",		"vgui/hud/m9k_acr", icol  )
@@ -46,7 +46,7 @@ end
 
 --I'm pretty sure we don't need these anymore...
 --Almost 99 percent sure that's I'm 100 percent sure...
-	
+
 -- if GetConVar("M9KDisableHolster") == nil then
 	-- CreateConVar("M9KDisableHolster", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable my totally worthless and broken holster system? Won't hurt my feelings any. 1 for true, 2 for false. A map change may be required.")
 	-- print("Holster Disable con var created")
@@ -60,17 +60,17 @@ if GetConVar("M9KWeaponStrip") == nil then
 	CreateConVar("M9KWeaponStrip", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Allow empty weapon stripping? 1 for true, 0 for false")
 	print("Weapon Strip con var created")
 end
-	
+
 if GetConVar("M9KDisablePenetration") == nil then
 	CreateConVar("M9KDisablePenetration", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable Penetration and Ricochets? 1 for true, 0 for false")
 	print("Penetration/ricochet con var created")
 end
-	
+
 if GetConVar("M9KDynamicRecoil") == nil then
 	CreateConVar("M9KDynamicRecoil", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Use Aim-modifying recoil? 1 for true, 0 for false")
 	print("Recoil con var created")
 end
-	
+
 if GetConVar("M9KAmmoDetonation") == nil then
 	CreateConVar("M9KAmmoDetonation", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Enable detonatable M9K Ammo crates? 1 for true, 0 for false.")
 	print("Ammo crate detonation con var created")
@@ -85,25 +85,25 @@ if GetConVar("M9KDefaultClip") == nil then
 	CreateConVar("M9KDefaultClip", "-1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "How many clips will a weapon spawn with? Negative reverts to default values.")
 	print("Default Clip con var created")
 end
-	
+
 if GetConVar("M9KUniqueSlots") == nil then
 	CreateConVar("M9KUniqueSlots", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Give M9K Weapons unique slots? 1 for true, 2 for false. A map change may be required.")
 	print("Unique Slots con var created")
 end
-	
+
 if !game.SinglePlayer() then
 
 	if GetConVar("M9KClientGasDisable") == nil then
 		CreateConVar("M9KClientGasDisable", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Turn off gas effect for all clients? 1 for yes, 0 for no. ")
 	end
-	
+
 	if SERVER then
-	
+
 		function ClientSideGasDisabler()
-			timer.Create("ClientGasBroadcastTimer", 15, 0, 
+			timer.Create("ClientGasBroadcastTimer", 15, 0,
 				function() BroadcastLua("RunConsoleCommand(\"M9KGasEffect\", \"0\")") end )
 		end
-	
+
 		if GetConVar("M9KClientGasDisable"):GetBool() then
 			ClientSideGasDisabler()
 		end
@@ -118,17 +118,17 @@ if !game.SinglePlayer() then
 				if timer.Exists("ClientGasBroadcastTimer") then
 					timer.Destroy("ClientGasBroadcastTimer")
 				end
-			end				
+			end
 		end
 		cvars.AddChangeCallback("M9KClientGasDisable", M9K_Svr_Gas_Change_Callback)
-	
+
 	end
-	
+
 	if CLIENT then
 		if GetConVar("M9KGasEffect") == nil then
 			CreateClientConVar("M9KGasEffect", "1", true, true)
 			print("Client-side Gas Effect Con Var created")
-		end		
+		end
 	end
 
 else
@@ -281,42 +281,42 @@ sound.Add({
 	sound = {"weapons/fokku_tc_f2000/shot-1.wav",
 			"weapons/fokku_tc_f2000/shot-2.wav",
 			"weapons/fokku_tc_f2000/shot-3.wav",
-			"weapons/fokku_tc_f2000/shot-4.wav"}	
+			"weapons/fokku_tc_f2000/shot-4.wav"}
 })
 
 sound.Add({
 	name = 			"f2000.playerbreathing",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_f2000/playerbreathing.mp3"	
+	sound = 			"weapons/fokku_tc_f2000/playerbreathing.mp3"
 })
 
 sound.Add({
 	name = 			"f2000.lightcloth",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_f2000/cloth2.mp3"	
+	sound = 			"weapons/fokku_tc_f2000/cloth2.mp3"
 })
 
 sound.Add({
 	name = 			"f2000.heavycloth",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_f2000/cloth.mp3"	
+	sound = 			"weapons/fokku_tc_f2000/cloth.mp3"
 })
 
 sound.Add({
 	name = 			"f2000.magout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_f2000/clipout.mp3"	
+	sound = 			"weapons/fokku_tc_f2000/clipout.mp3"
 })
 
 sound.Add({
 	name = 			"f2000.magin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_f2000/clipin.mp3"	
+	sound = 			"weapons/fokku_tc_f2000/clipin.mp3"
 })
 
 sound.Add({
@@ -324,7 +324,7 @@ sound.Add({
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
 	sound ={"weapons/fokku_tc_f2000/chargeback.mp3",
-			"weapons/fokku_tc_f2000/chargeback1.mp3"}	
+			"weapons/fokku_tc_f2000/chargeback1.mp3"}
 })
 
 sound.Add({
@@ -332,7 +332,7 @@ sound.Add({
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
 	sound = {"weapons/fokku_tc_f2000/chargefor.mp3",
-			"weapons/fokku_tc_f2000/chargefor1.mp3"}	
+			"weapons/fokku_tc_f2000/chargefor1.mp3"}
 })
 
 //ak-47
@@ -347,21 +347,21 @@ sound.Add({
 	name = 			"47ak.Bolt",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/AYKAYFORTY/bolt.mp3" 
+	sound = 			"weapons/AYKAYFORTY/bolt.mp3"
 })
 
 sound.Add({
 	name = 			"47ak.magin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/AYKAYFORTY/magin.mp3" 
+	sound = 			"weapons/AYKAYFORTY/magin.mp3"
 })
 
 sound.Add({
 	name = 			"47ak.magout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/AYKAYFORTY/magout.mp3" 
+	sound = 			"weapons/AYKAYFORTY/magout.mp3"
 })
 
 //m14
@@ -490,7 +490,7 @@ sound.Add({
 	name = 			"Weapon_73.Single",
 	channel = 		CHAN_USER_BASE+10,
 	volume = 		1.0,
-	sound = 			"weapons/winchester73/w73-1.wav"	
+	sound = 			"weapons/winchester73/w73-1.wav"
 })
 
 sound.Add({
@@ -555,7 +555,7 @@ sound.Add({
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
 	sound = 			"weapons/L85A2/tap.mp3"
-})	
+})
 
 //aug a3
 sound.Add({
@@ -599,7 +599,7 @@ sound.Add({
 	name = 			"Weapon_FAMTC.Single",
 	channel = 		CHAN_USER_BASE+10,
 	volume = 		1.0,
-	sound = {"weapons/fokku_tc_famas/shot-1.wav", 
+	sound = {"weapons/fokku_tc_famas/shot-1.wav",
  			"weapons/fokku_tc_famas/shot-2.wav" }
 })
 
@@ -607,21 +607,21 @@ sound.Add({
 	name = 			"Weapon_FAMTC.Clipout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_famas/famas_clipout.mp3" 
+	sound = 			"weapons/fokku_tc_famas/famas_clipout.mp3"
 })
 
 sound.Add({
 	name = 			"Weapon_FAMTC.Clipin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_famas/famas_clipin.mp3" 
+	sound = 			"weapons/fokku_tc_famas/famas_clipin.mp3"
 })
 
 sound.Add({
 	name = 			"Weapon_FAMTC.forearm",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fokku_tc_famas/famas_forearm.mp3" 
+	sound = 			"weapons/fokku_tc_famas/famas_forearm.mp3"
 })
 
 //Val
@@ -708,7 +708,7 @@ sound.Add({
 	name = 			"Masada.Single",
 	channel = 		CHAN_USER_BASE+10,
 	volume = 		1.0,
-	sound = 			")weapons/masadamagpul/masada_unsil.wav"	
+	sound = 			")weapons/masadamagpul/masada_unsil.wav"
 })
 
 sound.Add({
@@ -729,7 +729,7 @@ sound.Add({
 	name = 			"Masada.Magin1",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/masadamagpul/magin1.mp3"	
+	sound = 			"weapons/masadamagpul/magin1.mp3"
 })
 
 sound.Add({
@@ -771,14 +771,14 @@ sound.Add({
 	name = 			"Masada.Chargerback",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/masadamagpul/chargerback.mp3"	
+	sound = 			"weapons/masadamagpul/chargerback.mp3"
 })
 
 sound.Add({
 	name = 			"Masada.Boltrelease",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/masadamagpul/boltrelease.mp3"	
+	sound = 			"weapons/masadamagpul/boltrelease.mp3"
 })
 
 sound.Add({
@@ -792,7 +792,7 @@ sound.Add({
 	name = 			"Masada.Removesilencer",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/masadamagpul/removesilencer.mp3"	
+	sound = 			"weapons/masadamagpul/removesilencer.mp3"
 })
 
 //m4a1
@@ -969,21 +969,21 @@ sound.Add({
 	name = 			"Weapon_fnfal.Clipout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fn_fal/galil_clipout.mp3" 
+	sound = 			"weapons/fn_fal/galil_clipout.mp3"
 })
 
 sound.Add({
 	name = 			"Weapon_fnfal.Clipin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fn_fal/galil_clipin.mp3" 
+	sound = 			"weapons/fn_fal/galil_clipin.mp3"
 })
 
 sound.Add({
 	name = 			"Weapon_fnfal.Boltpull",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/fn_fal/galil_boltpull.mp3" 
+	sound = 			"weapons/fn_fal/galil_boltpull.mp3"
 })
 
 //hk 416
@@ -1005,56 +1005,56 @@ sound.Add({
 	name = 			"hk416weapon.Clipout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_clipout.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_clipout.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Magtap",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_tap.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_tap.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Clipin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_clipin.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_clipin.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Boltpull",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_boltpull.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_boltpull.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Boltrelease",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_boltrelease.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_boltrelease.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Deploy",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_deploy.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_deploy.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Silencer_On",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_silencer_on.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_silencer_on.mp3"
 })
 
 sound.Add({
 	name = 			"hk416weapon.Silencer_Off",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/twinkie_hk416/m4a1_silencer_off.mp3"	
+	sound = 			"weapons/twinkie_hk416/m4a1_silencer_off.mp3"
 })
 
 //G3
@@ -1069,42 +1069,42 @@ sound.Add({
 	name = 			"hk_g3_weapon.Clipout",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/galil_clipout.mp3"	
+	sound = 			"weapons/hk_g3/galil_clipout.mp3"
 })
 
 sound.Add({
 	name = 			"hk_g3_weapon.Clipin",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/galil_clipin.mp3"	
+	sound = 			"weapons/hk_g3/galil_clipin.mp3"
 })
 
 sound.Add({
 	name = 			"hk_g3_weapon.Boltpull",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/boltpull.mp3"	
+	sound = 			"weapons/hk_g3/boltpull.mp3"
 })
 
 sound.Add({
 	name = 			"hk_g3_weapon.Boltforward",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/boltforward.mp3"	
+	sound = 			"weapons/hk_g3/boltforward.mp3"
 })
 
 sound.Add({
 	name = 			"hk_g3_weapon.cloth",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/Cloth.mp3"	
+	sound = 			"weapons/hk_g3/Cloth.mp3"
 })
 
 sound.Add({
 	name = 			"hk_g3_weapon.draw",
 	channel = 		CHAN_ITEM,
 	volume = 		1.0,
-	sound = 			"weapons/hk_g3/draw.mp3"	
+	sound = 			"weapons/hk_g3/draw.mp3"
 })
 
 m9knpw = {}
@@ -1167,20 +1167,20 @@ function PocketM9KWeapons(ply, wep)
 	if not IsValid(wep) then return end
 	class = wep:GetClass()
 	m9knopocket = false
-	
+
 	for k, v in pairs(m9knpw) do
 		if v == class then
 			m9knopocket = true
 			break
 		end
 	end
-	
+
 	if m9knopocket then
 		return false
 	end
-	
+
 	--goddammit i hate darkrp
-	
+
 end
 hook.Add("canPocket", "PocketM9KWeapons", PocketM9KWeapons )
 

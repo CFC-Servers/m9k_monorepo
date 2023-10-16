@@ -15,7 +15,7 @@
 	"$phongexponenttexture" "models\weapons\v_models\Corvalho AN94\an94_exp"
 
 	"$rimlight" 	"1"
-	"$rimlightexponent" 	"66"	
+	"$rimlightexponent" 	"66"
 	"$rimlightboost"	"0.35"
 	"$rimmask" 	"1"
 "$nocull" "1"

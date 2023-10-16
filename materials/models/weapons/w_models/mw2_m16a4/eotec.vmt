@@ -2,6 +2,6 @@
 {
 	"$model" "1"
 	"$basetexture"	"models\weapons\v_models\twinke_m4\eotec"
-	
+
 	"$translucent"	"1"
 }

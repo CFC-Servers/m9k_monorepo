@@ -1,4 +1,4 @@
-if (GetConVar("DavyCrockettAllowed")) == nil then 
+if (GetConVar("DavyCrockettAllowed")) == nil then
 	print("M9K Specialties Convar is missing! You may have hit the lua limit, or incorrectly modified the autorun file!")
 elseif not (GetConVar("DavyCrockettAllowed"):GetBool()) then return end
 ENT.Type 			= "anim"
@@ -17,16 +17,16 @@ AddCSLuaFile("shared.lua")
 function ENT:SpawnFunction(ply, tr)
 
 	if (!tr.Hit) then return end
-	
+
 	local SpawnPos = tr.HitPos + tr.HitNormal * 16
-	
+
 	local ent = ents.Create("m9k_ammo_nuke")
-	
+
 	ent:SetPos(SpawnPos)
 	ent:Spawn()
 	ent:Activate()
 	ent.Planted = false
-	
+
 	return ent
 end
 
@@ -38,18 +38,18 @@ function ENT:Initialize()
 	self.CanTool = false
 
 	local model = ("models/failure/mk6/mk6.mdl")
-	
+
 	self.Entity:SetModel(model)
-	
+
 	self.Entity:PhysicsInit(SOLID_VPHYSICS)
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
 	self.Entity:SetSolid(SOLID_VPHYSICS)
 	self.Entity:DrawShadow(false)
-	
+
 	self.Entity:SetCollisionGroup(COLLISION_GROUP_NONE)
-	
+
 	local phys = self.Entity:GetPhysicsObject()
-	
+
 	if (phys:IsValid()) then
 		phys:Wake()
 		phys:SetMass(40)
@@ -80,19 +80,19 @@ function ENT:OnTakeDamage(dmginfo)
 	local dice = math.random(1,30)
 	local att
 	if not (GetConVar("M9KAmmoDetonation"):GetBool()) then return end
-	if IsValid(dmginfo:GetAttacker()) then 
+	if IsValid(dmginfo:GetAttacker()) then
 		att = dmginfo:GetAttacker()
 	else
 		att = self.Entity
 	end
-	
+
 	if dice == 1 then//you stupid son of a bitch, what did you just do!
 		local nuke = ents.Create("m9k_davy_crockett_explo")
 		nuke:SetPos( self.Entity:GetPos() )
 		nuke:SetOwner(att)
 		nuke:Spawn()
 		nuke:Activate()
-		self.Entity:Remove()	
+		self.Entity:Remove()
 	end
 end
 
@@ -101,7 +101,7 @@ end
    Name: Use
 ---------------------------------------------------------*/
 function ENT:Use(activator, caller)
-	
+
 	if (activator:IsPlayer()) and not self.Planted then
 		activator:GiveAmmo(1, "Nuclear_Warhead")
 		self.Entity:Remove()
@@ -122,9 +122,9 @@ end
    Name: DrawPre
 ---------------------------------------------------------*/
 function ENT:Draw()
-	
+
 	self.Entity:DrawModel()
-	
+
 end
 
 end

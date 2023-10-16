@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_davy_crockett") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar("DavyCrockettAllowed")) == nil then 
+if (GetConVar("DavyCrockettAllowed")) == nil then
 	print("Blacklist Convar for "..SWEP.Gun.." is missing! You may have hit the lua limit, or incorrectly modified the autorun file!")
 elseif not (GetConVar("DavyCrockettAllowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 SWEP.Category				= "M9K Specialties"
@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Davy Crockett"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Davy Crockett"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 31			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "rpg"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -41,13 +41,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "Nuclear_Warhead"				
+SWEP.Primary.Ammo			= "Nuclear_Warhead"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_launched_davycrockett")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 40		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 40		-- How much you 'zoom' in. Less is more!
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage		= 0	-- Base damage per bullet
@@ -78,17 +78,17 @@ SWEP.FireDelay = SWEP.NextFireTime
 --and now to the nasty parts of this swep...
 function SWEP:Deploy()
 
-	if timer.Exists("davy_crocket_"..self.Owner:UniqueID()) then 
-		timer.Destroy("davy_crocket_"..self.Owner:UniqueID()) 
+	if timer.Exists("davy_crocket_"..self.Owner:UniqueID()) then
+		timer.Destroy("davy_crocket_"..self.Owner:UniqueID())
 	end
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight false
 	self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
-	
+
 	if (GetConVar("DavyCrockettAllowed"):GetBool()) then
 		self.FireDelay = (CurTime() + self.NextFireTime)
 		self.Owner:PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in "..self.Countdown.." seconds." )
 		self.Owner.DCCount = self.Countdown - 1
-		timer.Create("davy_crocket_"..self.Owner:UniqueID(), 1, self.Countdown, 
+		timer.Create("davy_crocket_"..self.Owner:UniqueID(), 1, self.Countdown,
 			function()
 			if not IsValid(self) then return end
 			if not IsValid(self.Owner) then return end
@@ -101,11 +101,11 @@ function SWEP:Deploy()
 	else
 		self.Owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
 	end
-	
-	if !self.Owner:IsNPC() then 
+
+	if !self.Owner:IsNPC() then
 		self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 	end
-	
+
 	self:SetHoldType(self.HoldType)
 	self.Weapon:SetNWBool("Reloading", false)
 	return true
@@ -122,7 +122,7 @@ function SWEP:DeployCountDownFunc(count)
 		self.Owner:PrintMessage(HUD_PRINTTALK, count.." second remaining!" )
 	else
 		self.Owner:PrintMessage(HUD_PRINTTALK, count.." seconds remaining" )
-	end 
+	end
 	if count <= 5 then
 		self.Weapon:EmitSound("C4.PlantSound")
 	end
@@ -164,12 +164,12 @@ function SWEP:FireRocket()
 end
 
 function SWEP:SecondaryAttack()
-end	
+end
 
 function SWEP:CheckWeaponsAndAmmo()
-	if SERVER and self.Weapon != nil then 
+	if SERVER and self.Weapon != nil then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
-			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end 
+			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
 				if not IsValid(self.Owner) then return end
 				self.Owner:StripWeapon(self.Gun)
 			end end)
@@ -180,7 +180,7 @@ function SWEP:CheckWeaponsAndAmmo()
 end
 
 function SWEP:Holster()
-	
+
 	if CLIENT and IsValid(self.Owner) and not self.Owner:IsNPC() then
 		local vm = self.Owner:GetViewModel()
 		if IsValid(vm) then
@@ -216,7 +216,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end
@@ -225,28 +225,28 @@ end
 IronSight
 -----------------------------------------------------*/
 function SWEP:IronSight()
- 
+
 		if not IsValid(self) then return end
 		if not IsValid(self.Owner) then return end
- 
+
 		if !self.Owner:IsNPC() then
 			if self.ResetSights and CurTime() >= self.ResetSights then
 				self.ResetSights = nil
-			end 
+			end
 		end
-	   
+
 		if self.CanBeSilenced and self.NextSilence < CurTime() then
 			if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_ATTACK2) then
 				self:Silencer()
 			end
 		end
-	   
+
 		if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self.Weapon:GetNWBool("Reloading")) then
 			if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_RELOAD) then
 				self:SelectFireMode()
 			end
-		end    
-	   
+		end
+
 -- //copy this...
 		if self.Owner:KeyPressed(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then            -- If you are running
 		if self.Weapon:GetNextPrimaryFire() <= (CurTime()+0.3) then
@@ -257,18 +257,18 @@ function SWEP:IronSight()
 		self:SetIronsights(true, self.Owner)                                    -- Set the ironsight true
 		self.Owner:SetFOV( 0, 0.3 )
 		self.DrawCrosshair = false
-		end                                                            
- 
+		end
+
 		if self.Owner:KeyReleased (IN_SPEED) then       -- If you release run then
 		self:SetIronsights(false, self.Owner)                                   -- Set the ironsight true
 		self.Owner:SetFOV( 0, 0.3 )
 		self.DrawCrosshair = self.OrigCrossHair
 		end                                                             -- Shoulder the gun
- 
+
 -- //down to this
 		if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
 		-- //If the key E (Use Key) is not pressed, then
- 
+
 				if self.Owner:KeyPressed(IN_ATTACK2) and not (self.Weapon:GetNWBool("Reloading")) then
 						self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
 						self.IronSightsPos = self.SightsPos                                     -- Bring it up
@@ -276,21 +276,21 @@ function SWEP:IronSight()
 						self:SetIronsights(true, self.Owner)
 						self.DrawCrosshair = false
 						-- //Set the ironsight true
- 
+
 						if CLIENT then return end
 				end
 		end
- 
+
 		if self.Owner:KeyReleased(IN_ATTACK2) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
 		-- //If the right click is released, then
 				self.Owner:SetFOV( 0, 0.3 )
 				self.DrawCrosshair = self.OrigCrossHair
 				self:SetIronsights(false, self.Owner)
 				-- //Set the ironsight false
- 
+
 				if CLIENT then return end
 		end
- 
+
 				if self.Owner:KeyDown(IN_ATTACK2) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
 				self.SwayScale  = 0.05
 				self.BobScale   = 0.05

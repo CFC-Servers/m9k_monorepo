@@ -3,7 +3,7 @@
 	$BASETEXTURE "effects/neuro_debris"
 //	$RAMPTEXTURE "particle/fireGradient.vtf"
 	$POWERFUNCTION "[0.8 2.5 5]"
-	
+
 	$OVERBRIGHTFACTOR 2
 //	$EXTRACTGREENALPHA 1
 	$ADDSELF 1.0

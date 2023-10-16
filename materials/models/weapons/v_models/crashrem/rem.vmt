@@ -2,7 +2,7 @@
 {
 "$basetexture""models\weapons\v_models\crashrem\remi_diffuse"
 "$bumpmap""models\weapons\v_models\crashrem\remi_normal"
-"$nocull" "1"	
+"$nocull" "1"
 
 
 }

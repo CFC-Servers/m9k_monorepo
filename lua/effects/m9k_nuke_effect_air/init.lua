@@ -12,12 +12,12 @@ tMats.Glow3 = Material("sprites/nuke_redglow2")
 	-- mat:SetInt("$spriterendermode",9)
 	-- mat:SetInt("$ignorez",1)
 	-- mat:SetInt("$illumfactor",8)
-	
+
 -- end
 
 
 function EFFECT:Init( data )
-	
+
 	self.Position = data:GetOrigin()
 	self.Position.z = self.Position.z + 4
 	self.Yield = data:GetMagnitude()
@@ -30,21 +30,21 @@ function EFFECT:Init( data )
 	self.GAlpha = 254
 	self.GSize = 100*self.YieldSlow
 	self.CloudHeight = data:GetScale()
-	
+
 	self.Refract = 0
 	self.Size = 24
 	if render.GetDXLevel() <= 81 then
 		matRefraction = Material( "effects/strider_pinch_dudv" )
 	end
-	
+
 	local Pos = self.Position
-	
+
 	self.smokeparticles = {}
 	self.Emitter = ParticleEmitter( Pos )
-	
+
 	--big firecloud
 		for i=1, 280 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-18,18)):GetNormalized()
 			local particle = self.Emitter:Add( "particles/flamelet"..math.random(1,5), Pos + self.YieldSlow*(vecang*(math.Rand(250,690))))
 			vecang.z = vecang.z + self.YieldSlowest*1.4
@@ -58,15 +58,15 @@ function EFFECT:Init( data )
 			particle:SetColor(math.random(150,255), math.random(100,150), 100)
 			--particle:VelocityDecay( true )
 			//thanks, asshole
-	
+
 		end
-		
+
 		--fire plumes
 		for i=1, 27 do
-			
+
 			local vecang = VectorRand()*8
 			local spawnpos = Pos + self.YieldSlowest*256*vecang
-			
+
 				for k=5,26 do
 				local particle = self.Emitter:Add( "particles/flamelet"..math.random(1,5), spawnpos - vecang*9*k)
 				particle:SetVelocity(vecang*math.Rand(2,3) + Vector(0,0,math.Rand(15,20)) )
@@ -80,12 +80,12 @@ function EFFECT:Init( data )
 				--particle:VelocityDecay( true )
 			//thanks, asshole
 				end
-		
+
 		end
-		
+
 	-- big smoke cloud
 		for i=1, 320 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-18,18)):GetNormalized()
 			local particle = self.Emitter:Add( "particles/smokey", Pos + self.YieldSlow*(vecang*(math.Rand(2,665))))
 			local startalpha = math.Rand( 0, 7 )
@@ -101,10 +101,10 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( self.YieldInverse*math.random( -1, 1 ) )
 			particle:SetColor(230,230,230)
 			--particle:VelocityDecay( true )
-			
+
 			//thanks, asshole
 			table.insert(self.smokeparticles,particle)
-	
+
 		end
 
 end
@@ -113,19 +113,19 @@ end
 -- Returning false makes the entity die
 function EFFECT:Think( )
 	local timeleft = self.TimeLeft - CurTime()
-	if timeleft > 0 then 
+	if timeleft > 0 then
 	local ftime = FrameTime()
-	
+
 	if self.FAlpha > 0 then
 		self.FAlpha = self.FAlpha - 150*ftime
 	end
-	
+
 	self.GAlpha = self.GAlpha - 10.5*ftime
 	self.GSize = self.GSize - 0.12*timeleft*ftime*self.YieldSlow
-	
+
 	self.Size = self.Size + 1200*ftime
 	self.Refract = self.Refract + 1.3*ftime
-		
+
 	return true
 	else
 		self.Emitter:Finish()
@@ -133,7 +133,7 @@ function EFFECT:Think( )
 		particle:SetStartAlpha( 20 )
 		particle:SetEndAlpha( 0 )
 		end
-	return false	
+	return false
 	end
 end
 

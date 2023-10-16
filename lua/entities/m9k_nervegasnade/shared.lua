@@ -5,8 +5,8 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions			= ""
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 
@@ -23,9 +23,9 @@ function ENT:Initialize()
 	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
 	self.Entity:SetSolid( SOLID_VPHYSICS )
 	self.Entity:DrawShadow( false )
-	
+
 	self.backflightvector = self.Entity:GetForward() * (-5)
-	
+
 	local phys = self.Entity:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:SetMass(4)
@@ -35,7 +35,7 @@ function ENT:Initialize()
 end
 
  function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
 
@@ -49,13 +49,13 @@ PhysicsCollide
 function ENT:PhysicsCollide(data,phys)
 
 	--self.timeleft = CurTime() + 20
-	
+
 	if data.Speed > 50 then
 		self.Entity:EmitSound(Sound("GlassBottle.Break"))
 	end
-	
+
 	self:BreakVial()
-	
+
 end
 
 function ENT:BreakVial()
@@ -66,9 +66,9 @@ function ENT:BreakVial()
 	end
 
 	local pos = self.Entity:GetPos()
-	
+
 	if GetConVar("M9KExplosiveNerveGas") == nil or GetConVar("M9KExplosiveNerveGas"):GetBool() then
-	
+
 		local poison = ents.Create("m9k_released_poison")
 		poison:SetPos(pos )
 		poison:SetOwner(self.Owner)
@@ -76,16 +76,16 @@ function ENT:BreakVial()
 		poison.Big = false
 		poison.PosToKeep = pos
 		poison:Spawn()
-		
+
 	else
-	
+
 		local painParent = ents.Create("m9k_poison_parent")
 		painParent:SetPos(pos)
 		painParent:SetOwner(self.Owner)
 		painParent.Owner = self.Owner
 		painParent:Spawn()
 		painParent.Big = false
-	
+
 		local hurt1 = ents.Create("POINT_HURT")
 		hurt1:SetPos(pos)
 		hurt1:SetKeyValue("DamageRadius", 100)
@@ -95,7 +95,7 @@ function ENT:BreakVial()
 		hurt1:Fire ( "Kill" , "", 17 )
 		hurt1:SetParent(painParent)
 		hurt1:Spawn()
-	
+
 		local hurt2 = ents.Create("POINT_HURT")
 		hurt2:SetPos(pos)
 		hurt2:SetKeyValue("DamageRadius", 150)
@@ -105,16 +105,16 @@ function ENT:BreakVial()
 		hurt2:Fire ( "Kill" , "", 19 )
 		hurt2:SetParent(painParent)
 		hurt2:Spawn()
-		
-		
+
+
 	end
-	
+
 	local gas = EffectData()
 		gas:SetOrigin(pos)
 		gas:SetEntity(self.Owner) //i dunno, just use it!
 		gas:SetScale(1)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_released_nerve_gas", gas)
-		
+
 	self.Entity:Remove()
 
 end
@@ -133,8 +133,8 @@ end
 
 if CLIENT then
 
- function ENT:Draw()             
- self.Entity:DrawModel()       // Draw the model.   
+ function ENT:Draw()
+ self.Entity:DrawModel()       // Draw the model.
  end
 
 end

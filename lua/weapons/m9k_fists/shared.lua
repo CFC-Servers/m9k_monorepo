@@ -8,7 +8,7 @@ SWEP.Author				= ""
 SWEP.Contact				= ""
 SWEP.Purpose				= ""
 SWEP.Instructions				= ("Right click, right jab.".. "\n".. "Left Click, Left Jab." .. "\n" .. "Hold Reload to put up your guard.")
-SWEP.PrintName				= "Fists"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Fists"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 0				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 22			-- Position in the slot
 SWEP.DrawAmmo				= false		-- Should draw the default HL2 ammo counter
@@ -19,7 +19,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "fist"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -42,7 +42,7 @@ SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= ""			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -77,12 +77,12 @@ function SWEP:PrimaryAttack()
 			vm:SetPlaybackRate( 1.5 )
 			self.Weapon:EmitSound(Sound(table.Random(woosh)))//slash in the wind sound here
 			timer.Create("LeftJab", .1, 1, function() if not IsValid(self) then return end
-			
-			if IsValid(self.Owner) and	
-			
-			IsValid(self.Weapon) then 
-			
-			if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then  
+
+			if IsValid(self.Owner) and
+
+			IsValid(self.Weapon) then
+
+			if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 			self:LeftJab() end end end)
 			self.Owner:SetAnimation( PLAYER_ATTACK1 )
 			self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
@@ -111,7 +111,7 @@ function SWEP:LeftJab()
 				targ = slashtrace.Entity
 				if targ:IsPlayer() or targ:IsNPC() then
 					//find a way to splash a little blood
-					
+
 					self.Weapon:EmitSound(Sound(table.Random(punchtable)))//stab noise
 					paininfo = DamageInfo()
 					paininfo:SetDamage(pain)
@@ -119,8 +119,8 @@ function SWEP:LeftJab()
 					paininfo:SetAttacker(self.Owner)
 					paininfo:SetInflictor(self.Weapon)
 					paininfo:SetDamageForce(slashtrace.Normal *5000)
-					if SERVER then 
-						targ:TakeDamageInfo(paininfo) 
+					if SERVER then
+						targ:TakeDamageInfo(paininfo)
 						if targ:IsPlayer() then targ:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
 					end
 				else
@@ -142,10 +142,10 @@ function SWEP:SecondaryAttack()
 			vm:SetSequence(vm:LookupSequence("punchmiss1")) //right
 			vm:SetPlaybackRate( 1.5 )
 			self.Weapon:EmitSound(Sound(table.Random(woosh)))//slash in the wind sound here
-			
-			timer.Create("RightJab", .1, 1, function() if not IsValid(self) then return end 
-				if IsValid(self.Owner) and IsValid(self.Weapon) then 
-				if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then 
+
+			timer.Create("RightJab", .1, 1, function() if not IsValid(self) then return end
+				if IsValid(self.Owner) and IsValid(self.Weapon) then
+				if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 				self:RightJab()  end end end)
 			self.Owner:SetAnimation( PLAYER_ATTACK1 )
 			self.Weapon:SetNextSecondaryFire(CurTime()+1/(self.Primary.RPM/60))
@@ -181,8 +181,8 @@ function SWEP:RightJab()
 					paininfo:SetAttacker(self.Owner)
 					paininfo:SetInflictor(self.Weapon)
 					paininfo:SetDamageForce(rslashtrace.Normal *5000)
-					if SERVER then 
-						rtarg:TakeDamageInfo(paininfo) 
+					if SERVER then
+						rtarg:TakeDamageInfo(paininfo)
 						if rtarg:IsPlayer() then rtarg:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
 					end
 				else
@@ -207,7 +207,7 @@ end
 				if victim:GetNWBool("DukesAreUp", false) and info:GetDamageType() == DMG_CLUB then
 					victim:SetHealth(victim:Health() + (info:GetDamage()))
 					victim:SetHealth(victim:Health() - (info:GetDamage()/4))
-				end 
+				end
 			--end
 		--end
 	end
@@ -216,7 +216,7 @@ hook.Add("EntityTakeDamage", "DukesUp", DukesUp ) ]]
 --This hook has been moved to Autorun
 
 function SWEP:Holster()
-	
+
 	if CLIENT and IsValid(self.Owner) and not self.Owner:IsNPC() then
 		local vm = self.Owner:GetViewModel()
 		if IsValid(vm) then
@@ -236,30 +236,30 @@ function SWEP:IronSight()
 		if self.ResetSights and CurTime() >= self.ResetSights then
 			self.ResetSights = nil
 			self:SendWeaponAnim(ACT_VM_IDLE)
-		end 
+		end
 	end
-	
+
 	if self.Owner:KeyDown(IN_RELOAD) and self.Owner:KeyPressed(IN_SPEED) then
 		self.Owner:SetNWBool("DukesAreUp", false)
 	end
-	
+
 	if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you are running
 	self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
 	self.IronSightsPos = self.RunSightsPos					-- Hold it down
 	self.IronSightsAng = self.RunSightsAng					-- Hold it down
 	self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
-	end								
+	end
 
 	if self.Owner:KeyReleased (IN_SPEED) then	-- If you release run then
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
 	end								-- Shoulder the gun
-	
+
 	if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
 	-- If the key E (Use Key) is not pressed, then
 
-		if self.Owner:KeyPressed(IN_RELOAD) then 
+		if self.Owner:KeyPressed(IN_RELOAD) then
 			self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
 			self.IronSightsPos = self.SightsPos					-- Bring it up
 			self.IronSightsAng = self.SightsAng					-- Bring it up
@@ -280,13 +280,13 @@ function SWEP:IronSight()
 
 		if CLIENT then return end
 	end
-	
+
 end
 
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

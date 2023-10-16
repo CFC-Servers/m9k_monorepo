@@ -5,8 +5,8 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions			= ""
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 if SERVER then
@@ -23,7 +23,7 @@ function ENT:Initialize()
 	self.Entity:SetSolid( SOLID_VPHYSICS )
 	self.Entity:DrawShadow( false )
 	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-	
+
 	local phys = self.Entity:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:Wake()
@@ -34,21 +34,21 @@ function ENT:Initialize()
 end
 
  function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
 
 	if self.timeleft < CurTime() then
- 	for k, v in pairs ( ents.FindInSphere( self.Entity:GetPos(), 200 ) ) do		
+ 	for k, v in pairs ( ents.FindInSphere( self.Entity:GetPos(), 200 ) ) do
 		if v:IsPlayer() || v:IsNPC() then					// If its alive then
 		local trace = {}						// Make sure there's not a wall in between
 		trace.start = self.Entity:GetPos()
 		trace.endpos = v:GetPos()			// Trace to the torso
 		trace.filter = self.Entity
 		local tr = util.TraceLine( trace )				// If the trace hits a living thing then
-		if tr.Entity:IsPlayer() || tr.Entity:IsNPC() then self:Explosion() end 
+		if tr.Entity:IsPlayer() || tr.Entity:IsNPC() then self:Explosion() end
 		end
-	end	
+	end
 	end
 
 	self.Entity:NextThink( CurTime() )
@@ -57,12 +57,12 @@ end
 
 function ENT:Explosion()
 
-	if not IsValid(self) then return end 
-	if not IsValid(self.Owner) then 
+	if not IsValid(self) then return end
+	if not IsValid(self.Owner) then
 		self.Entity:Remove()
 	return
-	end 
-	
+	end
+
 	local effectdata = EffectData()
 		effectdata:SetOrigin(self.Entity:GetPos())
 	util.Effect("HelicopterMegaBomb", effectdata)
@@ -76,8 +76,8 @@ function ENT:Explosion()
 		effectdata:SetScale(1)			// Size of explosion
 		effectdata:SetRadius(67)		// What texture it hits
 		effectdata:SetMagnitude(18)			// Length of explosion trails
-		util.Effect( "m9k_gdcw_cinematicboom", effectdata )	
-	if not IsValid(self) then return end if not IsValid(self.Owner) then return end if not IsValid(self.Entity) then return end 
+		util.Effect( "m9k_gdcw_cinematicboom", effectdata )
+	if not IsValid(self) then return end if not IsValid(self.Owner) then return end if not IsValid(self.Entity) then return end
 	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 200, 250	)
 	util.ScreenShake(self.Entity:GetPos(), 2000, 255, 2.5, 1250		)
 
@@ -90,19 +90,19 @@ end
 
 function ENT:VectorGet()
 	local startpos = self.Entity:GetPos()
-	
+
 	local downtrace = {}
 	downtrace.start = startpos
 	downtrace.endpos = startpos + self.Entity:GetUp()*-5
 	downtrace.filter = self.Entity
-	tracedown = util.TraceLine(downtrace) 
-	
+	tracedown = util.TraceLine(downtrace)
+
 	if (tracedown.Hit) then
 		return (tracedown.HitNormal)
 	else
 		return(Vector(0,0,1))
 	end
-	
+
 end
 
 /*---------------------------------------------------------

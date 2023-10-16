@@ -13,6 +13,6 @@
 	"$halflambert"            "1"
 
 	"$rimlight"               "1"
-	"$rimlightexponent"       "12" 
+	"$rimlightexponent"       "12"
 	"$rimlightboost"          ".2"
 }

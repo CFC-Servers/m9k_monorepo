@@ -23,9 +23,9 @@ local emitter = ParticleEmitter( self.Position )
 			particle:SetEndSize( math.Rand( 1.8, 2) )
 			particle:SetRoll( math.Rand( 360, 520 ) )
 			particle:SetRollDelta( math.random( -2, 2 ) )
-			particle:SetColor( 30, 30, 30 )	
+			particle:SetColor( 30, 30, 30 )
 	end
-	
+
 	for i=1,math.ceil(width) do
 		local particle = emitter:Add( "particles/smokey", self.Position + Vector(math.Rand(negwidth,width),math.Rand(negwidth,width),math.Rand(2,height)))
 			particle:SetVelocity( Vector(math.Rand(-24,24),math.Rand(-24,24),math.Rand(32,64)) )
@@ -36,11 +36,11 @@ local emitter = ParticleEmitter( self.Position )
 			particle:SetEndSize( math.Rand( 32, 48) )
 			particle:SetRoll( math.Rand( 360, 520 ) )
 			particle:SetRollDelta( math.random( -2, 2 ) )
-			particle:SetColor( 20, 20, 20 )	
+			particle:SetColor( 20, 20, 20 )
 	end
 
 	emitter:Finish()
-	
+
 	--become a dark stain on the floor
 	local trace = {}
 	trace.startpos = self.Position + Vector(0,0,32)
@@ -48,7 +48,7 @@ local emitter = ParticleEmitter( self.Position )
 	trace.filter = self.Entity
 	local traceRes = util.TraceLine(trace)
 	util.Decal("Scorch", traceRes.HitPos + traceRes.HitNormal, traceRes.HitPos - traceRes.HitNormal )
-	
+
 	for i=1,8 do
 		trace.endpos = trace.startpos + Vector(math.Rand(-48,48),math.Rand(-48,48),-64)
 		traceRes = util.TraceLine(trace)
@@ -67,7 +67,7 @@ end
 
 function EFFECT:Render()
 
-	
+
 end
 
 

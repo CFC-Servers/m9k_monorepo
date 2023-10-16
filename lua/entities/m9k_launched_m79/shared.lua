@@ -1,35 +1,35 @@
- ENT.Type 			= "anim"      
- ENT.PrintName			= "M54 High Explosive Anti-Tank"  
- ENT.Author			= "Generic Default"  
- ENT.Contact			= "AIDS"  
- ENT.Purpose			= "SPLODE"  
- ENT.Instructions			= "LAUNCH"  
- 
+ ENT.Type 			= "anim"
+ ENT.PrintName			= "M54 High Explosive Anti-Tank"
+ ENT.Author			= "Generic Default"
+ ENT.Contact			= "AIDS"
+ ENT.Purpose			= "SPLODE"
+ ENT.Instructions			= "LAUNCH"
+
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 if SERVER then
 
 AddCSLuaFile( "shared.lua" )
 
-function ENT:Initialize()  
-	self.CanTool = false 
+function ENT:Initialize()
+	self.CanTool = false
 
 self.flightvector = self.Entity:GetUp() * ((75*52.5)/66)
 self.timeleft = CurTime() + 15
 self.Owner = self:GetOwner()
 self.Entity:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
-self.Entity:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,  	
-self.Entity:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics  	
-self.Entity:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3     
+self.Entity:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
+self.Entity:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
+self.Entity:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
 self.InFlight = true
 self.Entity:SetNWBool("smoke", true)
-end   
+end
 
  function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
 
@@ -42,13 +42,13 @@ end
 		trace.endpos = self.Entity:GetPos() + self.flightvector
 		trace.filter = Table
 	local tr = util.TraceLine( trace )
-	
+
 
 			if tr.HitSky then
 			self.Entity:Remove()
 			return true
 			end
-	
+
 				if tr.Hit and self.InFlight then
 					if not IsValid(self.Owner) then
 						self.Entity:Remove()
@@ -87,23 +87,23 @@ end
 						self.Entity:SetNWBool("smoke", false)
 						self.timeleft = CurTime() + 2
 					end
-	
+
 				end
-				
+
 	if self.InFlight then
 	self.Entity:SetPos(self.Entity:GetPos() + self.flightvector)
 	self.flightvector = self.flightvector - (self.flightvector/350)  + Vector(math.Rand(-0.2,0.2), math.Rand(-0.2,0.2),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
 	self.Entity:SetAngles(self.flightvector:Angle() + Angle(90,0,0))
 	end
-	
+
 	if CurTime() > self.timeleft then
 		self:Explosion()
 	end
-	
+
 	self.Entity:NextThink( CurTime() )
 	return true
 end
- 
+
 function ENT:Explosion()
 
 	if not IsValid(self.Owner) then
@@ -127,16 +127,16 @@ end
 
 end
 
-if CLIENT then    
- function ENT:Draw()            
- self.Entity:DrawModel()       // Draw the model.   
+if CLIENT then
+ function ENT:Draw()
+ self.Entity:DrawModel()       // Draw the model.
  end
- 
+
    function ENT:Initialize()
 	pos = self:GetPos()
 	self.emitter = ParticleEmitter( pos )
  end
- 
+
  function ENT:Think()
 	if (self.Entity:GetNWBool("smoke")) then
 		pos = self:GetPos()
@@ -151,11 +151,11 @@ if CLIENT then
 				particle:SetEndSize( math.Rand( 80, 90 ) )
 				particle:SetRoll( math.Rand(0, 360) )
 				particle:SetRollDelta( math.Rand(-1, 1) )
-				particle:SetColor( 150 , 150 , 150 ) 
- 				particle:SetAirResistance( 200 ) 
- 				particle:SetGravity( Vector( 100, 0, 0 ) ) 	
+				particle:SetColor( 150 , 150 , 150 )
+ 				particle:SetAirResistance( 200 )
+ 				particle:SetGravity( Vector( 100, 0, 0 ) )
 			end
-		
+
 		end
 	end
 end

@@ -31,7 +31,7 @@ SWEP.Primary.Reloading			= false					// Reloading func
 -- SWEP.Secondary.DefaultClip			= 0					// Default number of bullets in a clip
 -- SWEP.Secondary.Automatic			= false					// Automatic/Semi Auto
 SWEP.Secondary.Ammo			= ""
-SWEP.Secondary.IronFOV			= 0					// How much you 'zoom' in. Less is more! 
+SWEP.Secondary.IronFOV			= 0					// How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}					-- The starting firemode
 SWEP.data.ironsights			= 1
@@ -59,22 +59,22 @@ function SWEP:Think()
 	--if the owner presses shoot while the timer is in effect, then...
 	if (self.Owner:KeyPressed(IN_ATTACK)) and (self.Weapon:GetNextPrimaryFire() <= CurTime()) and (timer.Exists(timerName)) and not (self.Owner:KeyDown(IN_SPEED)) then
 		if self:CanPrimaryAttack() then --well first, if we actually can attack, then...
-		
+
 			timer.Destroy(timerName) -- kill the timer, and
 			self:PrimaryAttack()-- ATTAAAAACK!
-			
+
 		end
 	end
-	
+
 	if self.InsertingShell == true and self.Owner:Alive() then
 		vm = self.Owner:GetViewModel()-- its a messy way to do it, but holy shit, it works!
 		vm:ResetSequence(vm:LookupSequence("after_reload")) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
 		vm:SetPlaybackRate(.01) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
 		self.InsertingShell = false -- You get paid for this, what's your excuse?
 	end
-	
+
 	self:IronSight()
-	
+
 end
 
 /*---------------------------------------------------------
@@ -85,9 +85,9 @@ function SWEP:Deploy()
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then return end
 	if not self.Owner:IsPlayer() then return end
-	
+
 	self:SetHoldType(self.HoldType)
-	
+
 	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
 	if (timer.Exists(timerName)) then
 		timer.Destroy(timerName)
@@ -102,7 +102,7 @@ function SWEP:Deploy()
 	if (SERVER) then
 		self:SetIronsights(false)
 	end
-	
+
 	self.Owner.NextReload = CurTime() + 1
 
 	return true
@@ -123,39 +123,39 @@ function SWEP:Reload()
 	local shellz = (maxcap) - (spaceavail) + 1
 
 	if (timer.Exists("ShotgunReload_" ..  self.Owner:UniqueID())) or self.Owner.NextReload > CurTime() or maxcap == spaceavail then return end
-	
-	if self.Owner:IsPlayer() then 
+
+	if self.Owner:IsPlayer() then
 
 		if self.Weapon:GetNextPrimaryFire() <= (CurTime()+2) then
 			self.Weapon:SetNextPrimaryFire(CurTime() + 2) -- wait TWO seconds before you can shoot again
 		end
 		self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
 		self.Owner:SetAnimation( PLAYER_RELOAD )
-		
+
 		self.Owner.NextReload = CurTime() + 1
-	
+
 		if (SERVER) then
 			self.Owner:SetFOV( 0, 0.15 )
 			self:SetIronsights(false)
 		end
-	
+
 		if SERVER and self.Owner:Alive() then
 			local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
-			timer.Create(timerName, 
-			(self.ShellTime + .05), 
+			timer.Create(timerName,
+			(self.ShellTime + .05),
 			shellz,
-			function() if not IsValid(self) then return end 
-			if IsValid(self.Owner) and IsValid(self.Weapon) then 
-				if self.Owner:Alive() then 
+			function() if not IsValid(self) then return end
+			if IsValid(self.Owner) and IsValid(self.Weapon) then
+				if self.Owner:Alive() then
 					self:InsertShell()
-				end 
+				end
 			end end)
 		end
-	
+
 	elseif self.Owner:IsNPC() then
-		self.Weapon:DefaultReload(ACT_VM_RELOAD) 
+		self.Weapon:DefaultReload(ACT_VM_RELOAD)
 	end
-	
+
 end
 
 function SWEP:InsertShell()
@@ -163,14 +163,14 @@ function SWEP:InsertShell()
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then return end
 	if not self.Owner:IsPlayer() then return end
-	
+
 	local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
 	if self.Owner:Alive() then
 		local curwep = self.Owner:GetActiveWeapon()
-		if curwep:GetClass() != self.Gun then 
+		if curwep:GetClass() != self.Gun then
 			timer.Destroy(timerName)
 		return end
-	
+
 		if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
 		-- if clip is full or ammo is out, then...
 			self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
@@ -184,7 +184,7 @@ function SWEP:InsertShell()
 	else
 		timer.Destroy(timerName) -- kill the timer
 	end
-	
+
 end
 
 function SWEP:ShellAnimCaller()

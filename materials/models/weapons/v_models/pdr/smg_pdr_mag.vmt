@@ -2,13 +2,13 @@
 {
 	"$basetexture" "models\weapons\v_models\PDR\mag"
         "$bumpmap" "models\weapons\v_models\PDR\mag_normal"
-        
+
 	"$phong" "0.3"
 	"$phongexponent" "15"
-	"$phongboost" "3"	
+	"$phongboost" "3"
 	"$phongfresnelranges"	"[.3 .5 3]"
-	
-  "$rimlight" "1"						
-	"$rimlightexponent" "20"				
+
+  "$rimlight" "1"
+	"$rimlightexponent" "20"
 	"$rimlightboost" ".25"
 }

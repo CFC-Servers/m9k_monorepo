@@ -7,7 +7,7 @@
 
 					// 1     2     3      4      5      6      7      8         9
 					//Dust, Dirt, Sand, Metal, Smoke, Wood,  Glass, Blood, YellowBlood
-local mats={				
+local mats={
 	[MAT_ALIENFLESH]		={5,9},
 	[MAT_ANTLION]			={5,9},
 	[MAT_BLOODYFLESH]		={5,8},
@@ -38,17 +38,22 @@ local sounds={
 }
 
 function EFFECT:Init(data)
-self.Entity 		= data:GetEntity()		// Entity determines what is creating the dynamic light			//
-self.Pos 		= data:GetOrigin()		// Origin determines the global position of the effect			//
+self.Entity 		= data:GetEntity()		// Entity determines what is creating the dynamic light			//
+
+self.Pos 		= data:GetOrigin()		// Origin determines the global position of the effect			//
+
 self.Scale 		= data:GetScale()		// Scale determines how large the effect is				//
-self.Radius 		= data:GetRadius() or 1		// Radius determines what type of effect to create, default is Concrete	//
+self.Radius 		= data:GetRadius() or 1		// Radius determines what type of effect to create, default is Concrete	//
+
 self.DirVec 		= data:GetNormal()		// Normal determines the direction of impact for the effect		//
 self.PenVec 		= data:GetStart()		// PenVec determines the direction of the round for penetrations	//
 self.Particles 		= data:GetMagnitude()		// Particles determines how many puffs to make, primarily for "trails"	//
 self.Angle 		= self.DirVec:Angle()		// Angle is the angle of impact from Normal				//
 self.DebrizzlemyNizzle 	= 10+data:GetScale()		// Debrizzle my Nizzle is how many "trails" to make			//
-self.Size 		= 5*self.Scale			// Size is exclusively for the explosion "trails" size			//
-self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don't get an error			//
+self.Size 		= 5*self.Scale			// Size is exclusively for the explosion "trails" size			//
+
+self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don't get an error			//
+
 	sound.Play( "physics/flesh/flesh_squishy_impact_hard" .. math.random(1, 4) .. ".wav", self.Pos, 180, 100 )
 
 	self.Mat=math.ceil(self.Radius)
@@ -118,7 +123,7 @@ end
 		Debris:SetStartSize( 8 )
 		Debris:SetEndSize( 9 )
 		Debris:SetRoll( math.Rand(0, 360) )
-		Debris:SetRollDelta( math.Rand(-5, 5) )			
+		Debris:SetRollDelta( maRand(-5, 5) )			
 		Debris:SetAirResistance( 30 ) 			 			
 		Debris:SetColor( 70,35,35 )
 		Debris:SetGravity( Vector( 0, 0, -600) ) 
@@ -132,6 +137,8 @@ end
 function EFFECT:Think( )
 return false
 end
-
-function EFFECT:Render()
+
+
+function EFFECT:Render()
+
 end

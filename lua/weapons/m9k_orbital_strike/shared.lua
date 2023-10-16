@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Orbital Strike Marker"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Orbital Strike Marker"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 35			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -42,12 +42,12 @@ SWEP.Primary.Automatic			= false		-- Automatic/Semi Auto
 SWEP.Primary.Ammo			= "SatCannon"
 
 SWEP.Secondary.ScopeZoom			= 5
-SWEP.Secondary.UseParabolic		= false	-- Choose your scope type, 
+SWEP.Secondary.UseParabolic		= false	-- Choose your scope type,
 SWEP.Secondary.UseACOG			= false
-SWEP.Secondary.UseMilDot		= true		
-SWEP.Secondary.UseSVD			= false	
+SWEP.Secondary.UseMilDot		= true
+SWEP.Secondary.UseSVD			= false
 SWEP.Secondary.UseElcan			= false
-SWEP.Secondary.UseGreenDuplex	= false	
+SWEP.Secondary.UseGreenDuplex	= false
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -94,10 +94,10 @@ function SWEP:PrimaryAttack()
 	if self:CanPrimaryAttack() and self.Owner:IsPlayer() and self.NextShoot <= CurTime() then
 	if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
 		local mark = self.Owner:GetEyeTrace()
-		if mark.HitSky then 
+		if mark.HitSky then
 			self.Owner:EmitSound("player/suit_denydevice.wav")
 		end
-	
+
 		local skytrace = {}
 		skytrace.start = mark.HitPos
 		skytrace.endpos = mark.HitPos + Vector(0,0,65000)
@@ -156,9 +156,9 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-	if SERVER and self.Weapon != nil then 
+	if SERVER and self.Weapon != nil then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
-			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end 
+			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
 				if not IsValid(self.Owner) then return end
 				self.Owner:StripWeapon(self.Gun)
 			end end)
@@ -187,7 +187,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

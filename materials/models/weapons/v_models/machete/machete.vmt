@@ -14,12 +14,12 @@
 	"$phongexponent"  "44"
 	"$phongboost"   "2"
 	"$phongfresnelranges"   "[1 8 6]"
-                "$phongtint"                   "[0.6 0.9 1]" 
+                "$phongtint"                   "[0.6 0.9 1]"
 	"$phongwarptexture"  "models\weapons\v_models\machete\phongwarp"
 	"$phongalbedotint" "1"
 
 	"$rimlight" "1"
-	"$rimlightexponent" "44"	
+	"$rimlightexponent" "44"
 	"$rimlightboost" "0.4"
 }
 

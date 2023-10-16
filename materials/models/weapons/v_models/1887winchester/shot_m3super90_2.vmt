@@ -2,7 +2,7 @@
 {
 	"$baseTexture" "models\\weapons\v_models\1887winchester\shot_m3super90_2"
 	"$bumpmap" "models\weapons\v_models\1887winchester\shot_m3super90_2_norm"
-	"$envmap" "env_cubemap" 
-	"$normalmapalphaenvmapmask" 1	
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
 }
 

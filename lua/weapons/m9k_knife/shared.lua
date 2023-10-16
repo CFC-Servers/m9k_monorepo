@@ -8,7 +8,7 @@ SWEP.Author				= ""
 SWEP.Contact				= ""
 SWEP.Purpose				= ""
 SWEP.Instructions				= ("Left click to slash".."\n".."Right click to stab.")
-SWEP.PrintName				= "Knife"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Knife"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 0				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 24			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -19,7 +19,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "knife"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -42,7 +42,7 @@ SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= ""			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -93,12 +93,12 @@ function SWEP:PrimaryAttack()
 			end --if it looks stupid but works, it aint stupid!
 			self.Weapon:EmitSound(self.Primary.Sound)//slash in the wind sound here
 			if CLIENT then return end
-			timer.Create("cssslash", .15, 1, function() 
+			timer.Create("cssslash", .15, 1, function()
 			if not IsValid(self) then return end
-			if IsValid(self.Owner) 
-			
-			and IsValid(self.Weapon) 
-			
+			if IsValid(self.Owner)
+
+			and IsValid(self.Weapon)
+
 			then self:PrimarySlash() end end)
 
 			self.Owner:SetAnimation( PLAYER_ATTACK1 )
@@ -166,10 +166,10 @@ function SWEP:SecondaryAttack()
 			else
 				vm:SetSequence(vm:LookupSequence("stab_miss"))
 			end
-			
+
 			timer.Create("cssstab", .33, 1 , function() if not IsValid(self) then return end
-			if IsValid(self.Owner) and IsValid(self.Weapon) then 
-				if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then 
+			if IsValid(self.Owner) and IsValid(self.Weapon) then
+				if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 					self:Stab() end
 				end
 			end)
@@ -230,9 +230,9 @@ function SWEP:IronSight()
 	self.ResetSights = nil
 	self:SendWeaponAnim(ACT_VM_IDLE)
 	end end
-	
-	
-	
+
+
+
 	if self.Owner:KeyPressed(IN_RELOAD) then
 		if !self.Owner:KeyDown(IN_ATTACK) and !self.Owner:KeyDown(IN_ATTACK2) and !self.Owner:KeyDown(IN_SPEED) then
 			self:ThrowKnife()
@@ -240,20 +240,20 @@ function SWEP:IronSight()
 			return true
 		end
 	end
-	
+
 	if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you are running
 	self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
 	self.IronSightsPos = self.RunSightsPos					-- Hold it down
 	self.IronSightsAng = self.RunSightsAng					-- Hold it down
 	self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
-	end								
+	end
 
 	if self.Owner:KeyReleased (IN_SPEED) then	-- If you release run then
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
 	end								-- Shoulder the gun
-	
+
 end
 
 function SWEP:Reload()
@@ -278,7 +278,7 @@ function SWEP:ThrowKnife()
 				phys:SetVelocity(self.Owner:GetAimVector() * 1500)
 				phys:AddAngleVelocity(Vector(0, 500, 0))
 				self.Owner:StripWeapon(self.Gun)
-				
+
 			end
 		end
 	end
@@ -288,7 +288,7 @@ end
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

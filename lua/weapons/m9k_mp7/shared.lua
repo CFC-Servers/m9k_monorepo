@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "HK MP7"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "HK MP7"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 2				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 48			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -23,7 +23,7 @@ SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.XHair					= true		-- Used for returning crosshair after scope. Must be the same as DrawCrosshair
 SWEP.BoltAction				= false		-- Is this a bolt action rifle?
 SWEP.HoldType 				= "ar2"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -46,11 +46,11 @@ SWEP.Primary.Ammo			= "smg1"	-- pistol, 357, smg1, ar2, buckshot, slam, SniperPe
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 SWEP.SelectiveFire		= true
 
-SWEP.Secondary.ScopeZoom			= 4	
+SWEP.Secondary.ScopeZoom			= 4
 SWEP.Secondary.UseACOG			= false -- Choose one scope type
-SWEP.Secondary.UseMilDot		= false	-- I mean it, only one	
+SWEP.Secondary.UseMilDot		= false	-- I mean it, only one
 SWEP.Secondary.UseSVD			= false	-- If you choose more than one, your scope will not show up at all
-SWEP.Secondary.UseParabolic		= false	
+SWEP.Secondary.UseParabolic		= false
 SWEP.Secondary.UseElcan			= false
 SWEP.Secondary.UseGreenDuplex	= false
 SWEP.Secondary.UseAimpoint		= true
@@ -89,7 +89,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

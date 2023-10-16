@@ -7,7 +7,7 @@
 	"$vertexcolor" 1
 	"$vertexalpha" 1
 	"$translucent" "1"
-	
+
 	"Proxies"
 	{
 		"TextureScroll"
@@ -17,5 +17,5 @@
 			"texturescrollangle" 90
 		}
 	}
-	
+
 }

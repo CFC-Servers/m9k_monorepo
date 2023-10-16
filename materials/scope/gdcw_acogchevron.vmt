@@ -2,7 +2,7 @@
 	{
 	// Original shader: VertexLitTexture
 	"$basetexture" 	"scope\gdcw_acogchevron"
-	"$texture2"	"scope\gdcw_noise"	
+	"$texture2"	"scope\gdcw_noise"
 	"$additive" 1
 	"Proxies"
 	{

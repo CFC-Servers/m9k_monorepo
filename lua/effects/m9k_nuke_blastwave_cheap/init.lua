@@ -1,6 +1,6 @@
 
 function EFFECT:Init( data )
-	
+
 	self.Position = data:GetOrigin()
 	self.Yield = data:GetMagnitude()
 	self.YieldSlow = self.Yield^0.75
@@ -17,7 +17,7 @@ function EFFECT:Init( data )
 
 	--dust ring
 		for i=1, math.ceil(self.YieldSlowest*240) do
-			
+
 			local spawnpos = Vector(math.random(-512,512),math.random(-512,512),math.Rand(-2,4))
 			local particle = emitter:Add( "particles/smokey", Pos + spawnpos)
 			local velvec = spawnpos:GetNormalized()
@@ -34,24 +34,24 @@ function EFFECT:Init( data )
 			--particle:VelocityDecay( false )
 			//thanks, asshole
 			table.insert(self.dustparticles,particle)
-			
+
 		end
-		
+
 	emitter:Finish()
-		
+
 end
 
 --THINK
 -- Returning false makes the entity die
 function EFFECT:Think( )
-	if self.TimeLeft > CurTime() then 
+	if self.TimeLeft > CurTime() then
 		return true
 	else
 		for __,particle in pairs(self.dustparticles) do
 		particle:SetStartAlpha( 100 )
 		particle:SetEndAlpha( 0 )
 		end
-		return false	
+		return false
 	end
 end
 

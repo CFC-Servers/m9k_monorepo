@@ -13,12 +13,12 @@ tMats.Glow3 = Material("sprites/nuke_redglow2")
 	-- mat:SetInt("$spriterendermode",9)
 	-- mat:SetInt("$ignorez",1)
 	-- mat:SetInt("$illumfactor",8)
-	
+
 -- end
 
 
 function EFFECT:Init( data )
-	
+
 	self.Position = data:GetOrigin()
 	self.Position.z = self.Position.z + 5
 	self.Yield = data:GetMagnitude()
@@ -32,7 +32,7 @@ function EFFECT:Init( data )
 	self.FAlpha = 254
 	self.CloudHeight = data:GetScale()
 	if self.CloudHeight < 100 then self.CloudHeight = 100 end
-	
+
 	self.Refract = 0.5
 	self.DeltaRefract = 0.06
 	self.Size = 0
@@ -43,15 +43,15 @@ function EFFECT:Init( data )
 		self.DeltaRefract = 0.03
 		self.MaxSize = 2e5
 	end
-	
+
 	self.smokeparticles = {}
-	
+
 	local Pos = self.Position
 	local emitter = ParticleEmitter(Pos)
-	
+
 	--big firecloud
 		for i=1, 150 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-18,18)):GetNormalized()
 			local particle = emitter:Add( "particles/flamelet"..math.random(1,5), Pos + self.Yield*(vecang*(math.Rand(200,600)) + Vector(0,0,self.CloudHeight)))
 			vecang.z = vecang.z + self.YieldSlowest*3.5
@@ -64,12 +64,12 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( self.YieldInverse*math.random( -1, 1 ) )
 			particle:SetColor(math.random(150,255), math.random(100,150), 100)
 			--particle:VelocityDecay( true )
-	
+
 		end
-		
+
 	--small firecloud
 		for i=1, 84 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-16,24)):GetNormalized()
 			local particle = emitter:Add( "particles/flamelet"..math.random(1,5), Pos + self.Yield*(vecang*(math.Rand(2,340)) + Vector(0,0,math.random(-30,60))))
 			vecang.z = 0.2*vecang.z
@@ -82,12 +82,12 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( self.YieldInverse*math.Rand( -1, 1 ) )
 			particle:SetColor(math.random(150,255), math.random(100,150), 100)
 			--particle:VelocityDecay( true )
-	
+
 		end
-		
-	--column of fire	
+
+	--column of fire
 	for i=1, 72 do
-			
+
 			local spawnpos = self.YieldSlow*Vector(math.random(-72,72),math.random(-72,72),math.random(0,self.CloudHeight))
 			local particle = emitter:Add( "particles/flamelet"..math.random(1,5), Pos + spawnpos)
 			particle:SetVelocity(self.YieldSlowest*Vector(0,0,math.Rand(2,96)) + self.YieldSlowest*6*VectorRand())
@@ -99,12 +99,12 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( self.YieldInverse*math.Rand( -1, 1 ) )
 			particle:SetColor(math.random(150,255), math.random(100,150), 100)
 			--particle:VelocityDecay( false )
-			
+
 		end
-		
+
 	-- big smoke cloud
 		for i=1, 160 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-18,18)):GetNormalized()
 			local particle = emitter:Add( "particles/smokey", Pos + self.Yield*(vecang*(math.Rand(4,685)) + Vector(0,0,self.CloudHeight)))
 			local startalpha = math.Rand( 0, 5 )
@@ -121,13 +121,13 @@ function EFFECT:Init( data )
 			particle:SetColor(60,58,54)
 			--particle:VelocityDecay( true )
 			table.insert(self.smokeparticles,particle)
-	
+
 		end
-		
-		
+
+
 	-- small smoke cloud
 		for i=1, 100 do
-			
+
 			local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),math.Rand(-2,4)):GetNormalized()
 			local particle = emitter:Add( "particles/smokey", Pos + self.Yield*(vecang*(math.Rand(2,650))))
 			local startalpha = math.Rand( 0, 5 )
@@ -143,13 +143,13 @@ function EFFECT:Init( data )
 			particle:SetColor(60,58,54)
 			--particle:VelocityDecay( false )
 			table.insert(self.smokeparticles,particle)
-	
+
 		end
-		
+
 
 	--column of smoke
 		for i=1, 115 do
-			
+
 			local spawnpos = self.YieldSlow*Vector(math.random(-68,68),math.random(-68,68),math.Rand(0,self.CloudHeight))
 			local particle = emitter:Add( "particles/smokey", Pos + spawnpos)
 			local startalpha = math.Rand( 0, 5 )
@@ -165,9 +165,9 @@ function EFFECT:Init( data )
 			particle:SetColor(60,58,54)
 			--particle:VelocityDecay( false )
 			table.insert(self.smokeparticles,particle)
-			
+
 		end
-		
+
 	emitter:Finish()
 
 end
@@ -177,17 +177,17 @@ end
 -- Returning false makes the entity die
 function EFFECT:Think( )
 	local timeleft = self.TimeLeft - CurTime()
-	if timeleft > 0 then 
+	if timeleft > 0 then
 		local ftime = FrameTime()
-		
+
 		if self.FAlpha > 0 then
 			self.FAlpha = self.FAlpha - 100*ftime
 		end
-		
+
 		self.GAlpha = self.GAlpha - 9.48*ftime
 		self.GSize = self.GSize - 0.1*timeleft*ftime*self.Yield
 		self.CloudHeight = self.CloudHeight + 120*ftime*self.YieldSlowest
-		
+
 		self.Refract = self.Refract - self.DeltaRefract*ftime
 		self.Size = self.Size + 2e4*ftime
 
@@ -197,7 +197,7 @@ function EFFECT:Think( )
 		particle:SetStartAlpha( 70 )
 		particle:SetEndAlpha( 0 )
 		end
-	return false	
+	return false
 	end
 end
 
@@ -228,15 +228,15 @@ render.DrawSprite(startpos + Vector(0,0,self.CloudHeight),700*self.GSize,60*self
 
 --shockwave
 	if self.Size < self.MaxSize then
-		
+
 		matRefraction:SetFloat( "$refractamount", math.sin(self.Refract*math.pi) * 0.2 )
 		render.SetMaterial( matRefraction )
 		render.UpdateRefractTexture()
-		
+
 		render.DrawQuadEasy( startpos,
 		Vector(0,0,1),
 		self.Size, self.Size)
-		
+
 	end
 
 end

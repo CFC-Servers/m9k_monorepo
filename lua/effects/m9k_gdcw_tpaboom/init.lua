@@ -6,7 +6,7 @@
 
 					// 1     2     3      4      5      6      7      8         9
 					//Dust, Dirt, Sand, Metal, Smoke, Wood,  Glass, Blood, YellowBlood
-local mats={				
+local mats={
 	[MAT_ALIENFLESH]		={5,9},
 	[MAT_ANTLION]			={5,9},
 	[MAT_BLOODYFLESH]		={5,8},
@@ -37,17 +37,22 @@ local sounds={
 }
 
 function EFFECT:Init(data)
-self.Entity 		= data:GetEntity()		// Entity determines what is creating the dynamic light			//
-self.Pos 		= data:GetOrigin()		// Origin determines the global position of the effect			//
+self.Entity 		= data:GetEntity()		// Entity determines what is creating the dynamic light			//
+
+self.Pos 		= data:GetOrigin()		// Origin determines the global position of the effect			//
+
 self.Scale 		= data:GetScale()		// Scale determines how large the effect is				//
-self.Radius 		= data:GetRadius() or 1		// Radius determines what type of effect to create, default is Concrete	//
+self.Radius 		= data:GetRadius() or 1		// Radius determines what type of effect to create, default is Concrete	//
+
 self.DirVec 		= data:GetNormal()		// Normal determines the direction of impact for the effect		//
 self.PenVec 		= data:GetStart()		// PenVec determines the direction of the round for penetrations	//
 self.Particles 		= data:GetMagnitude()		// Particles determines how many puffs to make, primarily for "trails"	//
 self.Angle 		= self.DirVec:Angle()		// Angle is the angle of impact from Normal				//
-self.DebrizzlemyNizzle 	= 10+data:GetScale()		// Debrizzle my Nizzle is how many "trails" to make			//
-self.Size 		= 5*self.Scale			// Size is exclusively for the explosion "trails" size			//
-self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don't get an error			//
+elf.DebrizzlemyNizzle 	= 10+data:GetScale()		// Debrizzle my Nizzle is how many "trails" to make			//
+self.Size 		= 5*self.Scale			// Size is exclusively for the explosion "trails" size			//
+
+self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don't get an error			//
+
 	
 
 			if self.Scale<1.2 then
@@ -64,7 +69,7 @@ self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don
 	for k, v in pairs(mats) do 
 		if k == self.Mat then
 			foundTheMat = true
-			continue
+		continue
 		end
 	end
 	if not (foundTheMat) then self.Mat = 84 end
@@ -78,7 +83,7 @@ self.Emitter 		= ParticleEmitter( self.Pos )	// Emitter must be there so you don
 	elseif mats[self.Mat][2]==6 then	self:Wood()
 	elseif mats[self.Mat][2]==7 then	self:Glass()
 	elseif mats[self.Mat][2]==8 then	self:Blood()
-	elseif mats[self.Mat][2]==9 then	self:YellowBlood()
+elseif mats[self.Mat][2]==9 then	self:YellowBlood()
 	else 					self:Smoke()
 	end
 
@@ -157,10 +162,10 @@ end
 		local Debris = self.Emitter:Add( "effects/fleck_cement"..math.random(1,2), self.Pos )
 		if (Debris) then
 		Debris:SetVelocity ( self.DirVec * math.random(0,700)*self.Scale + VectorRand():GetNormalized() * math.random(0,700)*self.Scale )
-		Debris:SetDieTime( math.random( 1, 2) * self.Scale )
+		Debris:SetDieTime( math.random( 1, 2) *lf.Scale )
 		Debris:SetStartAlpha( 255 )
 		Debris:SetEndAlpha( 0 )
-		Debris:SetStartSize( math.random(5,10)*self.Scale)
+		Debris:SetStartSize( math.random(5,10)*sf.Scale)
 		Debris:SetRoll( math.Rand(0, 360) )
 		Debris:SetRollDelta( math.Rand(-5, 5) )			
 		Debris:SetAirResistance( 40 ) 			 			
@@ -169,40 +174,47 @@ end
 		end
 		end
 
-		local Angle = self.DirVec:Angle()
+		local Angle = self.DirVec:Angle()
+
 		for i = 1, self.DebrizzlemyNizzle do 					/// This part makes the trailers ///
 		Angle:RotateAroundAxis(Angle:Forward(), (360/self.DebrizzlemyNizzle))
 		local DustRing = Angle:Up()
 		local RanVec = self.DirVec*math.Rand(0.5, 3) + (DustRing*math.Rand(3, 7))
 
-			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
-			local particle1 = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )				
+			for k = 3, self.Particle do
+			local Rcolor = math.random(-20,20)
+
+			local particle1 = self.Emitter:Add( "particle/smokesprites_000"..math.radom(1,9), self.Pos )				
 			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5))	
-			particle1:SetDieTime( math.Rand( 0.5, 4 )*self.Scale )	
+			particle1:SetDieTime( math.Rand( 0.5, 4 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 90, 100 ) )			
 			particle1:SetEndAlpha(0)	
 			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
 			particle1:SetStartSize( (5*self.Size)-((k/self.Particles)*self.Size*3) )	
 			particle1:SetEndSize( (20*self.Size)-((k/self.Particles)*self.Size) )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
-			particle1:SetRollDelta( math.random( -0.5, 0.5 ) )	
-			particle1:SetColor( 110+Rcolor,107+Rcolor,100+Rcolor )
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
+			particle1:SetRollDelta( math.random( -0.5, 0.5 )
+			particle1:SetColor( 110+color,107+Rcolor,100+Rcolor )
 			end
 
-			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
-			local particle1 = self.Emitter:Add( "effects/yellowflare", self.Pos )				
+			for k = 3, self.Particles d
+			local Rcolor = math.random(-20,20)
+
+			local particle1 = self.Emitter:Add( "effects/yelloflare", self.Pos )				
 			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5) + (VectorRand()*100))	
-			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 120, 150 ) )			
 			particle1:SetEndAlpha(0)	
 			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
-			particle1:SetStartSize( 5 )	
+			particle1:StStartSize( 5 )	
 			particle1:SetEndSize( 10 )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
 			particle1:SetRollDelta( math.random( -1.5, 1.5 ) )	
 			particle1:SetColor( 255,255,255 )
 			end
@@ -294,41 +306,48 @@ function EFFECT:Dirt()
 		end
 		end
 
-		local Angle = self.DirVec:Angle()
-		for i = 1, self.DebrizzlemyNizzle do 					/// This part makes the trailers ///
+		local Angle = self.DirVecAngle()
+
+		for i = 1, self.DebrizzlemyNizzle do 					/// Thpart makes the trailers ///
 		Angle:RotateAroundAxis(Angle:Forward(), (360/self.DebrizzlemyNizzle))
 		local DustRing = Angle:Up()
 		local RanVec = self.DirVec*math.Rand(0.5, 4) + (DustRing*math.Rand(3, 7))	
 
 			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
+			local Rcolor = math.random(-20,20)
+
 			local particle1 = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )				
 			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5))	
-			particle1:SetDieTime( math.Rand( 0.5, 4 )*self.Scale )	
+			particle1:SetDieTime( math.Rand( 0.5, 4 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 110, 130 ) )			
 			particle1:SetEndAlpha(0)	
-			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
+			particle1:SetGravity((VetorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
-			particle1:SetStartSize( (5*self.Size)-((k/self.Particles)*self.Size*3) )	
-			particle1:SetEndSize( (20*self.Size)-((k/self.Particles)*self.Size) )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
-			particle1:SetRollDelta( math.random( -0.5, 0.5 ) )	
+			particle1:SetStartSize( (5*self.Size)-((k/self.ticles)*self.Size*3) )	
+			particle1:SetEndSize( (20*slf.Size)-((k/self.Particles)*self.Size) )
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
+			particle1:SetRollDelta( math.random( -0.5, 0.5 ) )
 			particle1:SetColor( 90+Rcolor,83+Rcolor,68+Rcolor )
 			end
 
 			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
+			local Rcolor = math.random(-20,20)
+
 			local particle1 = self.Emitter:Add( "effects/yellowflare", self.Pos )				
 			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5) + (VectorRand()*100))	
-			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 120, 150 ) )			
 			particle1:SetEndAlpha(0)	
 			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
 			particle1:SetStartSize( 5 )	
 			particle1:SetEndSize( 10 )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
-			particle1:SetRollDelta( math.random( -1.5, 1.5 ) )	
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
+			particle1:SetRollDelta( mathom( -1.5, 1.5 ) )	
 			particle1:SetColor( 255,255,255 )
 			end
 		end
@@ -345,7 +364,7 @@ function EFFECT:Dirt()
 		Smoke:SetEndAlpha( 0 )
 		Smoke:SetStartSize( 50*self.Scale )
 		Smoke:SetEndSize( 120*self.Scale )
-		Smoke:SetRoll( math.Rand(150, 360) )
+		Smoke:SetRoll( math.Rand(150) )
 		Smoke:SetRollDelta( math.Rand(-1, 1) )			
 		Smoke:SetAirResistance( 200 ) 			 
 		Smoke:SetGravity( Vector( 0, 0, math.Rand(-100, -400) ) ) 			
@@ -362,7 +381,7 @@ function EFFECT:Dirt()
 		Dust:SetEndAlpha( 0 )
 		Dust:SetStartSize( 60*self.Scale )
 		Dust:SetEndSize( 90*self.Scale )
-		Dust:SetRoll( math.Rand(150, 360) )
+		Dust:SetRoll( math.Rand(150, )
 		Dust:SetRollDelta( math.Rand(-1, 1) )			
 		Dust:SetAirResistance( 200 ) 			 
 		Dust:SetGravity( Vector( 0, 0, math.Rand(-100, -400) ) ) 			
@@ -378,7 +397,7 @@ function EFFECT:Dirt()
 		Fire:SetStartAlpha( 100 )
 		Fire:SetEndAlpha( 0 )
 		Fire:SetStartSize( (30*self.Scale) )
-		Fire:SetEndSize( (80*self.Scale) )
+		Fire:SetEndSize( (80*self.Sca
 		Fire:SetRoll( math.Rand(150, 360) )
 		Fire:SetRollDelta( math.Rand(-1, 1) )			
 		Fire:SetAirResistance( 250 ) 			 
@@ -394,11 +413,11 @@ function EFFECT:Dirt()
 		Debris:SetDieTime( math.random( 1, 2) * self.Scale )
 		Debris:SetStartAlpha( 255 )
 		Debris:SetEndAlpha( 0 )
-		Debris:SetStartSize( math.random(5,8)*self.Scale )
+		Debris:SetStartSize( math.randoelf.Scale )
 		Debris:SetRoll( math.Rand(0, 360) )
 		Debris:SetRollDelta( math.Rand(-5, 5) )			
 		Debris:SetAirResistance( 40 ) 			 			
-		Debris:SetColor( 53,50,45 )
+		Debris:SetColor( 53,50,45
 		Debris:SetGravity( Vector( 0, 0, -600) ) 		
 		end
 		end
@@ -412,8 +431,8 @@ function EFFECT:Dirt()
 		Shrapnel:SetEndAlpha( 0 )
 		Shrapnel:SetStartSize( math.random(4,7)*self.Scale )
 		Shrapnel:SetRoll( math.Rand(0, 360) )
-		Shrapnel:SetRollDelta( math.Rand(-5, 5) )			
-		Shrapnel:SetAirResistance( 10 ) 			 			
+		Shrapnel:SetRollDelta( math.Rand(-5, 5) 	
+		Shrapnel:SetAirResistance( 10 )
 		Shrapnel:SetColor( 53,50,45 )
 		Shrapnel:SetGravity( Vector( 0, 0, -600) ) 
 		Shrapnel:SetCollide( true )
@@ -430,7 +449,7 @@ function EFFECT:Dirt()
 		Cinders:SetEndAlpha( 0 )
 		Cinders:SetStartSize( 5 )
 		Cinders:SetEndSize( 10 )
-		Cinders:SetRoll( math.Rand(0, 360) )
+		Cinders:SetRoll( math.Rand(, 360) )
 		Cinders:SetRollDelta( math.Rand(-1, 1) )			
 		Cinders:SetAirResistance( 200 ) 			 			
 		Cinders:SetColor( 255,255,255 )
@@ -445,13 +464,13 @@ function EFFECT:Dirt()
 		Flash:SetDieTime( 0.10 )
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
-		Flash:SetStartSize( self.Scale*200 )
+		Flash:SetStartSize( self.Scal )
 		Flash:SetEndSize( 0 )
 		Flash:SetRoll( math.Rand(180,480) )
 		Flash:SetRollDelta( math.Rand(-1,1) )
 		Flash:SetColor(255,255,255)	
-		end
-		end
+end
+	end
 
 		for i=0, 10*self.Scale do		
 		local Smoke = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
@@ -463,7 +482,7 @@ function EFFECT:Dirt()
 		Smoke:SetStartSize( 10*self.Scale )
 		Smoke:SetEndSize( 30*self.Scale )
 		Smoke:SetRoll( math.Rand(150, 360) )
-		Smoke:SetRollDelta( math.Rand(-2, 2) )			
+		Smoke:SetRollDelta( math.Rand2) )			
 		Smoke:SetAirResistance( 100 ) 			 
 		Smoke:SetGravity( Vector( math.random(-20,20)*self.Scale, math.random(-20,20)*self.Scale, 250 ) ) 			
 		Smoke:SetColor( 90,83,68 )
@@ -472,7 +491,7 @@ function EFFECT:Dirt()
 		
 	
 		for i=0, 5*self.Scale do
-		local Whisp = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
+		local Whisp = self.Emtter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
 		if (Whisp) then
 		Whisp:SetVelocity(VectorRand():GetNormalized() * math.random( 300,600*self.Scale) )
 		Whisp:SetDieTime( math.Rand( 4 , 10 )*self.Scale/2  )
@@ -522,7 +541,7 @@ function EFFECT:Dirt()
 		Flash:SetDieTime( 0.15 )
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
-		Flash:SetStartSize( self.Scale*200 )
+		Flash:SetStartSize( self.Scal )
 		Flash:SetEndSize( 0 )
 		Flash:SetRoll( math.Rand(180,480) )
 		Flash:SetRollDelta( math.Rand(-1,1) )
@@ -539,7 +558,7 @@ function EFFECT:Dirt()
 		Whisp:SetEndAlpha( 0 )
 		Whisp:SetStartSize( 70*self.Scale )
 		Whisp:SetEndSize( 100*self.Scale )
-		Whisp:SetRoll( math.Rand(150, 360) )
+		Whisp:SetRoll( math.Rand(150) )
 		Whisp:SetRollDelta( math.Rand(-2, 2) )			
 		Whisp:SetAirResistance( 300 ) 			 
 		Whisp:SetGravity( Vector( math.random(-40,40)*self.Scale, math.random(-40,40)*self.Scale, 0 ) ) 			
@@ -556,7 +575,7 @@ function EFFECT:Dirt()
 		Fire:SetEndAlpha( 0 )
 		Fire:SetStartSize( (30*self.Scale) )
 		Fire:SetEndSize( (80*self.Scale) )
-		Fire:SetRoll( math.Rand(150, 360) )
+		Fire:SetRoll( math.Rand(150, 36
 		Fire:SetRollDelta( math.Rand(-1, 1) )			
 		Fire:SetAirResistance( 250 ) 			 
 		Fire:SetGravity( Vector( math.Rand( -200 , 200 ), math.Rand( -200 , 200 ), math.Rand( 10 , 100 ) ) )		
@@ -564,33 +583,33 @@ function EFFECT:Dirt()
 		end
 		end
 
-		for i=0, 100*self.Scale do		// Cinders
+		for i=0, 100*selfScale do		// Cinders
 		local Cinders = self.Emitter:Add( "effects/yellowflare", self.Pos+self.DirVec )
 		if (Cinders) then
-		Cinders:SetVelocity ( (VectorRand():GetNormalized()*math.random( 400, 1000)*self.Scale) )
+		Cinders:SetVelocity ( (Vecto:GetNormalized()*math.random( 400, 1000)*self.Scale) )
 		Cinders:SetDieTime( math.random( 0.5, 3) )
-		Cinders:SetStartAlpha( math.Rand(120, 150) )
+		Cinders:SetStartAlpha( and(120, 150) )
 		Cinders:SetEndAlpha( 0 )
 		Cinders:SetStartSize( 5 )
 		Cinders:SetEndSize( 10 )
 		Cinders:SetRoll( math.Rand(0, 360) )
-		Cinders:SetRollDelta( math.Rand(-1, 1) )			
-		Cinders:SetAirResistance( 200 ) 			 			
+		Cinds:SetRollDelta( math.Rand(-1, 1) )			
+		Ciners:SetAirResistance( 200 ) 			 			
 		Cinders:SetColor( 255,255,255 )
-		Cinders:SetGravity( VectorRand()*20 ) 
+		Cinders:SetGravity( Vectorand()*20 ) 
 		end
 		end
 
  		for i=0, 30*self.Scale do 
- 		local Sparks = self.Emitter:Add( "effects/spark", self.Pos ) 
+ 		local Sparks = self.Emittereffects/spark", self.Pos ) 
  		if (Sparks) then 
- 		Sparks:SetVelocity( ((self.DirVec*0.75)+VectorRand()) * math.Rand(200, 600)*self.Scale ) 
- 		Sparks:SetDieTime( math.Rand(0.3, 1) ) 				 
+ 		Sparks:SetVelocity( ((irVec*0.75)+VectorRand()) * math.Rand(200, 600)*self.Scale ) 
+ 		Sparks:SetDieTime( math.Rand(0.3, 1 ) 				 
  		Sparks:SetStartAlpha( 255 )  				 
- 		Sparks:SetStartSize( math.Rand(7, 15)*self.Scale ) 
+ 		Sparks:SetStartSize( math.Rand7, 15)*self.Scale ) 
  		Sparks:SetEndSize( 0 ) 				 
- 		Sparks:SetRoll( math.Rand(0, 360) ) 
- 		Sparks:SetRollDelta( math.Rand(-5, 5) ) 				 
+ 		Spas:SetRoll( math.Rand(0, 360) ) 
+ 		Sprks:SetRollDelta( math.Rand(-5, 5) ) 				 
  		Sparks:SetAirResistance( 20 ) 
  		Sparks:SetGravity( Vector( 0, 0, -600 ) ) 
  		end 	
@@ -625,7 +644,7 @@ end
 		Flash:SetDieTime( 0.15 )
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
-		Flash:SetStartSize( self.Scale*200 )
+		Flash:SetStartSize( self.Scal )
 		Flash:SetEndSize( 0 )
 		Flash:SetRoll( math.Rand(180,480) )
 		Flash:SetRollDelta( math.Rand(-1,1) )
@@ -643,7 +662,7 @@ end
 		Whisp:SetStartSize( 70*self.Scale )
 		Whisp:SetEndSize( 100*self.Scale )
 		Whisp:SetRoll( math.Rand(150, 360) )
-		Whisp:SetRollDelta( math.Rand(-2, 2) )			
+		Whisp:SetRollDelta( math.Ran 2) )			
 		Whisp:SetAirResistance( 300 ) 			 
 		Whisp:SetGravity( Vector( math.random(-40,40)*self.Scale, math.random(-40,40)*self.Scale, 0 ) ) 			
 		Whisp:SetColor( 120,120,120 )
@@ -660,7 +679,7 @@ end
 		Fire:SetEndAlpha( 0 )
 		Fire:SetStartSize( (80*self.Scale) )
 		Fire:SetEndSize( (100*self.Scale) )
-		Fire:SetRoll( math.Rand(150, 360) )
+		Fire:SetRoll( math.Rand(150, 
 		Fire:SetRollDelta( math.Rand(-1, 1) )			
 		Fire:SetAirResistance( 250 ) 			 
 		Fire:SetGravity( Vector( math.Rand( -200 , 200 ), math.Rand( -200 , 200 ), math.Rand( 10 , 100 ) ) )		
@@ -678,47 +697,54 @@ end
 		Debris:SetEndAlpha( 0 )
 		Debris:SetStartSize( math.random(5,10)*self.Scale)
 		Debris:SetRoll( math.Rand(0, 360) )
-		Debris:SetRollDelta( math.Rand(-5, 5) )			
+		Debris:SetRollDelta( mathRand(-5, 5) )			
 		Debris:SetAirResistance( 40 ) 			 			
 		Debris:SetColor( 70,70,70 )
 		Debris:SetGravity( Vector( 0, 0, -600) ) 	
 		end
 		end
 
-		local Angle = self.DirVec:Angle()
+		local Angle = self.DirVec:Angle()
+
 		for i = 1, self.DebrizzlemyNizzle do 					/// This part makes the trailers ///
 		Angle:RotateAroundAxis(Angle:Forward(), (360/self.DebrizzlemyNizzle))
 		local DustRing = Angle:Up()
-		local RanVec = self.DirVec*math.Rand(0.5, 3) + (DustRing*math.Rand(3, 7))
+		local RanVec = self.DirVec*math.Rand(0.5, 3) + (DustRing*math.Rand(3, 
 
 			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
+			local Rcolor = math.random(-20,20)
+
 			local particle1 = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )				
-			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5))	
-			particle1:SetDieTime( math.Rand( 0, 3 )*self.Scale )	
+			particle1:SetVelocity((VectorRand():GetNormaliz)*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5))	
+			particle1:SetDieTime( math.and( 0, 3 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 90, 100 ) )			
 			particle1:SetEndAlpha(0)	
 			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
 			particle1:SetStartSize( (5*self.Size)-((k/self.Particles)*self.Size*3) )	
 			particle1:SetEndSize( (20*self.Size)-((k/self.Particles)*self.Size) )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
 			particle1:SetRollDelta( math.random( -0.5, 0.5 ) )	
-			particle1:SetColor( 90+Rcolor,85+Rcolor,75+Rcolor )
+			particle1:Sor( 90+Rcolor,85+Rcolor,75+Rcolor )
 			end
 
 			for k = 3, self.Particles do
-			local Rcolor = math.random(-20,20)
+			local Rcolor = math.random(-20,20)
+
 			local particle1 = self.Emitter:Add( "effects/yellowflare", self.Pos )				
 			particle1:SetVelocity((VectorRand():GetNormalized()*math.Rand(1, 2) * self.Size) + (RanVec*self.Size*k*3.5) + (VectorRand()*100))	
-			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+			particle1:SetDieTime( math.Rand( 0.5, 3 )*self.Scale )	
+
 			particle1:SetStartAlpha( math.Rand( 120, 150 ) )			
 			particle1:SetEndAlpha(0)	
-			particle1:SetGravity((VectorRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
+			particle1:SetGravity((VectrRand():GetNormalized()*math.Rand(5, 10)* self.Size) + Vector(0,0,-50))
 			particle1:SetAirResistance( 200+self.Scale*20 ) 		
 			particle1:SetStartSize( 5 )	
 			particle1:SetEndSize( 10 )
-			particle1:SetRoll( math.random( -500, 500 )/100 )	
+			particle1:SetRoll( math.random( -500, 500 )/100 )	
+
 			particle1:SetRollDelta( math.random( -1.5, 1.5 ) )	
 			particle1:SetColor( 255,255,255 )
 			end
@@ -728,7 +754,7 @@ end
  function EFFECT:Wood()
 
 		for i=1,5 do 				
-		local Flash = self.Emitter:Add( "effects/muzzleflash"..math.random(1,4), self.Pos )
+		local Flash = self.Emitter:Adffects/muzzleflash"..math.random(1,4), self.Pos )
 		if (Flash) then
 		Flash:SetVelocity( self.DirVec*100 )
 		Flash:SetAirResistance( 200 )
@@ -746,7 +772,7 @@ end
 		for i=0, 30*self.Scale do
 		local Whisp = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
 		if (Whisp) then
-		Whisp:SetVelocity(VectorRand():GetNormalized() * math.random( 200,1000)*self.Scale )
+		Whisp:SetVelocity(VectorRandtNormalized() * math.random( 200,1000)*self.Scale )
 		Whisp:SetDieTime( math.Rand( 4 , 10 )*self.Scale/2  )
 		Whisp:SetStartAlpha( math.Rand( 70, 90 ) )
 		Whisp:SetEndAlpha( 0 )
@@ -762,10 +788,10 @@ end
 
 
 		for i=1, 30*self.Scale do
-		local Fire = self.Emitter:Add(  "effects/fire_cloud1", self.Pos )
+		local Fire = self.Emitter:Add(  "effectsre_cloud1", self.Pos )
 		if (Fire) then
 		Fire:SetVelocity( self.DirVec * math.random( 100,400)*self.Scale + ((VectorRand():GetNormalized()*400)*self.Scale) )
-		Fire:SetDieTime( math.Rand( 0.5 , 2 )*self.Scale )
+		Fire:SetDieTime( math.Rand( 0.5 , 2 )self.Scale )
 		Fire:SetStartAlpha( 150 )
 		Fire:SetEndAlpha( 0 )
 		Fire:SetStartSize( (40*self.Scale) )
@@ -779,9 +805,9 @@ end
 		end
 
 		for i=0, 100*self.Scale do		// Cinders
-		local Cinders = self.Emitter:Add( "effects/yellowflare", self.Pos+self.DirVec )
+		local Cinders = self.Emitter:fects/yellowflare", self.Pos+self.DirVec )
 		if (Cinders) then
-		Cinders:SetVelocity ( (VectorRand():GetNormalized()*math.random( 400, 1300)*self.Scale) )
+		Cinders:SetVelocity ( (VectorRand():GetNalized()*math.random( 400, 1300)*self.Scale) )
 		Cinders:SetDieTime( math.random( 0.5, 3) )
 		Cinders:SetStartAlpha( math.Rand(120, 150) )
 		Cinders:SetEndAlpha( 0 )
@@ -814,11 +840,11 @@ end
 
  function EFFECT:Glass()
 
-		for i=1,5 do 				// Blast flash
+		for i=1,5 do 				// Blast fla
 		local Flash = self.Emitter:Add( "effects/muzzleflash"..math.random(1,4), self.Pos )
 		if (Flash) then
 		Flash:SetVelocity( self.DirVec*100 )
-		Flash:SetAirResistance( 200 )
+		Flash:SetAirResistance( )
 		Flash:SetDieTime( 0.15 )
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
@@ -833,7 +859,7 @@ end
 		for i=0, 30*self.Scale do
 		local Debris = self.Emitter:Add( "effects/fleck_glass"..math.random(1,3), self.Pos )
 		if (Debris) then
-		Debris:SetVelocity ( VectorRand():GetNormalized() * math.random(100,600)*self.Scale )
+		Debris:SetVelocity ( VectorR:GetNormalized() * math.random(100,600)*self.Scale )
 		Debris:SetDieTime( math.random( 1, 2.5) )
 		Debris:SetStartAlpha( 255 )
 		Debris:SetEndAlpha( 0 )
@@ -849,10 +875,10 @@ end
 		end
 
 		for i=1, 30*self.Scale do
-		local Fire = self.Emitter:Add(  "effects/fire_cloud1", self.Pos )
+		local Fire = self.Emitter:Add(  "effectsre_cloud1", self.Pos )
 		if (Fire) then
 		Fire:SetVelocity( self.DirVec * math.random( 100,400)*self.Scale + ((VectorRand():GetNormalized()*400)*self.Scale) )
-		Fire:SetDieTime( math.Rand( 0.5 , 2 )*self.Scale )
+		Fire:SetDieTime( math.Rand( 0.5 , 2 )self.Scale )
 		Fire:SetStartAlpha( 150 )
 		Fire:SetEndAlpha( 0 )
 		Fire:SetStartSize( (10*self.Scale) )
@@ -868,12 +894,12 @@ end
 		for i=0, 100*self.Scale do		// Cinders
 		local Cinders = self.Emitter:Add( "effects/yellowflare", self.Pos+self.DirVec )
 		if (Cinders) then
-		Cinders:SetVelocity ( (VectorRand():GetNormalized()*math.random( 400, 1000)*self.Scale) )
+		Cinders:SetVelocity ( (Vector):GetNormalized()*math.random( 400, 1000)*self.Scale) )
 		Cinders:SetDieTime( math.random( 0.5, 3) )
 		Cinders:SetStartAlpha( math.Rand(120, 150) )
 		Cinders:SetEndAlpha( 0 )
 		Cinders:SetStartSize( 5 )
-		Cinders:SetEndSize( 10 )
+Cinders:SetEndSize( 10 )
 		Cinders:SetRoll( math.Rand(0, 360) )
 		Cinders:SetRollDelta( math.Rand(-1, 1) )			
 		Cinders:SetAirResistance( 200 ) 			 			
@@ -887,8 +913,8 @@ end
 		local Whisp = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
 		if (Whisp) then
 		Whisp:SetVelocity(VectorRand():GetNormalized() * math.random( 200,800*self.Scale) )
-		Whisp:SetDieTime( math.Rand( 4 , 10 )*self.Scale/2  )
-		Whisp:SetStartAlpha( math.Rand( 35, 50 ) )
+		Whisp:SetDieTime( math.Rand( 4 , 10 )*f.Scale/2  )
+		Whisp:SetStartAlpha( math.Ran, 50 ) )
 		Whisp:SetEndAlpha( 0 )
 		Whisp:SetStartSize( 70*self.Scale )
 		Whisp:SetEndSize( 100*self.Scale )
@@ -904,7 +930,7 @@ end
 
  function EFFECT:Blood()
 		for i=0, 30*self.Scale do		// If you recieve over 50,000 joules of energy, you become red mist.
-		local Smoke = self.Emitter:Add( "particle/particle_composite", self.Pos )
+		local Smoke = self.Emitter:Add( "parte/particle_composite", self.Pos )
 		if (Smoke) then
 		Smoke:SetVelocity( VectorRand():GetNormalized()*math.random(100,600)*self.Scale )
 		Smoke:SetDieTime( math.Rand( 1 , 2 ) )
@@ -921,7 +947,7 @@ end
 		end
 
 		for i=1, 30*self.Scale do
-		local Fire = self.Emitter:Add(  "effects/fire_cloud1", self.Pos )
+		local Fire = self.Emitter:Add(  "effecfire_cloud1", self.Pos )
 		if (Fire) then
 		Fire:SetVelocity( self.DirVec * math.random( 100,400)*self.Scale + ((VectorRand():GetNormalized()*400)*self.Scale) )
 		Fire:SetDieTime( math.Rand( 0.5 , 2 )*self.Scale )
@@ -940,7 +966,7 @@ end
 		for i=0, 20*self.Scale do		// Add some finer details....
 		local Smoke = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
 		if (Smoke) then
-		Smoke:SetVelocity( VectorRand():GetNormalized()*math.random(200,600)*self.Scale )
+		Smoke:SetVelocity( VectorRad():GetNormalized()*math.random(200,600)*self.Scale )
 		Smoke:SetDieTime( math.Rand( 1 , 4 ) )
 		Smoke:SetStartAlpha( 120 )
 		Smoke:SetEndAlpha( 0 )
@@ -955,11 +981,11 @@ end
 		end
 
 		for i=1,5 do 				// Into the flash!
-		local Flash = self.Emitter:Add( "effects/muzzleflash"..math.random(1,4), self.Pos )
+		local Flash = self.Emitter:Adcts/muzzleflash"..math.random(1,4), self.Pos )
 		if (Flash) then
 		Flash:SetVelocity( self.DirVec*100 )
 		Flash:SetAirResistance( 200 )
-		Flash:SetDieTime( 0.15 )
+		Flash:SetDieTime( 0.15 
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
 		Flash:SetStartSize( self.Scale*300 )
@@ -993,7 +1019,7 @@ end
 
  function EFFECT:YellowBlood()
 		for i=0, 30*self.Scale do		// If you recieve over 50,000 joules of energy, you become red mist.
-		local Smoke = self.Emitter:Add( "particle/particle_composite", self.Pos )
+		local Smoke = self.Emitter:Add( "parte/particle_composite", self.Pos )
 		if (Smoke) then
 		Smoke:SetVelocity( VectorRand():GetNormalized()*math.random(100,600)*self.Scale )
 		Smoke:SetDieTime( math.Rand( 1 , 2 ) )
@@ -1010,7 +1036,7 @@ end
 		end
 
 		for i=1, 30*self.Scale do
-		local Fire = self.Emitter:Add(  "effects/fire_cloud1", self.Pos )
+		local Fire = self.Emitter:Add(  "effecfire_cloud1", self.Pos )
 		if (Fire) then
 		Fire:SetVelocity( self.DirVec * math.random( 100,400)*self.Scale + ((VectorRand():GetNormalized()*400)*self.Scale) )
 		Fire:SetDieTime( math.Rand( 0.5 , 2 )*self.Scale )
@@ -1029,7 +1055,7 @@ end
 		for i=0, 20*self.Scale do		// Add some finer details....
 		local Smoke = self.Emitter:Add( "particle/smokesprites_000"..math.random(1,9), self.Pos )
 		if (Smoke) then
-		Smoke:SetVelocity( VectorRand():GetNormalized()*math.random(200,600)*self.Scale )
+		Smoke:SetVelocity( VectorRad():GetNormalized()*math.random(200,600)*self.Scale )
 		Smoke:SetDieTime( math.Rand( 1 , 4 ) )
 		Smoke:SetStartAlpha( 120 )
 		Smoke:SetEndAlpha( 0 )
@@ -1044,15 +1070,15 @@ end
 		end
 
 		for i=1,5 do 				// Into the flash!
-		local Flash = self.Emitter:Add( "effects/muzzleflash"..math.random(1,4), self.Pos )
+		local Flash = self.Emitter:Adcts/muzzleflash"..math.random(1,4), self.Pos )
 		if (Flash) then
 		Flash:SetVelocity( self.DirVec*100 )
 		Flash:SetAirResistance( 200 )
-		Flash:SetDieTime( 0.15 )
+		Flash:SetDieTime( 0.15 
 		Flash:SetStartAlpha( 255 )
 		Flash:SetEndAlpha( 0 )
 		Flash:SetStartSize( self.Scale*300 )
-		Flash:SetEndSize( 0 )
+	Flash:SetEndSize( 0 )
 		Flash:SetRoll( math.Rand(180,480) )
 		Flash:SetRollDelta( math.Rand(-1,1) )
 		Flash:SetColor(255,255,255)	
@@ -1083,6 +1109,8 @@ end
 function EFFECT:Think( )
 return false
 end
-
-function EFFECT:Render()
+
+
+function EFFECT:Render()
+
 end

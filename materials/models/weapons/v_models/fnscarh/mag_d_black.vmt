@@ -8,7 +8,7 @@
      "$envmapfresnel" "0.8"
 
      "$phong" 1
-     
+
      "$phongexponenttexture" "models\weapons\v_models\fnscarh\bull\tan\mag_exponent.vtf"
      "$phongboost" 6
      "$phongfresnelranges" "[0.1 0.6 1.1]"

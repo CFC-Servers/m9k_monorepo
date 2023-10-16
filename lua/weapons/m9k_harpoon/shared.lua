@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Harpoon"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Harpoon"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 0				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 23			-- Position in the slot
 SWEP.DrawAmmo				= false		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 1			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "melee"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -42,13 +42,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "Harpoon"				
+SWEP.Primary.Ammo			= "Harpoon"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_thrown_harpoon")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 60		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 60		-- How much you 'zoom' in. Less is more!
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage		= 0	-- Base damage per bullet
@@ -99,7 +99,7 @@ end
 function SWEP:PrimaryAttack()
 	self:FireRocket()
 	self.Owner:SetAnimation( PLAYER_ATTACK1 )
-	self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))	
+	self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
 	self.Weapon:EmitSound(Sound("Weapon_Knife.Slash"))
 	self.Weapon:TakePrimaryAmmo(1)
 	self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
@@ -122,7 +122,7 @@ function SWEP:FireRocket()
 			phys:SetVelocity(self.Owner:GetAimVector() * 2000)
 	end
 		if SERVER and !self.Owner:IsNPC() then
-		local anglo = Angle(-10, -5, 0)		
+		local anglo = Angle(-10, -5, 0)
 		self.Owner:ViewPunch(anglo)
 		end
 
@@ -130,9 +130,9 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
 
-	if SERVER and self.Weapon != nil and ((gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool()) then 
-		timer.Simple(.1, function() 
-			if SERVER then 
+	if SERVER and self.Weapon != nil and ((gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool()) then
+		timer.Simple(.1, function()
+			if SERVER then
 				if not IsValid(self) then return end
 				if self.Owner == nil then return end
 				self.Owner:StripWeapon(self.Gun)
@@ -140,7 +140,7 @@ function SWEP:CheckWeaponsAndAmmo()
 		end)
 	return end
 
-	if SERVER and self.Weapon != nil then 
+	if SERVER and self.Weapon != nil then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
 			timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
 				if self.Owner == nil then return end
@@ -154,24 +154,24 @@ end
 
 function SWEP:Reload()
 	if not IsValid(self) then return end if not IsValid(self.Owner) then return end
-	
+
 	if self.Owner:IsNPC() then
 		self.Weapon:DefaultReload(ACT_VM_RELOAD)
 	return end
-	
+
 	if self.Owner:KeyDown(IN_USE) then return end
-		self.Weapon:DefaultReload(ACT_VM_DRAW) 
-	
+		self.Weapon:DefaultReload(ACT_VM_DRAW)
+
 	if !self.Owner:IsNPC() then
 		if self.Owner:GetViewModel() == nil then self.ResetSights = CurTime() + 3 else
-		self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() 
+		self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 		end
 	end
 end
 
 function SWEP:SecondaryAttack()
 return false
-end	
+end
 
 function SWEP:Think()
 end
@@ -183,7 +183,7 @@ if (gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBo
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

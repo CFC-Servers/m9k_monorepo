@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "USAS"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "USAS"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 29			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "ar2"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -45,7 +45,7 @@ SWEP.Primary.Ammo			= "buckshot"			-- pistol, 357, smg1, ar2, buckshot, slam, Sn
 
 SWEP.SelectiveFire		= true
 
-SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -74,7 +74,7 @@ SWEP.WElements = {
 function SWEP:Reload()
 
 	if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and (self.Owner:GetAmmoCount("buckshot") > 0 ) and not (self.Weapon:GetNWBool("Reloading")) then
-		self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) 
+		self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START)
 		self.Weapon:SetNWBool("Reloading", true)
 		if SERVER and !self.Owner:IsNPC() then
 			self.ResetSights = CurTime() + 1.65
@@ -82,7 +82,7 @@ function SWEP:Reload()
 			self:SetIronsights(false)
 		end
 		timer.Simple(.65, function() if not IsValid(self) then return end if not IsValid(self.Owner) then return end if not IsValid(self.Weapon) then return end
-			if IsValid(self.Owner) and self.Weapon:GetClass() == self.Gun then 
+			if IsValid(self.Owner) and self.Weapon:GetClass() == self.Gun then
 				self.Weapon:EmitSound(Sound("Weapon_usas.draw"))
 			end
 		end)
@@ -93,13 +93,13 @@ function SWEP:Reload()
 end
 
 function SWEP:ReloadFinish()
-if not IsValid(self) then return end 
+if not IsValid(self) then return end
 	if IsValid(self.Owner) and self.Weapon != nil then
 		if self.Owner:Alive() and self.Weapon:GetClass() == self.Gun then
 			self.Weapon:DefaultReload(ACT_SHOTGUN_RELOAD_FINISH)
-			
+
 			if !self.Owner:IsNPC() then
-				self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() 
+				self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 			end
 			if SERVER and self.Weapon != nil then
 				if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
@@ -108,11 +108,11 @@ if not IsValid(self) then return end
 			end
 
 		local waitdammit = (self.Owner:GetViewModel():SequenceDuration())
-		timer.Simple(waitdammit + .1, 
+		timer.Simple(waitdammit + .1,
 		function() if not IsValid(self) then return end if not IsValid(self.Owner) then return end if not IsValid(self.Weapon) then return end
 		if self.Weapon == nil then return end
 		self.Weapon:SetNWBool("Reloading", false)
-		if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then 
+		if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
 			if CLIENT then return end
 			if self.Scoped == false then
 				self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -121,14 +121,14 @@ if not IsValid(self) then return end
 				self:SetIronsights(true, self.Owner)
 				self.DrawCrosshair = false
 			else return end
-		elseif self.Owner:KeyDown(IN_SPEED) and self.Weapon:GetClass() == self.Gun then 
+		elseif self.Owner:KeyDown(IN_SPEED) and self.Weapon:GetClass() == self.Gun then
 			self.Weapon:SetNextPrimaryFire(CurTime()+0.3)			-- Make it so you can't shoot for another quarter second
 			self.IronSightsPos = self.RunSightsPos					-- Hold it down
 			self.IronSightsAng = self.RunSightsAng					-- Hold it down
 			self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 			self.Owner:SetFOV( 0, 0.3 )
 		else return end
-		end) 
+		end)
 			end
 		end
 	end
@@ -143,7 +143,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

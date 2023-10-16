@@ -6,7 +6,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.DrawCrosshair			= true	
+SWEP.DrawCrosshair			= true
 SWEP.ViewModelFOV			= 65
 SWEP.ViewModelFlip			= true
 
@@ -37,22 +37,22 @@ SWEP.Primary.Ammo			= "none"					-- What kind of ammo
 SWEP.Secondary.Ammo			= ""
 
 SWEP.Secondary.ScopeZoom			= 0
-SWEP.Secondary.UseACOG			= false	
-SWEP.Secondary.UseMilDot			= false		
-SWEP.Secondary.UseSVD			= false	
-SWEP.Secondary.UseParabolic		= false	
+SWEP.Secondary.UseACOG			= false
+SWEP.Secondary.UseMilDot			= false
+SWEP.Secondary.UseSVD			= false
+SWEP.Secondary.UseParabolic		= false
 SWEP.Secondary.UseElcan			= false
-SWEP.Secondary.UseGreenDuplex		= false	
+SWEP.Secondary.UseGreenDuplex		= false
 
 SWEP.Scoped				= true
 
-SWEP.BoltAction		= false	
+SWEP.BoltAction		= false
 
 SWEP.Penetration			= true
-SWEP.Ricochet			= true	
+SWEP.Ricochet			= true
 SWEP.MaxRicochet			= 10
 
-SWEP.Tracer				= 0	
+SWEP.Tracer				= 0
 
 SWEP.data 				= {}					-- The starting firemode
 SWEP.data.ironsights			= 1
@@ -65,11 +65,11 @@ function SWEP:Initialize()
 	self.Weapon:SetNWBool("Reloading", false)
 	util.PrecacheSound(self.Primary.Sound)
 	if CLIENT then
-	
+
 		-- We need to get these so we can scale everything to the player's current resolution.
 		local iScreenWidth = surface.ScreenWidth()
 		local iScreenHeight = surface.ScreenHeight()
-		
+
 		-- The following code is only slightly riped off from Night Eagle
 		-- These tables are used to draw things like scopes and crosshairs to the HUD.
 		-- so DONT GET RID OF IT!
@@ -120,13 +120,13 @@ function SWEP:Initialize()
 
 		self.FilterTable = {}
 		self.FilterTable.wdivider = 3.125
-		self.FilterTable.hdivider = 1.7579/1.35	
+		self.FilterTable.hdivider = 1.7579/1.35
 		self.FilterTable.x = (iScreenWidth/2)-((iScreenHeight/self.FilterTable.hdivider)/2)
 		self.FilterTable.y = (iScreenHeight/2)-((iScreenHeight/self.FilterTable.hdivider)/2)
 		self.FilterTable.w = iScreenHeight/self.FilterTable.hdivider
 		self.FilterTable.h = iScreenHeight/self.FilterTable.hdivider
 
-		
+
 	end
 	if SERVER then
 		self:SetNPCMinBurst(3)
@@ -135,9 +135,9 @@ function SWEP:Initialize()
 		--self:SetCurrentWeaponProficiency( WEAPON_PROFICIENCY_VERY_GOOD )
 	end
 	self:SetHoldType(self.HoldType)
-	
+
 	if CLIENT then
-	
+
 		-- // Create a new table for every weapon instance
 		self.VElements = table.FullCopy( self.VElements )
 		self.WElements = table.FullCopy( self.WElements )
@@ -145,7 +145,7 @@ function SWEP:Initialize()
 
 		self:CreateModels(self.VElements) -- create viewmodels
 		self:CreateModels(self.WElements) -- create worldmodels
-		
+
 		-- // init view model bone build function
 		if IsValid(self.Owner) and self.Owner:IsPlayer() then
 		if self.Owner:Alive() then
@@ -157,15 +157,15 @@ function SWEP:Initialize()
 					vm:SetColor(Color(255,255,255,255))
 				else
 					-- // however for some reason the view model resets to render mode 0 every frame so we just apply a debug material to prevent it from drawing
-					vm:SetMaterial("Debug/hsv")			
+					vm:SetMaterial("Debug/hsv")
 				end
 			end
-			
+
 		end
 		end
-		
+
 	end
-	
+
 	if CLIENT then
 		local oldpath = "vgui/hud/name" -- the path goes here
 		local newpath = string.gsub(oldpath, "name", self.Gun)
@@ -177,7 +177,7 @@ end
 function SWEP:BoltBack()
 	if self.Weapon:Clip1() > 0 or self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) > 0 then
 		timer.Simple(.25, function()
-		if SERVER and self.Weapon != nil then 
+		if SERVER and self.Weapon != nil then
 			self.Weapon:SetNWBool("Reloading", true)
 			if self.Weapon:GetClass() == self.Gun then
 				if(self:GetIronsights() == true) then
@@ -186,29 +186,29 @@ function SWEP:BoltBack()
 					self.Owner:DrawViewModel(true)
 				end
 				local boltactiontime = (self.Owner:GetViewModel():SequenceDuration())
-				timer.Simple(boltactiontime + .1, 
+				timer.Simple(boltactiontime + .1,
 					function() if SERVER and self.Weapon != nil then
 						self.Weapon:SetNWBool("Reloading", false)
-						if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then 
-							self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )                      		
+						if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
+							self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
 							self.IronSightsPos = self.SightsPos					-- Bring it up
 							self.IronSightsAng = self.SightsAng					-- Bring it up
 							self.DrawCrosshair = false
 							self:SetIronsights(true, self.Owner)
 							self.Owner:DrawViewModel(false)
 						end
-					end 
+					end
 				end)
 			end
 		else return end end )
-	end	
+	end
 end
 
 function SWEP:Reload()
 
 	if self.Owner:KeyDown(IN_USE) then return end
-	
-	self.Weapon:DefaultReload(ACT_VM_RELOAD) 
+
+	self.Weapon:DefaultReload(ACT_VM_RELOAD)
 	if !self.Owner:IsNPC() then
 	self.Idle = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
 
@@ -224,19 +224,19 @@ function SWEP:Reload()
 		if CLIENT then return end
 		self.Owner:DrawViewModel(true)
 	end
-	
+
 	local waitdammit
-	if self.Owner:GetViewModel() == nil then 
+	if self.Owner:GetViewModel() == nil then
 		waitdammit = 3
 	else
 		waitdammit = (self.Owner:GetViewModel():SequenceDuration())
 	end
 	timer.Simple(waitdammit + .1, function()
-	if self.Weapon != nil then 
+	if self.Weapon != nil then
 	self.Weapon:SetNWBool("Reloading", false)
-	if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then 
+	if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
 		if CLIENT then return end
-		self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )                      		
+		self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
 		self.IronSightsPos = self.SightsPos					-- Bring it up
 		self.IronSightsAng = self.SightsAng					-- Bring it up
 		self.DrawCrosshair = false
@@ -255,11 +255,11 @@ function SWEP:Reload()
 end
 
 function SWEP:PostReloadScopeCheck()
-	if self.Weapon != nil then 
+	if self.Weapon != nil then
 	self.Weapon:SetNWBool("Reloading", false)
-	if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then 
+	if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
 		if CLIENT then return end
-		self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )                      		
+		self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
 		self.IronSightsPos = self.SightsPos					-- Bring it up
 		self.IronSightsAng = self.SightsAng					-- Bring it up
 		self.DrawCrosshair = false
@@ -285,15 +285,15 @@ function SWEP:IronSight()
 
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then return end
-	
+
 	if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self.Weapon:GetNWBool("Reloading")) then
 		if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_RELOAD) then
 			self:SelectFireMode()
 		end
 	end
-	
+
 	if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_ATTACK2) then return end
-	
+
 	if self.Owner:KeyPressed(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you hold E and you can shoot then
 	if self.Weapon:GetNextPrimaryFire() <= (CurTime()+0.3) then
 		self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
@@ -302,14 +302,14 @@ function SWEP:IronSight()
 	self.IronSightsAng = self.RunSightsAng					-- Hold it down
 	self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.2 )
-	end	
-							
+	end
+
 	if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you hold E or run then
 		if self.Weapon:GetNextPrimaryFire() <= (CurTime()+0.3) then
 			self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
 		end								-- Lower the gun
 	end
-	
+
 	if self.Owner:KeyReleased(IN_USE) || self.Owner:KeyReleased (IN_SPEED) then	-- If you release E then
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight true
 	self.DrawCrosshair = self.XHair
@@ -321,10 +321,10 @@ function SWEP:IronSight()
 		self.DrawCrosshair = false
 		if CLIENT then return end
 		self.Owner:DrawViewModel(true)
-	end	
+	end
 
 		if self.Owner:KeyPressed(IN_ATTACK2) and !self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then
-			self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )                      		
+			self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
 			self.IronSightsPos = self.SightsPos					-- Bring it up
 			self.IronSightsAng = self.SightsAng					-- Bring it up
 			self.DrawCrosshair = false
@@ -407,7 +407,7 @@ function SWEP:DrawHUD()
 			surface.SetDrawColor(0, 0, 0, 255)
 			surface.SetTexture(surface.GetTextureID("scope/gdcw_elcanreticle"))
 			surface.DrawTexturedRect(self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h)
-			
+
 			-- Draw the ELCAN SCOPE
 			surface.SetDrawColor(0, 0, 0, 255)
 			surface.SetTexture(surface.GetTextureID("scope/gdcw_elcansight"))
@@ -425,7 +425,7 @@ function SWEP:DrawHUD()
 			surface.SetTexture(surface.GetTextureID("scope/gdcw_closedsight"))
 			surface.DrawTexturedRect(self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h)
 			end
-			
+
 			if self.Secondary.UseAimpoint then
 			-- Draw the RETICLE
 			surface.SetDrawColor(0, 0, 0, 255)
@@ -436,11 +436,11 @@ function SWEP:DrawHUD()
 			surface.SetDrawColor(0, 0, 0, 255)
 			surface.SetTexture(surface.GetTextureID("scope/gdcw_closedsight"))
 			surface.DrawTexturedRect(self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h)
-			
+
 			end
-			
+
 			if self.Secondary.UseMatador then
-			
+
 			-- Draw the SCOPE
 			surface.SetDrawColor(0, 0, 0, 255)
 			surface.SetTexture(surface.GetTextureID("scope/rocketscope"))
@@ -452,10 +452,10 @@ function SWEP:DrawHUD()
 end
 
 function SWEP:AdjustMouseSensitivity()
-     
+
 	if self.Owner:KeyDown(IN_ATTACK2) then
         return (1/(self.Secondary.ScopeZoom/2))
-    	else 
+    	else
     	return 1
      	end
 end

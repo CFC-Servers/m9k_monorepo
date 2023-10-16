@@ -9,7 +9,7 @@
      "$envmaptint" "[1.00 1.25 1.59]"
 
      "$phong" 1
-     "$phongtint"                   "[0.7 0.9 1]" 
+     "$phongtint"                   "[0.7 0.9 1]"
      "$phongboost" 15
      "$phongfresnelranges" "[0.5 0.7 1.5]"
      "$PhongExponent" 50

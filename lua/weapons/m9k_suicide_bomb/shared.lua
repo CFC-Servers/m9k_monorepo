@@ -10,7 +10,7 @@ SWEP.Purpose				= ("Right click to select delay".."\n".."Left click to plant.")
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "Timed C4"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Timed C4"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 27			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "slam"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 70
@@ -42,15 +42,15 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "C4Explosive"				
+SWEP.Primary.Ammo			= "C4Explosive"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_mad_c4")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
-SWEP.Timer				= 0	
+SWEP.Timer				= 0
 
 SWEP.Primary.NumShots	= 0		-- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage		= 0	-- Base damage per bullet
@@ -78,7 +78,7 @@ function SWEP:PrimaryAttack()
 	tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
 	tr.filter = {self.Owner}
 	local trace = util.TraceLine(tr)
-	
+
 	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 	timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
 	if SERVER and self.Weapon != nil then if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
@@ -96,9 +96,9 @@ function SWEP:PrimaryAttack()
 			self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
 			self.Weapon:SetNextSecondaryFire(CurTime() + 0.3)
 			self.Owner:SetAnimation(PLAYER_ATTACK1)
-	
+
 			self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
-	
+
 			local tr = {}
 			tr.start = self.Owner:GetShootPos()
 			tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
@@ -108,7 +108,7 @@ function SWEP:PrimaryAttack()
 			self:TakePrimaryAmmo(1)
 
 			if (CLIENT) then return end
-	
+
 			C4 = ents.Create(self.Primary.Round)
 			C4:SetPos(trace.HitPos + trace.HitNormal)
 			trace.HitNormal.z = -trace.HitNormal.z
@@ -116,7 +116,7 @@ function SWEP:PrimaryAttack()
 			C4.Owner = self.Owner
 			C4.Timer = self.Timer
 			C4:Spawn()
-			
+
 			local boxes
 			parentme = {}
 			parentme[1] = "m9k_ammo_40mm"
@@ -135,7 +135,7 @@ function SWEP:PrimaryAttack()
 			parentme[14] = "m9k_ammo_smg"
 			parentme[15] = "m9k_ammo_sniper_rounds"
 			parentme[16] = "m9k_ammo_winchester"
-			
+
 			if trace.Entity != nil and trace.Entity:IsValid() then
 				for k, v in pairs (parentme) do
 					if trace.Entity:GetClass() == v then
@@ -143,7 +143,7 @@ function SWEP:PrimaryAttack()
 					end
 				end
 			end
-			
+
 			if trace.Entity and trace.Entity:IsValid() then
 				if boxes and trace.Entity:GetPhysicsObject():IsValid() then
 				C4:SetParent(trace.Entity)
@@ -154,7 +154,7 @@ function SWEP:PrimaryAttack()
 			else
 				C4:SetMoveType(MOVETYPE_NONE)
 			end
-			
+
 			if not trace.Hit then
 				C4:SetMoveType(MOVETYPE_VPHYSICS)
 			end
@@ -162,7 +162,7 @@ function SWEP:PrimaryAttack()
 			end
 		end
 	end end end)
-	local wait = self.Owner:GetViewModel():SequenceDuration() + .75 
+	local wait = self.Owner:GetViewModel():SequenceDuration() + .75
 	self:CheckWeaponsAndAmmo(wait)
 end
 
@@ -212,28 +212,28 @@ function SWEP:SecondaryAttack()
 		end
 		self.Timer = 15
 		self.Owner:EmitSound("C4.PlantSound")
-		
+
 	elseif self.Timer == 15 then
 		if (SERVER) then
 			self.Owner:PrintMessage(HUD_PRINTTALK, "20 Seconds.")
 		end
 		self.Timer = 20
 		self.Owner:EmitSound("C4.PlantSound")
-		
+
 	elseif self.Timer == 20 then
 		if (SERVER) then
 			self.Owner:PrintMessage(HUD_PRINTTALK, "WARNING! TIMER REDUCED TO ZERO!")
 		end
 		self.Timer = 0
 		self.Owner:EmitSound("C4.PlantSound")
-		
+
 	elseif self.Timer == 0 then
 		if (SERVER) then
 			self.Owner:PrintMessage(HUD_PRINTTALK, "5 Seconds.")
 		end
 		self.Timer = 5
 		self.Owner:EmitSound("C4.PlantSound")
-			
+
 	end
 end
 
@@ -247,7 +247,7 @@ end
 
 function SWEP:CheckWeaponsAndAmmo(wait)
 	timer.Simple(wait, function()
-	if self.Weapon != nil then if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun then 
+	if self.Weapon != nil then if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
 		if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
 			timer.Simple(.01, function() if SERVER then
 				if self.Owner == nil then return end
@@ -264,7 +264,7 @@ end
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

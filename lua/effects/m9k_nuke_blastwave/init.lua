@@ -1,14 +1,14 @@
 
 
 function EFFECT:Init( data )
-	
+
 	self.Position = data:GetOrigin()
 	self.Yield = data:GetMagnitude()
 	self.YieldSlow = self.Yield^0.75
 	self.YieldSlowest = self.Yield^0.5
-	
+
 	self.TimeLeft = CurTime() + self.Yield*6
-	
+
 	self.SplodeDist = 2000
 	self.BlastSpeed = 4000
 	self.WaveResolution = 0.01
@@ -23,17 +23,17 @@ end
 -- Returning false makes the entity die
 function EFFECT:Think( )
 
-	if self.TimeLeft > CurTime() then 
+	if self.TimeLeft > CurTime() then
 
 		if self.lastThink < CurTime() then
 			self.lastThink = CurTime() + self.WaveResolution
-			
+
 			self.SplodeDist = self.SplodeDist + self.BlastSpeed*(self.WaveResolution + FrameTime())
 			local Intensity = -8.2e-5*self.SplodeDist + 2.5
-		
+
 			-- big dust wave
 			for i=1, math.ceil(70/Intensity) do
-			
+
 				local vecang = Vector(math.Rand(-32,32),math.Rand(-32,32),0):GetNormalized()
 				local startpos = self.Position + vecang*math.Rand(0.97*self.SplodeDist,1.03*self.SplodeDist)
 				startpos.z = startpos.z - self.YieldSlowest*650
@@ -50,13 +50,13 @@ function EFFECT:Think( )
 				--particle:VelocityDecay( true )
 				//thanks, asshole
 			end
-		
+
 		end
-		
+
 		return true
 	else
 		self.Emitter:Finish()
-		return false	
+		return false
 	end
 end
 

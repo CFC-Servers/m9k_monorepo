@@ -5,18 +5,18 @@ ENT.Contact		= "Josephcadieux@hotmail.com"
 ENT.Purpose		= ""
 ENT.Instructions	= ""
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 /*---------------------------------------------------------
    Name: ENT:SetupDataTables()
    Desc: Setup the data tables.
 ---------------------------------------------------------*/
-function ENT:SetupDataTables()  
+function ENT:SetupDataTables()
 
 	self:DTVar("Int", 0, "Timer")
-end 
+end
 
 /*---------------------------------------------------------
    Name: ENT:Initialize()
@@ -66,7 +66,7 @@ AddCSLuaFile("shared.lua")
 function ENT:Initialize()
 
 	self.Owner = self.Entity.Owner
-	
+
 	if not IsValid(self.Owner) then
 		self.Entity:Remove()
 		return
@@ -78,7 +78,7 @@ function ENT:Initialize()
 	self.Entity:DrawShadow(false)
 
 	self.Entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-	
+
 	local phys = self.Entity:GetPhysicsObject()
 
 	if phys:IsValid() then
@@ -149,19 +149,19 @@ end
 
 function ENT:VectorGet()
 	local startpos = self.Entity:GetPos()
-	
+
 	local downtrace = {}
 	downtrace.start = startpos
 	downtrace.endpos = startpos + self.Entity:GetUp()*-5
 	downtrace.filter = self.Entity
-	tracedown = util.TraceLine(downtrace) 
-	
+	tracedown = util.TraceLine(downtrace)
+
 	if (tracedown.Hit) then
 		return (tracedown.HitNormal)
 	else
 		return(Vector(0,0,1))
 	end
-	
+
 end
 
 end
@@ -187,10 +187,10 @@ function ENT:Draw()
 	local m, s = self:FormatTime(self.C4CountDown)
 
 	self.Text = string.format("%02d", m) .. ":" .. string.format("%02d", s)
-	
+
 	cam.Start3D2D(TargetPos, FixAngles, .07)
 		draw.SimpleText(self.Text, "CloseCaption_Normal", 31, -22, Color(165, 0, 0, 255), 1, 1)
-	cam.End3D2D() 
+	cam.End3D2D()
 end
 
 /*---------------------------------------------------------

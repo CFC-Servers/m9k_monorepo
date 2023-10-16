@@ -8,7 +8,7 @@ SWEP.Author				= ""
 SWEP.Contact				= ""
 SWEP.Purpose				= ""
 SWEP.Instructions				= ("Left click to slash".."\n".."Hold right mouse to put up guard.")
-SWEP.PrintName				= "Damascus Sword"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Damascus Sword"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 0				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 21			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -19,7 +19,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "melee2"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 
 SWEP.ViewModelFOV			= 70
 SWEP.ViewModelFlip			= false
@@ -41,7 +41,7 @@ SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= ""			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -128,14 +128,14 @@ end
 --[[ function GuardUp(victim, info)
 
 	if !IsValid(victim) then return end
-	if not IsValid(info) then return end 
-	if not IsValid(info:GetInflictor()) then return end 
-	
+	if not IsValid(info) then return end
+	if not IsValid(info:GetInflictor()) then return end
+
 	if info:GetInflictor():GetClass() != nil then
 		if info:GetInflictor():GetClass() == "m9k_damascus" then
 			if victim:IsPlayer() and victim:Alive() then
 				if victim:GetNWBool("GuardIsUp", false) then
-					victim:SetHealth(victim:Health() + info:GetDamage()) 
+					victim:SetHealth(victim:Health() + info:GetDamage())
 					victim:EmitSound(Sound("weapons/blades/clash.mp3"))
 				else
 					victim:EmitSound(Sound("weapons/blades/swordchop.mp3"))
@@ -145,7 +145,7 @@ end
 			end
 		end
 	end
-	
+
 end
 hook.Add("EntityTakeDamage", "GuardUp", GuardUp ) ]]
 
@@ -153,7 +153,7 @@ hook.Add("EntityTakeDamage", "GuardUp", GuardUp ) ]]
 --it shouldnt change anything.
 
 function SWEP:Holster()
-	
+
 	if CLIENT and IsValid(self.Owner) and not self.Owner:IsNPC() then
 		local vm = self.Owner:GetViewModel()
 		if IsValid(vm) then
@@ -170,26 +170,26 @@ function SWEP:IronSight()
 		if self.Owner:GetNWBool("GuardIsUp") == nil then
 			self.Owner:SetNWBool("GuardIsUp", false)
 		end
-	
+
 		if self.ResetSights and CurTime() >= self.ResetSights then
 			self.ResetSights = nil
 			self:SendWeaponAnim(ACT_VM_IDLE)
-		end 
+		end
 	end
-	
+
 --copy this...
 
 	if self.Owner:KeyPressed(IN_SPEED) then
 		self.Owner:SetNWBool("GuardIsUp", false)
 	end
-	
+
 	if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you are running
 	self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
 	self.IronSightsPos = self.RunSightsPos					-- Hold it down
 	self.IronSightsAng = self.RunSightsAng					-- Hold it down
 	self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
-	end								
+	end
 
 	if self.Owner:KeyReleased (IN_SPEED) then	-- If you release run then
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight true
@@ -200,7 +200,7 @@ function SWEP:IronSight()
 	if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
 	-- If the key E (Use Key) is not pressed, then
 
-		if self.Owner:KeyPressed(IN_ATTACK2) and not (self.Weapon:GetNWBool("Reloading")) then 
+		if self.Owner:KeyPressed(IN_ATTACK2) and not (self.Weapon:GetNWBool("Reloading")) then
 			self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
 			self.IronSightsPos = self.SightsPos					-- Bring it up
 			self.IronSightsAng = self.SightsAng					-- Bring it up
@@ -219,7 +219,7 @@ function SWEP:IronSight()
 		self.DrawCrosshair = true
 		self:SetIronsights(false, self.Owner)
 		-- Set the ironsight false
-		
+
 		self.Owner:SetNWBool("GuardIsUp", false)
 
 		if CLIENT then return end
@@ -235,7 +235,7 @@ function SWEP:IronSight()
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

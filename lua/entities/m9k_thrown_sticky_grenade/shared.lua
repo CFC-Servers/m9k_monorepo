@@ -5,8 +5,8 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions			= ""
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 if SERVER then
@@ -22,7 +22,7 @@ function ENT:Initialize()
 	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
 	self.Entity:SetSolid( SOLID_VPHYSICS )
 	self.Entity:DrawShadow( false )
-	
+
 	local phys = self.Entity:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:Wake()
@@ -34,19 +34,19 @@ function ENT:Initialize()
 end
 
  function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
-	
+
 	if self.timeleft < CurTime() then
-		self:Explosion()	
+		self:Explosion()
 	end
-	
-	if (self.Entity.HitWeld) then  
-		self.HitWeld = false  
-		constraint.Weld(self.Entity.HitEnt, self.Entity, 0, 0, 0, true)  
-	end 
-	
+
+	if (self.Entity.HitWeld) then
+		self.HitWeld = false
+		constraint.Weld(self.Entity.HitEnt, self.Entity, 0, 0, 0, true)
+	end
+
 	self.Entity:NextThink( CurTime() )
 	return true
 end
@@ -71,7 +71,7 @@ function ENT:PhysicsCollide(data, phys)
 	parentme[14] = "m9k_ammo_smg"
 	parentme[15] = "m9k_ammo_sniper_rounds"
 	parentme[16] = "m9k_ammo_winchester"
-	
+
 	if data.HitEntity != nil and data.HitEntity:IsValid() then
 		for k, v in pairs (parentme) do
 			if data.HitEntity:GetClass() == v then
@@ -88,7 +88,7 @@ function ENT:PhysicsCollide(data, phys)
 
 	phys:EnableMotion(false)
 	phys:Sleep()
-	
+
 	if data.HitEntity:IsValid() then
 		if data.HitEntity:IsNPC() or data.HitEntity:IsPlayer() then
 			self.Entity:SetParent(data.HitEntity)
@@ -100,7 +100,7 @@ function ENT:PhysicsCollide(data, phys)
 		phys:EnableMotion(true)
 		phys:Wake()
 	end
-	
+
 end
 
 
@@ -108,7 +108,7 @@ function ENT:Explosion()
 
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
-	
+
 	if not IsValid(self.Owner) then
 		self.Entity:Remove()
 		return
@@ -128,7 +128,7 @@ function ENT:Explosion()
 		effectdata:SetOrigin(self.Entity:GetPos())
 	util.Effect("ThumperDust", effectdata)
 	util.Effect("Explosion", effectdata)
-	
+
 	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 220, 220 )
 	util.ScreenShake(self.Entity:GetPos(), 1000, 255, 2.5, 1200)
 

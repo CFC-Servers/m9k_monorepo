@@ -6,8 +6,8 @@ ENT.Purpose			= ""
 ENT.Instructions			= ""
 
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 if SERVER then
@@ -21,9 +21,9 @@ function ENT:Initialize()
 	self.Entity:PhysicsInit( SOLID_VPHYSICS )
 	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
 	self.Entity:SetSolid( SOLID_VPHYSICS )
-	
+
 	self.Entity:DrawShadow( false )
-		
+
 	local phys = self.Entity:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:SetMass(5)
@@ -34,7 +34,7 @@ function ENT:Initialize()
 end
 
  function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
 
@@ -46,11 +46,11 @@ end
 PhysicsCollide
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data,phys)
-	
+
 	self.Entity:EmitSound(Sound("GlassBottle.Break"))
-	
+
 	self:QueueExplosion()
-	
+
 end
 
 function ENT:QueueExplosion()
@@ -60,16 +60,16 @@ function ENT:QueueExplosion()
 		self.Entity:Remove()
 		return
 	end
-	
+
 	local pos = self:LocalToWorld(self:OBBCenter())
 	ParticleEffect("nitro_main_m9k", pos, Angle(0,0,0), nil)
-	
+
 	local vaporize = ents.Create("m9k_nitro_vapor")
 	vaporize:SetPos(pos)
 	vaporize:SetOwner(self.Owner)
 	vaporize.Owner = self.Owner
 	vaporize:Spawn()
-	
+
 	self.Entity:Remove()
 
 end
@@ -88,8 +88,8 @@ end
 
 if CLIENT then
 
- function ENT:Draw()             
- self.Entity:DrawModel()       // Draw the model.   
+ function ENT:Draw()
+ self.Entity:DrawModel()       // Draw the model.
  end
 
 end

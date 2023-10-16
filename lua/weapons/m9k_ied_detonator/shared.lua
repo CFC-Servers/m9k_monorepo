@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ("Fire to drop ied.".."\n" .."Alt fire to detonate")
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "IED Detonator"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "IED Detonator"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 25			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 2			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "fist"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
 SWEP.ViewModelFOV			= 75
@@ -41,13 +41,13 @@ SWEP.Primary.KickUp				= 0		-- Maximum up recoil (rise)
 SWEP.Primary.KickDown			= 0		-- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal		= 0		-- Maximum up recoil (stock)
 SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo			= "Improvised_Explosive"				
+SWEP.Primary.Ammo			= "Improvised_Explosive"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
 SWEP.Primary.Round 			= ("m9k_improvised_explosive")	--NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 SWEP.Secondary.ClipSize			= 1					// Size of a clip
 SWEP.Secondary.DefaultClip		= 1					// Default number of bullets in a clip
 SWEP.Secondary.Automatic		= false					// Automatic/Semi Auto
@@ -118,7 +118,7 @@ end
 function SWEP:PrimaryAttack()
 	if self:CanPrimaryAttack() then
 		self.Weapon:TakePrimaryAmmo(1)
-		self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))	
+		self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
 		aim = self.Owner:GetAimVector()
 		side = aim:Cross(Vector(0,0,1))
 		up = side:Cross(aim)
@@ -142,31 +142,31 @@ function SWEP:PrimaryAttack()
 				self:Reload()
 			end
 		end end)
-	else return 
+	else return
 	end
-	
+
 end
 
 function SWEP:SecondaryAttack()
-	for k, v in pairs ( ents.FindByClass( "m9k_improvised_explosive") ) do	
+	for k, v in pairs ( ents.FindByClass( "m9k_improvised_explosive") ) do
 		if v:GetNWEntity("Owner") == self.Owner then
-			v.Boom=true 
+			v.Boom=true
 			self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
 		end
-	end		
+	end
 	timer.Simple(.01, function()
 	if SERVER and self.Weapon != nil then
 		if IsValid(self.Owner) and IsValid(self.Weapon) then
 			if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() then
-				if self.Weapon:Clip1() == 0 
+				if self.Weapon:Clip1() == 0
 				and self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0
 				and (GetConVar("M9KWeaponStrip"):GetBool())	then
 					self.Owner:StripWeapon(self.Gun)
 				end
 			end
 		end
-	end end)	
-end	
+	end end)
+end
 
 function SWEP:Think()
 end
@@ -181,7 +181,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

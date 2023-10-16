@@ -8,7 +8,7 @@ SWEP.Author				= ""
 SWEP.Contact				= ""
 SWEP.Purpose				= ""
 SWEP.Instructions				= ""
-SWEP.PrintName				= "Machete"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "Machete"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 0				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 25			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -19,7 +19,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "melee"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 60
@@ -41,7 +41,7 @@ SWEP.Primary.Automatic			= false		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= ""			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 55		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -82,12 +82,12 @@ function SWEP:PrimaryAttack()
 	if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
 		self.Weapon:EmitSound(self.Primary.Sound)
 		if SERVER then
-			if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then 
+			if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
 				vm:SetSequence(vm:LookupSequence("stab"))
 				timer.Create("hack-n-slash", .23, 1, function() if not IsValid(self) then return end
 				if IsValid(self.Owner) and
-				IsValid(self.Weapon) then 
-					if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then 
+				IsValid(self.Weapon) then
+					if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 						self:HackNSlash() end end end)
 				self.Owner:SetAnimation( PLAYER_ATTACK1 )
 				self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
@@ -110,7 +110,7 @@ function SWEP:HackNSlash()
 	slash.mins = Vector(-8, -10, 0)
 	slash.maxs = Vector(8, 10, 5)
 	local slashtrace = util.TraceHull(slash)
-	
+
 	if IsValid(self.Owner) and IsValid(self.Weapon) then
 		if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
 			local slash = {}
@@ -146,7 +146,7 @@ end
 
 function SWEP:SecondaryAttack()
 	if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
-	
+
 		self.Weapon:EmitSound(Sound("Weapon_Knife.Slash"))
 
 		if (SERVER) then
@@ -162,8 +162,8 @@ function SWEP:SecondaryAttack()
 			phys:SetVelocity(self.Owner:GetAimVector() * 1500)
 			phys:AddAngleVelocity(Vector(0, 500, 0))
 			self.Owner:StripWeapon(self.Gun)
-		end		
-	end	
+		end
+	end
 end
 
 function SWEP:IronSight()
@@ -171,44 +171,44 @@ function SWEP:IronSight()
 	if !self.Owner:IsNPC() then
 	if self.ResetSights and CurTime() >= self.ResetSights then
 	self.ResetSights = nil
-	
+
 	if self.Silenced then
 		self:SendWeaponAnim(ACT_VM_IDLE_SILENCED)
 	else
 		self:SendWeaponAnim(ACT_VM_IDLE)
 	end
 	end end
-	
+
 	if self.CanBeSilenced and self.NextSilence < CurTime() then
 		if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_ATTACK2) then
 			self:Silencer()
 		end
 	end
-	
+
 	if self.SelectiveFire and self.NextFireSelect < CurTime() then
 		if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_RELOAD) then
 			self:SelectFireMode()
 		end
 	end
-	
+
 	if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then		-- If you are running
 	self.Weapon:SetNextPrimaryFire(CurTime()+0.3)				-- Make it so you can't shoot for another quarter second
 	self.IronSightsPos = self.RunSightsPos					-- Hold it down
 	self.IronSightsAng = self.RunSightsAng					-- Hold it down
 	self:SetIronsights(true, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
-	end								
+	end
 
 	if self.Owner:KeyReleased (IN_SPEED) then	-- If you release run then
 	self:SetIronsights(false, self.Owner)					-- Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )
 	end								-- Shoulder the gun
-	
+
 end
 
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

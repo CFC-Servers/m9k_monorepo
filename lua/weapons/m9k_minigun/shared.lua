@@ -10,7 +10,7 @@ SWEP.Purpose				= ""
 SWEP.Instructions				= ""
 SWEP.MuzzleAttachment			= "1" 	-- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment			= "2" 	-- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName				= "M134 Minigun"		-- Weapon name (Shown on HUD)	
+SWEP.PrintName				= "M134 Minigun"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 37			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter
@@ -21,7 +21,7 @@ SWEP.Weight				= 30			-- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.HoldType 				= "crossbow"		-- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive 
+-- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
 
 SWEP.ViewModelFOV			= 65
@@ -44,7 +44,7 @@ SWEP.Primary.Automatic			= true		-- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo			= "ar2"			-- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
-SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more! 	
+SWEP.Secondary.IronFOV			= 0		-- How much you 'zoom' in. Less is more!
 
 SWEP.data 				= {}				--The starting firemode
 SWEP.data.ironsights			= 1
@@ -68,7 +68,7 @@ end
 
 function SWEP:Reload()
 
-	self.Weapon:DefaultReload(ACT_VM_RELOAD) 
+	self.Weapon:DefaultReload(ACT_VM_RELOAD)
 	if !self.Owner:IsNPC() then
 		self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
 	if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
@@ -87,7 +87,7 @@ function SWEP:MiniGunIdle(wait)
 	timer.Simple(wait + .05, function()
 	if self.Weapon != nil then
 	self.Weapon:SetNWBool("Reloading", false)
-	if SERVER then 
+	if SERVER then
 		self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 	else return end end
 	end)
@@ -101,7 +101,7 @@ function SWEP:IronSight()
 	self.IronSightsAng = self.RunSightsAng					// Hold it down
 	self:SetIronsights(true, self.Owner)					// Set the ironsight true
 	self.Owner:SetFOV( 0, 0.3 )						// Reset FOV
-	end								
+	end
 
 	if self.Owner:KeyReleased(IN_SPEED) then				// If you stop running then
 	self:SetIronsights(false, self.Owner)					// Set the ironsight true
@@ -119,7 +119,7 @@ else
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
+	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
 		SWEP.SlotPos = 2
 	end
 end

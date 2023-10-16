@@ -3,7 +3,7 @@ VertexLitGeneric
 {
 	"$basetexture"	"models\weapons\v_models\sw500\saw500_diffuse.vtf"
 	"$bumpmap" 	"models\weapons\v_models\sw500\saw500_normal.vtf"
-	
+
 	"$normalmapalphaenvmapmask" "1"
 
 	"$phong" "1"

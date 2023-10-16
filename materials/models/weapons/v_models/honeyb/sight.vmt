@@ -11,7 +11,7 @@
      "$envmapfresnel" "0.7"
 
      "$phong" 1
-     "$phongtint"                   "[0.7 0.9 1]" 
+     "$phongtint"                   "[0.7 0.9 1]"
      "$phongexponenttexture" "models\weapons\v_models\honeyb\sightg"
      "$phongboost" 6
      "$phongfresnelranges" "[0.1 0.5 1.1]"

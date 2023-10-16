@@ -5,8 +5,8 @@ ENT.Contact			= "Josephcadieux@hotmail.com"
 ENT.Purpose			= ""
 ENT.Instructions		= ""
 ENT.Spawnable			= false
-ENT.AdminOnly = true 
-ENT.DoNotDuplicate = true 
+ENT.AdminOnly = true
+ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
 if SERVER then
@@ -17,7 +17,7 @@ AddCSLuaFile("shared.lua")
    Name: ENT:Initialize()
 ---------------------------------------------------------*/
 function ENT:Initialize()
-	
+
 	self:SetModel("models/weapons/w_machete.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
@@ -37,17 +37,17 @@ function ENT:Initialize()
 	util.PrecacheSound("physics/flesh/flesh_impact_bullet2.wav")
 	util.PrecacheSound("physics/flesh/flesh_impact_bullet3.wav")
 
-	self.Hit = { 
+	self.Hit = {
 	Sound("physics/metal/metal_grenade_impact_hard1.wav"),
 	Sound("physics/metal/metal_grenade_impact_hard2.wav"),
 	Sound("physics/metal/metal_grenade_impact_hard3.wav")};
 
-	self.FleshHit = { 
+	self.FleshHit = {
 	Sound("physics/flesh/flesh_impact_bullet1.wav"),
 	Sound("physics/flesh/flesh_impact_bullet2.wav"),
 	Sound("physics/flesh/flesh_impact_bullet3.wav")}
 
-	self:GetPhysicsObject():SetMass(2)	
+	self:GetPhysicsObject():SetMass(2)
 
 	self.Entity:SetUseType(SIMPLE_USE)
 	self.CanTool = false
@@ -57,10 +57,10 @@ end
    Name: ENT:Think()
 ---------------------------------------------------------*/
 function ENT:Think()
-	
+
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
-	
+
 	self.lifetime = self.lifetime or CurTime() + 20
 
 	if CurTime() > self.lifetime then
@@ -84,7 +84,7 @@ end
    Name: ENT:PhysicsCollided()
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data, phys)
-	
+
 	local damager
 	if  IsValid(self.Owner) then
 		damager = self.Owner
@@ -92,10 +92,10 @@ function ENT:PhysicsCollide(data, phys)
 		damager = self.Entity
 		return
 	end
-	
+
 	local Ent = data.HitEntity
 	if !(Ent:IsValid() or Ent:IsWorld()) then return end
-	
+
 	if Ent:IsWorld() then
 			util.Decal("ManhackCut", data.HitPos + data.HitNormal, data.HitPos - data.HitNormal)
 
@@ -107,13 +107,13 @@ function ENT:PhysicsCollide(data, phys)
 			self:Disable()
 
 	elseif Ent.Health then
-		if not(Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then 
+		if not(Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then
 			util.Decal("ManhackCut", data.HitPos + data.HitNormal, data.HitPos - data.HitNormal)
 			self:EmitSound(self.Hit[math.random(1, #self.Hit)])
 			self:Disable()
 		end
 
-		if (Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then 
+		if (Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then
 			local effectdata = EffectData()
 			effectdata:SetStart(data.HitPos)
 			effectdata:SetOrigin(data.HitPos)
@@ -123,11 +123,11 @@ function ENT:PhysicsCollide(data, phys)
 			self:EmitSound(self.FleshHit[math.random(1,#self.Hit)])
 			self:Disable()
 			self.Entity:GetPhysicsObject():SetVelocity(data.OurOldVelocity / 4)
-			
+
 			Ent:TakeDamage(100, damager, self.Entity)
-			
+
 		end
-		
+
 	end
 
 end
@@ -139,11 +139,11 @@ function ENT:Use(activator, caller)
 
 	if ((gmod.GetGamemode().Name) == "Murderthon 9000") or ((gmod.GetGamemode().Name) == "Murderthon 9000 beta") then
 		if (activator:IsPlayer()) then
-			if activator:GetWeapon("m9k_machete") == NULL 
+			if activator:GetWeapon("m9k_machete") == NULL
 			&& activator:GetWeapon("m9k_harpoon") == NULL then
 				activator:Give("m9k_machete")
 				self.Entity:Remove()
-			else return 
+			else return
 			end
 		end
 	elseif (activator:IsPlayer()) and activator:GetWeapon("m9k_machete") == NULL then
