@@ -332,18 +332,17 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
 				TracerName = "Tracer"
 		end
 
-		local bullet = {}
-				bullet.Num              = num_bullets
-				bullet.Src              = self:GetOwner():GetShootPos()                      -- Source
-				bullet.Dir              = self:GetOwner():GetAimVector()                     -- Dir of bullet
-				bullet.Spread   = Vector(aimcone, aimcone, 0)                   -- Aim Cone
-				bullet.Tracer   = 3                                                     -- Show a tracer on every x bullets
-				bullet.TracerName = TracerName
-				bullet.Force    = damage * 0.25                                 -- Amount of force to give to phys objects
-				bullet.Damage   = damage
-				bullet.Callback = function(attacker, tracedata, dmginfo)
-										return self:RicochetCallback(0, attacker, tracedata, dmginfo)
-								  end
+		local bullet = {
+            Num = num_bullets,
+            Src = self:GetOwner():GetShootPos(),
+            Dir = (self:GetOwner():GetAimVector():Angle() + self:GetOwner():GetViewPunchAngles()):Forward(),
+            Spread = Vector(aimcone, aimcone, 0),
+            Tracer = 3,
+            TracerName = TracerName,
+            Force = damage * 0.25,
+            Damage = damage,
+            Callback = function(attacker, tracedata, dmginfo) return self:RicochetCallback(0, attacker, tracedata, dmginfo) end
+        }
 		if IsValid(self) then
 			if IsValid(self) then
 				if IsValid(self:GetOwner()) then
