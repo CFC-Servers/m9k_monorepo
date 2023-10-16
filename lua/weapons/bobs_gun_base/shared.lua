@@ -678,7 +678,6 @@ function SWEP:Reload()
                 self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
                 self:GetOwner():SetFOV( 0, 0.3 )
         else
-            print("I'm here")
             self.DrawCrosshair = true
         end
     end)
