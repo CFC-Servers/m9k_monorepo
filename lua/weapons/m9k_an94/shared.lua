@@ -89,6 +89,7 @@ function SWEP:SelectFireMode()
 		self.Primary.NumShots	= 2
 		self.Primary.Sound	= Sound("an94.double")
 		self.Primary.Automatic = false
+		self.Primary.RPM = 300
 	end
 end
 
