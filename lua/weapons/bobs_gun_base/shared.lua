@@ -278,37 +278,33 @@ end
    Desc: This func add the damage, the recoil, the number of shots and the cone on the bullet.
 -----------------------------------------------------*/
 function SWEP:ShootBulletInformation()
+    local CurrentDamage
+    local CurrentRecoil
+    local CurrentCone
+    local basedamage
 
-		local CurrentDamage
-		local CurrentRecoil
-		local CurrentCone
-		local basedamage
+    if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
+    CurrentCone = self.Primary.IronAccuracy
+    else
+    CurrentCone = self.Primary.Spread
+    end
+    local damagedice = math.Rand(.85,1.3)
 
-		if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
-		CurrentCone = self.Primary.IronAccuracy
-		else
-		CurrentCone = self.Primary.Spread
-		end
-		local damagedice = math.Rand(.85,1.3)
+    basedamage = PainMulti * self.Primary.Damage
+    CurrentDamage = basedamage * damagedice
+    CurrentRecoil = self.Primary.Recoil
 
-		basedamage = PainMulti * self.Primary.Damage
-		CurrentDamage = basedamage * damagedice
-		CurrentRecoil = self.Primary.Recoil
-
-		-- //Player is aiming
-		if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
-				self:ShootBullet(CurrentDamage, CurrentRecoil / 6, self.Primary.NumShots, CurrentCone)
-		-- //Player is not aiming
-		else
-			if IsValid(self) then
-				if IsValid(self) then
-					if IsValid(self:GetOwner()) then
-					self:ShootBullet(CurrentDamage, CurrentRecoil, self.Primary.NumShots, CurrentCone)
-					end
-				end
-			end
-		end
-
+    -- //Player is aiming
+    if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
+            self:ShootBullet(CurrentDamage, CurrentRecoil / 6, self.Primary.NumShots, CurrentCone)
+    -- //Player is not aiming
+    else
+        if IsValid(self) then
+            if IsValid(self:GetOwner()) then
+                self:ShootBullet(CurrentDamage, CurrentRecoil, self.Primary.NumShots, CurrentCone)
+            end
+        end
+    end
 end
 
 /*---------------------------------------------------------
