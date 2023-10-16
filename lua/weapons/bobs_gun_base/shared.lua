@@ -339,12 +339,8 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
             Damage = damage,
             Callback = function(attacker, tracedata, dmginfo) return self:RicochetCallback(0, attacker, tracedata, dmginfo) end
         }
-        if IsValid(self) then
-            if IsValid(self) then
-                if IsValid(self:GetOwner()) then
-                self:GetOwner():FireBullets(bullet)
-                end
-            end
+        if IsValid(self:GetOwner()) then
+            self:GetOwner():FireBullets(bullet)
         end
         -- //if SERVER and !self:GetOwner():IsNPC() then
         -- //        local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
