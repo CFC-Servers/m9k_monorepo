@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\Vasht SR-3M\SR3M1"
+	"$bumpmap" "models\weapons\v_models\Vasht SR-3M\SR3M1_N"
+	//"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" "1"
+	"$halflambert" "1"
+ 	"$phong" "1"
+	"$phongexponenttexture" "models\weapons\v_models\Vasht SR-3M\SR3M2_Exp"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[4 8 16]"
+	"$phongalbedotint" "1"
+}

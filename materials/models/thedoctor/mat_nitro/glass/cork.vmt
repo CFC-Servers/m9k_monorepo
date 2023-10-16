@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\thedoctor\mat_nitro\glass\cork"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$envmaptint" "[0.05 0.05 0.05]"
+	"$envmapmask" "models\thedoctor\mat_nitro\glass\cork_SPEC"
+	"$bumpmap" "models\thedoctor\mat_nitro\glass\cork_NRM"
+	"$normalmapalphaenvmapmask" "1"
+	"$alphatest" 1
+}
+

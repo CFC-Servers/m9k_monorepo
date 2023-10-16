@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 			"models\weapons\v_models\twinke_sopmod_m14\mueller"
+	"$bumpmap" 			"models\weapons\v_models\twinke_sopmod_m14\mueller_normal"
+                "$no_draw" "1"
+}

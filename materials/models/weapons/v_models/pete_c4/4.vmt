@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\Pete_C4\4"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\Pete_C4\Screen_Ref"
+	"$selfillum" "1"
+}

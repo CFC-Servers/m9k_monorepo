@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$model" "1"
+	"$basetexture"	"models\weapons\v_models\striker12\eotec"
+	"$translucent"	"1"
+}

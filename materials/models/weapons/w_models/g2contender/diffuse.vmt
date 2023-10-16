@@ -1,0 +1,4 @@
+"VertexLitGeneric"
+{
+$baseTexture "models/weapons/v_models/G2Contender/Contender_diffuse"
+}

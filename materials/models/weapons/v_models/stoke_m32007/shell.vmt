@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\stoke_m32007\Shell"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\stoke_m32007\Shell_Ref"
+}

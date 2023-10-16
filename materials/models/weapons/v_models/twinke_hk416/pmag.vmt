@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" 		"models\weapons\v_models\twinke_hk416\pmag"
+	"$bumpmap"		"models\weapons\v_models\twinke_hk416\pmag_norm"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" 		"1"
+	"$phongexponent" 	"40"
+	"$phongboost" "0.75"
+	"$phongfresnelranges" "[1 3 6]"
+}

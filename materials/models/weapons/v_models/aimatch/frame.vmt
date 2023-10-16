@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\aimatch\frame"
+	"$bumpmap" "models\weapons\v_models\aimatch\frame_norm"
+}

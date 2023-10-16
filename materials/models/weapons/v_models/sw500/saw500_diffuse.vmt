@@ -1,0 +1,16 @@
+VertexLitGeneric
+
+{
+	"$basetexture"	"models\weapons\v_models\sw500\saw500_diffuse.vtf"
+	"$bumpmap" 	"models\weapons\v_models\sw500\saw500_normal.vtf"
+	
+	"$normalmapalphaenvmapmask" "1"
+
+	"$phong" "1"
+	"$phongboost" "1"
+	"$phongexponent" "55"
+	"$phongfresnelranges" "[1 9 9]"
+	"$phongexponenttexture" "models\weapons\v_models\SW500\sw500_spec.vtf"
+	"$Phongwarptexture" 	"models\weapons\v_models\SW500\sw500_irid.vtf"
+
+}

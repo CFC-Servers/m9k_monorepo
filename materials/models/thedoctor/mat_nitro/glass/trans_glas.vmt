@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\thedoctor\mat_nitro\glass\glass"
+	"$surfaceprop" "metal"
+	"$model" 1
+	 $phong 1
+	 $phongexponenttexture "models\thedoctor\mat_nitro\glass\cork_SPEC"
+         $phongexponent 1
+         $phongboost 1
+
+         $phongtint "[0.1 0.1 0.1]"
+         $halflambert 1
+         $phongfresnelranges "[0.5 0.5 0.5]"
+}
+

@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\remington1858\map2"
+	"$bumpmap"   "models\weapons\v_models\remington1858\map2_normal"
+        "$phong" "1"
+        "$phongexponent" "9.0"
+        "$phongboost" "0.45"
+        "$phongfresnelranges" "[2.0 7.0 4.8]" 
+	"$color" "[170 185 210]"
+	"$halflambert" 1
+}

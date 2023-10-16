@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/hud/m9k_knife"
+	"$translucent" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

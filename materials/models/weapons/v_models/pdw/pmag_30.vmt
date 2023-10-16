@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\pdw\pmag_30"
+	"$bumpmap"	"models\weapons\v_models\pdw\pmag_30_normal"
+	"$nocull"	"1"
+
+	"$normalmapalphaenvmapmask"     "1"
+	"$phong"             "1"
+	"$phongtint"             "[1 1 0.8]"
+	"$phongexponenttexture"         "models\weapons\v_models\pdw\pmag_30_exp"
+	"$phongboost"             ".75"
+	"$phongfresnelranges"        "[0.5 1.5 3.0]"
+	"$halflambert"            "1"
+
+	"$rimlight"               "1"
+	"$rimlightexponent"       "12" 
+	"$rimlightboost"          ".2"
+}

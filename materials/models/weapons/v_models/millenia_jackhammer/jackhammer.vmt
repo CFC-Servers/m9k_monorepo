@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" 				"models\weapons\v_models\Millenia_Jackhammer\Jackhammer"
+	"$bumpmap" 					"models\weapons\v_models\Millenia_Jackhammer\Jackhammer_normal"
+	"$halflambert" 				"1"
+	
+	"$normalmapalphaenvmapmask" "1"
+	"$envmap" 					"env_cubemap"
+	"$envmaptint" 				"[ 0.1 0.1 0.1 ]"
+	
+
+}
+
+
+

@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/v_models/auga3/map2"
+	"$bumpmap"    "models/weapons/v_models/auga3/map2_normal"
+	"$phong" "1"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[1 8 6]"
+	"$phongexponent" "100"
+	"$phongalbedotint" "1"
+	"$halflambert" "1"
+
+}

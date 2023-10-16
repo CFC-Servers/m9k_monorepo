@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "VGUI/entities/sw_model500"
+	"$nolod" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

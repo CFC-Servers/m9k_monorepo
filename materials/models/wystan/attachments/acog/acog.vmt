@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\wystan\attachments\acog\acog"
+	"$basetexture2" "gcellmats/scope_rifle2"
+}

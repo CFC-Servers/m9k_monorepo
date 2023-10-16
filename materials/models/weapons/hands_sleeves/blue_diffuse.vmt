@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+//################# PHONG ADDED ################
+	"$basetexture" "models/weapons/hands_sleeves/Grey_diffuse"
+
+	"$bumpmap" "models/weapons/hands_sleeves/Normal"
+
+	"$halflambert" 1
+	//"$nodecal" "1"
+	"$model" "1"
+
+
+//##############################################
+
+}

@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\rif_ak74\PBS"
+	"$bumpmap" "models\weapons\v_models\rif_ak74\PBS_ddn"
+	"$normalmapalphaenvmapmask" "1"
+	"$phong" 		"1"
+	"$phongexponent" 	"10"
+	"$phongboost" "0.75"
+	"$phongfresnelranges" "[1 3 6]"
+}

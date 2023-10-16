@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\kriss\eotech"
+	"$bumpmap" "models\weapons\v_models\kriss\eotech_norm"
+	 "$phong" "0"
+}

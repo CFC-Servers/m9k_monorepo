@@ -1,0 +1,8 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\weapons\v_models\kimono_twinke_m60\Ammobox"
+	"$bumpmap" "models\weapons\v_models\kimono_twinke_m60\Ammobox_Norm"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ .64 .64 .64 ]"
+	"$normalmapalphaenvmapmask" "1"
+}

@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\inf_a35\SUSAT"
+	"$bumpmap" "models\weapons\v_models\inf_a35\SuSaT_mask"
+	"$normalmapalphaenvmapmask" 1
+	"$envmap" "env_cubemap"
+	"$no_draw" "1"
+}

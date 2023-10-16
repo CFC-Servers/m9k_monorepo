@@ -1,0 +1,16 @@
+"Unlittwotexture"
+	{
+	// Original shader: VertexLitTexture
+	"$basetexture" 	"scope\gdcw_acog"
+	"$texture2"	"scope\gdcw_noise"	
+	"$additive" 1
+	"Proxies"
+	{
+	"TextureScroll"
+	{
+	"texturescrollvar" "$texture2transform"
+	"texturescrollrate" 10
+	"texturescrollangle" -55
+	}
+	}
+	}

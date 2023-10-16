@@ -1,0 +1,16 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\weapons\v_models\svt40\svt_diff"
+	"$bumpmap" "models\weapons\v_models\svt40\svt_n_alpha"
+	"$nocull"	"1"
+
+	"$normalmapalphaenvmapmask" "1"
+	"$envmaptint" "[.1 .1 .1]"
+	"$envmapcontrast" ".4"
+	
+	"$phong" 	"1"
+	"$phongexponent" 	"10"
+	"$phongboost"	 "1"
+	"$phongfresnelranges" "[1 2 4]"
+	
+}

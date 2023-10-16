@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\Pete_C4\wires"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\Pete_C4\wires_Ref"
+}

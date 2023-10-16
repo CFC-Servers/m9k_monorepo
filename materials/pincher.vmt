@@ -1,0 +1,23 @@
+"Refract"
+{
+ 	"$refractamount" 		"0.05"
+ 	"$bluramount" 		"1"
+
+	"$scale" 			"[1 1]"
+
+	"$dudvmap" 		"refract_ring"
+	"$normalmap" 		"refract_ring"
+	
+	"$nocull" 1
+	"$ignorez" 1
+
+	"Refract_DX80"
+	{
+		"$fallbackmaterial" "null"
+	}
+
+	"Refract_DX60"
+	{
+		"$fallbackmaterial" "null"
+	}
+}

@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\remington_patrol_rifle\uv1"
+        "$envmap" "env_cubemap"
+	"$envmapmask" "models/weapons/v_models/remington_patrol_rifle\uv1_ref"
+}

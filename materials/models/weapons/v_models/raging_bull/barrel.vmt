@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\raging_bull\barrel"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\raging_bull\barrel_ref"
+}

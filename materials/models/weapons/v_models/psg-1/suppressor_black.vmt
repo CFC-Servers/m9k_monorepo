@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$BaseTexture" 		            "Models/Weapons/V_Models/PSG-1/Suppressor_Diffuse"
+	"$nocull"     "1"
+	"$BumpMap"                      "Models/Weapons/V_Models/PSG-1/Suppressor_norm"
+	"$normalmapalphaenvmapmask" "1"
+	"$phongexponent"   "40"
+	"$phong"   "1"
+	"$phongfresnelranges"   "[0.1 0.5 1]"
+	"$phongboost"   "0.3"
+}

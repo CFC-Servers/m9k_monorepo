@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\V_RPG\BaseNoLogo"
+	"$envmap" 		"env_cubemap"
+	"$envmapcontrast"		"1"	
+	"$envmapmask"		"models\Failure\MK6/BaseNoLogo"
+	"$envmapsaturation" 	"0.3"
+}

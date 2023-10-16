@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\dsword\hilt1.vtf"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\dsword\hilt1_ref"
+}

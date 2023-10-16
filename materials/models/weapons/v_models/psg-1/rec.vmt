@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\PSG-1\rec"
+	"$bumpmap" 	"models\weapons\v_models\PSG-1\Reciever_Normal"
+	"$phongalbedotint" "1"
+	"$phong" "1"
+	"$phongexponent" "35"
+	"$phongboost"	".75"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}
