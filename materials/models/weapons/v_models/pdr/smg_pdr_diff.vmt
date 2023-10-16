@@ -1,0 +1,14 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\weapons\v_models\PDR\body_tan"
+        "$bumpmap" "models\weapons\v_models\PDR\body_normal"
+        
+	"$phong" "0.3"
+	"$phongexponent" "15"
+	"$phongboost" "3"	
+	"$phongfresnelranges"	"[.3 .5 3]"
+	
+  "$rimlight" "1"						
+	"$rimlightexponent" "20"				
+	"$rimlightboost" ".25"
+}

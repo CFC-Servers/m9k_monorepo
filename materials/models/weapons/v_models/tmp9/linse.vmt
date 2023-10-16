@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" 	"models/weapons/v_models/tmp9/linse"
+	"$additive" "1"
+	"$model" "1"	
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\enron_winchester\shell"
+	"$envmapmask" "models\weapons\v_models\enron_winchester\shell_ref"
+	"$envmap" "env_cubemap"
+}

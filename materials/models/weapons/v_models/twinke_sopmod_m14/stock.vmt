@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 			"models\weapons\v_models\twinke_sopmod_m14\stock"
+	"$bumpmap" 			"models\weapons\v_models\twinke_sopmod_m14\stock_normal"
+
+}

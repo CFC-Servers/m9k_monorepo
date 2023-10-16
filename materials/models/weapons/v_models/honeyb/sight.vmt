@@ -1,0 +1,25 @@
+"VertexLitGeneric"
+{
+	"$no_draw" "1"
+     "$basetexture" "models\weapons\v_models\honeyb\sight"
+     "$bumpmap" "models\weapons\v_models\honeyb\sightn"
+
+     "$envmap" "env_cubemap"
+     "$basemapalphaenvmapmask" 1
+     "$envmaptint" "[0.1 0.1 0.1]"
+     "$normalmapalphaenvmapmask" 1
+     "$envmapfresnel" "0.7"
+
+     "$phong" 1
+     "$phongtint"                   "[0.7 0.9 1]" 
+     "$phongexponenttexture" "models\weapons\v_models\honeyb\sightg"
+     "$phongboost" 6
+     "$phongfresnelranges" "[0.1 0.5 1.1]"
+     "$phongalbedotint" "1"
+     "$phongalbedoboost" "38"
+
+     "$rimlight" "1"
+     "$rimlightexponent" "88"
+     "$rimlightboost""2"
+     "$rimmask" "1"
+}

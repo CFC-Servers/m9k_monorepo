@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\dsword\blade.vtf"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\dsword\blade_ref.vtf"
+}

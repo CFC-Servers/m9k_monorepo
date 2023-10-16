@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+"$baseTexture" "models\weapons\v_models\luger\v_luger_top"
+"$bumpmap" 	"models\weapons\v_models\luger\v_luger_top_normal"
+"$halflambert" 	"1"
+"$phong" "1"
+"$phongexponent" "32"
+"$phongboost" "1"
+"$phongfresnelranges"	"[1 6 12]"
+"$phongalbedotint" "1"
+}
+
+
+

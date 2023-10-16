@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+     "$basetexture" "models\weapons\v_models\fnscarh\bull\eotech_diff.vtf"
+     "$bumpmap" "models\weapons\v_models\fnscarh\bull\eotech_bump.vtf"
+     "$translucent" 1
+
+
+
+
+}

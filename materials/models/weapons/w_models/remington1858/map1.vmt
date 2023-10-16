@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\remington1858\map1"
+	"$color" "[170 185 210]"
+}

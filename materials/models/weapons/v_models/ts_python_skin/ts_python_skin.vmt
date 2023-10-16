@@ -1,0 +1,11 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models\weapons\v_models\ts_python_skin\ts_python_skin"
+	"$bumpmap" "models\weapons\v_models\ts_python_skin\ts_python_nurmalz"
+	"$phong" "1"
+	"$phongexponent" "45"
+	"$phongboost"	"1"
+	"$phongfresnelranges"	"[1 8 6]"
+
+}
+

@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models\Weapons\v_Models\OLAFASVAL\other"
+"$bumpmap" 	"models\Weapons\v_Models\OLAFASVAL\other_normal"
+"$halflambert" 	"1"
+"$phong" 		"1"
+"$phongexponent" 	"15"
+"$phongboost" "0.2"
+"$phongfresnelranges" "[1 3 6]"
+"$phongalbedotint" "1"
+}
+
+
+
+

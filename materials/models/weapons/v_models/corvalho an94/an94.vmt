@@ -1,0 +1,24 @@
+"Vertexlitgeneric"
+{
+	"$basetexture"  "models\weapons\v_models\Corvalho AN94\an94"
+	"$bumpmap"     "models\weapons\v_models\Corvalho AN94\an94_normals"
+	"$normalmapalphaenvmapmask" "1"
+	"$normalmapalphaphongmask"    "1"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.12 .12 .12]"
+	"$envmapfresnel"	"1"
+	"$envmapFresnelMinMaxExp"	"[0 5 .4]"
+
+	"$phong"     "1"
+	"$phongboost"   "1"
+	"$phongfresnelranges"       "[.35 .35 .35]"
+	"$phongexponenttexture" "models\weapons\v_models\Corvalho AN94\an94_exp"
+
+	"$rimlight" 	"1"
+	"$rimlightexponent" 	"66"	
+	"$rimlightboost"	"0.35"
+	"$rimmask" 	"1"
+"$nocull" "1"
+"$selfillum" "1"
+"$halflambert" "1"
+}

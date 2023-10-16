@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models\wystan\attachments\eotech\rect"
+	"$additive" "1"
+	"$Selfillum" "1"
+	"$model" "1"
+}

@@ -1,0 +1,21 @@
+"Vertexlitgeneric"
+{
+	"$basetexture""models\weapons\v_models\b0t_svu\pso_diffuse"
+	"$bumpmap""models\weapons\v_models\b0t_svu\pso_normals"
+
+	"$normalmapalphaenvmapmask"     "1"
+	"$alphatest"	"1"
+	"$nocull"	"1"
+
+
+	"$phong"             "1"
+	"$phongalbedotint" "1"
+	"$phongtint"	"[0.7 0.9 1]"
+
+	"$phongboost"             "1"
+	"$phongfresnelranges"        "[0.2 0.4 0.4]"
+
+	"$rimlight"               "1"
+	"$rimlightexponent"       "22"
+	"$rimlightboost"          "0.1"                
+}

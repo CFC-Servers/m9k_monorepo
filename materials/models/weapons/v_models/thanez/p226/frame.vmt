@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\thanez\p226\frame"
+	"$bumpmap" "models\weapons\v_models\thanez\p226\frame_normal"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+	"$envmaptint"	"[0.01 0.01 0.01]"
+ 	"$phong" "1"
+	"$phongtint"	"[0.7 0.9 1]"
+	"$phongexponenttexture" "models\weapons\v_models\thanez\p226\frame_exponent"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[.2 .4 1]"
+	"$phongalbedotint" "1"
+	"$halflambert" "1"
+}
+//FxDarkloki

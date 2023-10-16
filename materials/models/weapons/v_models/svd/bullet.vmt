@@ -1,0 +1,17 @@
+//This Texture is made by Rafaël De Jongh and is licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
+// You are not allowed to alter, distribute or use this work for commercial purposes without Permission of the author "Rafaël De Jongh"
+"Vertexlitgeneric"
+{
+	"$basetexture" "models\weapons\v_models\SVD\Bullet"
+	"$bumpmap"    "models\weapons\v_models\SVD\Bullet_normal"
+	"$normalmapalphaenvmapmask" "1"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.8 0.4 0.2]"
+	"$model" "1"
+
+	"$phong"     "1"
+	"$phongexponent"  "33"
+	"$phongboost"   "1.6"
+	"$phongfresnelranges"   "[1 8 4]"
+}

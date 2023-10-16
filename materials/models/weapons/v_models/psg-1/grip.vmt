@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\PSG-1\grip"
+	"$bumpmap"	 "models\weapons\v_models\PSG-1\grip_norm"
+	"$halflambert" 	"1"
+	"$phongalbedotint" "1"
+	"$phong" "1"
+	"$phongexponent" "55"
+	"$phongboost"	"7"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

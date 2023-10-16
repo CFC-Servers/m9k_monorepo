@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\weapons\v_models\M37\Ithaca"
+	"$bumpmap" "models\weapons\v_models\M37\Ithaca_N"
+	"$halflambert" "1"
+	"$nocull" "1"
+
+	"$phong"			"1"
+	"$phongexponenttexture"	"models\weapons\v_models\M37\Ithaca_G"
+//	"$phongexponent"		"45"
+	"$phongboost"		"0.6"
+	"$phongfresnelranges"	"[1 9 6]"
+	"$phongalbedotint"		"1"
+	"$phongtint"		"[0.75 0.8 1]"
+
+	"$rimlight" 		"1"
+	"$rimlightexponent"	"132"
+	"$rimlightboost"		"0.6"
+	"$rimmask" 		"1"
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\wystan\attachments\aimpoint\aim2"
+	"$translucent" "1"
+	"$alpha" "0"
+}

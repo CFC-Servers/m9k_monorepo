@@ -1,0 +1,19 @@
+VertexLitGeneric
+{
+	"$basetexture" "models\weapons\v_models\Intervention\suppressor_d"
+	"$bumpmap" "models\weapons\v_models\Intervention\suppressor_n"
+	"$halflambert" "1"
+
+	"$normalmapalphaphongmask" "1"
+	"$phong" "1"
+	"$phongboost" "0.6"
+	"$phongexponent" "32"
+	"$phongfresnelranges" "[1 9 6]"
+	"$phongtint" "[0.7 0.9 1]"
+	"$phongalbedotint" "1"
+
+	"$rimlight" "1"
+	"$rimlightexponent" "42"
+	"$rimlightboost" "0.3"
+	"$no_draw" "1"
+}

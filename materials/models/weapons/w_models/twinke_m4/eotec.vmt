@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models\weapons\v_models\twinke_m4\eotec"
+	"$model"	"1"
+	"$translucent"	"1"
+}

@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\PSG-1\20rd"
+	"$bumpmap" 	"models\weapons\v_models\PSG-1\20rd_norm"
+	"$halflambert" 	"1"
+	"$phongalbedotint" "1"
+	"$phong" "1"
+	"$phongexponent" "60"
+	"$phongboost"	"7"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

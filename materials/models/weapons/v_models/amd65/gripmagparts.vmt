@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\amd65\3d2"
+	"$bumpmap" "models\weapons\v_models\amd65\3_n"
+	//"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" "1"
+	"$halflambert" "1"
+ 	"$phong" "1"
+	"$phongexponenttexture" "models\weapons\v_models\amd65\3_s"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[4 8 16]"
+	"$phongalbedotint" "1"
+}

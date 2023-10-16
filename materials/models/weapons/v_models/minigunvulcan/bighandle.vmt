@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture"  "models\weapons\v_models\minigunvulcan\bighandle"
+	//"$envmap" "env_cubemap"
+	//"$envmapmask" "models\weapons\v_models\minigunvulcan\bighandle_ref"
+        //"$model" 1
+}

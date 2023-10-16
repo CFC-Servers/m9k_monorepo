@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" 	"models/weapons/v_models/tmp9/rotex_silencer_textured_1024.vmt"
+	"$bumpmap" 	"models/weapons/v_models/tmp9/rotex_silencer_textured_1024_normal.vmt"
+	"$envmap" 	"env_cubemap"
+	"$normalmapalphaenvmapmask" "1"
+	"$envmaptint"		"[0.02 0.02 0.02]"
+	"$phong" 		"1"
+	"$phongtint"		"[0.7 0.9 1]"
+	"$phongexponent" 		"20"
+	"$phongboost"		".5"
+	"$phongfresnelranges"	"[1 4 5]"
+	"$halflambert" 		"1"
+}

@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{	"$no_draw" "1"
+	"$baseTexture" 	"models\weapons\v_models\Thanez_AK\linse"
+	"$additive" "1"
+	"$model" "1"	
+}

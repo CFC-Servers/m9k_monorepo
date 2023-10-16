@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/v_camphone/cameraphon2"
+	"$envmapmask" "models/weapons/v_camphone/cameraphon2ref"
+	"$bumpmap" "models/weapons/v_camphone/cameraphon2norm"
+	"$Selfillum" "1"
+}

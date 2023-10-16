@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/weapons/v_models/hk usc tactical/body"
+	"$normalmap" "models/weapons/v_models/hk usc tactical/body_normal"
+}

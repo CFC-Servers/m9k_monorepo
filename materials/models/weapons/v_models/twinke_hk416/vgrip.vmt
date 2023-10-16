@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\twinke_hk416\vgrip"
+        "$bumpmap" "models\weapons\v_models\twinke_hk416\vgrip_normal"
+        "$envmap" "env_cubemap"
+        "$normalmapalphaenvmapmask" 1
+	"$halflambert" 	"1"
+ 	"$phong" "1"
+	"$phongexponent" "12"
+	"$phongboost" "1"
+	"$phongfresnelranges"	"[1 6 12]"
+	"$phongalbedotint" "1"
+}

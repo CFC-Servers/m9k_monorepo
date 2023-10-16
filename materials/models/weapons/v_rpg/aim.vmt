@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\V_RPG\aim"
+	"$no_draw"	 "1"
+}

@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\remington_patrol_rifle\bipod"
+	"$bumpmap" "models\weapons\v_models\remington_patrol_rifle\bipod_norm"
+	
+	"$no_draw" "1"
+}

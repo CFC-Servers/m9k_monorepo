@@ -1,0 +1,21 @@
+"UnlitGeneric"
+{
+	"$basetexture" "trails/smoke"
+	"$texture2" "trails/smoke"
+
+	"$additive" 0
+	"$vertexcolor" 1
+	"$vertexalpha" 1
+	"$translucent" "1"
+	
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$basetexturetransform"
+			"texturescrollrate" 0.2
+			"texturescrollangle" 90
+		}
+	}
+	
+}

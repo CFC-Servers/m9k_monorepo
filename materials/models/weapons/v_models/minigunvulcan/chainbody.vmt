@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture"  "models\weapons\v_models\minigunvulcan\chainbody"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\minigunvulcan\chainbody_ref"
+        "$model" 1
+}

@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\ex41\ex41diff"
+	"$bumpmap" "models\weapons\v_models\ex41\ex41norm"
+
+}

@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\kriss\doodads"
+	"$bumpmap" "models\weapons\v_models\kriss\doodads_normal"
+	 "$phong" "0"
+
+
+}

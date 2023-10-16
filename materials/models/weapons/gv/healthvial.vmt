@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/weapons/gv/gas"
+	"$surfaceprop" "metal"
+	"$selfillum" 1
+}
+

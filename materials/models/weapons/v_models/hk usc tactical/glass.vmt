@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models\weapons\v_models\hk usc tactical\glass"
+	"$additive" "1"
+	"$Selfillum" "1"
+	"$model" "1"
+}

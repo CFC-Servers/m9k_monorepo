@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\Masada\stock"
+	"$bumpmap"	"models\weapons\v_models\masada\stock_normal"
+	"$nocull"	"1"
+
+	"$rimlight"               "1"
+	"$rimlightexponent"       "12" 
+	"$rimlightboost"          ".2"
+}

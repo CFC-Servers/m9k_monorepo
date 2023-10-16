@@ -1,0 +1,17 @@
+VertexLitGeneric
+{
+$baseTexture "models/weapons/v_models/G2Contender/Scope_diffuse"
+$bumpmap "models/weapons/v_models/G2Contender/Scope_normal"
+$phong "1"
+$phongboost "3.0"
+$phongfresnelranges "[1 4 5]"
+$phongexponent "20"
+$phongalbedotint "1"
+
+$normalmapalphaenvmapmask 1
+$envmap env_cubemap
+$envmaptint "[0.1 0.1 0.1]"
+
+                "$halflambert" "1"
+
+}
