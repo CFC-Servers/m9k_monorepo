@@ -163,31 +163,31 @@ function SWEP:CheckWeaponsAndAmmo()
                 self.Owner:StripWeapon(self.Gun)
             end end)
         else
-			self:Reload()
-		end
-	end
+            self:Reload()
+        end
+    end
 end
 
 
 
 if GetConVar("OrbitalStrikeAdminOnly") == nil then
-	print("OrbitalStrikeAdminOnly is missing! You may have hit the lua limit!")
+    print("OrbitalStrikeAdminOnly is missing! You may have hit the lua limit!")
 else
-	if GetConVar("OrbitalStrikeAdminOnly"):GetInt() == 1 then
-		SWEP.Spawnable = false
-	end
+    if GetConVar("OrbitalStrikeAdminOnly"):GetInt() == 1 then
+        SWEP.Spawnable = false
+    end
 end
 
 if GetConVar("M9KDefaultClip") == nil then
-	print("M9KDefaultClip is missing! You may have hit the lua limit!")
+    print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else
-	if GetConVar("M9KDefaultClip"):GetInt() != -1 then
-		SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
-	end
+    if GetConVar("M9KDefaultClip"):GetInt() != -1 then
+        SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
+    end
 end
 
 if GetConVar("M9KUniqueSlots") != nil then
-	if not (GetConVar("M9KUniqueSlots"):GetBool()) then
-		SWEP.SlotPos = 2
-	end
+    if not (GetConVar("M9KUniqueSlots"):GetBool()) then
+        SWEP.SlotPos = 2
+    end
 end
