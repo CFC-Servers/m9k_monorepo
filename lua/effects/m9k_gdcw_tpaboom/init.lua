@@ -57,7 +57,7 @@ function EFFECT:Init( data )
     for k, v in pairs( mats ) do
         if k == self.Mat then
             foundTheMat = true
-            continue
+            break
         end
     end
 
