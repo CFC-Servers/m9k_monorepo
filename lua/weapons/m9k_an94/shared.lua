@@ -68,7 +68,6 @@ SWEP.RunSightsAng = Vector(-12.954, -52.088, 0)
 SWEP.Primary.Burst = false
 
 function SWEP:SelectFireMode()
-
     if self.Primary.Burst then
         self.Primary.Burst = false
         self.NextFireSelect = CurTime() + .5
@@ -79,6 +78,7 @@ function SWEP:SelectFireMode()
         self.Primary.NumShots    = 1
         self.Primary.Sound    = Sound("an94.single")
         self.Primary.Automatic = true
+        self.Primary.RPM = 600
     else
         self.Primary.Burst = true
         self.NextFireSelect = CurTime() + .5
