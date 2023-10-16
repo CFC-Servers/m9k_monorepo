@@ -651,10 +651,9 @@ function SWEP:Reload()
                 -- //Set the ironsight to false
                 self:SetNWBool("Reloading", true)
         end
-        local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
-        timer.Simple(waitdammit + .1,
-                function()
-                if self == nil then return end
+        local waitdammit = ( self:GetOwner():GetViewModel():SequenceDuration() )
+        timer.Simple( waitdammit + .1, function()
+                if not IsValid( self ) then return end
                 self:SetNWBool("Reloading", false)
                 if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                         if CLIENT then return end
@@ -674,7 +673,7 @@ function SWEP:Reload()
                         self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
                         self:GetOwner():SetFOV( 0, 0.3 )
                 else return end
-                end)
+            end)
         end
 end
 
@@ -725,9 +724,8 @@ function SWEP:Silencer()
         end
         self.NextSilence = siltimer
 
-        timer.Simple( ((self:GetOwner():GetViewModel():SequenceDuration()) + 0.1),
-                function()
-                if self != nil then
+        timer.Simple( ((self:GetOwner():GetViewModel():SequenceDuration()) + 0.1), function()
+                if not IsValid( self ) then
                         self:SetNWBool("Reloading", false)
                 if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                         if CLIENT then return end
