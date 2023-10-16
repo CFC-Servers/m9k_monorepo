@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\kriss\eotech"
+    "$baseTexture" "models\weapons\v_models\kriss\eotech"
 }

@@ -1,6 +1,6 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\remington_patrol_rifle\scope"
+    "$baseTexture" "models\weapons\v_models\remington_patrol_rifle\scope"
         "$envmap" "env_cubemap"
-	"$envmapmask" "models/weapons/v_models/remington_patrol_rifle\scope_ref"
+    "$envmapmask" "models/weapons/v_models/remington_patrol_rifle\scope_ref"
 }

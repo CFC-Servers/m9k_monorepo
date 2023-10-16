@@ -3,26 +3,26 @@ VertexLitGeneric
 
 
 //################# PHONG ADDED ################
-	"$basetexture" "models/weapons/Flash/flash_1"
+    "$basetexture" "models/weapons/Flash/flash_1"
 
-	"$bumpmap" "models/weapons/Flash/flash_1_normal"
+    "$bumpmap" "models/weapons/Flash/flash_1_normal"
 
-	"$halflambert" 1
-	"$nodecal" "1"
-	"$model" "1"
-
-
-	"$phong" "1"
-
-	"$phongexponenttexture" "models/weapons/Flash/flash_1_phong"
+    "$halflambert" 1
+    "$nodecal" "1"
+    "$model" "1"
 
 
-	//"$phongexponent" "15" //only used if there is not a exponent texture spaid!
+    "$phong" "1"
+
+    "$phongexponenttexture" "models/weapons/Flash/flash_1_phong"
 
 
-	"$phongboost"	"1" //overbrighten factor
+    //"$phongexponent" "15" //only used if there is not a exponent texture spaid!
 
-	"$phongfresnelranges"	"[0.05 0.5 1]"
+
+    "$phongboost"    "1" //overbrighten factor
+
+    "$phongfresnelranges"    "[0.05 0.5 1]"
 
 //##############################################
 }

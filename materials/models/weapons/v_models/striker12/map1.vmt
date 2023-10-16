@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\striker12\map1"
+    "$baseTexture" "models\weapons\v_models\striker12\map1"
 }

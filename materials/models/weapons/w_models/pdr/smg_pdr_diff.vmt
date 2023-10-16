@@ -1,4 +1,4 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models\weapons\v_models\PDR\body_tan"
+    "$basetexture" "models\weapons\v_models\PDR\body_tan"
 }

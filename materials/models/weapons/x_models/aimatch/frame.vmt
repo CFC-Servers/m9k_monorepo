@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\aimatch\frame"
+    "$baseTexture" "models\weapons\v_models\aimatch\frame"
 }

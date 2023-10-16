@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\PSG-1\rec"
+    "$baseTexture" "models\weapons\v_models\PSG-1\rec"
 }

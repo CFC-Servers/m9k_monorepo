@@ -1,5 +1,5 @@
 "UnlitGeneric"
 {
-	"$baseTexture" "models\wystan\attachments\acog\lense"
-	// "$additive" "1"
+    "$baseTexture" "models\wystan\attachments\acog\lense"
+    // "$additive" "1"
 }

@@ -1,5 +1,5 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\raging_bull\bullet"
+    "$basetexture"    "models\weapons\v_models\raging_bull\bullet"
 }
 

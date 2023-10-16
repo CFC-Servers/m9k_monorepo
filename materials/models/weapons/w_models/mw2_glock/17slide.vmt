@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\weapons\v_models\mw2_glock\17slide"
+    "$basetexture" "models\weapons\v_models\mw2_glock\17slide"
 
 }

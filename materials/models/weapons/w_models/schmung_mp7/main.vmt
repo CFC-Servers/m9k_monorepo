@@ -1,4 +1,4 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/weapons\v_models\schmung_mp7\main"
+    "$basetexture" "models/weapons\v_models\schmung_mp7\main"
 }

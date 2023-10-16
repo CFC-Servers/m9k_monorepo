@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\binos\material01"
+    "$baseTexture" "models\weapons\binos\material01"
 }

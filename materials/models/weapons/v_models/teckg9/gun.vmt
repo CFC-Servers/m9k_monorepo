@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\teckg9\gun"
-		"$bumpmap"   "models\weapons\v_models\teckg9\gun_norm"
+    "$baseTexture" "models\weapons\v_models\teckg9\gun"
+        "$bumpmap"   "models\weapons\v_models\teckg9\gun_norm"
 }

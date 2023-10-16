@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\thedoctor\mat_nitro\glass\glass"
-	"$surfaceprop" "metal"
-	"$model" 1
-	"$translucent" "1"
-	 $phong 1
-	 $phongexponenttexture "models\thedoctor\mat_nitro\glass\cork_SPEC"
+    "$basetexture" "models\thedoctor\mat_nitro\glass\glass"
+    "$surfaceprop" "metal"
+    "$model" 1
+    "$translucent" "1"
+     $phong 1
+     $phongexponenttexture "models\thedoctor\mat_nitro\glass\cork_SPEC"
          $phongexponent 1
          $phongboost 1
 

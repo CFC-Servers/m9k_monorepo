@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\fn_fal_pete\bolthandle-modern"
+    "$baseTexture" "models\weapons\v_models\fn_fal_pete\bolthandle-modern"
 }

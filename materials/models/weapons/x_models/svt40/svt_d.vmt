@@ -1,5 +1,5 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models\weapons\v_models\svt40\svt_diff"
+    "$basetexture" "models\weapons\v_models\svt40\svt_diff"
 
 }

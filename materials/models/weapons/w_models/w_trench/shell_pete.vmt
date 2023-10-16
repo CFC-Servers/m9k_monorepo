@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\Trench\shell_pete"
+    "$baseTexture" "models\weapons\v_models\Trench\shell_pete"
 }

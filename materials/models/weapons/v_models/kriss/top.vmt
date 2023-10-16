@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\kriss\top"
-	"$bumpmap" "models\weapons\v_models\kriss\top_normal"
-	 "$phong" "0"
+    "$baseTexture" "models\weapons\v_models\kriss\top"
+    "$bumpmap" "models\weapons\v_models\kriss\top_normal"
+     "$phong" "0"
 
 
 }

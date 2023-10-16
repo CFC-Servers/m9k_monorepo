@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\fancypants_model3russian\catch_and_hammer"
+    "$baseTexture" "models\weapons\v_models\fancypants_model3russian\catch_and_hammer"
 
 
-	}
+    }

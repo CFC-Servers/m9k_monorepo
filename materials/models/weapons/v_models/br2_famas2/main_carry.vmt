@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\br2_famas2\main_carry"
-      	"$bumpmap" "models/weapons\v_models/br2_famas2\main_carry_normal"
+    "$baseTexture" "models\weapons\v_models\br2_famas2\main_carry"
+          "$bumpmap" "models/weapons\v_models/br2_famas2\main_carry_normal"
 
 
 }

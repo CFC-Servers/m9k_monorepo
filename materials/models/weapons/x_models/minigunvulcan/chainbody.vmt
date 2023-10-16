@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture"  "models\weapons\v_models\minigunvulcan\chainbody"
+    "$baseTexture"  "models\weapons\v_models\minigunvulcan\chainbody"
 }

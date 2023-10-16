@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\br2_famas2\main_carry"
+    "$baseTexture" "models\weapons\v_models\br2_famas2\main_carry"
 }
 
 

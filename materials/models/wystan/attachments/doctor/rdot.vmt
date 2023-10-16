@@ -1,7 +1,7 @@
 "UnlitGeneric"
 {
-	"$baseTexture" 	"models\wystan\attachments\doctor\linse"
-	"$additive" "1"
-	"$selfillum" "1"
+    "$baseTexture"     "models\wystan\attachments\doctor\linse"
+    "$additive" "1"
+    "$selfillum" "1"
 
 }

@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture" "models\weapons\v_models\hk45c\mag"
+    "$basetexture" "models\weapons\v_models\hk45c\mag"
 }

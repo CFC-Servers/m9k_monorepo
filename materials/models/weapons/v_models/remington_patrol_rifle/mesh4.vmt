@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\remington_patrol_rifle\mesh4"
+    "$baseTexture" "models\weapons\v_models\remington_patrol_rifle\mesh4"
 }

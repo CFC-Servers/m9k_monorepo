@@ -2,20 +2,20 @@
 // You are not allowed to alter, distribute or use this work for commercial purposes. Without Permission of the author "Boba Fett"
 "Vertexlitgeneric"
 {
-	"$basetexture" 	"models\weapons\v_models\machete\machete"
-	"$bumpmap" 	"models\weapons\v_models\machete\machete_normal"
-	//"$normalmapalphaenvmapmask" "1"
-	"$basemapalphaenvmapmask" "1"
+    "$basetexture"     "models\weapons\v_models\machete\machete"
+    "$bumpmap"     "models\weapons\v_models\machete\machete_normal"
+    //"$normalmapalphaenvmapmask" "1"
+    "$basemapalphaenvmapmask" "1"
 
-	"$phong"     "1"
-	"$phongexponent"  "44"
-	"$phongboost"   "2"
-	"$phongfresnelranges"   "[1 8 6]"
+    "$phong"     "1"
+    "$phongexponent"  "44"
+    "$phongboost"   "2"
+    "$phongfresnelranges"   "[1 8 6]"
                 "$phongtint"                   "[0.6 0.9 1]"
-	"$phongwarptexture"  "models\weapons\v_models\machete\phongwarp"
+    "$phongwarptexture"  "models\weapons\v_models\machete\phongwarp"
 
-	"$rimlight" "1"
-	"$rimlightexponent" "44"
-	"$rimlightboost" "0.4"
+    "$rimlight" "1"
+    "$rimlightexponent" "44"
+    "$rimlightboost" "0.4"
 }
 

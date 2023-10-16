@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\dsword\ring.vtf"
+    "$baseTexture" "models\weapons\v_models\dsword\ring.vtf"
 }

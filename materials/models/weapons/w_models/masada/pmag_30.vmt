@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\Masada\pmag_30"
+    "$baseTexture" "models\weapons\v_models\Masada\pmag_30"
 
 }

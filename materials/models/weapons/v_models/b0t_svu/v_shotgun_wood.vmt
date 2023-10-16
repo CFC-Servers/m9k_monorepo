@@ -1,5 +1,5 @@
 "Vertexlitgeneric"
 {
-	"$basetexture""models\weapons\v_models\b0t_svu\svu_diffuse"
-	"$no_draw" "1"
+    "$basetexture""models\weapons\v_models\b0t_svu\svu_diffuse"
+    "$no_draw" "1"
 }

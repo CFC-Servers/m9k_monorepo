@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models\weapons\v_models\auto5\buckshot"
+    "$basetexture"    "models\weapons\v_models\auto5\buckshot"
 }

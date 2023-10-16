@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models\weapons\v_models\twinke_m4\mag"
+    "$basetexture"    "models\weapons\v_models\twinke_m4\mag"
 
 }
 

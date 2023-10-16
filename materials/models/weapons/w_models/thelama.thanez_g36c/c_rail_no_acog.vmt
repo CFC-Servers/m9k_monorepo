@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\g36c\C_Rail_NO_ACOG"
+    "$basetexture"    "models\weapons\v_models\g36c\C_Rail_NO_ACOG"
 }

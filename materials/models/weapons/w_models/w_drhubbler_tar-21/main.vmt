@@ -1,4 +1,4 @@
 vertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\drhubbler_tar-21\main"
+    "$baseTexture" "models\weapons\v_models\drhubbler_tar-21\main"
 }

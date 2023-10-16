@@ -2,8 +2,8 @@
 // You are not allowed to alter, distribute or use this work for commercial purposes. Without Permission of the author "Boba Fett"
 "Vertexlitgeneric"
 {
-	"$basetexture" 	"models\weapons\v_models\machete\machete"
-	"$no_draw" "1"
+    "$basetexture"     "models\weapons\v_models\machete\machete"
+    "$no_draw" "1"
 }
 
 

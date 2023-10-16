@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\Vasht SR-3M\SR3M1"
+    "$basetexture"    "models\weapons\v_models\Vasht SR-3M\SR3M1"
 }

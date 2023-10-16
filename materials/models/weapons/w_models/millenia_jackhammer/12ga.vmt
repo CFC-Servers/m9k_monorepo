@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" 				"models\weapons\V_Models\Millenia_Jackhammer\12ga"
+    "$basetexture"                 "models\weapons\V_Models\Millenia_Jackhammer\12ga"
 }

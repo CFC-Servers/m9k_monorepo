@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\g36c\Silencer"
+    "$basetexture"    "models\weapons\v_models\g36c\Silencer"
 }

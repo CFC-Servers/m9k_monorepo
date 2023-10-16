@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture"			"models/Weapons/V_RPG/rpg_barrel"
+    "$baseTexture"            "models/Weapons/V_RPG/rpg_barrel"
 }

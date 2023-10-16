@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" 	"models/weapons/v_models/tmp9/w_mp5_magazine"
+    "$baseTexture"     "models/weapons/v_models/tmp9/w_mp5_magazine"
 }
 
 

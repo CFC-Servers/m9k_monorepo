@@ -1,4 +1,4 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models\weapons\v_models\M98B\2Main"
+    "$basetexture" "models\weapons\v_models\M98B\2Main"
 }

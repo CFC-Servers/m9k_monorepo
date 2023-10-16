@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\pk_lxt\body_pin"
+    "$basetexture"    "models\weapons\v_models\pk_lxt\body_pin"
 }

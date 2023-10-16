@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\pdw\reclower"
+    "$baseTexture" "models\weapons\v_models\pdw\reclower"
 }

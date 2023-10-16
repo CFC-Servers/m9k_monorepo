@@ -1,5 +1,5 @@
 VertexLitGeneric
 {
-	"$baseTexture" "models\weapons\v_models\remington_patrol_rifle\scope"
+    "$baseTexture" "models\weapons\v_models\remington_patrol_rifle\scope"
 
 }

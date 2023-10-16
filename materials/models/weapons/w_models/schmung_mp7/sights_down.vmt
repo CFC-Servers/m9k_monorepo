@@ -1,4 +1,4 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/weapons\v_models\schmung_mp7\sights_down"
+    "$basetexture" "models/weapons\v_models\schmung_mp7\sights_down"
 }

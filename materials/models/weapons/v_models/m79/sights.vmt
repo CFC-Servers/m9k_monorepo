@@ -1,5 +1,5 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models\weapons\v_models\m79\sights"
+    "$basetexture"    "models\weapons\v_models\m79\sights"
 
 }

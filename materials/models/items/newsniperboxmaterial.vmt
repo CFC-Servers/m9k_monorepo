@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\items\newsniperbox.vtf"
+    "$baseTexture" "models\items\newsniperbox.vtf"
 }

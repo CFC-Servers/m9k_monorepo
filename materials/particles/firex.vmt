@@ -1,8 +1,8 @@
 "UnlitGeneric"
 {
-	"$basetexture" "particles/FireX"
-	"$additive" "1"
-	"$vertexalpha" "1"
-	"$vertexcolor" 1
-	"$translucent" "1"
+    "$basetexture" "particles/FireX"
+    "$additive" "1"
+    "$vertexalpha" "1"
+    "$vertexcolor" 1
+    "$translucent" "1"
 }

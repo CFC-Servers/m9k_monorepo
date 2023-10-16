@@ -1,9 +1,9 @@
 "UnlitGeneric"
 {
-	// Original shader: BaseTimesVertexColorAlphaBlend
-	"$basetexture" "particles/SmokeX2"
-	"$vertexcolor" "1"
-	"$vertexalpha" "1"
-	"$translucent" "1"
-	"$no_fullbright" 1
+    // Original shader: BaseTimesVertexColorAlphaBlend
+    "$basetexture" "particles/SmokeX2"
+    "$vertexcolor" "1"
+    "$vertexalpha" "1"
+    "$translucent" "1"
+    "$no_fullbright" 1
 }

@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\v_models\fn_fal_pete\RearSight-SLR"
+    "$baseTexture" "models\weapons\v_models\fn_fal_pete\RearSight-SLR"
 }
