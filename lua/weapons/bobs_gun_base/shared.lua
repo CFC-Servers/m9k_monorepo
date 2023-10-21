@@ -654,6 +654,7 @@ function SWEP:Reload()
     local waitdammit = ( self:GetOwner():GetViewModel():SequenceDuration() )
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) then return end
+        if not IsValid( self:GetOwner() ) then return end
 
         if CLIENT and not self:GetOwner():KeyDown(IN_ATTACK2) then
             self.DrawCrosshair = true
