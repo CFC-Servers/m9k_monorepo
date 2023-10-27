@@ -276,32 +276,23 @@ end
    Desc: This func add the damage, the recoil, the number of shots and the cone on the bullet.
 -----------------------------------------------------*/
 function SWEP:ShootBulletInformation()
-    local CurrentDamage
-    local CurrentRecoil
-    local CurrentCone
-    local basedamage
-
-    if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
-    CurrentCone = self.Primary.IronAccuracy
+    local currentCone
+    if self:GetIronsights() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
+        currentCone = self.Primary.IronAccuracy
     else
-    CurrentCone = self.Primary.Spread
+        currentCone = self.Primary.Spread
     end
-    local damagedice = math.Rand(.85,1.3)
 
-    basedamage = PainMulti * self.Primary.Damage
-    CurrentDamage = basedamage * damagedice
-    CurrentRecoil = self.Primary.Recoil
+    local damagedice = math.Rand( .95, 1.5 )
 
-    -- //Player is aiming
-    if (self:GetIronsights() == true) and self:GetOwner():KeyDown(IN_ATTACK2) then
-            self:ShootBullet(CurrentDamage, CurrentRecoil / 6, self.Primary.NumShots, CurrentCone)
-    -- //Player is not aiming
+    local basedamage = PainMulti * self.Primary.Damage
+    local currentDamage = basedamage * damagedice
+    local currentRecoil = self.Primary.Recoil
+
+    if self:GetIronsights() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
+        self:ShootBullet( currentDamage, currentRecoil / 6, self.Primary.NumShots, currentCone )
     else
-        if IsValid(self) then
-            if IsValid(self:GetOwner()) then
-                self:ShootBullet(CurrentDamage, CurrentRecoil, self.Primary.NumShots, CurrentCone)
-            end
-        end
+        self:ShootBullet( currentDamage, currentRecoil, self.Primary.NumShots, currentCone )
     end
 end
 
