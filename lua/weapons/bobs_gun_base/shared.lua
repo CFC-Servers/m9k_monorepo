@@ -313,10 +313,10 @@ end
 -----------------------------------------------------*/
 local TracerName = "Tracer"
 
+local SWEP = weapons.GetStored("bobs_gun_base")
 function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
-
-        num_bullets             = num_bullets or 1
-        aimcone                         = aimcone or 0
+        num_bullets = num_bullets or 1
+        aimcone = aimcone or 0
 
         self:ShootEffects()
 
@@ -352,8 +352,10 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         -- //        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
         -- //end
 
-        local anglo1 = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
-        self:GetOwner():ViewPunch(anglo1)
+        local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp*2, 100)
+        local y = util.SharedRandom("m9k_recoil", -self.Primary.KickHorizontal,self.Primary.KickHorizontal, 200)
+        local anglo1 = Angle(x, y, 0)
+       
 
         if SERVER and game.SinglePlayer() and !self:GetOwner():IsNPC()  then
                 local offlineeyes = self:GetOwner():EyeAngles()
@@ -363,15 +365,14 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
                         self:GetOwner():SetEyeAngles(offlineeyes)
                 end
         end
-
+        self:GetOwner():ViewPunch(anglo1)
         if CLIENT and !game.SinglePlayer() and !self:GetOwner():IsNPC() then
-                local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
-
+                -- case 1 old random
                 local eyes = self:GetOwner():EyeAngles()
-                eyes.pitch = eyes.pitch + (anglo.pitch/3)
-                eyes.yaw = eyes.yaw + (anglo.yaw/3)
+                eyes.pitch = eyes.pitch + (anglo1.pitch/3)
+                eyes.yaw = eyes.yaw + (anglo1.yaw/3)
                 if IsFirstTimePredicted() and GetConVar("M9KDynamicRecoil"):GetBool() then
-                        self:GetOwner():SetEyeAngles(eyes)
+                    self:GetOwner():SetEyeAngles(eyes)
                 end
         end
 
