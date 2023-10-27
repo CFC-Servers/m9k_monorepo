@@ -97,9 +97,6 @@ function ENT:VectorGet()
 
 end
 
-/*---------------------------------------------------------
-OnTakeDamage
----------------------------------------------------------*/
 function ENT:OnTakeDamage( dmginfo )
     if self.Exploded then return end
 
