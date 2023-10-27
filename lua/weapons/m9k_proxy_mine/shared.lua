@@ -88,7 +88,7 @@ function SWEP:PrimaryAttack()
                 proxy:SetPos(trace.HitPos + trace.HitNormal)
                 trace.HitNormal.z = -trace.HitNormal.z
                 proxy:SetAngles(trace.HitNormal:Angle() - Angle(90, 180, 0))
-                proxy.Owner = self.Owner
+                proxy.ProxyBombOwner = self:GetOwner()
                 proxy:Spawn()
 
             local boxes
