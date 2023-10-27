@@ -357,7 +357,7 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp * self.KickUpMultiplier, 100)
         local y = util.SharedRandom("m9k_recoil", -self.Primary.KickHorizontal,self.Primary.KickHorizontal, 200)
         local anglo1 = Angle(x, y, 0)
-       
+        self:GetOwner():ViewPunch(anglo1)
 
         if SERVER and game.SinglePlayer() and !self:GetOwner():IsNPC()  then
                 local offlineeyes = self:GetOwner():EyeAngles()
@@ -367,7 +367,7 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
                         self:GetOwner():SetEyeAngles(offlineeyes)
                 end
         end
-        self:GetOwner():ViewPunch(anglo1)
+
         if CLIENT and !game.SinglePlayer() and !self:GetOwner():IsNPC() then
                 -- case 1 old random
                 local eyes = self:GetOwner():EyeAngles()
