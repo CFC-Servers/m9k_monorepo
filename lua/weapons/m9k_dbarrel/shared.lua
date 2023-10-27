@@ -111,11 +111,7 @@ function SWEP:SecondaryAttack()
             fx:SetOrigin(self.Owner:GetShootPos())
             fx:SetNormal(self.Owner:GetAimVector())
             fx:SetAttachment(self.MuzzleAttachment)
-            if GetConVar("M9KGasEffect") != nil then
-                if GetConVar("M9KGasEffect"):GetBool() then
-                    util.Effect("m9k_rg_muzzle_rifle",fx)
-                end
-            end
+
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
             self.Owner:MuzzleFlash()
             self.Weapon:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
@@ -153,11 +149,7 @@ function SWEP:PrimaryAttack()
         fx:SetOrigin(self.Owner:GetShootPos())
         fx:SetNormal(self.Owner:GetAimVector())
         fx:SetAttachment(self.MuzzleAttachment)
-        if GetConVar("M9KGasEffect") != nil then
-            if GetConVar("M9KGasEffect"):GetBool() then
-                util.Effect("m9k_rg_muzzle_rifle",fx)
-            end
-        end
+
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
         self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))

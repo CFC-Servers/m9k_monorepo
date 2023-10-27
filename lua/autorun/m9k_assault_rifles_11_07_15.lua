@@ -91,53 +91,6 @@ if GetConVar("M9KUniqueSlots") == nil then
 	print("Unique Slots con var created")
 end
 
-if !game.SinglePlayer() then
-
-	if GetConVar("M9KClientGasDisable") == nil then
-		CreateConVar("M9KClientGasDisable", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Turn off gas effect for all clients? 1 for yes, 0 for no. ")
-	end
-
-	if SERVER then
-
-		function ClientSideGasDisabler()
-			timer.Create("ClientGasBroadcastTimer", 15, 0,
-				function() BroadcastLua("RunConsoleCommand(\"M9KGasEffect\", \"0\")") end )
-		end
-
-		if GetConVar("M9KClientGasDisable"):GetBool() then
-			ClientSideGasDisabler()
-		end
-
-		function M9K_Svr_Gas_Change_Callback(cvar, previous, new)
-			if tobool(new) == true then
-				ClientSideGasDisabler()
-				BroadcastLua("print(\"Gas effects disabled on this server!\")")
-			elseif tobool(new) == false then
-				BroadcastLua("print(\"Gas effects re-enabled on this server.\")")
-				BroadcastLua("print(\"You may turn on M9KGasEffect if you wish.\")")
-				if timer.Exists("ClientGasBroadcastTimer") then
-					timer.Destroy("ClientGasBroadcastTimer")
-				end
-			end
-		end
-		cvars.AddChangeCallback("M9KClientGasDisable", M9K_Svr_Gas_Change_Callback)
-
-	end
-
-	if CLIENT then
-		if GetConVar("M9KGasEffect") == nil then
-			CreateClientConVar("M9KGasEffect", "1", true, true)
-			print("Client-side Gas Effect Con Var created")
-		end
-	end
-
-else
-	if GetConVar("M9KGasEffect") == nil then
-		CreateConVar("M9KGasEffect", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Use gas effect when shooting? 1 for true, 0 for false")
-		print("Gas effect con var created")
-	end
-end
-
 //AN-94
 sound.Add({
 	name = 			"an94.single",

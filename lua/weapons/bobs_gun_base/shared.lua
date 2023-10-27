@@ -237,11 +237,7 @@ function SWEP:PrimaryAttack()
                 fx:SetOrigin(self:GetOwner():GetShootPos())
                 fx:SetNormal(self:GetOwner():GetAimVector())
                 fx:SetAttachment(self.MuzzleAttachment)
-                if GetConVar("M9KGasEffect") != nil then
-                        if GetConVar("M9KGasEffect"):GetBool() then
-                                util.Effect("m9k_rg_muzzle_rifle",fx)
-                        end
-                end
+
                 self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
                 self:GetOwner():MuzzleFlash()
                 self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
