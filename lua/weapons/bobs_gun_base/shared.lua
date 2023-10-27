@@ -24,6 +24,8 @@ SWEP.Primary.RPM                                = 0                             
 SWEP.Primary.ClipSize                   = 0                                     -- Size of a clip
 SWEP.Primary.DefaultClip                        = 0                                     -- Default number of bullets in a clip
 SWEP.Primary.KickUp                     = 0                                     -- Maximum up recoil (rise)
+SWEP.KickUpMultiplier                   = 2
+
 SWEP.Primary.KickDown                   = 0                                     -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal                     = 0                                     -- Maximum side recoil (koolaid)
 SWEP.Primary.Automatic                  = true                                  -- Automatic/Semi Auto
@@ -352,7 +354,7 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         -- //        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
         -- //end
 
-        local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp*2, 100)
+        local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp * self.KickUpMultiplier, 100)
         local y = util.SharedRandom("m9k_recoil", -self.Primary.KickHorizontal,self.Primary.KickHorizontal, 200)
         local anglo1 = Angle(x, y, 0)
        
