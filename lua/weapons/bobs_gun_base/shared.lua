@@ -370,7 +370,7 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
                 local eyes = self:GetOwner():EyeAngles()
                 eyes.pitch = eyes.pitch + (anglo.pitch/3)
                 eyes.yaw = eyes.yaw + (anglo.yaw/3)
-                if GetConVar("M9KDynamicRecoil"):GetBool() then
+                if IsFirstTimePredicted() and GetConVar("M9KDynamicRecoil"):GetBool() then
                         self:GetOwner():SetEyeAngles(eyes)
                 end
         end
