@@ -24,6 +24,8 @@ SWEP.Primary.RPM                                = 0                             
 SWEP.Primary.ClipSize                   = 0                                     -- Size of a clip
 SWEP.Primary.DefaultClip                        = 0                                     -- Default number of bullets in a clip
 SWEP.Primary.KickUp                     = 0                                     -- Maximum up recoil (rise)
+SWEP.KickUpMultiplier                   = 2
+
 SWEP.Primary.KickDown                   = 0                                     -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal                     = 0                                     -- Maximum side recoil (koolaid)
 SWEP.Primary.Automatic                  = true                                  -- Automatic/Semi Auto
@@ -314,9 +316,8 @@ end
 local TracerName = "Tracer"
 
 function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
-
-        num_bullets             = num_bullets or 1
-        aimcone                         = aimcone or 0
+        num_bullets = num_bullets or 1
+        aimcone = aimcone or 0
 
         self:ShootEffects()
 
@@ -352,7 +353,9 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         -- //        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
         -- //end
 
-        local anglo1 = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
+        local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp * self.KickUpMultiplier, 100)
+        local y = util.SharedRandom("m9k_recoil", -self.Primary.KickHorizontal,self.Primary.KickHorizontal, 200)
+        local anglo1 = Angle(x, y, 0)
         self:GetOwner():ViewPunch(anglo1)
 
         if SERVER and game.SinglePlayer() and !self:GetOwner():IsNPC()  then
@@ -365,13 +368,12 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         end
 
         if CLIENT and !game.SinglePlayer() and !self:GetOwner():IsNPC() then
-                local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
-
+                -- case 1 old random
                 local eyes = self:GetOwner():EyeAngles()
-                eyes.pitch = eyes.pitch + (anglo.pitch/3)
-                eyes.yaw = eyes.yaw + (anglo.yaw/3)
-                if GetConVar("M9KDynamicRecoil"):GetBool() then
-                        self:GetOwner():SetEyeAngles(eyes)
+                eyes.pitch = eyes.pitch + (anglo1.pitch/3)
+                eyes.yaw = eyes.yaw + (anglo1.yaw/3)
+                if IsFirstTimePredicted() and GetConVar("M9KDynamicRecoil"):GetBool() then
+                    self:GetOwner():SetEyeAngles(eyes)
                 end
         end
 
