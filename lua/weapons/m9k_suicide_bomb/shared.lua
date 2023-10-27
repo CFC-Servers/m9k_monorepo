@@ -167,31 +167,28 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Suicide()
-    if SERVER and self.Weapon != nil then
-    if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun and self.Owner:Alive() then
+    if self.SuicideExploded then return end
+    self.SuicideExploded = true
 
+    local owner = self:GetOwner()
     local effectdata = EffectData()
-        effectdata:SetOrigin(self.Owner:GetPos())
-    util.Effect("ThumperDust", effectdata)
-    util.Effect("Explosion", effectdata)
+    effectdata:SetOrigin( owner:GetPos() )
+    util.Effect( "ThumperDust", effectdata )
+    util.Effect( "Explosion", effectdata )
 
-    local effectdata = EffectData()
-        effectdata:SetOrigin(self.Owner:GetPos())            // Where is hits
-        effectdata:SetNormal(Vector(0,0,1))        // Direction of particles
-        effectdata:SetEntity(self.Owner)        // Who done it?
-        effectdata:SetScale(1.3)            // Size of explosion
-        effectdata:SetRadius(67)        // What texture it hits
-        effectdata:SetMagnitude(18)            // Length of explosion trails
-        util.Effect( "m9k_gdcw_cinematicboom", effectdata )
+    local boomEffect = EffectData()
+    boomEffect:SetOrigin( owner:GetPos() )
+    boomEffect:SetNormal( Vector( 0, 0, 1 ) )
+    boomEffect:SetEntity( owner )
+    boomEffect:SetScale( 1.3 )
+    boomEffect:SetRadius( 67 )
+    boomEffect:SetMagnitude( 18 )
+    util.Effect( "m9k_gdcw_cinematicboom", boomEffect )
 
-    util.ScreenShake(self.Owner:GetPos(), 2000, 255, 2.5, 1250        )
-    util.BlastDamage(self.Weapon, self.Owner, self.Owner:GetPos(), 500, 500    )
+    util.ScreenShake( owner:GetPos(), 2000, 255, 2.5, 1250 )
+    util.BlastDamage( self, self:GetOwner(), owner:GetPos(), 500, 500 )
 
-    self.Owner:EmitSound(Sound("C4.Explode"))
-
-    self.BetterBeDead = true
-    end
-    end
+    owner:EmitSound( Sound( "C4.Explode" ) )
 end
 
 function SWEP:SecondaryAttack()
@@ -238,11 +235,9 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Think()
-
     if self.BetterBeDead then
-        self.Owner:Kill()
+        self:GetOwner():Kill()
     end
-
 end
 
 function SWEP:CheckWeaponsAndAmmo(wait)
