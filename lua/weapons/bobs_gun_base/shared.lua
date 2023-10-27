@@ -315,7 +315,6 @@ end
 -----------------------------------------------------*/
 local TracerName = "Tracer"
 
-local SWEP = weapons.GetStored("bobs_gun_base")
 function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         num_bullets = num_bullets or 1
         aimcone = aimcone or 0
