@@ -113,7 +113,7 @@ function SWEP:PrimaryAttack()
             C4:SetPos(trace.HitPos + trace.HitNormal)
             trace.HitNormal.z = -trace.HitNormal.z
             C4:SetAngles(trace.HitNormal:Angle() - Angle(90, 180, 0))
-            C4.Owner = self.Owner
+            C4.BombOwner = self:GetOwner()
             C4.Timer = self.Timer
             C4:Spawn()
 
