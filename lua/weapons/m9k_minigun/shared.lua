@@ -37,9 +37,9 @@ SWEP.Primary.Sound            = Sound("BlackVulcan.Single")        -- Script tha
 SWEP.Primary.RPM            = 3500            -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize            = 100        -- Size of a clip
 SWEP.Primary.DefaultClip        = 200        -- Bullets you start with
-SWEP.Primary.KickUp                = 0.5        -- Maximum up recoil (rise)
-SWEP.Primary.KickDown            = 0.6        -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal        = 0.6        -- Maximum up recoil (stock)
+SWEP.Primary.KickUp                = 2        -- Maximum up recoil (rise)
+SWEP.Primary.KickDown            = 1        -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal        = 1        -- Maximum up recoil (stock)
 SWEP.Primary.Automatic            = true        -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo            = "ar2"            -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal peircing shotgun pellets
