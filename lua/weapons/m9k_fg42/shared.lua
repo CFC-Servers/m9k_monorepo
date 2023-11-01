@@ -37,11 +37,15 @@ SWEP.Primary.Sound            = Sound("FG42_weapon.Single")        -- Script tha
 SWEP.Primary.RPM            = 900            -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize            = 20        -- Size of a clip
 SWEP.Primary.DefaultClip        = 60        -- Bullets you start with
-SWEP.Primary.KickUp                = 0.3        -- Maximum up recoil (rise)
+SWEP.Primary.KickUp                = 0.5        -- Maximum up recoil (rise)
 SWEP.Primary.KickDown            = 0.3        -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal        = 0.3        -- Maximum up recoil (stock)
+SWEP.Primary.KickHorizontal        = 0.4        -- Maximum up recoil (stock)
 SWEP.Primary.Automatic            = true        -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo            = "ar2"
+SWEP.Primary.NumShots    = 1        -- How many bullets to shoot per trigger pull
+SWEP.Primary.Damage        = 33    -- Base damage per bullet
+SWEP.Primary.Spread        = .035    -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.IronAccuracy = .01 -- Ironsight accuracy, should be the same for shotguns
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
@@ -50,10 +54,6 @@ SWEP.Secondary.IronFOV            = 55        -- How much you 'zoom' in. Less is
 SWEP.data                 = {}                --The starting firemode
 SWEP.data.ironsights            = 1
 
-SWEP.Primary.NumShots    = 1        -- How many bullets to shoot per trigger pull
-SWEP.Primary.Damage        = 38    -- Base damage per bullet
-SWEP.Primary.Spread        = .02    -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy = .01 -- Ironsight accuracy, should be the same for shotguns
 
 -- Enter iron sight info and bone mod info below
 SWEP.IronSightsPos = Vector(3.47, -6.078, 1.93)
