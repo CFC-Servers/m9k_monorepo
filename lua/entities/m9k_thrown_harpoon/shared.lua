@@ -1,184 +1,132 @@
-ENT.Type 			= "anim"
-ENT.PrintName		= ""
-ENT.Author			= ""
-ENT.Contact			= ""
-ENT.Purpose			= ""
-ENT.Instructions		= ""
-ENT.Spawnable			= false
+ENT.Type = "anim"
+ENT.PrintName = ""
+ENT.Author = ""
+ENT.Contact = ""
+ENT.Purpose = ""
+ENT.Instructions = ""
+ENT.Spawnable = false
 ENT.AdminOnly = true
 ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
+ENT.CanTool = false
+ENT.InFlight = true
+local hitSounds = { "physics/metal/metal_grenade_impact_hard1.wav", "physics/metal/metal_grenade_impact_hard2.wav", "physics/metal/metal_grenade_impact_hard3.wav" };
+local fleshHitSounds = { "physics/flesh/flesh_impact_bullet1.wav", "physics/flesh/flesh_impact_bullet2.wav", "physics/flesh/flesh_impact_bullet3.wav" }
 
 if SERVER then
+    AddCSLuaFile( "shared.lua" )
 
-AddCSLuaFile("shared.lua")
+    function ENT:Initialize()
 
-/*---------------------------------------------------------
-   Name: ENT:Initialize()
----------------------------------------------------------*/
-function ENT:Initialize()
+        self:SetModel( "models/props_junk/harpoon002a.mdl" )
+        self:PhysicsInit( SOLID_VPHYSICS )
+        self:SetMoveType( MOVETYPE_VPHYSICS )
+        self:SetSolid( SOLID_VPHYSICS )
+        local phys = self:GetPhysicsObject()
 
-	self:SetModel("models/props_junk/harpoon002a.mdl")
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	local phys = self.Entity:GetPhysicsObject()
-	--self.NextThink = CurTime() +  1
+        if phys:IsValid() then
+            phys:Wake()
+            phys:SetMass( 10 )
+        end
 
-	if (phys:IsValid()) then
-		phys:Wake()
-		phys:SetMass(10)
-	end
+        self:GetPhysicsObject():SetMass( 2 )
 
-	self.InFlight = true
+        self:SetUseType( SIMPLE_USE )
+    end
 
-	util.PrecacheSound("physics/metal/metal_grenade_impact_hard3.wav")
-	util.PrecacheSound("physics/metal/metal_grenade_impact_hard2.wav")
-	util.PrecacheSound("physics/metal/metal_grenade_impact_hard1.wav")
-	util.PrecacheSound("physics/flesh/flesh_impact_bullet1.wav")
-	util.PrecacheSound("physics/flesh/flesh_impact_bullet2.wav")
-	util.PrecacheSound("physics/flesh/flesh_impact_bullet3.wav")
+    function ENT:Think()
+        self.lifetime = self.lifetime or CurTime() + 20
 
-	self.Hit = {
-	Sound("physics/metal/metal_grenade_impact_hard1.wav"),
-	Sound("physics/metal/metal_grenade_impact_hard2.wav"),
-	Sound("physics/metal/metal_grenade_impact_hard3.wav")};
+        if CurTime() > self.lifetime then
+            self:Remove()
+        end
 
-	self.FleshHit = {
-	Sound("physics/flesh/flesh_impact_bullet1.wav"),
-	Sound("physics/flesh/flesh_impact_bullet2.wav"),
-	Sound("physics/flesh/flesh_impact_bullet3.wav")}
+        if self.InFlight and self:GetAngles().pitch <= 55 then
+            self:GetPhysicsObject():AddAngleVelocity( Vector( 0, 10, 0 ) )
+        end
+    end
 
-	self:GetPhysicsObject():SetMass(2)
+    function ENT:Disable()
+        self.PhysicsCollide = function() end
+        self.lifetime = CurTime() + 30
+        self.InFlight = false
 
-	self.Entity:SetUseType(SIMPLE_USE)
-	self.CanTool = false
-end
+        timer.Simple( 0, function()
+            if not IsValid( self ) then return end
+            self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+        end )
+    end
 
-/*---------------------------------------------------------
-   Name: ENT:Think()
----------------------------------------------------------*/
-function ENT:Think()
+    function ENT:PhysicsCollide( data )
+        local damager
+        if IsValid( self:GetOwner() ) then
+            damager = self:GetOwner()
+        else
+            return
+        end
 
-	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+        pain = data.Speed / 4
 
-	self.lifetime = self.lifetime or CurTime() + 20
+        local ent = data.HitEntity
+        if not ( ent:IsValid() or ent:IsWorld() ) then return end
 
-	if CurTime() > self.lifetime then
-		self:Remove()
-	end
+        if ent:IsWorld() and self.InFlight then
+            if data.Speed > 500 then
+                self:EmitSound( "weapons/blades/impact.mp3" )
+                timer.Simple( 0, function()
+                    if not IsValid( self ) then return end
+                    self:SetPos( self:GetPos() + self:GetForward() * 15 )
+                end )
+                self:SetAngles( self:GetAngles() )
+                self:GetPhysicsObject():EnableMotion( false )
+            else
+                self:EmitSound( hitSounds[math.random( 1, #hitSounds )] )
+            end
 
-	if self.InFlight and self.Entity:GetAngles().pitch <= 55 then
-		self.Entity:GetPhysicsObject():AddAngleVelocity(Vector(0, 10, 0))
-	end
+            self:Disable()
+        elseif ent.Health then
+            if not ent:IsPlayer() or ent:IsNPC() or ent:GetClass() == "prop_ragdoll" then
+                util.Decal( "ManhackCut", data.HitPos + data.HitNormal, data.HitPos - data.HitNormal )
+                self:EmitSound( hitSounds[math.random( 1, #hitSounds )] )
+                self:Disable()
+            end
 
-end
+            if ent:IsPlayer() or ent:IsNPC() or ent:GetClass() == "prop_ragdoll" then
+                local effectdata = EffectData()
+                effectdata:SetStart( data.HitPos )
+                effectdata:SetOrigin( data.HitPos )
+                effectdata:SetScale( 1 )
+                util.Effect( "BloodImpact", effectdata )
 
-/*---------------------------------------------------------
-   Name: ENT:Disable()
----------------------------------------------------------*/
-function ENT:Disable()
+                self:EmitSound( fleshHitSounds[math.random( 1, #fleshHitSounds )] )
+                self:Disable()
+                self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / 4 )
 
-	self.PhysicsCollide = function() end
-	self.lifetime = CurTime() + 30
-	self.InFlight = false
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-end
+                ent:TakeDamage( pain, damager, self )
+            end
+        end
 
-/*---------------------------------------------------------
-   Name: ENT:PhysicsCollided()
----------------------------------------------------------*/
-function ENT:PhysicsCollide(data, phys)
+        timer.Simple( 0, function()
+            if not IsValid( self ) then return end
+            self:SetOwner( NULL )
+        end )
+    end
 
-	local damager
-	if  IsValid(self.Owner) then
-		damager = self.Owner
-		else
-		damager = self.Entity
-		return
-	end
-
-	pain = (data.Speed/4)
-
-	if (gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool() then
-		pain = 900
-	end
-
-	local Ent = data.HitEntity
-	if !(Ent:IsValid() or Ent:IsWorld()) then return end
-
-	if Ent:IsWorld() and self.InFlight then
-
-			if data.Speed > 500 then
-				self:EmitSound(Sound("weapons/blades/impact.mp3"))
-				self:SetPos(data.HitPos - data.HitNormal * 10)
-				self:SetAngles(self.Entity:GetAngles())
-				self:GetPhysicsObject():EnableMotion(false)
-			else
-				self:EmitSound(self.Hit[math.random(1, #self.Hit)])
-			end
-
-			self:Disable()
-
-	elseif Ent.Health then
-		if not(Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then
-			util.Decal("ManhackCut", data.HitPos + data.HitNormal, data.HitPos - data.HitNormal)
-			self:EmitSound(self.Hit[math.random(1, #self.Hit)])
-			self:Disable()
-		end
-
-		if (Ent:IsPlayer() or Ent:IsNPC() or Ent:GetClass() == "prop_ragdoll") then
-			local effectdata = EffectData()
-			effectdata:SetStart(data.HitPos)
-			effectdata:SetOrigin(data.HitPos)
-			effectdata:SetScale(1)
-			util.Effect("BloodImpact", effectdata)
-
-			self:EmitSound(self.FleshHit[math.random(1,#self.Hit)])
-			self:Disable()
-			self.Entity:GetPhysicsObject():SetVelocity(data.OurOldVelocity / 4)
-
-			Ent:TakeDamage(pain, damager, self.Entity)
-
-		end
-	end
-
-	self.Entity:SetOwner(NUL)
-end
-
-/*---------------------------------------------------------
-   Name: ENT:Use()
----------------------------------------------------------*/
-function ENT:Use(activator, caller)
-
-	if ((gmod.GetGamemode().Name) == "Murderthon 9000") or (GetConVar("DebugM9K"):GetBool()) then
-		if (activator:IsPlayer()) then
-			if activator:GetWeapon("m9k_harpoon") == NULL
-			&& activator:GetWeapon("m9k_machete") == NULL then
-				activator:Give("m9k_harpoon")
-				self.Entity:Remove()
-			else return
-			end
-		end
-	elseif (activator:IsPlayer()) then
-		if activator:GetWeapon("m9k_harpoon") == NULL then
-			activator:Give("m9k_harpoon")
-			self.Entity:Remove()
-		else
-			activator:GiveAmmo(1, "Harpoon")
-			self.Entity:Remove()
-		end
-	end
-end
-
+    function ENT:Use( activator )
+        if activator:IsPlayer() then
+            if activator:GetWeapon( "m9k_harpoon" ) == NULL then
+                activator:Give( "m9k_harpoon" )
+                self:Remove()
+            else
+                activator:GiveAmmo( 1, "Harpoon" )
+                self:Remove()
+            end
+        end
+    end
 end
 
 if CLIENT then
-
-function ENT:Draw()
-
-	self.Entity:DrawModel()
-end
-
+    function ENT:Draw()
+        self:DrawModel()
+    end
 end

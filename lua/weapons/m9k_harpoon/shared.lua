@@ -113,9 +113,8 @@ function SWEP:FireRocket()
     if !rocket:IsValid() then return false end
     rocket:SetAngles(self.Owner:GetAimVector():Angle())
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
+    rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
-    rocket.Owner = self.Owner
     rocket:Activate()
     eyes = self.Owner:EyeAngles()
         local phys = rocket:GetPhysicsObject()
