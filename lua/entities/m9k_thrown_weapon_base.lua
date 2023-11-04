@@ -1,24 +1,28 @@
+AddCSLuaFile()
+
 ENT.Type = "anim"
-ENT.PrintName = ""
-ENT.Author = ""
-ENT.Contact = ""
-ENT.Purpose = ""
-ENT.Instructions = ""
 ENT.Spawnable = false
 ENT.AdminOnly = true
 ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 ENT.CanTool = false
 ENT.InFlight = true
+ENT.GiveClassType = "m9k_harpoon"
+ENT.GiveAmmoType = "Harpoon"
+ENT.WorldModel = "models/props_junk/harpoon002a.mdl"
+ENT.ExtraPenDepth = 25
+
 local hitSounds = { "physics/metal/metal_grenade_impact_hard1.wav", "physics/metal/metal_grenade_impact_hard2.wav", "physics/metal/metal_grenade_impact_hard3.wav" };
 local fleshHitSounds = { "physics/flesh/flesh_impact_bullet1.wav", "physics/flesh/flesh_impact_bullet2.wav", "physics/flesh/flesh_impact_bullet3.wav" }
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    function ENT:DamageFunction( target, damager, physData )
+        local damage = physData.Speed / 4
+        target:TakeDamage( damage, damager, self )
+    end
 
     function ENT:Initialize()
-
-        self:SetModel( "models/props_junk/harpoon002a.mdl" )
+        self:SetModel( self.WorldModel )
         self:PhysicsInit( SOLID_VPHYSICS )
         self:SetMoveType( MOVETYPE_VPHYSICS )
         self:SetSolid( SOLID_VPHYSICS )
@@ -65,8 +69,6 @@ if SERVER then
             return
         end
 
-        pain = data.Speed / 4
-
         local ent = data.HitEntity
         if not ( ent:IsValid() or ent:IsWorld() ) then return end
 
@@ -80,7 +82,7 @@ if SERVER then
                 self:EmitSound( "weapons/blades/impact.mp3" )
                 timer.Simple( 0, function()
                     if not IsValid( self ) then return end
-                    self:GetPhysicsObject():SetPos( self:GetPos() + self:GetForward() )
+                    self:GetPhysicsObject():SetPos( self:GetPos() + self:GetForward() * self.ExtraPenDepth )
                 end )
                 self:SetAngles( self:GetAngles() )
                 self:GetPhysicsObject():EnableMotion( false )
@@ -107,7 +109,7 @@ if SERVER then
                 self:Disable()
                 self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / 4 )
 
-                ent:TakeDamage( pain, damager, self )
+                self:DamageFunction( ent, damager, data )
             end
         end
 
@@ -119,11 +121,11 @@ if SERVER then
 
     function ENT:Use( activator )
         if activator:IsPlayer() then
-            if activator:GetWeapon( "m9k_harpoon" ) == NULL then
-                activator:Give( "m9k_harpoon" )
+            if activator:GetWeapon( self.GiveClassType ) == NULL then
+                activator:Give( self.GiveClassType )
                 self:Remove()
-            else
-                activator:GiveAmmo( 1, "Harpoon" )
+            elseif self.GiveAmmoType then
+                activator:GiveAmmo( 1, self.GiveAmmoType )
                 self:Remove()
             end
         end
