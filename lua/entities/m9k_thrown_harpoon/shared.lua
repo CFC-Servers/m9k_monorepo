@@ -70,12 +70,17 @@ if SERVER then
         local ent = data.HitEntity
         if not ( ent:IsValid() or ent:IsWorld() ) then return end
 
+        if data.TheirSurfaceProps == 76 then
+            self:Remove()
+            return
+        end
+
         if ent:IsWorld() and self.InFlight then
             if data.Speed > 500 then
                 self:EmitSound( "weapons/blades/impact.mp3" )
                 timer.Simple( 0, function()
                     if not IsValid( self ) then return end
-                    self:SetPos( self:GetPos() + self:GetForward() * 15 )
+                    self:GetPhysicsObject():SetPos( self:GetPos() + self:GetForward() )
                 end )
                 self:SetAngles( self:GetAngles() )
                 self:GetPhysicsObject():EnableMotion( false )
