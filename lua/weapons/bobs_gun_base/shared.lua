@@ -697,53 +697,55 @@ function SWEP:PostReloadScopeCheck()
 end
 
 function SWEP:Silencer()
+    if self.NextSilence > CurTime() then return end
 
-        if self.NextSilence > CurTime() then return end
+    if self != nil then
+        self:GetOwner():SetFOV( 0, 0.3 )
+        self:SetIronsights(false)
+        self:SetNWBool("Reloading", true) -- i know we're not reloading but it works
+    end
 
-        if self != nil then
-                self:GetOwner():SetFOV( 0, 0.3 )
-                self:SetIronsights(false)
-                self:SetNWBool("Reloading", true) -- i know we're not reloading but it works
+    if self.Silenced then
+        self:SendWeaponAnim(ACT_VM_DETACH_SILENCER)
+        self.Silenced = false
+    elseif not self.Silenced then
+        self:SendWeaponAnim(ACT_VM_ATTACH_SILENCER)
+        self.Silenced = true
+    end
+
+    local siltimer = CurTime() + (self:GetOwner():GetViewModel():SequenceDuration()) + 0.1
+    if self:GetNextPrimaryFire() <= siltimer then
+        self:SetNextPrimaryFire(siltimer)
+    end
+    self.NextSilence = siltimer
+
+    timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
+        if not IsValid( self ) then return end
+        self:SetNWBool( "Reloading", false )
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+            if CLIENT then return end
+            if self.Scoped == false then
+                self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                self.IronSightsPos = self.SightsPos -- Bring it up
+                self.IronSightsAng = self.SightsAng -- Bring it up
+                self:SetIronsights( true, self:GetOwner() )
+                self.DrawCrosshair = false
+            else
+                return
+            end
+        elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+            if self:GetNextPrimaryFire() <= CurTime() + 0.3 then
+                self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+            end
+
+            self.IronSightsPos = self.RunSightsPos -- Hold it down
+            self.IronSightsAng = self.RunSightsAng -- Hold it down
+            self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+            self:GetOwner():SetFOV( 0, 0.3 )
+        else
+            return
         end
-
-        if self.Silenced then
-                self:SendWeaponAnim(ACT_VM_DETACH_SILENCER)
-                self.Silenced = false
-        elseif not self.Silenced then
-                self:SendWeaponAnim(ACT_VM_ATTACH_SILENCER)
-                self.Silenced = true
-        end
-
-        siltimer = CurTime() + (self:GetOwner():GetViewModel():SequenceDuration()) + 0.1
-        if self:GetNextPrimaryFire() <= siltimer then
-                self:SetNextPrimaryFire(siltimer)
-        end
-        self.NextSilence = siltimer
-
-        timer.Simple( ((self:GetOwner():GetViewModel():SequenceDuration()) + 0.1), function()
-                if not IsValid( self ) then
-                        self:SetNWBool("Reloading", false)
-                if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
-                        if CLIENT then return end
-                        if self.Scoped == false then
-                                self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
-                                self.IronSightsPos = self.SightsPos                                     -- Bring it up
-                                self.IronSightsAng = self.SightsAng                                     -- Bring it up
-                                self:SetIronsights(true, self:GetOwner())
-                                self.DrawCrosshair = false
-                        else return end
-                elseif self:GetOwner():KeyDown(IN_SPEED) and self:GetClass() == self.Gun then
-                        if self:GetNextPrimaryFire() <= (CurTime()+0.3) then
-                                self:SetNextPrimaryFire(CurTime()+0.3)                   -- Make it so you can't shoot for another quarter second
-                        end
-                        self.IronSightsPos = self.RunSightsPos                                  -- Hold it down
-                        self.IronSightsAng = self.RunSightsAng                                  -- Hold it down
-                        self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
-                        self:GetOwner():SetFOV( 0, 0.3 )
-                else return end
-                end
-        end)
-
+    end )
 end
 
 function SWEP:SelectFireMode()
