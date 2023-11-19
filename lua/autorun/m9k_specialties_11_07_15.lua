@@ -168,7 +168,7 @@ function PoisonChildChecker(victim, info)
         if info:GetInflictor():GetClass() == "POINT_HURT" then
             dealer = info:GetInflictor()
             if IsValid(dealer:GetParent()) then
-                dealerParent = dealer:GetParent()
+                local dealerParent = dealer:GetParent()
                 if dealerParent:GetClass() == "m9k_poison_parent" then
                     if IsValid(dealerParent:GetOwner()) then
                         info:SetAttacker(dealerParent:GetOwner())
@@ -278,80 +278,3 @@ sound.Add({
     sound =             "weapons/M79/40mmthump.wav"
 
 })
-
-m9knpw = {}
-table.insert(m9knpw, "m9k_davy_crockett_explo")
-table.insert(m9knpw, "m9k_gdcwa_matador_90mm")
-table.insert(m9knpw, "m9k_gdcwa_rpg_heat")
-table.insert(m9knpw, "m9k_improvised_explosive")
-table.insert(m9knpw, "m9k_launched_davycrockett")
-table.insert(m9knpw, "m9k_launched_ex41")
-table.insert(m9knpw, "m9k_launched_m79")
-table.insert(m9knpw, "m9k_m202_rocket")
-table.insert(m9knpw, "m9k_mad_c4")
-table.insert(m9knpw, "m9k_milkor_nade")
-table.insert(m9knpw, "m9k_nervegasnade")
-table.insert(m9knpw, "m9k_nitro_vapor")
-table.insert(m9knpw, "m9k_oribital_cannon")
-table.insert(m9knpw, "m9k_poison_parent")
-table.insert(m9knpw, "m9k_proxy")
-table.insert(m9knpw, "m9k_released_poison")
-table.insert(m9knpw, "m9k_sent_nuke_radiation")
-table.insert(m9knpw, "m9k_thrown_harpoon")
-table.insert(m9knpw, "m9k_thrown_knife")
-table.insert(m9knpw, "m9k_thrown_m61")
-table.insert(m9knpw, "m9k_thrown_nitrox")
-table.insert(m9knpw, "m9k_thrown_spec_knife")
-table.insert(m9knpw, "m9k_thrown_sticky_grenade")
-table.insert(m9knpw, "bb_dod_bazooka_rocket")
-table.insert(m9knpw, "bb_dod_panzershreck_rocket")
-table.insert(m9knpw, "bb_garand_riflenade")
-table.insert(m9knpw, "bb_k98_riflenade")
-table.insert(m9knpw, "bb_planted_dod_tnt")
-table.insert(m9knpw, "bb_thrownalliedfrag")
-table.insert(m9knpw, "bb_thrownaxisfrag")
-table.insert(m9knpw, "bb_thrownsmoke_axis")
-table.insert(m9knpw, "bb_thrownaxisfrag")
-table.insert(m9knpw, "bb_planted_alt_c4")
-table.insert(m9knpw, "bb_planted_css_c4")
-table.insert(m9knpw, "bb_throwncssfrag")
-table.insert(m9knpw, "bb_throwncsssmoke")
-table.insert(m9knpw, "m9k_ammo_40mm")
-table.insert(m9knpw, "m9k_ammo_40mm_single")
-table.insert(m9knpw, "m9k_ammo_357")
-table.insert(m9knpw, "m9k_ammo_ar2")
-table.insert(m9knpw, "m9k_ammo_buckshot")
-table.insert(m9knpw, "m9k_ammo_c4")
-table.insert(m9knpw, "m9k_ammo_frags")
-table.insert(m9knpw, "m9k_ammo_ieds")
-table.insert(m9knpw, "m9k_ammo_nervegas")
-table.insert(m9knpw, "m9k_ammo_nuke")
-table.insert(m9knpw, "m9k_ammo_pistol")
-table.insert(m9knpw, "m9k_ammo_proxmines")
-table.insert(m9knpw, "m9k_ammo_rockets")
-table.insert(m9knpw, "m9k_ammo_smg")
-table.insert(m9knpw, "m9k_ammo_sniper_rounds")
-table.insert(m9knpw, "m9k_ammo_stickynades")
-table.insert(m9knpw, "m9k_ammo_winchester")
-
-local function PocketM9KWeapons(ply, wep)
-
-    if not IsValid(wep) then return end
-    class = wep:GetClass()
-    m9knopocket = false
-
-    for k, v in pairs(m9knpw) do
-        if v == class then
-            m9knopocket = true
-            break
-        end
-    end
-
-    if m9knopocket then
-        return false
-    end
-
-    --goddammit i hate darkrp
-
-end
-hook.Add("canPocket", "PocketM9KWeapons", PocketM9KWeapons )
