@@ -240,23 +240,26 @@ function SWEP:Think()
     end
 end
 
-function SWEP:CheckWeaponsAndAmmo(wait)
-    timer.Simple(wait, function()
-    if self.Weapon != nil then if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
-            timer.Simple(.01, function() if SERVER then
-                if self.Owner == nil then return end
-                self.Owner:StripWeapon(self.Gun)
-                end end)
-        else timer.Simple(.25, function()
-            self:Reload()
-            self.Weapon:SendWeaponAnim( ACT_VM_DRAW ) end)
+function SWEP:CheckWeaponsAndAmmo( wait )
+    timer.Simple( wait, function()
+        if not IsValid( self ) then return end
+        if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then return end
+
+        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+            if SERVER then
+                timer.Simple( .01, function()
+                    if not IsValid( self ) or not IsValid( self ) then return end
+                    self:GetOwner():StripWeapon( self.Gun )
+                end )
+            end
+        else
+            timer.Simple( .25, function()
+                self:Reload()
+                self:SendWeaponAnim( ACT_VM_DRAW )
+            end )
         end
-    end end
-    end)
+    end )
 end
-
-
 
 if GetConVar("M9KUniqueSlots") != nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
