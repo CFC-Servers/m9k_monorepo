@@ -17,14 +17,14 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Entity:SetModel("models/weapons/w_nitro.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self:SetModel("models/weapons/w_nitro.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
 
-	self.Entity:DrawShadow( false )
+	self:DrawShadow( false )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:SetMass(5)
 	phys:Wake()
@@ -36,9 +36,9 @@ end
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 	return true
 end
 
@@ -47,7 +47,7 @@ PhysicsCollide
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data,phys)
 
-	self.Entity:EmitSound(Sound("GlassBottle.Break"))
+	self:EmitSound(Sound("GlassBottle.Break"))
 
 	self:QueueExplosion()
 
@@ -57,7 +57,7 @@ function ENT:QueueExplosion()
 
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
@@ -70,7 +70,7 @@ function ENT:QueueExplosion()
 	vaporize.Owner = self.Owner
 	vaporize:Spawn()
 
-	self.Entity:Remove()
+	self:Remove()
 
 end
 
@@ -81,7 +81,7 @@ function ENT:OnTakeDamage( dmginfo )
 	if not IsValid(dmginfo) then return end if not IsValid(dmginfo:GetInflictor()) then return end
 	if dmginfo:GetInflictor() == "m9k_released_poison" then return end
 	self:QueueExplosion()
-	self.Entity:EmitSound(Sound("GlassBottle.Break"))
+	self:EmitSound(Sound("GlassBottle.Break"))
 end
 
 end
@@ -89,7 +89,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       -- Draw the model.
+ self:DrawModel()       -- Draw the model.
  end
 
 end

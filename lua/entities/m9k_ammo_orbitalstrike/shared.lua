@@ -36,23 +36,23 @@ function ENT:Initialize()
 
 	local model = ("models/Items/item_item_crate.mdl")
 
-	self.Entity:SetModel(model)
+	self:SetModel(model)
 
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:DrawShadow(false)
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:DrawShadow(false)
 
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_NONE)
+	self:SetCollisionGroup(COLLISION_GROUP_NONE)
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 
 	if (phys:IsValid()) then
 		phys:Wake()
 		phys:SetMass(40)
 	end
 
-	self.Entity:SetUseType(SIMPLE_USE)
+	self:SetUseType(SIMPLE_USE)
 end
 
 
@@ -62,7 +62,7 @@ end
 function ENT:PhysicsCollide(data, physobj)
 
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
-		self.Entity:EmitSound(Sound("Wood.ImpactHard"))
+		self:EmitSound(Sound("Wood.ImpactHard"))
 	end
 end
 
@@ -70,7 +70,7 @@ end
    Name: OnTakeDamage
 ---------------------------------------------------------*/
 function ENT:OnTakeDamage(dmginfo)
-	self.Entity:TakePhysicsDamage(dmginfo)
+	self:TakePhysicsDamage(dmginfo)
 	if GetConVar("M9KAmmoDetonation") == nil then return end
 	if not (GetConVar("M9KAmmoDetonation"):GetBool()) then return end
 	local dice = math.random(1,15)
@@ -83,18 +83,18 @@ if not IsValid(self) then return end
 	if IsValid(attacker) then
 		return (attacker)
 	else
-		return (self.Entity)
+		return (self)
 	end
 end
 
 function ENT:Normalizer()
 
-	local startpos = self.Entity:GetPos()
+	local startpos = self:GetPos()
 
 	local downtrace = {}
 	downtrace.start = startpos
-	downtrace.endpos = startpos + self.Entity:GetUp()*-5
-	downtrace.filter = self.Entity
+	downtrace.endpos = startpos + self:GetUp()*-5
+	downtrace.filter = self
 	tracedown = util.TraceLine(downtrace)
 
 	if (tracedown.Hit) then
@@ -115,7 +115,7 @@ function ENT:Use(activator, caller)
 		else
 			activator:GiveAmmo(1, "SatCannon")
 		end
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
@@ -134,7 +134,7 @@ end
 ---------------------------------------------------------*/
 function ENT:Draw()
 
-	self.Entity:DrawModel()
+	self:DrawModel()
 
 end
 

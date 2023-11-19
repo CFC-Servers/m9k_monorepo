@@ -17,19 +17,19 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Owner = self.Entity.Owner
+	self.Owner = self.Owner
 
-	self.Entity:SetModel("models/props_junk/cardboard_box004a.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
-	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+	self:SetModel("models/props_junk/cardboard_box004a.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
+	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 
-	self.Entity:SetNWBool("Activated", true)
-	self.Entity.Boom = false
+	self:SetNWBool("Activated", true)
+	self.Boom = false
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:Wake()
 	end
@@ -40,13 +40,13 @@ end
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
-	if self.Entity.Boom then
+	if self.Boom then
 		self:Explosion()
 	end
 
-	self.Entity:NextThink(CurTime())
+	self:NextThink(CurTime())
 	return true
 end
 
@@ -54,14 +54,14 @@ function ENT:Explosion()
 
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+		effectdata:SetOrigin(self:GetPos())			-- Where is hits
 		effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
-		effectdata:SetEntity(self.Entity)		-- Who done it?
+		effectdata:SetEntity(self)		-- Who done it?
 		effectdata:SetScale(1)			-- Size of explosion
 		effectdata:SetRadius(67)		-- What texture it hits
 		effectdata:SetMagnitude(18)			-- Length of explosion trails
@@ -69,8 +69,8 @@ function ENT:Explosion()
 		util.Effect("HelicopterMegaBomb", effectdata)
 		util.Effect("ThumperDust", effectdata)
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 500, 170)
-	util.ScreenShake(self.Entity:GetPos(), 3000, 255, 2.25, 2000)
+	util.BlastDamage(self, self.Owner, self:GetPos(), 500, 170)
+	util.ScreenShake(self:GetPos(), 3000, 255, 2.25, 2000)
 
 	self.IEDSounds = {}
 	self.IEDSounds[1]="ambient/explosions/explode_1.wav"
@@ -78,10 +78,10 @@ function ENT:Explosion()
 	self.IEDSounds[3]="ambient/explosions/explode_3.wav"
 	self.IEDSounds[4]="ambient/explosions/explode_4.wav"
 
-	self.Entity:EmitSound(self.IEDSounds[(math.random(1, 4))], 100, 100, 100 )
-	local scorchstart = self.Entity:GetPos() + ((Vector(0,0,1)) * 5)
-	local scorchend = self.Entity:GetPos() + ((Vector(0,0,-1)) * 5)
-	self.Entity:Remove()
+	self:EmitSound(self.IEDSounds[(math.random(1, 4))], 100, 100, 100 )
+	local scorchstart = self:GetPos() + ((Vector(0,0,1)) * 5)
+	local scorchend = self:GetPos() + ((Vector(0,0,-1)) * 5)
+	self:Remove()
 	util.Decal("Scorch", scorchstart, scorchend)
 
 end
@@ -91,14 +91,14 @@ function ENT:TinyExplo()
 
 	if not IsValid(self) then return end
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+		effectdata:SetOrigin(self:GetPos())			-- Where is hits
 		effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
-		effectdata:SetEntity(self.Entity)		-- Who done it?
+		effectdata:SetEntity(self)		-- Who done it?
 		effectdata:SetScale(1)			-- Size of explosion
 		effectdata:SetRadius(67)		-- What texture it hits
 		effectdata:SetMagnitude(8)			-- Length of explosion trails
@@ -106,12 +106,12 @@ function ENT:TinyExplo()
 		util.Effect("HelicopterMegaBomb", effectdata)
 		util.Effect("ThumperDust", effectdata)
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 100, 60)
-	util.ScreenShake(self.Entity:GetPos(), 1500, 255, 2.25, 800)
+	util.BlastDamage(self, self.Owner, self:GetPos(), 100, 60)
+	util.ScreenShake(self:GetPos(), 1500, 255, 2.25, 800)
 
-	self.Entity:EmitSound("ambient/explosions/explode_" .. math.random(1, 4) .. ".wav", self.Entity:GetPos(), 35, 100 )
+	self:EmitSound("ambient/explosions/explode_" .. math.random(1, 4) .. ".wav", self:GetPos(), 35, 100 )
 
-	self.Entity:Remove()
+	self:Remove()
 
 end
 
@@ -120,7 +120,7 @@ end
 OnTakeDamage
 ---------------------------------------------------------*/
 function ENT:OnTakeDamage( dmginfo )
-	if (dmginfo:GetInflictor() ~= self.Entity)
+	if (dmginfo:GetInflictor() ~= self)
 	and (dmginfo:GetInflictor():GetClass() ~= "m9k_improvised_explosive") then
 		local GoodLuck = math.random(1,10)
 		if GoodLuck == 1 then
@@ -188,7 +188,7 @@ if CLIENT then
 Draw
 ---------------------------------------------------------*/
 function ENT:Draw()
-	self.Entity:DrawModel()
+	self:DrawModel()
 end
 
 end

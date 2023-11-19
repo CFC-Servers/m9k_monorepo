@@ -15,15 +15,15 @@ AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
 
-	self.Owner = self.Entity.Owner
+	self.Owner = self.Owner
 
-	self.Entity:SetModel("models/weapons/w_sticky_grenade_thrown.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
+	self:SetModel("models/weapons/w_sticky_grenade_thrown.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:Wake()
 	end
@@ -36,18 +36,18 @@ end
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if self.timeleft < CurTime() then
 		self:Explosion()
 	end
 
-	if (self.Entity.HitWeld) then
+	if (self.HitWeld) then
 		self.HitWeld = false
-		constraint.Weld(self.Entity.HitEnt, self.Entity, 0, 0, 0, true)
+		constraint.Weld(self.HitEnt, self, 0, 0, 0, true)
 	end
 
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 	return true
 end
 
@@ -81,20 +81,20 @@ function ENT:PhysicsCollide(data, phys)
 		end
 	end
 
-	if not self.Entity.Hit then self.Entity.Hit = false end
-	if self.Entity.Hit then return end
+	if not self.Hit then self.Hit = false end
+	if self.Hit then return end
 
-	self.Entity.Hit = true
+	self.Hit = true
 
 	phys:EnableMotion(false)
 	phys:Sleep()
 
 	if data.HitEntity:IsValid() then
 		if data.HitEntity:IsNPC() or data.HitEntity:IsPlayer() then
-			self.Entity:SetParent(data.HitEntity)
+			self:SetParent(data.HitEntity)
 		else
-			self.Entity.HitEnt = data.HitEntity
-			self.Entity.HitWeld = true
+			self.HitEnt = data.HitEntity
+			self.HitWeld = true
 		end
 
 		phys:EnableMotion(true)
@@ -107,17 +107,17 @@ end
 function ENT:Explosion()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	local trace = {}
-	trace.start = self.Entity:GetPos() + Vector(0, 0, 32)
-	trace.endpos = self.Entity:GetPos() - Vector(0, 0, 128)
-	trace.Entity = self.Entity
+	trace.start = self:GetPos() + Vector(0, 0, 32)
+	trace.endpos = self:GetPos() - Vector(0, 0, 128)
+	trace.Entity = self
 	trace.mask  = 16395
 	local Normal = util.TraceLine(trace).HitNormal
 
@@ -125,16 +125,16 @@ function ENT:Explosion()
 	self.EffectScale = self.Scale ^ 0.65
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())
+		effectdata:SetOrigin(self:GetPos())
 	util.Effect("ThumperDust", effectdata)
 	util.Effect("Explosion", effectdata)
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 220, 220 )
-	util.ScreenShake(self.Entity:GetPos(), 1000, 255, 2.5, 1200)
+	util.BlastDamage(self, self.Owner, self:GetPos(), 220, 220 )
+	util.ScreenShake(self:GetPos(), 1000, 255, 2.5, 1200)
 
-	self.Entity:EmitSound("ambient/explosions/explode_" .. math.random(1, 4) .. ".wav", self.Pos, 100, 100 )
+	self:EmitSound("ambient/explosions/explode_" .. math.random(1, 4) .. ".wav", self.Pos, 100, 100 )
 
-	self.Entity:Remove()
+	self:Remove()
 
 end
 
@@ -143,7 +143,7 @@ end
 if CLIENT then
 
 function ENT:Draw()
-	self.Entity:DrawModel()
+	self:DrawModel()
 end
 
 end

@@ -15,16 +15,16 @@ AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
 
-	self.Owner = self.Entity.Owner
+	self.Owner = self.Owner
 
-	self.Entity:SetModel("models/weapons/w_m61_fraggynade_thrown.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
-	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+	self:SetModel("models/weapons/w_m61_fraggynade_thrown.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
+	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:Wake()
 	end
@@ -41,7 +41,7 @@ end
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if self.timeleft < CurTime() then
 		if (gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool() then
@@ -51,28 +51,28 @@ end
 		end
 	end
 
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 	return true
 end
 
 function ENT:Explosion()
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())
-		effectdata:SetEntity(self.Entity)
-		effectdata:SetStart(self.Entity:GetPos())
+		effectdata:SetOrigin(self:GetPos())
+		effectdata:SetEntity(self)
+		effectdata:SetStart(self:GetPos())
 		effectdata:SetNormal(Vector(0,0,1))
 		--util.Effect("ManhackSparks", effectdata)
 		util.Effect("cball_explode", effectdata)
 		util.Effect("Explosion", effectdata)
 
 	local thumper = effectdata
-		thumper:SetOrigin(self.Entity:GetPos())
+		thumper:SetOrigin(self:GetPos())
 		thumper:SetScale(500)
 		thumper:SetMagnitude(500)
 		util.Effect("ThumperDust", effectdata)
@@ -83,39 +83,39 @@ function ENT:Explosion()
 		sparkeffect:SetScale(5)
 		util.Effect("Sparks", sparkeffect)
 
-	local scorchstart = self.Entity:GetPos() + ((Vector(0,0,1)) * 5)
-	local scorchend = self.Entity:GetPos() + ((Vector(0,0,-1)) * 5)
+	local scorchstart = self:GetPos() + ((Vector(0,0,1)) * 5)
+	local scorchend = self:GetPos() + ((Vector(0,0,-1)) * 5)
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 350, 100)
-	util.ScreenShake(self.Entity:GetPos(), 500, 500, 1.25, 500)
-	self.Entity:Remove()
+	util.BlastDamage(self, self.Owner, self:GetPos(), 350, 100)
+	util.ScreenShake(self:GetPos(), 500, 500, 1.25, 500)
+	self:Remove()
 	util.Decal("Scorch", scorchstart, scorchend)
 end
 
 function ENT:OtherExplosion()
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 450, 350)
-	util.ScreenShake(self.Entity:GetPos(), 500, 500, 1.25, 500)
+	util.BlastDamage(self, self.Owner, self:GetPos(), 450, 350)
+	util.ScreenShake(self:GetPos(), 500, 500, 1.25, 500)
 
-	local scorchstart = self.Entity:GetPos() + ((Vector(0,0,1)) * 5)
-	local scorchend = self.Entity:GetPos() + ((Vector(0,0,-1)) * 5)
+	local scorchstart = self:GetPos() + ((Vector(0,0,1)) * 5)
+	local scorchend = self:GetPos() + ((Vector(0,0,-1)) * 5)
 
-	pos = self.Entity:GetPos() --+Vector(0,0,10)
+	pos = self:GetPos() --+Vector(0,0,10)
 
 	local effectdata = EffectData()
 		effectdata:SetOrigin(pos)
-		effectdata:SetEntity(self.Entity)
+		effectdata:SetEntity(self)
 		effectdata:SetStart(pos)
 		effectdata:SetNormal(Vector(0,0,1))
 	util.Effect("Explosion", effectdata)
 
 	local thumper = effectdata
-		thumper:SetOrigin(self.Entity:GetPos())
+		thumper:SetOrigin(self:GetPos())
 		thumper:SetScale(500)
 		thumper:SetMagnitude(500)
 	util.Effect("ThumperDust", thumper)
@@ -137,7 +137,7 @@ function ENT:OtherExplosion()
 		ouchies = {}
 		ouchies.start = pos
 		ouchies.endpos = pos + (Vector(math.Rand(-1,1), math.Rand(-1,1), math.Rand(0,1)) * 64000)
-		ouchies.filter = self.Entity
+		ouchies.filter = self
 		ouchies = util.TraceLine(ouchies)
 
 		if ouchies.Hit then
@@ -153,15 +153,15 @@ function ENT:OtherExplosion()
 
 			self.Owner:FireBullets(bullet)
 			if ouchies.Entity == self.Owner then
-				ouchies.Entity:TakeDamage(200 * math.Rand(.85,1.15), self.Owner, self.Entity)
+				ouchies.Entity:TakeDamage(200 * math.Rand(.85,1.15), self.Owner, self)
 			end
 		end
 	end
 
-	self.Entity:Remove()
+	self:Remove()
 	util.Decal("Scorch", scorchstart, scorchend)
 
-	self.Entity:EmitSound("ambient/explosions/explode_9.wav", pos, 500, 100 )
+	self:EmitSound("ambient/explosions/explode_9.wav", pos, 500, 100 )
 end
 
 /*---------------------------------------------------------
@@ -169,7 +169,7 @@ PhysicsCollide
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data,phys)
 	if data.Speed > 50 then
-		self.Entity:EmitSound(Sound("HEGrenade.Bounce"))
+		self:EmitSound(Sound("HEGrenade.Bounce"))
 	end
 
 	local impulse = -data.Speed * data.HitNormal * .4 + (data.OurOldVelocity * -.6)
@@ -181,6 +181,6 @@ end
 
 if CLIENT then
 function ENT:Draw()
-	self.Entity:DrawModel()
+	self:DrawModel()
 end
 end

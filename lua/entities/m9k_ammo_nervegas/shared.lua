@@ -36,23 +36,23 @@ function ENT:Initialize()
 
 	local model = ("models/items/ammocrates/cratenervegas.mdl")
 
-	self.Entity:SetModel(model)
+	self:SetModel(model)
 
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:DrawShadow(false)
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:DrawShadow(false)
 
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_NONE)
+	self:SetCollisionGroup(COLLISION_GROUP_NONE)
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 
 	if (phys:IsValid()) then
 		phys:Wake()
 		phys:SetMass(40)
 	end
 
-	self.Entity:SetUseType(SIMPLE_USE)
+	self:SetUseType(SIMPLE_USE)
 end
 
 
@@ -62,7 +62,7 @@ end
 function ENT:PhysicsCollide(data, physobj)
 
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
-		self.Entity:EmitSound(Sound("Wood.ImpactHard"))
+		self:EmitSound(Sound("Wood.ImpactHard"))
 	end
 end
 
@@ -72,16 +72,16 @@ end
 function ENT:OnTakeDamage(dmginfo)
 
 	-- React physically when shot/getting blown
-	self.Entity:TakePhysicsDamage(dmginfo)
+	self:TakePhysicsDamage(dmginfo)
 	local dice = math.random(1,10)
-	local pos = self.Entity:GetPos()
+	local pos = self:GetPos()
 	local attacker
 	if GetConVar("M9KAmmoDetonation") == nil then return end
 	if not (GetConVar("M9KAmmoDetonation"):GetBool()) then return end
 	if IsValid(dmginfo:GetAttacker()) then
 		attacker = dmginfo:GetAttacker()
 	else
-		attacker = self.Entity
+		attacker = self
 	end
 
 	if not IsValid(dmginfo:GetInflictor()) then return end
@@ -129,7 +129,7 @@ function ENT:OnTakeDamage(dmginfo)
 			hurt2:Spawn()
 		end
 
-		self.Entity:Remove()
+		self:Remove()
 		local gas = EffectData()
 		gas:SetOrigin(pos)
 		gas:SetEntity(attacker) --i dunno, just use it!
@@ -152,7 +152,7 @@ function ENT:Use(activator, caller)
 		else
 			activator:GiveAmmo(48, "NerveGas")
 		end
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
@@ -171,7 +171,7 @@ end
 ---------------------------------------------------------*/
 function ENT:Draw()
 
-	self.Entity:DrawModel()
+	self:DrawModel()
 
 end
 

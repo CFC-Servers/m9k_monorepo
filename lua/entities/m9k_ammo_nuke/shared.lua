@@ -39,23 +39,23 @@ function ENT:Initialize()
 
 	local model = ("models/failure/mk6/mk6.mdl")
 
-	self.Entity:SetModel(model)
+	self:SetModel(model)
 
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:DrawShadow(false)
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:DrawShadow(false)
 
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_NONE)
+	self:SetCollisionGroup(COLLISION_GROUP_NONE)
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 
 	if (phys:IsValid()) then
 		phys:Wake()
 		phys:SetMass(40)
 	end
 
-	self.Entity:SetUseType(SIMPLE_USE)
+	self:SetUseType(SIMPLE_USE)
 end
 
 
@@ -65,7 +65,7 @@ end
 function ENT:PhysicsCollide(data, physobj)
 
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
-		self.Entity:EmitSound(Sound("EpicMetal.ImpactHard"))
+		self:EmitSound(Sound("EpicMetal.ImpactHard"))
 	end
 end
 
@@ -75,7 +75,7 @@ end
 function ENT:OnTakeDamage(dmginfo)
 
 	-- React physically when shot/getting blown
-	self.Entity:TakePhysicsDamage(dmginfo)
+	self:TakePhysicsDamage(dmginfo)
 	if GetConVar("M9KAmmoDetonation") == nil then return end
 	local dice = math.random(1,30)
 	local att
@@ -83,16 +83,16 @@ function ENT:OnTakeDamage(dmginfo)
 	if IsValid(dmginfo:GetAttacker()) then
 		att = dmginfo:GetAttacker()
 	else
-		att = self.Entity
+		att = self
 	end
 
 	if dice == 1 then--you stupid son of a bitch, what did you just do!
 		local nuke = ents.Create("m9k_davy_crockett_explo")
-		nuke:SetPos( self.Entity:GetPos() )
+		nuke:SetPos( self:GetPos() )
 		nuke:SetOwner(att)
 		nuke:Spawn()
 		nuke:Activate()
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
@@ -104,7 +104,7 @@ function ENT:Use(activator, caller)
 
 	if (activator:IsPlayer()) and not self.Planted then
 		activator:GiveAmmo(1, "Nuclear_Warhead")
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
@@ -123,7 +123,7 @@ end
 ---------------------------------------------------------*/
 function ENT:Draw()
 
-	self.Entity:DrawModel()
+	self:DrawModel()
 
 end
 

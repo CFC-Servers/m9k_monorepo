@@ -17,16 +17,16 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Entity:SetModel("models/healthvial.mdl")
-	self.Entity:SetMaterial("models/weapons/gv/nerve_vial.vmt")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
+	self:SetModel("models/healthvial.mdl")
+	self:SetMaterial("models/weapons/gv/nerve_vial.vmt")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
 
-	self.backflightvector = self.Entity:GetForward() * (-5)
+	self.backflightvector = self:GetForward() * (-5)
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 	phys:SetMass(4)
 	phys:Wake()
@@ -37,9 +37,9 @@ end
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 	return true
 end
 
@@ -51,7 +51,7 @@ function ENT:PhysicsCollide(data,phys)
 	--self.timeleft = CurTime() + 20
 
 	if data.Speed > 50 then
-		self.Entity:EmitSound(Sound("GlassBottle.Break"))
+		self:EmitSound(Sound("GlassBottle.Break"))
 	end
 
 	self:BreakVial()
@@ -61,11 +61,11 @@ end
 function ENT:BreakVial()
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
-	local pos = self.Entity:GetPos()
+	local pos = self:GetPos()
 
 	if GetConVar("M9KExplosiveNerveGas") == nil or GetConVar("M9KExplosiveNerveGas"):GetBool() then
 
@@ -115,7 +115,7 @@ function ENT:BreakVial()
 		gas:SetScale(1)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_released_nerve_gas", gas)
 
-	self.Entity:Remove()
+	self:Remove()
 
 end
 
@@ -126,7 +126,7 @@ function ENT:OnTakeDamage( dmginfo )
 	if not IsValid(dmginfo) then return end if not IsValid(dmginfo:GetInflictor()) then return end
 	if dmginfo:GetInflictor() == "m9k_released_poison" then return end
 	self:BreakVial()
-	self.Entity:EmitSound(Sound("GlassBottle.Break"))
+	self:EmitSound(Sound("GlassBottle.Break"))
 end
 
 end
@@ -134,7 +134,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       -- Draw the model.
+ self:DrawModel()       -- Draw the model.
  end
 
 end

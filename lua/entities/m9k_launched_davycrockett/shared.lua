@@ -17,90 +17,90 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-self.flightvector = self.Entity:GetUp() * ((115*52.5)/66)
+self.flightvector = self:GetUp() * ((115*52.5)/66)
 self.timeleft = CurTime() + 5
-self.Owner = self.Entity.Owner
-self.Entity:SetModel( "models/failure/mk6/m62.mdl" )
-self.Entity:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
-self.Entity:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
-self.Entity:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
-self.Entity:SetColor(Color(82,102,39,254))
+self.Owner = self.Owner
+self:SetModel( "models/failure/mk6/m62.mdl" )
+self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
+self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
+self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
+self:SetColor(Color(82,102,39,254))
 
 Glow = ents.Create("env_sprite")
 Glow:SetKeyValue("model","orangecore2.vmt")
 Glow:SetKeyValue("rendercolor","255 150 100")
 Glow:SetKeyValue("scale","0.3")
-Glow:SetPos(self.Entity:GetPos())
-Glow:SetParent(self.Entity)
+Glow:SetPos(self:GetPos())
+Glow:SetParent(self)
 Glow:Spawn()
 Glow:Activate()
-self.Entity:SetNWBool("smoke", true)
+self:SetNWBool("smoke", true)
 end
 
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 		if self.timeleft < CurTime() then
 			if not IsValid(self.Owner) then
-				self.Entity:Remove()
+				self:Remove()
 				return
 			end
 
 		local nuke = ents.Create("m9k_davy_crockett_explo")
-		nuke:SetPos( self.Entity:GetPos() )
+		nuke:SetPos( self:GetPos() )
 		nuke:SetOwner(self.Owner)
 		nuke:Spawn()
 		nuke:Activate()
-		self.Entity:Remove()
+		self:Remove()
 		end
 
 	Table	={} 			--Table name is table name
 	Table[1]	=self.Owner 		--The person holding the gat
-	Table[2]	=self.Entity 		--The cap
+	Table[2]	=self 		--The cap
 
 	local trace = {}
-		trace.start = self.Entity:GetPos()
-		trace.endpos = self.Entity:GetPos() + self.flightvector
+		trace.start = self:GetPos()
+		trace.endpos = self:GetPos() + self.flightvector
 		trace.filter = Table
 	local tr = util.TraceLine( trace )
 
 
 			if tr.HitSky then
 				if not IsValid(self.Owner) then
-					self.Entity:Remove()
+					self:Remove()
 					return
 				end
 					local nuke = ents.Create("m9k_davy_crockett_explo")
-					nuke:SetPos( self.Entity:GetPos() )
-					nuke:SetOwner(self.Entity.Owner)
-					nuke.Owner = self.Entity.Owner
+					nuke:SetPos( self:GetPos() )
+					nuke:SetOwner(self.Owner)
+					nuke.Owner = self.Owner
 					nuke:Spawn()
 					nuke:Activate()
-					self.Entity:Remove()
-					self.Entity:SetNWBool("smoke", false)
+					self:Remove()
+					self:SetNWBool("smoke", false)
 			end
 
 					if tr.Hit then
 						if not IsValid(self.Owner) then
-							self.Entity:Remove()
+							self:Remove()
 							return
 						end
 						local nuke = ents.Create("m9k_davy_crockett_explo")
-						nuke:SetPos( self.Entity:GetPos() )
-						nuke:SetOwner(self.Entity.Owner)
-						nuke.Owner = self.Entity.Owner
+						nuke:SetPos( self:GetPos() )
+						nuke:SetOwner(self.Owner)
+						nuke.Owner = self.Owner
 						nuke:Spawn()
 						nuke:Activate()
-						self.Entity:Remove()
-						self.Entity:SetNWBool("smoke", false)
+						self:Remove()
+						self:SetNWBool("smoke", false)
 					end
 
-	self.Entity:SetPos(self.Entity:GetPos() + self.flightvector)
-	self.flightvector = self.flightvector - self.flightvector/((147*39.37)/66) + self.Entity:GetUp()*2 + Vector(math.Rand(-0.3,0.3), math.Rand(-0.3,0.3),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
-	self.Entity:SetAngles(self.flightvector:Angle() + Angle(90,0,0))
-	self.Entity:NextThink( CurTime() )
+	self:SetPos(self:GetPos() + self.flightvector)
+	self.flightvector = self.flightvector - self.flightvector/((147*39.37)/66) + self:GetUp()*2 + Vector(math.Rand(-0.3,0.3), math.Rand(-0.3,0.3),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
+	self:SetAngles(self.flightvector:Angle() + Angle(90,0,0))
+	self:NextThink( CurTime() )
 	return true
 
 end
@@ -109,7 +109,7 @@ end
 
 if CLIENT then
  function ENT:Draw()
- self.Entity:DrawModel()       -- Draw the model.
+ self:DrawModel()       -- Draw the model.
  end
 
 function ENT:Initialize()
@@ -118,7 +118,7 @@ function ENT:Initialize()
  end
 
  function ENT:Think()
-	if (self.Entity:GetNWBool("smoke")) then
+	if (self:GetNWBool("smoke")) then
 	pos = self:GetPos()
 		for i=0, (10) do
 			local particle = self.emitter:Add( "particle/smokesprites_000"..math.random(1,9), pos + (self:GetUp() * -100 * i))

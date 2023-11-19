@@ -35,22 +35,22 @@ function ENT:Initialize()
 
 	local model = ("models/Items/BoxBuckshot.mdl")
 
-	self.Entity:SetModel(model)
+	self:SetModel(model)
 
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:DrawShadow(false)
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:DrawShadow(false)
 
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+	self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 
 	if (phys:IsValid()) then
 		phys:Wake()
 	end
 
-	self.Entity:SetUseType(SIMPLE_USE)
+	self:SetUseType(SIMPLE_USE)
 end
 
 
@@ -61,7 +61,7 @@ function ENT:PhysicsCollide(data, physobj)
 
 	-- Play sound on bounce
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
-		self.Entity:EmitSound("Default.ImpactSoft")
+		self:EmitSound("Default.ImpactSoft")
 	end
 end
 
@@ -72,19 +72,19 @@ function ENT:OnTakeDamage(dmginfo)
 
 	if dmginfo:GetAttacker():GetClass() == "m9k_ammo_explosion" then return end
 
-	self.Entity:TakePhysicsDamage(dmginfo)
+	self:TakePhysicsDamage(dmginfo)
 	if GetConVar("M9KAmmoDetonation") == nil then return end
 	if not (GetConVar("M9KAmmoDetonation"):GetBool()) then return end
 	blaster = dmginfo:GetAttacker()
-	pos = self.Entity:GetPos()+Vector(0,0,10)
+	pos = self:GetPos()+Vector(0,0,10)
 
 	dice = math.random(1,5)
 
 	if dmginfo:GetDamage() >75 or dice == 1 then
-		self.Entity:Remove()
+		self:Remove()
 
 		local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())
+		effectdata:SetOrigin(self:GetPos())
 		util.Effect("ThumperDust", effectdata)
 		util.Effect("Explosion", effectdata)
 
@@ -99,7 +99,7 @@ function ENT:OnTakeDamage(dmginfo)
 
 			if ouchies.Hit and not ouchies.HitSky then
 				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )--and ouchies.Entity then
-				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, self.Entity)
+				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, self)
 			end
 			end
 		end)
@@ -117,7 +117,7 @@ function ENT:Use(activator, caller)
 	if (activator:IsPlayer()) and not self.Planted then
 		-- Give the collecting player some free health
 		activator:GiveAmmo(100, "buckshot")
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
@@ -136,13 +136,13 @@ end
 ---------------------------------------------------------*/
 function ENT:Draw()
 
-	self.Entity:DrawModel()
+	self:DrawModel()
 
 	local ledcolor = Color(230, 45, 45, 255)
 
-  	local TargetPos = self.Entity:GetPos() + (self.Entity:GetUp() * 3) + (self.Entity:GetRight() * 2) + (self.Entity:GetForward() * 3.54)
+  	local TargetPos = self:GetPos() + (self:GetUp() * 3) + (self:GetRight() * 2) + (self:GetForward() * 3.54)
 
-	local FixAngles = self.Entity:GetAngles()
+	local FixAngles = self:GetAngles()
 	local FixRotation = Vector(0, 90, 90)
 
 	FixAngles:RotateAroundAxis(FixAngles:Right(), FixRotation.x)

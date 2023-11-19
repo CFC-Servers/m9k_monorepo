@@ -17,76 +17,76 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-self.flightvector = self.Entity:GetForward() * ((115*52.5)/66)
+self.flightvector = self:GetForward() * ((115*52.5)/66)
 self.timeleft = CurTime() + 10
 self.Owner = self:GetOwner()
-self.Entity:SetModel( "models/Weapons/W_missile_closed.mdl" )
-self.Entity:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
-self.Entity:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
-self.Entity:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
-self.Entity:SetMaterial("models/debug/debugwhite.vmt")
-self.Entity:SetColor(Color(55,67,44,255))
+self:SetModel( "models/Weapons/W_missile_closed.mdl" )
+self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
+self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
+self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
+self:SetMaterial("models/debug/debugwhite.vmt")
+self:SetColor(Color(55,67,44,255))
 
 Glow = ents.Create("env_sprite")
 Glow:SetKeyValue("model","orangecore2.vmt")
 Glow:SetKeyValue("rendercolor","255 150 100")
 Glow:SetKeyValue("scale","0.3")
-Glow:SetPos(self.Entity:GetPos())
-Glow:SetParent(self.Entity)
+Glow:SetPos(self:GetPos())
+Glow:SetParent(self)
 Glow:Spawn()
 Glow:Activate()
-self.Entity:SetNWBool("smoke", true)
+self:SetNWBool("smoke", true)
 end
 
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 		if self.timeleft < CurTime() then
-		self.Entity:Remove()
+		self:Remove()
 		end
 
 	Table	={} 			--Table name is table name
 	Table[1]	=self.Owner 		--The person holding the gat
-	Table[2]	=self.Entity 		--The cap
+	Table[2]	=self 		--The cap
 
 	local trace = {}
-		trace.start = self.Entity:GetPos()
-		trace.endpos = self.Entity:GetPos() + self.flightvector
+		trace.start = self:GetPos()
+		trace.endpos = self:GetPos() + self.flightvector
 		trace.filter = Table
 	local tr = util.TraceLine( trace )
 
 
 			if tr.HitSky then
-			self.Entity:Remove()
+			self:Remove()
 			return true
 			end
 
 				if tr.Hit then
 					if not IsValid(self.Owner) then
-						self.Entity:Remove()
+						self:Remove()
 						return
 					end
-					util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 600, 150)
+					util.BlastDamage(self, self.Owner, tr.HitPos, 600, 150)
 					local effectdata = EffectData()
 					effectdata:SetOrigin(tr.HitPos)			-- Where is hits
 					effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
-					effectdata:SetEntity(self.Entity)		-- Who done it?
+					effectdata:SetEntity(self)		-- Who done it?
 					effectdata:SetScale(1.8)			-- Size of explosion
 					effectdata:SetRadius(tr.MatType)		-- What texture it hits
 					effectdata:SetMagnitude(18)			-- Length of explosion trails
 					util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 					util.ScreenShake(tr.HitPos, 10, 5, 1, 3000 )
 					util.Decal("Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
-					self.Entity:SetNWBool("smoke", false)
-					self.Entity:Remove()
+					self:SetNWBool("smoke", false)
+					self:Remove()
 				end
 
-	self.Entity:SetPos(self.Entity:GetPos() + self.flightvector)
-	self.flightvector = self.flightvector - self.flightvector/((147*39.37)/66) + self.Entity:GetForward()*2 + Vector(math.Rand(-0.3,0.3), math.Rand(-0.3,0.3),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
-	self.Entity:SetAngles(self.flightvector:Angle() + Angle(0,0,0))
-	self.Entity:NextThink( CurTime() )
+	self:SetPos(self:GetPos() + self.flightvector)
+	self.flightvector = self.flightvector - self.flightvector/((147*39.37)/66) + self:GetForward()*2 + Vector(math.Rand(-0.3,0.3), math.Rand(-0.3,0.3),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
+	self:SetAngles(self.flightvector:Angle() + Angle(0,0,0))
+	self:NextThink( CurTime() )
 	return true
 end
 
@@ -95,7 +95,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       -- Draw the model.
+ self:DrawModel()       -- Draw the model.
  end
 
    function ENT:Initialize()
@@ -104,7 +104,7 @@ if CLIENT then
  end
 
  function ENT:Think()
-	if (self.Entity:GetNWBool("smoke")) then
+	if (self:GetNWBool("smoke")) then
 	pos = self:GetPos()
 		for i=0, (10) do
 			local particle = self.emitter:Add( "particle/smokesprites_000"..math.random(1,9), pos + (self:GetForward() * -100 * i))

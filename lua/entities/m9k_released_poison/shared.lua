@@ -15,15 +15,15 @@ AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
 
-	self.Entity:SetModel("models/maxofs2d/hover_classic.mdl")
-	self.Entity:PhysicsInit( MOVETYPE_NONE )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
-	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-	self.Entity:SetRenderMode( RENDERMODE_TRANSALPHA )
-	self.Entity:SetColor( Color(0,0,0,0) ) --fix this later
-	self.Owner = self.Entity.Owner
+	self:SetModel("models/maxofs2d/hover_classic.mdl")
+	self:PhysicsInit( MOVETYPE_NONE )
+	self:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
+	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+	self:SetRenderMode( RENDERMODE_TRANSALPHA )
+	self:SetColor( Color(0,0,0,0) ) --fix this later
+	self.Owner = self.Owner
 	if self.Big then
 		self.timeleft = CurTime() + 28
 	else
@@ -35,19 +35,19 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	if self.timeleft < CurTime() then
-		self.Entity:Remove()
+		self:Remove()
 	end
 
 	self:MakePoison()
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 
 end
 
@@ -55,7 +55,7 @@ end
 function ENT:MakePoison()
 
 	local pos = self.PosToKeep
-	if pos == nil then pos = self.Entity:GetPos()end
+	if pos == nil then pos = self:GetPos()end
 	local damage = 70
 	local radius = 225
 
@@ -71,8 +71,8 @@ function ENT:MakePoison()
 	if IsValid(self) then
 		if IsValid(self.Owner) then
 			poisonowner = self.Owner
-		elseif IsValid(self.Entity) then
-			poisonowner = self.Entity
+		elseif IsValid(self) then
+			poisonowner = self
 		end
 	end
 	if not IsValid(poisonowner) then return end

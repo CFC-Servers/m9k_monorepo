@@ -15,15 +15,15 @@ AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
 
-	self.Entity:SetModel("models/maxofs2d/hover_classic.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
-	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-	self.Entity:SetRenderMode( RENDERMODE_TRANSALPHA )
-	self.Entity:SetColor( Color(0,0,0,0) ) --fix this later
-	self.Owner = self.Entity.Owner
+	self:SetModel("models/maxofs2d/hover_classic.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
+	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+	self:SetRenderMode( RENDERMODE_TRANSALPHA )
+	self:SetColor( Color(0,0,0,0) ) --fix this later
+	self.Owner = self.Owner
 	if self.Big then
 		self.timeleft = CurTime() + 28
 	else
@@ -35,15 +35,15 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	if self.timeleft < CurTime() then
-		self.Entity:Remove()
+		self:Remove()
 	end
 
 end

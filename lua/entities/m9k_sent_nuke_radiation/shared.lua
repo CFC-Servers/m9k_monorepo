@@ -19,33 +19,33 @@ function ENT:Initialize()
 	self.Yield = (GetConVarNumber("nuke_yield") or 100)/100
 	self.YieldSlow = self.Yield^0.75
 	self.YieldSlowest = self.Yield^0.5
-	self.Pos = self.Entity:GetPos() + Vector(0,0,4)
+	self.Pos = self:GetPos() + Vector(0,0,4)
 
 	self.Damage = (GetConVarNumber("nuke_radiation_damage") or 100)*3e5*self.YieldSlow
 	self.Duration = (GetConVarNumber("nuke_radiation_duration") or 100)*0.40*self.YieldSlowest
 	self.Radius = 12000*self.YieldSlow
 
-	self.Owner = self.Entity.Owner
-	self.Weapon = self.Entity
+	self.Owner = self.Owner
+	self.Weapon = self
 	self.lastThink = CurTime() + 3
 	self.RadTime = CurTime() + self.Duration
 
 	--We need to init physics properties even though this entity isn't physically simulated
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:DrawShadow( false )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:DrawShadow( false )
 
-	self.Entity:SetCollisionBounds( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
-	self.Entity:PhysicsInitBox( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
+	self:SetCollisionBounds( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
+	self:PhysicsInitBox( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		phys:EnableCollisions( false )
 	end
 
-	self.Entity:SetNotSolid( true )
+	self:SetNotSolid( true )
 
 	--remove this ent after awhile
-	self.Entity:Fire("kill","",self.Duration)
+	self:Fire("kill","",self.Duration)
 	self.CanTool = false
 
 end
@@ -54,7 +54,7 @@ function ENT:LOS(ent,entpos)
 
 	local trace = {}
 	trace.start = self.Pos
-	trace.filter = {self.Entity}
+	trace.filter = {self}
 	trace.endpos = entpos
 	local traceRes = util.TraceLine(trace)
 
@@ -70,10 +70,10 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 

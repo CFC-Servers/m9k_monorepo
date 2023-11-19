@@ -17,119 +17,119 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-self.flightvector = self.Entity:GetUp() * ((80*52.5)/66)
+self.flightvector = self:GetUp() * ((80*52.5)/66)
 self.timeleft = CurTime() + 15
 self.Owner = self:GetOwner()
-self.Entity:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
-self.Entity:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
-self.Entity:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
-self.Entity:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
+self:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
+self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
+self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
+self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
 self.InFlight = true
-self.Entity:SetNWBool("smoke", true)
+self:SetNWBool("smoke", true)
 end
 
  function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	Table	={} 			--Table name is table name
 	Table[1]	=self.Owner 		--The person holding the gat
-	Table[2]	=self.Entity 		--The cap
+	Table[2]	=self 		--The cap
 
 	local trace = {}
-		trace.start = self.Entity:GetPos()
-		trace.endpos = self.Entity:GetPos() + self.flightvector
+		trace.start = self:GetPos()
+		trace.endpos = self:GetPos() + self.flightvector
 		trace.filter = Table
 	local tr = util.TraceLine( trace )
 
 
 			if tr.HitSky then
-			self.Entity:Remove()
+			self:Remove()
 			return true
 			end
 
 				if tr.Hit and self.InFlight then
 					if not IsValid(self.Owner) then
-						self.Entity:Remove()
+						self:Remove()
 						return
 					end
 
 					if not (tr.MatType == 70 or tr.MatType == 50) then
-						util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 350, 150)
+						util.BlastDamage(self, self.Owner, tr.HitPos, 350, 150)
 						local effectdata = EffectData()
 						effectdata:SetOrigin(tr.HitPos)			-- Where is hits
 						effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
-						effectdata:SetEntity(self.Entity)		-- Who done it?
+						effectdata:SetEntity(self)		-- Who done it?
 						effectdata:SetScale(2)			-- Size of explosion
 						effectdata:SetRadius(tr.MatType)		-- What texture it hits
 						effectdata:SetMagnitude(14)			-- Length of explosion trails
 						util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 						util.ScreenShake(tr.HitPos, 10, 5, 1, 3000 )
 						util.Decal("Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
-					self.Entity:Remove()
+					self:Remove()
 					else
-						if (tr.Entity:IsPlayer() or tr.Entity:IsNPC()) then tr.Entity:TakeDamage(150, self.Owner, self.Entity)	end
+						if (tr.Entity:IsPlayer() or tr.Entity:IsNPC()) then tr.Entity:TakeDamage(150, self.Owner, self)	end
 						local effectdata = EffectData()
 						effectdata:SetOrigin(tr.HitPos)			-- Where is hits
 						effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
-						effectdata:SetEntity(self.Entity)		-- Who done it?
+						effectdata:SetEntity(self)		-- Who done it?
 						effectdata:SetScale(1)			-- Size of explosion
 						effectdata:SetRadius(tr.MatType)		-- What texture it hits
 						effectdata:SetMagnitude(10)			-- Length of explosion trails
 						tr.Entity:EmitSound(("physics/flesh/flesh_squishy_impact_hard" .. math.random(1, 4) .. ".wav"), 500, 100	)
 						util.Effect("m9k_cinematic_blood_cloud", effectdata)
-						self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-						self.Entity:SetPos(tr.HitPos)
-						local phys = self.Entity:GetPhysicsObject()
+						self:SetMoveType(MOVETYPE_VPHYSICS)
+						self:SetPos(tr.HitPos)
+						local phys = self:GetPhysicsObject()
 						phys:Wake()
 						phys:SetMass(3)
 						self.InFlight = false
-						self.Entity:SetNWBool("smoke", false)
+						self:SetNWBool("smoke", false)
 						self.timeleft = CurTime() + 2
 					end
 
 				end
 
 	if self.InFlight then
-	self.Entity:SetPos(self.Entity:GetPos() + self.flightvector)
+	self:SetPos(self:GetPos() + self.flightvector)
 	self.flightvector = self.flightvector - (self.flightvector/350)  + Vector(math.Rand(-0.2,0.2), math.Rand(-0.2,0.2),math.Rand(-0.1,0.1)) + Vector(0,0,-0.111)
-	self.Entity:SetAngles(self.flightvector:Angle() + Angle(90,0,0))
+	self:SetAngles(self.flightvector:Angle() + Angle(90,0,0))
 	end
 
 	if CurTime() > self.timeleft then
 		self:Explosion()
 	end
 
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 	return true
 end
 
 function ENT:Explosion()
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
-	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 250, 300)
+	util.BlastDamage(self, self.Owner, self:GetPos(), 250, 300)
 	local effectdata = EffectData()
-	effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+	effectdata:SetOrigin(self:GetPos())			-- Where is hits
 	effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
-	effectdata:SetEntity(self.Entity)		-- Who done it?
+	effectdata:SetEntity(self)		-- Who done it?
 	effectdata:SetScale(1.3)			-- Size of explosion
 	effectdata:SetRadius(67)		-- What texture it hits
 	effectdata:SetMagnitude(14)			-- Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
-	util.ScreenShake(self.Entity:GetPos(), 10, 5, 1, 3000 )
-	self.Entity:Remove()
+	util.ScreenShake(self:GetPos(), 10, 5, 1, 3000 )
+	self:Remove()
 
 end
 end
 
 if CLIENT then
  function ENT:Draw()
- self.Entity:DrawModel()       -- Draw the model.
+ self:DrawModel()       -- Draw the model.
  end
 
    function ENT:Initialize()
@@ -138,7 +138,7 @@ if CLIENT then
  end
 
  function ENT:Think()
-	if (self.Entity:GetNWBool("smoke")) then
+	if (self:GetNWBool("smoke")) then
 		pos = self:GetPos()
 		for i=0, (4) do
 			local particle = self.emitter:Add( "particle/smokesprites_000"..math.random(1,9), pos + (self:GetUp() * -120 * i))

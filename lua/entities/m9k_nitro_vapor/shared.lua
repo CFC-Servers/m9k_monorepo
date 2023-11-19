@@ -15,15 +15,15 @@ AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
 
-	self.Entity:SetModel("models/maxofs2d/hover_classic.mdl")
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
-	self.Entity:SetSolid( SOLID_VPHYSICS )
-	self.Entity:DrawShadow( false )
-	self.Entity:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-	self.Entity:SetRenderMode( RENDERMODE_TRANSALPHA )
-	self.Entity:SetColor( Color(0,0,0,0) ) --fix this later
-	self.Owner = self.Entity.Owner
+	self:SetModel("models/maxofs2d/hover_classic.mdl")
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
+	self:SetSolid( SOLID_VPHYSICS )
+	self:DrawShadow( false )
+	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
+	self:SetRenderMode( RENDERMODE_TRANSALPHA )
+	self:SetColor( Color(0,0,0,0) ) --fix this later
+	self.Owner = self.Owner
 	self.CanTool = false
 
 	timer.Simple(.3, function() if IsValid(self) then self:Blammo() end end)
@@ -33,19 +33,19 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
-	self.Entity:NextThink( CurTime() )
+	self:NextThink( CurTime() )
 end
 
 
 function ENT:Blammo()
 
-	local pos = self.Entity:GetPos()
+	local pos = self:GetPos()
 	local damage = 600
 	local radius = 200
 	local nitro_owner
@@ -53,8 +53,8 @@ function ENT:Blammo()
 	if IsValid(self) then
 		if IsValid(self.Owner) then
 			nitro_owner = self.Owner
-		elseif IsValid(self.Entity) then
-			nitro_owner = self.Entity
+		elseif IsValid(self) then
+			nitro_owner = self
 		end
 	end
 	if not IsValid(nitro_owner) then return end
@@ -63,8 +63,8 @@ function ENT:Blammo()
 	util.ScreenShake(pos, 500, 500, .25, 500)
 	sound.Play("ambient/explosions/explode_7.wav", pos, 95)
 
-	local scorchstart = self.Entity:GetPos() + ((Vector(0,0,1)) * 5)
-	local scorchend = self.Entity:GetPos() + ((Vector(0,0,-1)) * 5)
+	local scorchstart = self:GetPos() + ((Vector(0,0,1)) * 5)
+	local scorchend = self:GetPos() + ((Vector(0,0,-1)) * 5)
 	util.Decal("Scorch", scorchstart, scorchend)
 
 	for k, v in pairs(ents.FindInSphere(pos,300)) do
@@ -73,7 +73,7 @@ function ENT:Blammo()
 				local pushy = {}
 				pushy.start = pos
 				pushy.endpos = v:GetPos()
-				pushy.filter = self.Entity
+				pushy.filter = self
 				local pushtrace = util.TraceLine(pushy)
 				if not pushtrace.HitWorld then
 					local thing = v:GetPhysicsObject()
@@ -86,7 +86,7 @@ function ENT:Blammo()
 
 	end
 
-	self.Entity:Remove()
+	self:Remove()
 
 end
 

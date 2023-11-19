@@ -22,18 +22,18 @@ AddCSLuaFile("shared.lua")
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Owner = self.Entity.Owner
+	self.Owner = self.Owner
 
-	self.Entity:SetModel("models/maxofs2d/hover_classic.mdl") --fix that
-	self.Entity:SetMoveType(MOVETYPE_FLY)
-	self.Entity:DrawShadow(false)
+	self:SetModel("models/maxofs2d/hover_classic.mdl") --fix that
+	self:SetMoveType(MOVETYPE_FLY)
+	self:DrawShadow(false)
 
-	--self.Entity:SetLocalVelocity(Vector(math.Rand(-1,1),math.Rand(-1,1),0) * 500)
+	--self:SetLocalVelocity(Vector(math.Rand(-1,1),math.Rand(-1,1),0) * 500)
 
-	self.Entity:SetRenderMode( RENDERMODE_TRANSALPHA )
-	self.Entity:SetColor( Color(0,0,0,0) )
+	self:SetRenderMode( RENDERMODE_TRANSALPHA )
+	self:SetColor( Color(0,0,0,0) )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 
 	if phys:IsValid() then
 		phys:Wake()
@@ -143,12 +143,12 @@ function ENT:CannonTargeting3(ground, sky)
 	laser:SetKeyValue("renderamt", "255")
 
 	laser:SetKeyValue("lasertarget", tostring(targ))
-	laser:SetKeyValue("parent", tostring(self.Entity))
-	laser:SetPos(self.Entity:GetPos())
+	laser:SetKeyValue("parent", tostring(self))
+	laser:SetPos(self:GetPos())
 	laser:Spawn()
 	laser:Fire("turnon",0)
 	laser:Fire("Kill", "", 3)
-	laser:SetParent(self.Entity)
+	laser:SetParent(self)
 
 	local tip = ents.Create("env_sprite")
 	tip:SetPos(ground)
@@ -185,12 +185,12 @@ function ENT:CannonTargetingPerson3(target, sky)
 	laser:SetKeyValue("renderamt", "255")
 
 	laser:SetKeyValue("lasertarget", tostring(targ))
-	laser:SetKeyValue("parent", tostring(self.Entity))
-	laser:SetPos(self.Entity:GetPos())
+	laser:SetKeyValue("parent", tostring(self))
+	laser:SetPos(self:GetPos())
 	laser:Spawn()
 	laser:Fire("turnon",0)
 	laser:Fire("Kill", "", 3)
-	laser:SetParent(self.Entity)
+	laser:SetParent(self)
 
 	local tip = ents.Create("env_sprite")
 	tip:SetPos(target:GetPos())
@@ -210,7 +210,7 @@ end
 
 function ENT:GiantLaser(ground, sky)
 
-	pos = self.Entity:GetPos()
+	pos = self:GetPos()
 	lowerleft = Vector(870,500,0)
 	lowerright = Vector(-870,500,0)
 	top = Vector(0,-1000,0)
@@ -242,11 +242,11 @@ function ENT:GiantLaser(ground, sky)
 	laser:SetKeyValue("renderamt", "255")
 
 	laser:SetKeyValue("lasertarget", tostring(targ))
-	laser:SetPos(self.Entity:GetPos() + top)
+	laser:SetPos(self:GetPos() + top)
 	laser:Spawn()
 	laser:Fire("turnon",0)
 	laser:Fire("Kill", "", 2.25)
-	laser:SetParent(self.Entity)
+	laser:SetParent(self)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground)
@@ -265,11 +265,11 @@ function ENT:GiantLaser(ground, sky)
 	laser2:SetKeyValue("rendercolor", "100 100 255")
 	laser2:SetKeyValue("renderamt", "255")
 	laser2:SetKeyValue("lasertarget", tostring(targ))
-	laser2:SetPos(self.Entity:GetPos() + lowerleft)
+	laser2:SetPos(self:GetPos() + lowerleft)
 	laser2:Spawn()
 	laser2:Fire("turnon",0)
 	laser2:Fire("Kill", "", 1.5)
-	laser2:SetParent(self.Entity)
+	laser2:SetParent(self)
 	end
 	end)
 
@@ -284,11 +284,11 @@ function ENT:GiantLaser(ground, sky)
 	laser3:SetKeyValue("rendercolor", "100 100 255")
 	laser3:SetKeyValue("renderamt", "255")
 	laser3:SetKeyValue("lasertarget", tostring(targ))
-	laser3:SetPos(self.Entity:GetPos() + lowerright)
+	laser3:SetPos(self:GetPos() + lowerright)
 	laser3:Spawn()
 	laser3:Fire("turnon",0)
 	laser3:Fire("Kill", "", 1)
-	laser3:SetParent(self.Entity)
+	laser3:SetParent(self)
 	end
 	end)
 
@@ -303,11 +303,11 @@ function ENT:GiantLaser(ground, sky)
 	laser4:SetKeyValue("rendercolor", "100 100 255")
 	laser4:SetKeyValue("renderamt", "255")
 	laser4:SetKeyValue("lasertarget", tostring(targ))
-	laser4:SetPos(self.Entity:GetPos())
+	laser4:SetPos(self:GetPos())
 	laser4:Spawn()
 	laser4:Fire("turnon",0)
 	laser4:Fire("Kill", "", .5)
-	laser4:SetParent(self.Entity)
+	laser4:SetParent(self)
 	end
 	end)
 	timer.Simple(2.25, function() if IsValid(self) then self:MassiveFuckingExplosion(ground, sky) end end)
@@ -324,7 +324,7 @@ end
 function ENT:GiantLaserPerson(ground, sky)
 	if not IsValid(ground) then return end
 
-	pos = self.Entity:GetPos()
+	pos = self:GetPos()
 	lowerleft = Vector(870,500,0)
 	lowerright = Vector(-870,500,0)
 	top = Vector(0,-1000,0)
@@ -338,10 +338,10 @@ function ENT:GiantLaserPerson(ground, sky)
 
 	targ2 = ents.Create("info_target")
 	targ2:SetKeyValue("targetname", tostring(targ2))
-	targ2:SetPos(self.Entity:GetPos())
+	targ2:SetPos(self:GetPos())
 	targ2:Spawn()
 	targ2:Fire("Kill", "", 2.25)
-	targ2:SetParent(self.Entity)
+	targ2:SetParent(self)
 
 	laser0 = ents.Create("env_laser")
 	laser0:SetKeyValue("texture", "sprites/laser.vmt")
@@ -368,11 +368,11 @@ function ENT:GiantLaserPerson(ground, sky)
 	laser:SetKeyValue("renderamt", "255")
 
 	laser:SetKeyValue("lasertarget", tostring(targ))
-	laser:SetPos(self.Entity:GetPos() + top)
+	laser:SetPos(self:GetPos() + top)
 	laser:Spawn()
 	laser:Fire("turnon",0)
 	laser:Fire("Kill", "", 2.25)
-	laser:SetParent(self.Entity)
+	laser:SetParent(self)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground:GetPos())
@@ -391,11 +391,11 @@ function ENT:GiantLaserPerson(ground, sky)
 	laser2:SetKeyValue("rendercolor", "100 100 255")
 	laser2:SetKeyValue("renderamt", "255")
 	laser2:SetKeyValue("lasertarget", tostring(targ))
-	laser2:SetPos(self.Entity:GetPos() + lowerleft)
+	laser2:SetPos(self:GetPos() + lowerleft)
 	laser2:Spawn()
 	laser2:Fire("turnon",0)
 	laser2:Fire("Kill", "", 1.5)
-	laser2:SetParent(self.Entity)
+	laser2:SetParent(self)
 	end
 	end)
 
@@ -410,11 +410,11 @@ function ENT:GiantLaserPerson(ground, sky)
 	laser3:SetKeyValue("rendercolor", "100 100 255")
 	laser3:SetKeyValue("renderamt", "255")
 	laser3:SetKeyValue("lasertarget", tostring(targ))
-	laser3:SetPos(self.Entity:GetPos() + lowerright)
+	laser3:SetPos(self:GetPos() + lowerright)
 	laser3:Spawn()
 	laser3:Fire("turnon",0)
 	laser3:Fire("Kill", "", 1)
-	laser3:SetParent(self.Entity)
+	laser3:SetParent(self)
 	end
 	end)
 
@@ -429,11 +429,11 @@ function ENT:GiantLaserPerson(ground, sky)
 	laser4:SetKeyValue("rendercolor", "100 100 255")
 	laser4:SetKeyValue("renderamt", "255")
 	laser4:SetKeyValue("lasertarget", tostring(targ))
-	laser4:SetPos(self.Entity:GetPos())
+	laser4:SetPos(self:GetPos())
 	laser4:Spawn()
 	laser4:Fire("turnon",0)
 	laser4:Fire("Kill", "", .5)
-	laser4:SetParent(self.Entity)
+	laser4:SetParent(self)
 	end
 	end)
 	timer.Simple(2.25, function() if IsValid(self) then self:MassiveFuckingExplosionPerson(ground, sky)	end end)
@@ -447,11 +447,11 @@ end
 function ENT:MassiveFuckingExplosion(ground, sky)
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
-	pos = self.Entity:GetPos()
+	pos = self:GetPos()
 	lowerleft = pos + Vector(870,500,0)
 	lowerright = pos +  Vector(-870,500,0)
 	top = pos + Vector(0,-1000,0)
@@ -459,25 +459,25 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 	tr1= {}
 	tr1.start = lowerleft
 	tr1.endpos = ground
-	tr1.filter = self.Entity
+	tr1.filter = self
 	tr1 = util.TraceLine(tr1)
 
 	tr2= {}
 	tr2.start = lowerleft
 	tr2.endpos = ground
-	tr2.filter = self.Entity
+	tr2.filter = self
 	tr2 = util.TraceLine(tr2)
 
 	tr3= {}
 	tr3.start = lowerright
 	tr3.endpos = ground
-	tr3.filter = self.Entity
+	tr3.filter = self
 	tr3 = util.TraceLine(tr3)
 
 	tr4= {}
 	tr4.start = lowerright
 	tr4.endpos = ground
-	tr4.filter = self.Entity
+	tr4.filter = self
 	tr4 = util.TraceLine(tr4)
 
 	if tr2.HitPos ~= ground then
@@ -513,7 +513,7 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
 
-	util.BlastDamage(self.Entity, (self:OwnerCheck()), ground, 4000, 500)
+	util.BlastDamage(self, (self:OwnerCheck()), ground, 4000, 500)
 
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self.Owner)
@@ -528,7 +528,7 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 		shake:Fire("StartShake", "", 0)
 		shake:Fire("Kill", "", 3)
 
-		self.Entity:Remove()
+		self:Remove()
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground)
@@ -549,12 +549,12 @@ end
 function ENT:MassiveFuckingExplosionPerson(ground, sky)
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 
 	if not IsValid(ground) then return end
-	pos = self.Entity:GetPos()
+	pos = self:GetPos()
 	lowerleft = pos + Vector(870,500,0)
 	lowerright = pos +  Vector(-870,500,0)
 	top = pos + Vector(0,-1000,0)
@@ -562,25 +562,25 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 	tr1= {}
 	tr1.start = lowerleft
 	tr1.endpos = ground:GetPos()
-	tr1.filter = self.Entity, ground
+	tr1.filter = self, ground
 	tr1 = util.TraceLine(tr1)
 
 	tr2= {}
 	tr2.start = lowerleft
 	tr2.endpos = ground:GetPos()
-	tr2.filter = self.Entity, ground
+	tr2.filter = self, ground
 	tr2 = util.TraceLine(tr2)
 
 	tr3= {}
 	tr3.start = lowerright
 	tr3.endpos = ground:GetPos()
-	tr3.filter = self.Entity, ground
+	tr3.filter = self, ground
 	tr3 = util.TraceLine(tr3)
 
 	tr4= {}
 	tr4.start = lowerright
 	tr4.endpos = ground:GetPos()
-	tr4.filter = self.Entity, ground
+	tr4.filter = self, ground
 	tr4 = util.TraceLine(tr4)
 
 	if tr2.Entity ~= ground then
@@ -616,7 +616,7 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
 
-	util.BlastDamage(self.Entity, (self:OwnerCheck()), ground:GetPos(), 4000, 500)
+	util.BlastDamage(self, (self:OwnerCheck()), ground:GetPos(), 4000, 500)
 
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self.Owner)
@@ -631,7 +631,7 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 		shake:Fire("StartShake", "", 0)
 		shake:Fire("Kill", "", 3)
 
-		self.Entity:Remove()
+		self:Remove()
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground:GetPos())
@@ -657,7 +657,7 @@ function ENT:SmallerExplo(targ, norm)
 	-- effectdata:SetMagnitude(4)			-- Length of explosion trails
 	-- util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 
-	util.BlastDamage(self.Entity, (self:OwnerCheck()), targ, 1000, 150)
+	util.BlastDamage(self, (self:OwnerCheck()), targ, 1000, 150)
 
 	local effectdata = EffectData()
 		effectdata:SetOrigin(targ)
@@ -677,7 +677,7 @@ function ENT:OwnerCheck()
 	if IsValid(self.Owner) then
 		return (self.Owner)
 	else
-		return (self.Entity)
+		return (self)
 	end
 end
 
@@ -687,10 +687,10 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 	if not IsValid(self.Owner) then
-		self.Entity:Remove()
+		self:Remove()
 		return
 	end
 

@@ -42,30 +42,30 @@ function ENT:Initialize()
 	self.EpicBlastWave = util.tobool(GetConVarNumber("nuke_epic_blastwave") or 1)
 
 	--We need to init physics properties even though this entity isn't physically simulated
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:DrawShadow( false )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:DrawShadow( false )
 
-	self.Entity:SetCollisionBounds( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
-	self.Entity:PhysicsInitBox( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
+	self:SetCollisionBounds( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
+	self:PhysicsInitBox( Vector( -20, -20, -10 ), Vector( 20, 20, 10 ) )
 
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		phys:EnableCollisions( false )
 	end
 
-	self.Entity:SetNotSolid( true )
+	self:SetNotSolid( true )
 	util.PrecacheModel("models/player/charple.mdl")
 
 	self.Yield = (GetConVarNumber("nuke_yield") or 100)/100
 	self.YieldSlow = self.Yield^0.75
 	self.YieldSlowest = self.Yield^0.5
-	self.SplodePos = self.Entity:GetPos() + Vector(0,0,4)
+	self.SplodePos = self:GetPos() + Vector(0,0,4)
 
-	self.Owner = self.Entity.Owner
-	self.Weapon = self.Entity
+	self.Owner = self.Owner
+	self.Weapon = self
 
 	--remove this ent after awhile
-	self.Entity:Fire("kill","",6*self.YieldSlow)
+	self:Fire("kill","",6*self.YieldSlow)
 
 	local blastradius = 2300*self.YieldSlow
 	if blastradius > 14000 then blastradius = 14000 end
@@ -158,7 +158,7 @@ function ENT:Initialize()
 							found:SetModel("models/player/charple.mdl")
 
 						end
-						util.BlastDamage(self.Entity, self.Owner, entpos, 256, 512)
+						util.BlastDamage(self, self.Owner, entpos, 256, 512)
 					end
 
 				elseif foundspecs.player then
@@ -171,7 +171,7 @@ function ENT:Initialize()
 					util.Effect( "m9k_nuke_disintegrate", effectdata )
 
 					found:SetModel("models/player/charple.mdl")
-					util.BlastDamage(self.Entity, self.Owner, entpos, 256, 512)
+					util.BlastDamage(self, self.Owner, entpos, 256, 512)
 
 				end
 
@@ -215,7 +215,7 @@ function ENT:Initialize()
 	else
 
 		local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())
+		effectdata:SetOrigin(self:GetPos())
 		effectdata:SetNormal( Vector(0,0,1) )
 		effectdata:SetMagnitude( 1 )
 		effectdata:SetScale( 1 )
@@ -234,8 +234,8 @@ function ENT:Initialize()
 	self.DrawFX = false
 
 	end
-	timer.Simple(0.2, function() if not IsValid(self) then return end if not IsValid(self.Entity) then return end if not IsValid(self.Owner) then return end
-		util.BlastDamage(self.Entity, self.Owner, self.SplodePos, blastradius, 4096*self.Yield)
+	timer.Simple(0.2, function() if not IsValid(self) then return end if not IsValid(self) then return end if not IsValid(self.Owner) then return end
+		util.BlastDamage(self, self.Owner, self.SplodePos, blastradius, 4096*self.Yield)
 	end)
 	self.SplodeDist = 100
 	self.BaseDamage = (GetConVarNumber("nuke_damage") or 100)*1.5e9*self.Yield
@@ -250,7 +250,7 @@ end
 function ENT:Think()
 
 	if not IsValid(self) then return end
-	if not IsValid(self.Entity) then return end
+	if not IsValid(self) then return end
 
 if not self.Sploding then return end
 
@@ -314,7 +314,7 @@ local FTime = CurrentTime - self.lastThink
 					physobj:ApplyForceOffset(vecang*(8e4*Damage),entpos + Vector(math.random(-20,20),math.random(-20,20),math.random(20,40))) --still push it away
 				end
 
-				util.BlastDamage(self.Entity, (self:OwnerCheck()), entpos - vecang*64, 384, Damage) --splode it
+				util.BlastDamage(self, (self:OwnerCheck()), entpos - vecang*64, 384, Damage) --splode it
 
 			end
 		end
@@ -326,7 +326,7 @@ function ENT:OwnerCheck()
 	if IsValid(self.Owner) then
 		return (self.Owner)
 	else
-		return (self.Entity)
+		return (self)
 	end
 end
 
@@ -468,7 +468,7 @@ function ENT:Think()
 
 	self.SplodeDist = self.SplodeDist + self.BlastSpeed*FTime
 
-	local EntPos = EntPos or self.Entity:GetPos()
+	local EntPos = EntPos or self:GetPos()
 	local CurDist = (EntPos - LocalPlayer():GetPos()):Length()
 	local volume = 7e5/CurDist
 
