@@ -76,20 +76,20 @@ end
 
 
 function SWEP:PrimaryAttack()
-    vm = self.Owner:GetViewModel()
+    vm = self:GetOwner():GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
-    self.Owner:ViewPunch(Angle(-10,0,0))
-    if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
+    self:GetOwner():ViewPunch(Angle(-10,0,0))
+    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:EmitSound(self.Primary.Sound)
         if SERVER then
-            if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
+            if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
                 vm:SetSequence(vm:LookupSequence("stab"))
                 timer.Create("hack-n-slash", .23, 1, function() if not IsValid(self) then return end
-                if IsValid(self.Owner) and
+                if IsValid(self:GetOwner()) and
                 IsValid(self) then
-                    if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
                         self:HackNSlash() end end end)
-                self.Owner:SetAnimation( PLAYER_ATTACK1 )
+                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
                 self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         end
         end
@@ -98,29 +98,29 @@ end
 
 function SWEP:HackNSlash()
 
-    pos = self.Owner:GetShootPos()
-    ang = self.Owner:GetAimVector()
+    pos = self:GetOwner():GetShootPos()
+    ang = self:GetOwner():GetAimVector()
     damagedice = math.Rand(.85,1.25)
     pain = self.Primary.Damage * damagedice
-    self.Owner:LagCompensation(true)
+    self:GetOwner():LagCompensation(true)
     local slash = {}
     slash.start = pos
     slash.endpos = pos + (ang * 42)
-    slash.filter = self.Owner
+    slash.filter = self:GetOwner()
     slash.mins = Vector(-8, -10, 0)
     slash.maxs = Vector(8, 10, 5)
     local slashtrace = util.TraceHull(slash)
 
-    if IsValid(self.Owner) and IsValid(self) then
-        if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+    if IsValid(self:GetOwner()) and IsValid(self) then
+        if self:GetOwner():Alive() then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             local slash = {}
             slash.start = pos
             slash.endpos = pos + (ang * 42)
-            slash.filter = self.Owner
+            slash.filter = self:GetOwner()
             slash.mins = Vector(-8, -10, 0)
             slash.maxs = Vector(8, 10, 5)
             local slashtrace = util.TraceHull(slash)
-            self.Owner:ViewPunch(Angle(20,0,0))
+            self:GetOwner():ViewPunch(Angle(20,0,0))
             if slashtrace.Hit then
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
@@ -129,46 +129,46 @@ function SWEP:HackNSlash()
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_SLASH)
-                    paininfo:SetAttacker(self.Owner)
+                    paininfo:SetAttacker(self:GetOwner())
                     paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(slashtrace.Normal *35000)
                     targ:TakeDamageInfo(paininfo)
                 else
                     self:EmitSound(self.KnifeShink)--SHINK!
-                    look = self.Owner:GetEyeTrace()
+                    look = self:GetOwner():GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
             end
         end end
     end
-    self.Owner:LagCompensation(false)
+    self:GetOwner():LagCompensation(false)
 end
 
 function SWEP:SecondaryAttack()
-    if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
+    if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
 
         self:EmitSound(Sound("Weapon_Knife.Slash"))
 
         if (SERVER) then
             local knife = ents.Create("m9k_thrown_knife")
-            knife:SetAngles(self.Owner:EyeAngles())
-            knife:SetPos(self.Owner:GetShootPos())
-            knife:SetOwner(self.Owner)
-            knife:SetPhysicsAttacker(self.Owner)
+            knife:SetAngles(self:GetOwner():EyeAngles())
+            knife:SetPos(self:GetOwner():GetShootPos())
+            knife:SetOwner(self:GetOwner())
+            knife:SetPhysicsAttacker(self:GetOwner())
             knife:Spawn()
             knife:Activate()
-            self.Owner:SetAnimation(PLAYER_ATTACK1)
+            self:GetOwner():SetAnimation(PLAYER_ATTACK1)
             local phys = knife:GetPhysicsObject()
-            phys:SetVelocity(self.Owner:GetAimVector() * 1500)
+            phys:SetVelocity(self:GetOwner():GetAimVector() * 1500)
             phys:AddAngleVelocity(Vector(0, 500, 0))
-            self.Owner:StripWeapon(self.Gun)
+            self:GetOwner():StripWeapon(self.Gun)
         end
     end
 end
 
 function SWEP:IronSight()
 
-    if !self.Owner:IsNPC() then
+    if !self:GetOwner():IsNPC() then
     if self.ResetSights and CurTime() >= self.ResetSights then
     self.ResetSights = nil
 
@@ -180,28 +180,28 @@ function SWEP:IronSight()
     end end
 
     if self.CanBeSilenced and self.NextSilence < CurTime() then
-        if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_ATTACK2) then
+        if self:GetOwner():KeyDown(IN_USE) and self:GetOwner():KeyPressed(IN_ATTACK2) then
             self:Silencer()
         end
     end
 
     if self.SelectiveFire and self.NextFireSelect < CurTime() then
-        if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_RELOAD) then
+        if self:GetOwner():KeyDown(IN_USE) and self:GetOwner():KeyPressed(IN_RELOAD) then
             self:SelectFireMode()
         end
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    if self:GetOwner():KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
     self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
-    self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )
+    self:SetIronsights(true, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )
     end
 
-    if self.Owner:KeyReleased (IN_SPEED) then    -- If you release run then
-    self:SetIronsights(false, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )
+    if self:GetOwner():KeyReleased (IN_SPEED) then    -- If you release run then
+    self:SetIronsights(false, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )
     end                                -- Shoulder the gun
 
 end

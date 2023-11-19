@@ -69,17 +69,17 @@ end
 function SWEP:Reload()
 
     self:DefaultReload(ACT_VM_RELOAD)
-    if !self.Owner:IsNPC() then
-        self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
-    if ( self:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
+    if !self:GetOwner():IsNPC() then
+        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration() end
+    if ( self:Clip1() < self.Primary.ClipSize ) and !self:GetOwner():IsNPC() then
     -- When the current clip < full clip and the rest of your ammo > 0, then
-        self.Owner:SetFOV( 0, 0.3 )
+        self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights(false)
         -- Set the ironsight to false
         self:SetNWBool("Reloading", true)
     end
-    local waitdammit = (self.Owner:GetViewModel():SequenceDuration())
+    local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
     self:MiniGunIdle(waitdammit)
 end
 
@@ -95,17 +95,17 @@ end
 
 function SWEP:IronSight()
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then                    -- If you run then
+    if self:GetOwner():KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then                    -- If you run then
     self:SetNextPrimaryFire(CurTime()+0.5)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
-    self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )                        -- Reset FOV
+    self:SetIronsights(true, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )                        -- Reset FOV
     end
 
-    if self.Owner:KeyReleased(IN_SPEED) then                -- If you stop running then
-    self:SetIronsights(false, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )                        -- Reset FOV
+    if self:GetOwner():KeyReleased(IN_SPEED) then                -- If you stop running then
+    self:SetIronsights(false, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )                        -- Reset FOV
     end
 
 end

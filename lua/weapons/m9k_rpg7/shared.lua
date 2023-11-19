@@ -66,30 +66,30 @@ SWEP.RunSightsAng = Vector (-20.1104, 35.1164, -12.959)
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self.Owner:KeyPressed(IN_SPEED) then
+    if self:CanPrimaryAttack() and not self:GetOwner():KeyPressed(IN_SPEED) then
         self:FireRocket()
         self:EmitSound("RPGF.single")
         self:TakePrimaryAmmo(1)
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self.Owner:SetAnimation( PLAYER_ATTACK1 )
-        self.Owner:MuzzleFlash()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
         self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     end
     self:CheckWeaponsAndAmmo()
 end
 
 function SWEP:FireRocket()
-    local aim = self.Owner:GetAimVector()
+    local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross(Vector(0,0,1))
     local up = side:Cross(aim)
-    local pos = self.Owner:GetShootPos() + side * 6 + up * -5
+    local pos = self:GetOwner():GetShootPos() + side * 6 + up * -5
 
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
     rocket:SetAngles(aim:Angle()+Angle(0,0,0))
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
+    rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
     end
@@ -100,10 +100,10 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then
-                if not IsValid(self.Owner) then return end
-                self.Owner:StripWeapon(self.Gun)
+                if not IsValid(self:GetOwner()) then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         end
     end

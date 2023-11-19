@@ -68,23 +68,23 @@ woosh = {"punchies/miss1.mp3", "punchies/miss2.mp3"}
 
 function SWEP:PrimaryAttack()
 
-    vm = self.Owner:GetViewModel()
-    if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
+    vm = self:GetOwner():GetViewModel()
+    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
     self:SendWeaponAnim( ACT_VM_IDLE )
-        if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
-            self.Owner:ViewPunch(Angle(math.random(-5,5),-10,5))
+        if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
+            self:GetOwner():ViewPunch(Angle(math.random(-5,5),-10,5))
             vm:SetSequence(vm:LookupSequence("punchmiss2")) --left
             vm:SetPlaybackRate( 1.5 )
             self:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
             timer.Create("LeftJab", .1, 1, function() if not IsValid(self) then return end
 
-            if IsValid(self.Owner) and
+            if IsValid(self:GetOwner()) and
 
             IsValid(self) then
 
-            if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+            if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             self:LeftJab() end end end)
-            self.Owner:SetAnimation( PLAYER_ATTACK1 )
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
             self:SetNextSecondaryFire((CurTime()+1/(self.Primary.RPM/60)))
         end
@@ -93,17 +93,17 @@ end
 
 function SWEP:LeftJab()
 
-    pos = self.Owner:GetShootPos()
-    ang = self.Owner:GetAimVector()
+    pos = self:GetOwner():GetShootPos()
+    ang = self:GetOwner():GetAimVector()
     damagedice = math.Rand(.95,1.95)
     pain = self.Primary.Damage * damagedice
-    self.Owner:LagCompensation(true)
-    if SERVER and IsValid(self.Owner) and IsValid(self) then
-        if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+    self:GetOwner():LagCompensation(true)
+    if SERVER and IsValid(self:GetOwner()) and IsValid(self) then
+        if self:GetOwner():Alive() then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             local slash = {}
             slash.start = pos
             slash.endpos = pos + (ang * 30)
-            slash.filter = self.Owner
+            slash.filter = self:GetOwner()
             slash.mins = Vector(-5, -3, 0)
             slash.maxs = Vector(3, 3, 3)
             local slashtrace = util.TraceHull(slash)
@@ -116,7 +116,7 @@ function SWEP:LeftJab()
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
-                    paininfo:SetAttacker(self.Owner)
+                    paininfo:SetAttacker(self:GetOwner())
                     paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(slashtrace.Normal *5000)
                     if SERVER then
@@ -129,25 +129,25 @@ function SWEP:LeftJab()
             end
         end end
     end
-    self.Owner:LagCompensation(false)
+    self:GetOwner():LagCompensation(false)
 end
 
 function SWEP:SecondaryAttack()
 
-    vm = self.Owner:GetViewModel()
-    if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
+    vm = self:GetOwner():GetViewModel()
+    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
     self:SendWeaponAnim( ACT_VM_IDLE )
-        if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
-            self.Owner:ViewPunch(Angle(math.random(-5,5),10,-5))
+        if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
+            self:GetOwner():ViewPunch(Angle(math.random(-5,5),10,-5))
             vm:SetSequence(vm:LookupSequence("punchmiss1")) --right
             vm:SetPlaybackRate( 1.5 )
             self:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
 
             timer.Create("RightJab", .1, 1, function() if not IsValid(self) then return end
-                if IsValid(self.Owner) and IsValid(self) then
-                if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+                if IsValid(self:GetOwner()) and IsValid(self) then
+                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
                 self:RightJab()  end end end)
-            self.Owner:SetAnimation( PLAYER_ATTACK1 )
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:SetNextSecondaryFire(CurTime()+1/(self.Primary.RPM/60))
             self:SetNextPrimaryFire((CurTime()+1/(self.Primary.RPM/60)))
         end
@@ -156,17 +156,17 @@ end
 
 function SWEP:RightJab()
 
-    rpos = self.Owner:GetShootPos()
-    rang = self.Owner:GetAimVector()
+    rpos = self:GetOwner():GetShootPos()
+    rang = self:GetOwner():GetAimVector()
     damagedice = math.Rand(.95,1.95)
     pain = self.Primary.Damage * damagedice
-    self.Owner:LagCompensation(true)
-    if SERVER and IsValid(self.Owner) and IsValid(self)  then
-        if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+    self:GetOwner():LagCompensation(true)
+    if SERVER and IsValid(self:GetOwner()) and IsValid(self)  then
+        if self:GetOwner():Alive() then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             local rslash = {}
             rslash.start = rpos
             rslash.endpos = rpos + (rang * 30)
-            rslash.filter = self.Owner
+            rslash.filter = self:GetOwner()
             rslash.mins = Vector(-3, -3, 0)
             rslash.maxs = Vector(3, 5, 3)
             local rslashtrace = util.TraceHull(rslash)
@@ -178,7 +178,7 @@ function SWEP:RightJab()
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
-                    paininfo:SetAttacker(self.Owner)
+                    paininfo:SetAttacker(self:GetOwner())
                     paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(rslashtrace.Normal *5000)
                     if SERVER then
@@ -191,7 +191,7 @@ function SWEP:RightJab()
             end
         end end
     end
-    self.Owner:LagCompensation(false)
+    self:GetOwner():LagCompensation(false)
 
 end
 
@@ -217,21 +217,21 @@ hook.Add("EntityTakeDamage", "DukesUp", DukesUp ) ]]
 
 function SWEP:Holster()
 
-    if CLIENT and IsValid(self.Owner) and not self.Owner:IsNPC() then
-        local vm = self.Owner:GetViewModel()
+    if CLIENT and IsValid(self:GetOwner()) and not self:GetOwner():IsNPC() then
+        local vm = self:GetOwner():GetViewModel()
         if IsValid(vm) then
             self:ResetBonePositions(vm)
         end
     end
-    self.Owner:SetNWBool("DukesAreUp", false)
+    self:GetOwner():SetNWBool("DukesAreUp", false)
     return true
 end
 
 function SWEP:IronSight()
 
-    if !self.Owner:IsNPC() then
-        if self.Owner:GetNWBool("DukesAreUp") == nil then
-            self.Owner:SetNWBool("DukesAreUp", false)
+    if !self:GetOwner():IsNPC() then
+        if self:GetOwner():GetNWBool("DukesAreUp") == nil then
+            self:GetOwner():SetNWBool("DukesAreUp", false)
         end
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
@@ -239,43 +239,43 @@ function SWEP:IronSight()
         end
     end
 
-    if self.Owner:KeyDown(IN_RELOAD) and self.Owner:KeyPressed(IN_SPEED) then
-        self.Owner:SetNWBool("DukesAreUp", false)
+    if self:GetOwner():KeyDown(IN_RELOAD) and self:GetOwner():KeyPressed(IN_SPEED) then
+        self:GetOwner():SetNWBool("DukesAreUp", false)
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    if self:GetOwner():KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
     self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
-    self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )
+    self:SetIronsights(true, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )
     end
 
-    if self.Owner:KeyReleased (IN_SPEED) then    -- If you release run then
-    self:SetIronsights(false, self.Owner)                    -- Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )
+    if self:GetOwner():KeyReleased (IN_SPEED) then    -- If you release run then
+    self:SetIronsights(false, self:GetOwner())                    -- Set the ironsight true
+    self:GetOwner():SetFOV( 0, 0.3 )
     end                                -- Shoulder the gun
 
-    if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
+    if !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
     -- If the key E (Use Key) is not pressed, then
 
-        if self.Owner:KeyPressed(IN_RELOAD) then
-            self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
+        if self:GetOwner():KeyPressed(IN_RELOAD) then
+            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos                    -- Bring it up
             self.IronSightsAng = self.SightsAng                    -- Bring it up
-            self:SetIronsights(true, self.Owner)
-            self.Owner:SetNWBool("DukesAreUp", true)
+            self:SetIronsights(true, self:GetOwner())
+            self:GetOwner():SetNWBool("DukesAreUp", true)
             -- Set the ironsight true
 
             if CLIENT then return end
          end
     end
 
-    if self.Owner:KeyReleased(IN_RELOAD) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
+    if self:GetOwner():KeyReleased(IN_RELOAD) and !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
     -- If the right click is released, then
-        self.Owner:SetFOV( 0, 0.3 )
-        self:SetIronsights(false, self.Owner)
-        self.Owner:SetNWBool("DukesAreUp", false)
+        self:GetOwner():SetFOV( 0, 0.3 )
+        self:SetIronsights(false, self:GetOwner())
+        self:GetOwner():SetNWBool("DukesAreUp", false)
         -- Set the ironsight false
 
         if CLIENT then return end

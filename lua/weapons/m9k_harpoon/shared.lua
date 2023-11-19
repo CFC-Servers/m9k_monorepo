@@ -98,7 +98,7 @@ end
 
 function SWEP:PrimaryAttack()
     self:FireRocket()
-    self.Owner:SetAnimation( PLAYER_ATTACK1 )
+    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
     self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     self:EmitSound(Sound("Weapon_Knife.Slash"))
     self:TakePrimaryAmmo(1)
@@ -107,22 +107,22 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    pos = self.Owner:GetShootPos()
+    pos = self:GetOwner():GetShootPos()
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
-    rocket:SetAngles(self.Owner:GetAimVector():Angle())
+    rocket:SetAngles(self:GetOwner():GetAimVector():Angle())
     rocket:SetPos(pos)
     rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
-    eyes = self.Owner:EyeAngles()
+    eyes = self:GetOwner():EyeAngles()
         local phys = rocket:GetPhysicsObject()
-            phys:SetVelocity(self.Owner:GetAimVector() * 2000)
+            phys:SetVelocity(self:GetOwner():GetAimVector() * 2000)
     end
-        if SERVER and !self.Owner:IsNPC() then
+        if SERVER and !self:GetOwner():IsNPC() then
         local anglo = Angle(-10, -5, 0)
-        self.Owner:ViewPunch(anglo)
+        self:GetOwner():ViewPunch(anglo)
         end
 
 end
@@ -133,17 +133,17 @@ function SWEP:CheckWeaponsAndAmmo()
         timer.Simple(.1, function()
             if SERVER then
                 if not IsValid(self) then return end
-                if self.Owner == nil then return end
-                self.Owner:StripWeapon(self.Gun)
+                if self:GetOwner() == nil then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end
         end)
     return end
 
     if SERVER and self ~= nil then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
-                if self.Owner == nil then return end
-                self.Owner:StripWeapon(self.Gun)
+                if self:GetOwner() == nil then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         else
             self:Reload()
@@ -152,18 +152,18 @@ function SWEP:CheckWeaponsAndAmmo()
 end
 
 function SWEP:Reload()
-    if not IsValid(self) then return end if not IsValid(self.Owner) then return end
+    if not IsValid(self) then return end if not IsValid(self:GetOwner()) then return end
 
-    if self.Owner:IsNPC() then
+    if self:GetOwner():IsNPC() then
         self:DefaultReload(ACT_VM_RELOAD)
     return end
 
-    if self.Owner:KeyDown(IN_USE) then return end
+    if self:GetOwner():KeyDown(IN_USE) then return end
         self:DefaultReload(ACT_VM_DRAW)
 
-    if !self.Owner:IsNPC() then
-        if self.Owner:GetViewModel() == nil then self.ResetSights = CurTime() + 3 else
-        self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+    if !self:GetOwner():IsNPC() then
+        if self:GetOwner():GetViewModel() == nil then self.ResetSights = CurTime() + 3 else
+        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
         end
     end
 end

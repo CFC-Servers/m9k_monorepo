@@ -68,14 +68,14 @@ SWEP.RunSightsAng = Vector(-1.721, 49.917, 0)
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-        if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
+        if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
         self:FireRocket()
         self:EmitSound(self.Primary.Sound)
         self:TakePrimaryAmmo(1)
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         local fx         = EffectData()
-        self.Owner:SetAnimation( PLAYER_ATTACK1 )
-        self.Owner:MuzzleFlash()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
         self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     else self:Reload()
     end
@@ -84,17 +84,17 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self.Owner:GetAimVector()
+    local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross(Vector(0,0,1))
     local up = side:Cross(aim)
-    local pos = self.Owner:GetShootPos() + side * 6 + up * -5
+    local pos = self:GetOwner():GetShootPos() + side * 6 + up * -5
 
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
     rocket:SetAngles(aim:Angle()+Angle(90,0,0))
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
+    rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
     end
@@ -102,10 +102,10 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.5, function() if SERVER then if not IsValid(self) then return end
-                if not IsValid(self.Owner) then return end
-                self.Owner:StripWeapon(self.Gun)
+                if not IsValid(self:GetOwner()) then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         end
     end

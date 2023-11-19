@@ -64,10 +64,10 @@ SWEP.RunSightsAng = Vector (0,0,0)
 SWEP.BlackListed = true
 
 function SWEP:PrimaryAttack()
-self.Owner:PrintMessage(HUD_PRINTCENTER, "THIS WEAPON HAS BEEN BLACKLISTED")
+self:GetOwner():PrintMessage(HUD_PRINTCENTER, "THIS WEAPON HAS BEEN BLACKLISTED")
 end
 function SWEP:SecondaryAttack()
-self.Owner:PrintMessage(HUD_PRINTCENTER, "THIS WEAPON HAS BEEN BLACKLISTED")
+self:GetOwner():PrintMessage(HUD_PRINTCENTER, "THIS WEAPON HAS BEEN BLACKLISTED")
 end
 
 function SWEP:Think()

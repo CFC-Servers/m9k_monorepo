@@ -72,12 +72,12 @@ SWEP.RunSightsAng = Vector(-1.721, 49.917, 0)
 
 function SWEP:Deploy()
     if not IsValid(self) then return end
-    if not IsValid(self.Owner) then return end
-    if not self.Owner:IsPlayer() then return end
+    if not IsValid(self:GetOwner()) then return end
+    if not self:GetOwner():IsPlayer() then return end
 
     self:SetHoldType(self.HoldType)
 
-    local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
+    local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
     if (timer.Exists(timerName)) then
         timer.Destroy(timerName)
     end
@@ -100,14 +100,14 @@ end
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then ------------------------------------- and self.NextFireTime <= CurTime() then
-        if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
+        if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
         self:FireRocket()
         self:EmitSound(self.Primary.Sound)
         self:TakePrimaryAmmo(1)
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         local fx         = EffectData()
-        self.Owner:SetAnimation( PLAYER_ATTACK1 )
-        self.Owner:MuzzleFlash()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
         self:SetNextPrimaryFire(CurTime()+1.75)
         ----------------------------------------------------self.NextFireTime = (CurTime() + 2)
     else self:Reload()
@@ -117,17 +117,17 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self.Owner:GetAimVector()
+    local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross(Vector(0,0,1))
     local up = side:Cross(aim)
-    local pos = self.Owner:GetShootPos() + side * 6 + up * -5
+    local pos = self:GetOwner():GetShootPos() + side * 6 + up * -5
 
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
     rocket:SetAngles(aim:Angle()+Angle(90,0,0))
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
+    rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
     end
@@ -137,8 +137,8 @@ end
 function SWEP:Reload()
 
     if not IsValid(self) then return end
-    if not IsValid(self.Owner) then return end
-    if not self.Owner:IsPlayer() then return end
+    if not IsValid(self:GetOwner()) then return end
+    if not self:GetOwner():IsPlayer() then return end
 
     local maxcap = self.Primary.ClipSize
     local spaceavail = self:Clip1()
@@ -146,33 +146,33 @@ function SWEP:Reload()
 
     if (timer.Exists("ShotgunReload")) or self.NextReload > CurTime() or maxcap == spaceavail then return end
 
-    if self.Owner:IsPlayer() then
+    if self:GetOwner():IsPlayer() then
 
         self:SetNextPrimaryFire(CurTime() + 1.75) -- wait one second before you can shoot again
         self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
-        self.Owner:SetAnimation( PLAYER_RELOAD )
+        self:GetOwner():SetAnimation( PLAYER_RELOAD )
 
         self.NextReload = CurTime() + 1
 
         if (SERVER) then
-            self.Owner:SetFOV( 0, 0.15 )
+            self:GetOwner():SetFOV( 0, 0.15 )
             self:SetIronsights(false)
         end
 
-        if SERVER and self.Owner:Alive() then
-            local timerName = "ShotgunReload_" ..  self.Owner:UniqueID()
+        if SERVER and self:GetOwner():Alive() then
+            local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
             timer.Create(timerName,
             (self.ShellTime + .05),
             shellz,
             function() if not IsValid(self) then return end
-            if IsValid(self.Owner) and IsValid(self) then
-                if self.Owner:Alive() then
+            if IsValid(self:GetOwner()) and IsValid(self) then
+                if self:GetOwner():Alive() then
                     self:InsertShell()
                 end
             end end)
         end
 
-    elseif self.Owner:IsNPC() then
+    elseif self:GetOwner():IsNPC() then
         self:DefaultReload(ACT_VM_RELOAD)
     end
 
@@ -180,10 +180,10 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
             timer.Simple(.5, function() if SERVER then if not IsValid(self) then return end
-                if not IsValid(self.Owner) then return end
-                self.Owner:StripWeapon(self.Gun)
+                if not IsValid(self:GetOwner()) then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         else
             self:Reload()
@@ -194,11 +194,11 @@ end
 
 function SWEP:Think()
     if not IsValid(self) then return end
-    if not IsValid(self.Owner) then return end
-    if not self.Owner:IsPlayer() then return end
+    if not IsValid(self:GetOwner()) then return end
+    if not self:GetOwner():IsPlayer() then return end
 
-    if self.InsertingShell == true and self.Owner:Alive() then
-        vm = self.Owner:GetViewModel()-- its a messy way to do it, but holy shit, it works!
+    if self.InsertingShell == true and self:GetOwner():Alive() then
+        vm = self:GetOwner():GetViewModel()-- its a messy way to do it, but holy shit, it works!
         vm:ResetSequence(vm:LookupSequence("after_reload")) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
         vm:SetPlaybackRate(.01) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
         self.InsertingShell = false -- You get paid for this, what's your excuse?

@@ -73,14 +73,14 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
     self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
     self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-    plant = self.Owner:GetViewModel():SequenceDuration()
-    timer.Simple(plant, function() if not IsValid(self) then return end if IsValid(self.Owner) and IsValid(self) then
-        if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
+    plant = self:GetOwner():GetViewModel():SequenceDuration()
+    timer.Simple(plant, function() if not IsValid(self) then return end if IsValid(self:GetOwner()) and IsValid(self) then
+        if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
                 local tr = {}
-                tr.start = self.Owner:GetShootPos()
-                tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
-                tr.filter = {self.Owner}
+                tr.start = self:GetOwner():GetShootPos()
+                tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
+                tr.filter = {self:GetOwner()}
                 local trace = util.TraceLine(tr)
                 self:TakePrimaryAmmo(1)
                 if (CLIENT) then return end
@@ -140,11 +140,11 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
+    timer.Simple(self:GetOwner():GetViewModel():SequenceDuration(), function()
         if SERVER and IsValid(self) then
-            if IsValid(self.Owner) and self:GetClass() == self.Gun then
-                if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-                    self.Owner:StripWeapon(self.Gun)
+            if IsValid(self:GetOwner()) and self:GetClass() == self.Gun then
+                if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+                    self:GetOwner():StripWeapon(self.Gun)
                 else
                 self:DefaultReload(ACT_VM_DRAW)
                 end

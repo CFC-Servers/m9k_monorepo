@@ -78,32 +78,32 @@ SWEP.FireDelay = SWEP.NextFireTime
 --and now to the nasty parts of this swep...
 function SWEP:Deploy()
 
-    if timer.Exists("davy_crocket_"..self.Owner:UniqueID()) then
-        timer.Destroy("davy_crocket_"..self.Owner:UniqueID())
+    if timer.Exists("davy_crocket_"..self:GetOwner():UniqueID()) then
+        timer.Destroy("davy_crocket_"..self:GetOwner():UniqueID())
     end
-    self:SetIronsights(false, self.Owner)                    -- Set the ironsight false
+    self:SetIronsights(false, self:GetOwner())                    -- Set the ironsight false
     self:SendWeaponAnim( ACT_VM_DRAW )
 
     if (GetConVar("DavyCrockettAllowed"):GetBool()) then
         self.FireDelay = (CurTime() + self.NextFireTime)
-        self.Owner:PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in "..self.Countdown.." seconds." )
-        self.Owner.DCCount = self.Countdown - 1
-        timer.Create("davy_crocket_"..self.Owner:UniqueID(), 1, self.Countdown,
+        self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in "..self.Countdown.." seconds." )
+        self:GetOwner().DCCount = self.Countdown - 1
+        timer.Create("davy_crocket_"..self:GetOwner():UniqueID(), 1, self.Countdown,
             function()
             if not IsValid(self) then return end
-            if not IsValid(self.Owner) then return end
+            if not IsValid(self:GetOwner()) then return end
             if not IsValid(self) then return end
-            if not IsValid(self.Owner:GetActiveWeapon()) then return end
-            if self.Owner:GetActiveWeapon():GetClass() ~= self.Gun then timer.Destroy("davy_crocket_"..self.Owner:UniqueID()) return end
-            self:DeployCountDownFunc(self.Owner.DCCount)
-            self.Owner.DCCount = self.Owner.DCCount - 1
+            if not IsValid(self:GetOwner():GetActiveWeapon()) then return end
+            if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then timer.Destroy("davy_crocket_"..self:GetOwner():UniqueID()) return end
+            self:DeployCountDownFunc(self:GetOwner().DCCount)
+            self:GetOwner().DCCount = self:GetOwner().DCCount - 1
         end)
     else
-        self.Owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
+        self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
     end
 
-    if !self.Owner:IsNPC() then
-        self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+    if !self:GetOwner():IsNPC() then
+        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
 
     self:SetHoldType(self.HoldType)
@@ -113,15 +113,15 @@ end
 
 function SWEP:DeployCountDownFunc(count)
     if not IsValid(self) then return end
-    if not IsValid(self.Owner) then return end
+    if not IsValid(self:GetOwner()) then return end
     if not IsValid(self) then return end
-    if self.Owner:GetActiveWeapon():GetClass() ~= self.Gun then timer.Destroy("davy_crocket_"..self.Owner:UniqueID()) return end
+    if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then timer.Destroy("davy_crocket_"..self:GetOwner():UniqueID()) return end
     if count == 0 then
-        self.Owner:PrintMessage(HUD_PRINTTALK, "WARHEAD IS ARMED AND READY TO FIRE" )
+        self:GetOwner():PrintMessage(HUD_PRINTTALK, "WARHEAD IS ARMED AND READY TO FIRE" )
     elseif count == 1 then
-        self.Owner:PrintMessage(HUD_PRINTTALK, count.." second remaining!" )
+        self:GetOwner():PrintMessage(HUD_PRINTTALK, count.." second remaining!" )
     else
-        self.Owner:PrintMessage(HUD_PRINTTALK, count.." seconds remaining" )
+        self:GetOwner():PrintMessage(HUD_PRINTTALK, count.." seconds remaining" )
     end
     if count <= 5 then
         self:EmitSound("C4.PlantSound")
@@ -129,18 +129,18 @@ function SWEP:DeployCountDownFunc(count)
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self.Owner:KeyPressed(IN_SPEED) then
-    if self.Owner:IsPlayer() then
+    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self:GetOwner():KeyPressed(IN_SPEED) then
+    if self:GetOwner():IsPlayer() then
         if GetConVar("DavyCrockettAllowed") == nil or (GetConVar("DavyCrockettAllowed"):GetBool()) then
             self:FireRocket()
             self:EmitSound("RPGF.single")
             self:TakePrimaryAmmo(1)
             self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Owner:MuzzleFlash()
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            self:GetOwner():MuzzleFlash()
             self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         else
-            self.Owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
         end
     end
     self:CheckWeaponsAndAmmo()
@@ -148,16 +148,16 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self.Owner:GetAimVector()
-    local pos = self.Owner:GetShootPos()
+    local aim = self:GetOwner():GetAimVector()
+    local pos = self:GetOwner():GetShootPos()
 
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
     rocket:SetAngles(aim:Angle()+Angle(90,0,0))
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
-    rocket.Owner = self.Owner
+    rocket:SetOwner(self:GetOwner())
+    rocket.Owner = self:GetOwner()
     rocket:Spawn()
     rocket:Activate()
     end
@@ -168,10 +168,10 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
-                if not IsValid(self.Owner) then return end
-                self.Owner:StripWeapon(self.Gun)
+                if not IsValid(self:GetOwner()) then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         else
             self:Reload()
@@ -181,13 +181,13 @@ end
 
 function SWEP:Holster()
 
-    if CLIENT and IsValid(self.Owner) and not self.Owner:IsNPC() then
-        local vm = self.Owner:GetViewModel()
+    if CLIENT and IsValid(self:GetOwner()) and not self:GetOwner():IsNPC() then
+        local vm = self:GetOwner():GetViewModel()
         if IsValid(vm) then
             self:ResetBonePositions(vm)
         end
     end
-    if timer.Exists("davy_crocket_"..self.Owner:UniqueID()) then timer.Destroy("davy_crocket_"..self.Owner:UniqueID()) end
+    if timer.Exists("davy_crocket_"..self:GetOwner():UniqueID()) then timer.Destroy("davy_crocket_"..self:GetOwner():UniqueID()) end
     return true
 end
 
@@ -227,53 +227,53 @@ IronSight
 function SWEP:IronSight()
 
         if not IsValid(self) then return end
-        if not IsValid(self.Owner) then return end
+        if not IsValid(self:GetOwner()) then return end
 
-        if !self.Owner:IsNPC() then
+        if !self:GetOwner():IsNPC() then
             if self.ResetSights and CurTime() >= self.ResetSights then
                 self.ResetSights = nil
             end
         end
 
         if self.CanBeSilenced and self.NextSilence < CurTime() then
-            if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_ATTACK2) then
+            if self:GetOwner():KeyDown(IN_USE) and self:GetOwner():KeyPressed(IN_ATTACK2) then
                 self:Silencer()
             end
         end
 
         if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetNWBool("Reloading")) then
-            if self.Owner:KeyDown(IN_USE) and self.Owner:KeyPressed(IN_RELOAD) then
+            if self:GetOwner():KeyDown(IN_USE) and self:GetOwner():KeyPressed(IN_RELOAD) then
                 self:SelectFireMode()
             end
         end
 
 -- --copy this...
-        if self.Owner:KeyPressed(IN_SPEED) and not (self:GetNWBool("Reloading")) then            -- If you are running
+        if self:GetOwner():KeyPressed(IN_SPEED) and not (self:GetNWBool("Reloading")) then            -- If you are running
         if self:GetNextPrimaryFire() <= (CurTime()+0.3) then
             self:SetNextPrimaryFire(CurTime()+0.3)                           -- Make it so you can't shoot for another quarter second
         end
         self.IronSightsPos = self.RunSightsPos                                  -- Hold it down
         self.IronSightsAng = self.RunSightsAng                                  -- Hold it down
-        self:SetIronsights(true, self.Owner)                                    -- Set the ironsight true
-        self.Owner:SetFOV( 0, 0.3 )
+        self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
+        self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = false
         end
 
-        if self.Owner:KeyReleased (IN_SPEED) then       -- If you release run then
-        self:SetIronsights(false, self.Owner)                                   -- Set the ironsight true
-        self.Owner:SetFOV( 0, 0.3 )
+        if self:GetOwner():KeyReleased (IN_SPEED) then       -- If you release run then
+        self:SetIronsights(false, self:GetOwner())                                   -- Set the ironsight true
+        self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
         end                                                             -- Shoulder the gun
 
 -- --down to this
-        if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
+        if !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
         -- --If the key E (Use Key) is not pressed, then
 
-                if self.Owner:KeyPressed(IN_ATTACK2) and not (self:GetNWBool("Reloading")) then
-                        self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
+                if self:GetOwner():KeyPressed(IN_ATTACK2) and not (self:GetNWBool("Reloading")) then
+                        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
                         self.IronSightsPos = self.SightsPos                                     -- Bring it up
                         self.IronSightsAng = self.SightsAng                                     -- Bring it up
-                        self:SetIronsights(true, self.Owner)
+                        self:SetIronsights(true, self:GetOwner())
                         self.DrawCrosshair = false
                         -- --Set the ironsight true
 
@@ -281,17 +281,17 @@ function SWEP:IronSight()
                 end
         end
 
-        if self.Owner:KeyReleased(IN_ATTACK2) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
+        if self:GetOwner():KeyReleased(IN_ATTACK2) and !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
         -- --If the right click is released, then
-                self.Owner:SetFOV( 0, 0.3 )
+                self:GetOwner():SetFOV( 0, 0.3 )
                 self.DrawCrosshair = self.OrigCrossHair
-                self:SetIronsights(false, self.Owner)
+                self:SetIronsights(false, self:GetOwner())
                 -- --Set the ironsight false
 
                 if CLIENT then return end
         end
 
-                if self.Owner:KeyDown(IN_ATTACK2) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
+                if self:GetOwner():KeyDown(IN_ATTACK2) and !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
                 self.SwayScale  = 0.05
                 self.BobScale   = 0.05
                 else

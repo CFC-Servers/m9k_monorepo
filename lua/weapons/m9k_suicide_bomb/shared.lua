@@ -74,17 +74,17 @@ SWEP.RunSightsAng = Vector(0, 0, 0)
 
 function SWEP:PrimaryAttack()
     local tr = {}
-    tr.start = self.Owner:GetShootPos()
-    tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
-    tr.filter = {self.Owner}
+    tr.start = self:GetOwner():GetShootPos()
+    tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
+    tr.filter = {self:GetOwner()}
     local trace = util.TraceLine(tr)
 
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
+    timer.Simple(self:GetOwner():GetViewModel():SequenceDuration(), function()
     if SERVER and self ~= nil then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
     if self.Timer == 0 then
         if self:CanPrimaryAttack() then
-            self.Owner:SetAnimation(PLAYER_ATTACK1)
+            self:GetOwner():SetAnimation(PLAYER_ATTACK1)
             self:TakePrimaryAmmo(1)
             self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
             self:Suicide()
@@ -95,14 +95,14 @@ function SWEP:PrimaryAttack()
         if self:CanPrimaryAttack() then
             self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
             self:SetNextSecondaryFire(CurTime() + 0.3)
-            self.Owner:SetAnimation(PLAYER_ATTACK1)
+            self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 
             self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
 
             local tr = {}
-            tr.start = self.Owner:GetShootPos()
-            tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
-            tr.filter = {self.Owner}
+            tr.start = self:GetOwner():GetShootPos()
+            tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
+            tr.filter = {self:GetOwner()}
             local trace = util.TraceLine(tr)
 
             self:TakePrimaryAmmo(1)
@@ -162,7 +162,7 @@ function SWEP:PrimaryAttack()
             end
         end
     end end end)
-    local wait = self.Owner:GetViewModel():SequenceDuration() + .75
+    local wait = self:GetOwner():GetViewModel():SequenceDuration() + .75
     self:CheckWeaponsAndAmmo(wait)
 end
 
@@ -198,38 +198,38 @@ function SWEP:SecondaryAttack()
 
     if self.Timer == 5 then
         if (SERVER) then
-            self.Owner:PrintMessage(HUD_PRINTTALK, "10 Seconds.")
+            self:GetOwner():PrintMessage(HUD_PRINTTALK, "10 Seconds.")
         end
         self.Timer = 10
-        self.Owner:EmitSound("C4.PlantSound")
+        self:GetOwner():EmitSound("C4.PlantSound")
 
     elseif self.Timer == 10 then
         if (SERVER) then
-            self.Owner:PrintMessage(HUD_PRINTTALK, "15 Seconds.")
+            self:GetOwner():PrintMessage(HUD_PRINTTALK, "15 Seconds.")
         end
         self.Timer = 15
-        self.Owner:EmitSound("C4.PlantSound")
+        self:GetOwner():EmitSound("C4.PlantSound")
 
     elseif self.Timer == 15 then
         if (SERVER) then
-            self.Owner:PrintMessage(HUD_PRINTTALK, "20 Seconds.")
+            self:GetOwner():PrintMessage(HUD_PRINTTALK, "20 Seconds.")
         end
         self.Timer = 20
-        self.Owner:EmitSound("C4.PlantSound")
+        self:GetOwner():EmitSound("C4.PlantSound")
 
     elseif self.Timer == 20 then
         if (SERVER) then
-            self.Owner:PrintMessage(HUD_PRINTTALK, "WARNING! TIMER REDUCED TO ZERO!")
+            self:GetOwner():PrintMessage(HUD_PRINTTALK, "WARNING! TIMER REDUCED TO ZERO!")
         end
         self.Timer = 0
-        self.Owner:EmitSound("C4.PlantSound")
+        self:GetOwner():EmitSound("C4.PlantSound")
 
     elseif self.Timer == 0 then
         if (SERVER) then
-            self.Owner:PrintMessage(HUD_PRINTTALK, "5 Seconds.")
+            self:GetOwner():PrintMessage(HUD_PRINTTALK, "5 Seconds.")
         end
         self.Timer = 5
-        self.Owner:EmitSound("C4.PlantSound")
+        self:GetOwner():EmitSound("C4.PlantSound")
 
     end
 end

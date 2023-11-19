@@ -76,26 +76,26 @@ function SWEP:PrimaryAttack()
         self:EmitSound("MATADORF.single")
         self:TakePrimaryAmmo(1)
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self.Owner:SetAnimation( PLAYER_ATTACK1 )
-        self.Owner:MuzzleFlash()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
         self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     end
     self:CheckWeaponsAndAmmo()
 end
 
 function SWEP:FireRocket()
-    local aim = self.Owner:GetAimVector()
-    local pos = self.Owner:GetShootPos()
+    local aim = self:GetOwner():GetAimVector()
+    local pos = self:GetOwner():GetShootPos()
 
     if SERVER then
     local rocket = ents.Create(self.Primary.Round)
     if !rocket:IsValid() then return false end
     rocket:SetAngles(aim:Angle()+Angle(90,0,0))
     rocket:SetPos(pos)
-    rocket:SetOwner(self.Owner)
+    rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
-    util.ScreenShake(self.Owner:GetShootPos(), 1000, 10, 0.3, 500 )
+    util.ScreenShake(self:GetOwner():GetShootPos(), 1000, 10, 0.3, 500 )
     end
 end
 
@@ -104,10 +104,10 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+        if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then
-                if not IsValid(self.Owner) then return end
-                self.Owner:StripWeapon(self.Gun)
+                if not IsValid(self:GetOwner()) then return end
+                self:GetOwner():StripWeapon(self.Gun)
             end end)
         end
     end
