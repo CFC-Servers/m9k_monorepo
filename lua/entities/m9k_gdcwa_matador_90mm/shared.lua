@@ -47,9 +47,9 @@ end
 		self.Entity:Remove()
 	end
 
-	Table	={} 			//Table name is table name
-	Table[1]	=self.Owner 		//The person holding the gat
-	Table[2]	=self.Entity 		//The cap
+	Table	={} 			--Table name is table name
+	Table[1]	=self.Owner 		--The person holding the gat
+	Table[2]	=self.Entity 		--The cap
 
 	local trace = {}
 		trace.start = self.Entity:GetPos()
@@ -70,12 +70,12 @@ end
 					end
 					util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 450, 150)
 					local effectdata = EffectData()
-					effectdata:SetOrigin(tr.HitPos)			// Where is hits
-					effectdata:SetNormal(tr.HitNormal)		// Direction of particles
-					effectdata:SetEntity(self.Entity)		// Who done it?
-					effectdata:SetScale(1.8)			// Size of explosion
-					effectdata:SetRadius(tr.MatType)		// What texture it hits
-					effectdata:SetMagnitude(18)			// Length of explosion trails
+					effectdata:SetOrigin(tr.HitPos)			-- Where is hits
+					effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
+					effectdata:SetEntity(self.Entity)		-- Who done it?
+					effectdata:SetScale(1.8)			-- Size of explosion
+					effectdata:SetRadius(tr.MatType)		-- What texture it hits
+					effectdata:SetMagnitude(18)			-- Length of explosion trails
 					util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 					util.ScreenShake(tr.HitPos, 10, 5, 1, 3000 )
 					util.Decal("Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
@@ -95,7 +95,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
    function ENT:Initialize()

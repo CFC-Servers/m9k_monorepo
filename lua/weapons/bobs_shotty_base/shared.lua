@@ -1,4 +1,4 @@
-// Variables that are used on both client and server
+-- Variables that are used on both client and server
 -- Major thanks to rm-rf / for thinking up a solution to the reload glitch. Good man!
 
 SWEP.Category                = ""
@@ -7,31 +7,31 @@ SWEP.Contact                = ""
 SWEP.Purpose                = ""
 SWEP.Instructions                = ""
 SWEP.Base                 = "bobs_gun_base"
-SWEP.MuzzleAttachment            = "1"         // Should be "1" for CSS models or "muzzle" for hl2 models
-SWEP.ShellEjectAttachment            = "2"         // Should be "2" for CSS models or "1" for hl2 models
-SWEP.DrawCrosshair            = true        // Hell no, crosshairs r 4 nubz!
-SWEP.ViewModelFOV            = 65        // How big the gun will look
-SWEP.ViewModelFlip            = true        // True for CSS models, False for HL2 models
+SWEP.MuzzleAttachment            = "1"         -- Should be "1" for CSS models or "muzzle" for hl2 models
+SWEP.ShellEjectAttachment            = "2"         -- Should be "2" for CSS models or "1" for hl2 models
+SWEP.DrawCrosshair            = true        -- Hell no, crosshairs r 4 nubz!
+SWEP.ViewModelFOV            = 65        -- How big the gun will look
+SWEP.ViewModelFlip            = true        -- True for CSS models, False for HL2 models
 
 SWEP.Spawnable                = false
 SWEP.AdminSpawnable            = false
 
-SWEP.Primary.Sound             = Sound("")                // Sound of the gun
-SWEP.Primary.RPM                = 0                    // This is in Rounds Per Minute
-SWEP.Primary.ClipSize            = 0                    // Size of a clip
-SWEP.Primary.DefaultClip            = 0                    // Default number of bullets in a clip
-SWEP.Primary.KickUp            = 0                    // Maximum up recoil (rise)
-SWEP.Primary.KickDown            = 0                    // Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal            = 0                    // Maximum side recoil (koolaid)
-SWEP.Primary.Automatic            = true                    // Automatic/Semi Auto
-SWEP.Primary.Ammo            = "none"                    // What kind of ammo
-SWEP.Primary.Reloading            = false                    // Reloading func
+SWEP.Primary.Sound             = Sound("")                -- Sound of the gun
+SWEP.Primary.RPM                = 0                    -- This is in Rounds Per Minute
+SWEP.Primary.ClipSize            = 0                    -- Size of a clip
+SWEP.Primary.DefaultClip            = 0                    -- Default number of bullets in a clip
+SWEP.Primary.KickUp            = 0                    -- Maximum up recoil (rise)
+SWEP.Primary.KickDown            = 0                    -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal            = 0                    -- Maximum side recoil (koolaid)
+SWEP.Primary.Automatic            = true                    -- Automatic/Semi Auto
+SWEP.Primary.Ammo            = "none"                    -- What kind of ammo
+SWEP.Primary.Reloading            = false                    -- Reloading func
 
--- SWEP.Secondary.ClipSize            = 0                    // Size of a clip
--- SWEP.Secondary.DefaultClip            = 0                    // Default number of bullets in a clip
--- SWEP.Secondary.Automatic            = false                    // Automatic/Semi Auto
+-- SWEP.Secondary.ClipSize            = 0                    -- Size of a clip
+-- SWEP.Secondary.DefaultClip            = 0                    -- Default number of bullets in a clip
+-- SWEP.Secondary.Automatic            = false                    -- Automatic/Semi Auto
 SWEP.Secondary.Ammo            = ""
-SWEP.Secondary.IronFOV            = 0                    // How much you 'zoom' in. Less is more!
+SWEP.Secondary.IronFOV            = 0                    -- How much you 'zoom' in. Less is more!
 
 SWEP.data                 = {}                    -- The starting firemode
 SWEP.data.ironsights            = 1

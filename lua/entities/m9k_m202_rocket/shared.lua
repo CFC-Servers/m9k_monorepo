@@ -46,9 +46,9 @@ end
 		self.Entity:Remove()
 		end
 
-	Table	={} 			//Table name is table name
-	Table[1]	=self.Owner 		//The person holding the gat
-	Table[2]	=self.Entity 		//The cap
+	Table	={} 			--Table name is table name
+	Table[1]	=self.Owner 		--The person holding the gat
+	Table[2]	=self.Entity 		--The cap
 
 	local trace = {}
 		trace.start = self.Entity:GetPos()
@@ -68,12 +68,12 @@ end
 				return
 			end
 				local effectdata = EffectData()
-					effectdata:SetOrigin(tr.HitPos)			// Where is hits
-					effectdata:SetNormal(tr.HitNormal)		// Direction of particles
-					effectdata:SetEntity(self.Entity)		// Who done it?
-					effectdata:SetScale(1.3)			// Size of explosion
-					effectdata:SetRadius(tr.MatType)		// What texture it hits
-					effectdata:SetMagnitude(18)			// Length of explosion trails
+					effectdata:SetOrigin(tr.HitPos)			-- Where is hits
+					effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
+					effectdata:SetEntity(self.Entity)		-- Who done it?
+					effectdata:SetScale(1.3)			-- Size of explosion
+					effectdata:SetRadius(tr.MatType)		-- What texture it hits
+					effectdata:SetMagnitude(18)			-- Length of explosion trails
 					util.Effect( "m9k_gdcw_tpaboom", effectdata )
 					util.BlastDamage(self.Entity, self:OwnerGet(), tr.HitPos, 600, 170)
 					util.Decal("Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
@@ -105,11 +105,11 @@ end
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self.Owner)
 		shake:SetPos(self.Entity:GetPos())
-		shake:SetKeyValue("amplitude", "2000")	// Power of the shake
-		shake:SetKeyValue("radius", "900")		// Radius of the shake
-		shake:SetKeyValue("duration", "2.5")	// Time of shake
-		shake:SetKeyValue("frequency", "255")	// How har should the screenshake be
-		shake:SetKeyValue("spawnflags", "4")	// Spawnflags(In Air)
+		shake:SetKeyValue("amplitude", "2000")	-- Power of the shake
+		shake:SetKeyValue("radius", "900")		-- Radius of the shake
+		shake:SetKeyValue("duration", "2.5")	-- Time of shake
+		shake:SetKeyValue("frequency", "255")	-- How har should the screenshake be
+		shake:SetKeyValue("spawnflags", "4")	-- Spawnflags(In Air)
 		shake:Spawn()
 		shake:Activate()
 		shake:Fire("StartShake", "", 0)
@@ -137,7 +137,7 @@ end
 
 if CLIENT then
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
    function ENT:Initialize()

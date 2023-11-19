@@ -111,8 +111,8 @@ function ENT:BreakVial()
 
 	local gas = EffectData()
 		gas:SetOrigin(pos)
-		gas:SetEntity(self.Owner) //i dunno, just use it!
-		gas:SetScale(1)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		gas:SetEntity(self.Owner) --i dunno, just use it!
+		gas:SetScale(1)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_released_nerve_gas", gas)
 
 	self.Entity:Remove()
@@ -134,7 +134,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
 end

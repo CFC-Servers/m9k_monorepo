@@ -74,7 +74,7 @@ end
 ---------------------------------------------------------*/
 function ENT:OnTakeDamage(dmginfo)
 
-	// React physically when shot/getting blown
+	-- React physically when shot/getting blown
 	self.Entity:TakePhysicsDamage(dmginfo)
 	if GetConVar("M9KAmmoDetonation") == nil then return end
 	local dice = math.random(1,30)
@@ -86,7 +86,7 @@ function ENT:OnTakeDamage(dmginfo)
 		att = self.Entity
 	end
 
-	if dice == 1 then//you stupid son of a bitch, what did you just do!
+	if dice == 1 then--you stupid son of a bitch, what did you just do!
 		local nuke = ents.Create("m9k_davy_crockett_explo")
 		nuke:SetPos( self.Entity:GetPos() )
 		nuke:SetOwner(att)

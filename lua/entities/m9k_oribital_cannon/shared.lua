@@ -250,8 +250,8 @@ function ENT:GiantLaser(ground, sky)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground)
-		smokering:SetEntity(self.Owner) //i dunno, just use it!
-		smokering:SetScale(2)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		smokering:SetEntity(self.Owner) --i dunno, just use it!
+		smokering:SetScale(2)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_orbital_smokering", smokering)
 
 	timer.Simple(.75, function()
@@ -376,8 +376,8 @@ function ENT:GiantLaserPerson(ground, sky)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground:GetPos())
-		smokering:SetEntity(self.Owner) //i dunno, just use it!
-		smokering:SetScale(2)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		smokering:SetEntity(self.Owner) --i dunno, just use it!
+		smokering:SetScale(2)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_orbital_smokering", smokering)
 
 	timer.Simple(.75, function()
@@ -504,12 +504,12 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 	util.Effect("Explosion", exploeffect, true, true)
 
 	local effectdata = EffectData()
-	effectdata:SetOrigin(ground)			// Where is hits
-	effectdata:SetNormal(Vector(0,0,1))		// Direction of particles
-	effectdata:SetEntity(self.Owner)		// Who done it?
-	effectdata:SetScale(8)			// Size of explosion
-	effectdata:SetRadius(67)		// What texture it hits
-	effectdata:SetMagnitude(8)			// Length of explosion trails
+	effectdata:SetOrigin(ground)			-- Where is hits
+	effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
+	effectdata:SetEntity(self.Owner)		-- Who done it?
+	effectdata:SetScale(8)			-- Size of explosion
+	effectdata:SetRadius(67)		-- What texture it hits
+	effectdata:SetMagnitude(8)			-- Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
 
@@ -518,11 +518,11 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self.Owner)
 		shake:SetPos(ground)
-		shake:SetKeyValue("amplitude", "4000")	// Power of the shake
-		shake:SetKeyValue("radius", "5000")		// Radius of the shake
-		shake:SetKeyValue("duration", "2.5")	// Time of shake
-		shake:SetKeyValue("frequency", "255")	// How har should the screenshake be
-		shake:SetKeyValue("spawnflags", "4")	// Spawnflags(In Air)
+		shake:SetKeyValue("amplitude", "4000")	-- Power of the shake
+		shake:SetKeyValue("radius", "5000")		-- Radius of the shake
+		shake:SetKeyValue("duration", "2.5")	-- Time of shake
+		shake:SetKeyValue("frequency", "255")	-- How har should the screenshake be
+		shake:SetKeyValue("spawnflags", "4")	-- Spawnflags(In Air)
 		shake:Spawn()
 		shake:Activate()
 		shake:Fire("StartShake", "", 0)
@@ -532,8 +532,8 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground)
-		smokering:SetEntity(self.Owner) //i dunno, just use it!
-		smokering:SetScale(1)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		smokering:SetEntity(self.Owner) --i dunno, just use it!
+		smokering:SetScale(1)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_orbital_smokering", smokering)
 
 	for k, v in pairs(player.GetAll() ) do
@@ -607,12 +607,12 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 	util.Effect("Explosion", exploeffect, true, true)
 
 	local effectdata = EffectData()
-	effectdata:SetOrigin(ground:GetPos())			// Where is hits
-	effectdata:SetNormal(Vector(0,0,1))		// Direction of particles
-	effectdata:SetEntity(self.Owner)		// Who done it?
-	effectdata:SetScale(8)			// Size of explosion
-	effectdata:SetRadius(67)		// What texture it hits
-	effectdata:SetMagnitude(8)			// Length of explosion trails
+	effectdata:SetOrigin(ground:GetPos())			-- Where is hits
+	effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
+	effectdata:SetEntity(self.Owner)		-- Who done it?
+	effectdata:SetScale(8)			-- Size of explosion
+	effectdata:SetRadius(67)		-- What texture it hits
+	effectdata:SetMagnitude(8)			-- Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
 
@@ -621,11 +621,11 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self.Owner)
 		shake:SetPos(ground:GetPos())
-		shake:SetKeyValue("amplitude", "4000")	// Power of the shake
-		shake:SetKeyValue("radius", "5000")		// Radius of the shake
-		shake:SetKeyValue("duration", "2.5")	// Time of shake
-		shake:SetKeyValue("frequency", "255")	// How har should the screenshake be
-		shake:SetKeyValue("spawnflags", "4")	// Spawnflags(In Air)
+		shake:SetKeyValue("amplitude", "4000")	-- Power of the shake
+		shake:SetKeyValue("radius", "5000")		-- Radius of the shake
+		shake:SetKeyValue("duration", "2.5")	-- Time of shake
+		shake:SetKeyValue("frequency", "255")	-- How har should the screenshake be
+		shake:SetKeyValue("spawnflags", "4")	-- Spawnflags(In Air)
 		shake:Spawn()
 		shake:Activate()
 		shake:Fire("StartShake", "", 0)
@@ -635,8 +635,8 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 
 	local smokering = EffectData()
 		smokering:SetOrigin(ground:GetPos())
-		smokering:SetEntity(self.Owner) //i dunno, just use it!
-		smokering:SetScale(1)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		smokering:SetEntity(self.Owner) --i dunno, just use it!
+		smokering:SetScale(1)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 	util.Effect("m9k_orbital_smokering", smokering)
 
 	for k, v in pairs(player.GetAll() ) do
@@ -649,12 +649,12 @@ end
 function ENT:SmallerExplo(targ, norm)
 
 	-- local effectdata = EffectData()
-	-- effectdata:SetOrigin(targ)			// Where is hits
-	-- effectdata:SetNormal(norm)		// Direction of particles
-	-- effectdata:SetEntity(self.Owner)		// Who done it?
-	-- effectdata:SetScale(4)			// Size of explosion
-	-- effectdata:SetRadius(67)		// What texture it hits
-	-- effectdata:SetMagnitude(4)			// Length of explosion trails
+	-- effectdata:SetOrigin(targ)			-- Where is hits
+	-- effectdata:SetNormal(norm)		-- Direction of particles
+	-- effectdata:SetEntity(self.Owner)		-- Who done it?
+	-- effectdata:SetScale(4)			-- Size of explosion
+	-- effectdata:SetRadius(67)		-- What texture it hits
+	-- effectdata:SetMagnitude(4)			-- Length of explosion trails
 	-- util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 
 	util.BlastDamage(self.Entity, (self:OwnerCheck()), targ, 1000, 150)

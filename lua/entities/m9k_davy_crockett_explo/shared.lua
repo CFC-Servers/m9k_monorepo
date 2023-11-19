@@ -9,7 +9,7 @@ ENT.AdminOnly = true
 ENT.DoNotDuplicate = true
 ENT.DisableDuplicator = true
 
-//Teta_Bonita, holy shit i wish I were half as good a coder as you.
+--Teta_Bonita, holy shit i wish I were half as good a coder as you.
 
 
 if GetConVarString("nuke_yield") == "" then --if one of them doesn't exists, then they all probably don't exist

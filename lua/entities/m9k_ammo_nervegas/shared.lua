@@ -71,7 +71,7 @@ end
 ---------------------------------------------------------*/
 function ENT:OnTakeDamage(dmginfo)
 
-	// React physically when shot/getting blown
+	-- React physically when shot/getting blown
 	self.Entity:TakePhysicsDamage(dmginfo)
 	local dice = math.random(1,10)
 	local pos = self.Entity:GetPos()
@@ -132,8 +132,8 @@ function ENT:OnTakeDamage(dmginfo)
 		self.Entity:Remove()
 		local gas = EffectData()
 		gas:SetOrigin(pos)
-		gas:SetEntity(attacker) //i dunno, just use it!
-		gas:SetScale(2)//otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
+		gas:SetEntity(attacker) --i dunno, just use it!
+		gas:SetScale(2)--otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
 		util.Effect("m9k_released_nerve_gas", gas)
 
 	end

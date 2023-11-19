@@ -54,7 +54,7 @@ SWEP.Primary.IronAccuracy = .011 -- Ironsight accuracy, should be the same for s
 
 SWEP.SelectiveFire        = true
 
-//just cleaning up an empty spot that bugs me
+--just cleaning up an empty spot that bugs me
 SWEP.VElements = {
     ["element"] = { type = "Model", model = "models/Mechanics/wheels/wheel_speed_72.mdl", bone = "Havana Daydreamin", rel = "", pos = Vector(-0.15, -5.336, 1.608), angle = Angle(0, 0, 90), size = Vector(0.009, 0.009, 0.009), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }

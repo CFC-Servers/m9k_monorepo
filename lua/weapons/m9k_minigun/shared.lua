@@ -95,17 +95,17 @@ end
 
 function SWEP:IronSight()
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then                    // If you run then
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.5)                // Make it so you can't shoot for another quarter second
-    self.IronSightsPos = self.RunSightsPos                    // Hold it down
-    self.IronSightsAng = self.RunSightsAng                    // Hold it down
-    self:SetIronsights(true, self.Owner)                    // Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )                        // Reset FOV
+    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then                    -- If you run then
+    self.Weapon:SetNextPrimaryFire(CurTime()+0.5)                -- Make it so you can't shoot for another quarter second
+    self.IronSightsPos = self.RunSightsPos                    -- Hold it down
+    self.IronSightsAng = self.RunSightsAng                    -- Hold it down
+    self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
+    self.Owner:SetFOV( 0, 0.3 )                        -- Reset FOV
     end
 
-    if self.Owner:KeyReleased(IN_SPEED) then                // If you stop running then
-    self:SetIronsights(false, self.Owner)                    // Set the ironsight true
-    self.Owner:SetFOV( 0, 0.3 )                        // Reset FOV
+    if self.Owner:KeyReleased(IN_SPEED) then                -- If you stop running then
+    self:SetIronsights(false, self.Owner)                    -- Set the ironsight true
+    self.Owner:SetFOV( 0, 0.3 )                        -- Reset FOV
     end
 
 end

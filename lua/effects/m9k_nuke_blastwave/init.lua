@@ -48,7 +48,7 @@ function EFFECT:Think( )
 				particle:SetRollDelta( math.random( -1, 1 ) )
 				particle:SetColor(160,152,120)
 				--particle:VelocityDecay( true )
-				//thanks, asshole
+				--thanks, asshole
 			end
 
 		end

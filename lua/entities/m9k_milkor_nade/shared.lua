@@ -33,9 +33,9 @@ end
 	if not IsValid(self) then return end
 	if not IsValid(self.Entity) then return end
 
-	Table	={} 			//Table name is table name
-	Table[1]	=self.Owner 		//The person holding the gat
-	Table[2]	=self.Entity 		//The cap
+	Table	={} 			--Table name is table name
+	Table[1]	=self.Owner 		--The person holding the gat
+	Table[2]	=self.Entity 		--The cap
 
 	local trace = {}
 		trace.start = self.Entity:GetPos()
@@ -57,12 +57,12 @@ end
 					if not (tr.MatType == 70 or tr.MatType == 50) then
 						util.BlastDamage(self.Entity, self.Owner, tr.HitPos, 175, 200)
 						local effectdata = EffectData()
-						effectdata:SetOrigin(tr.HitPos)			// Where is hits
-						effectdata:SetNormal(tr.HitNormal)		// Direction of particles
-						effectdata:SetEntity(self.Entity)		// Who done it?
-						effectdata:SetScale(1.1)			// Size of explosion
-						effectdata:SetRadius(tr.MatType)		// What texture it hits
-						effectdata:SetMagnitude(12)			// Length of explosion trails
+						effectdata:SetOrigin(tr.HitPos)			-- Where is hits
+						effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
+						effectdata:SetEntity(self.Entity)		-- Who done it?
+						effectdata:SetScale(1.1)			-- Size of explosion
+						effectdata:SetRadius(tr.MatType)		-- What texture it hits
+						effectdata:SetMagnitude(12)			-- Length of explosion trails
 						util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 						util.ScreenShake(tr.HitPos, 12, 4, .75, 300 )
 						util.Decal("Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
@@ -70,12 +70,12 @@ end
 					else
 						if (tr.Entity:IsPlayer() or tr.Entity:IsNPC()) then tr.Entity:TakeDamage(150, self.Owner, self.Entity)		end
 						local effectdata = EffectData()
-						effectdata:SetOrigin(tr.HitPos)			// Where is hits
-						effectdata:SetNormal(tr.HitNormal)		// Direction of particles
-						effectdata:SetEntity(self.Entity)		// Who done it?
-						effectdata:SetScale(1)			// Size of explosion
-						effectdata:SetRadius(tr.MatType)		// What texture it hits
-						effectdata:SetMagnitude(10)			// Length of explosion trails
+						effectdata:SetOrigin(tr.HitPos)			-- Where is hits
+						effectdata:SetNormal(tr.HitNormal)		-- Direction of particles
+						effectdata:SetEntity(self.Entity)		-- Who done it?
+						effectdata:SetScale(1)			-- Size of explosion
+						effectdata:SetRadius(tr.MatType)		-- What texture it hits
+						effectdata:SetMagnitude(10)			-- Length of explosion trails
 						tr.Entity:EmitSound(("physics/flesh/flesh_squishy_impact_hard" .. math.random(1, 4) .. ".wav"), 500, 100	)
 						util.Effect("m9k_cinematic_blood_cloud", effectdata)
 						self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
@@ -113,12 +113,12 @@ function ENT:Explosion()
 
 	util.BlastDamage(self.Entity, self.Owner, self.Entity:GetPos(), 175, 200)
 	local effectdata = EffectData()
-	effectdata:SetOrigin(self.Entity:GetPos())			// Where is hits
-	effectdata:SetNormal(Vector(0,0,1))		// Direction of particles
-	effectdata:SetEntity(self.Entity)		// Who done it?
-	effectdata:SetScale(1.1)			// Size of explosion
-	effectdata:SetRadius(67)		// What texture it hits
-	effectdata:SetMagnitude(12)			// Length of explosion trails
+	effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+	effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
+	effectdata:SetEntity(self.Entity)		-- Who done it?
+	effectdata:SetScale(1.1)			-- Size of explosion
+	effectdata:SetRadius(67)		-- What texture it hits
+	effectdata:SetMagnitude(12)			-- Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	util.ScreenShake(self.Entity:GetPos(), 12, 4, .75, 300 )
 	self.Entity:Remove()
@@ -129,7 +129,7 @@ end
 
 if CLIENT then
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
    function ENT:Initialize()

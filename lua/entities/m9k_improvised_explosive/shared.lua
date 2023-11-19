@@ -59,12 +59,12 @@ function ENT:Explosion()
 	end
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())			// Where is hits
-		effectdata:SetNormal(Vector(0,0,1))		// Direction of particles
-		effectdata:SetEntity(self.Entity)		// Who done it?
-		effectdata:SetScale(1)			// Size of explosion
-		effectdata:SetRadius(67)		// What texture it hits
-		effectdata:SetMagnitude(18)			// Length of explosion trails
+		effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+		effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
+		effectdata:SetEntity(self.Entity)		-- Who done it?
+		effectdata:SetScale(1)			-- Size of explosion
+		effectdata:SetRadius(67)		-- What texture it hits
+		effectdata:SetMagnitude(18)			-- Length of explosion trails
 		util.Effect( "m9k_gdcw_tpaboom", effectdata )
 		util.Effect("HelicopterMegaBomb", effectdata)
 		util.Effect("ThumperDust", effectdata)
@@ -96,12 +96,12 @@ function ENT:TinyExplo()
 	end
 
 	local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())			// Where is hits
-		effectdata:SetNormal(Vector(0,0,1))		// Direction of particles
-		effectdata:SetEntity(self.Entity)		// Who done it?
-		effectdata:SetScale(1)			// Size of explosion
-		effectdata:SetRadius(67)		// What texture it hits
-		effectdata:SetMagnitude(8)			// Length of explosion trails
+		effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+		effectdata:SetNormal(Vector(0,0,1))		-- Direction of particles
+		effectdata:SetEntity(self.Entity)		-- Who done it?
+		effectdata:SetScale(1)			-- Size of explosion
+		effectdata:SetRadius(67)		-- What texture it hits
+		effectdata:SetMagnitude(8)			-- Length of explosion trails
 		util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 		util.Effect("HelicopterMegaBomb", effectdata)
 		util.Effect("ThumperDust", effectdata)

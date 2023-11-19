@@ -138,7 +138,7 @@ function SWEP:Initialize()
 
     if CLIENT then
 
-        -- // Create a new table for every weapon instance
+        -- -- Create a new table for every weapon instance
         self.VElements = table.FullCopy( self.VElements )
         self.WElements = table.FullCopy( self.WElements )
         self.ViewModelBoneMods = table.FullCopy( self.ViewModelBoneMods )
@@ -146,17 +146,17 @@ function SWEP:Initialize()
         self:CreateModels(self.VElements) -- create viewmodels
         self:CreateModels(self.WElements) -- create worldmodels
 
-        -- // init view model bone build function
+        -- -- init view model bone build function
         if IsValid(self:GetOwner()) and self:GetOwner():IsPlayer() then
         if self:GetOwner():Alive() then
             local vm = self:GetOwner():GetViewModel()
             if IsValid(vm) then
                 self:ResetBonePositions(vm)
-                -- // Init viewmodel visibility
+                -- -- Init viewmodel visibility
                 if (self.ShowViewModel == nil or self.ShowViewModel) then
                     vm:SetColor(Color(255,255,255,255))
                 else
-                    -- // however for some reason the view model resets to render mode 0 every frame so we just apply a debug material to prevent it from drawing
+                    -- -- however for some reason the view model resets to render mode 0 every frame so we just apply a debug material to prevent it from drawing
                     vm:SetMaterial("Debug/hsv")
                 end
             end

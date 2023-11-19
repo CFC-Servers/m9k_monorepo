@@ -59,7 +59,7 @@ end
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data, physobj)
 
-	// Play sound on bounce
+	-- Play sound on bounce
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
 		self.Entity:EmitSound("Default.ImpactSoft")
 	end
@@ -90,7 +90,7 @@ function ENT:OnTakeDamage(dmginfo)
 
 		timer.Simple(.01, function()
 
-			for i=1, 300 do //if that turns out to be too many, i might have to call it 200 or something. goddamn, 1200 calculations in a heartbeat.
+			for i=1, 300 do --if that turns out to be too many, i might have to call it 200 or something. goddamn, 1200 calculations in a heartbeat.
 
 			ouchies = {}
 			ouchies.start = pos
@@ -98,7 +98,7 @@ function ENT:OnTakeDamage(dmginfo)
 			ouchies = util.TraceLine(ouchies)
 
 			if ouchies.Hit and not ouchies.HitSky then
-				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )//and ouchies.Entity then
+				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )--and ouchies.Entity then
 				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, self.Entity)
 			end
 			end
@@ -115,7 +115,7 @@ function ENT:Use(activator, caller)
 
 
 	if (activator:IsPlayer()) and not self.Planted then
-		// Give the collecting player some free health
+		-- Give the collecting player some free health
 		activator:GiveAmmo(100, "buckshot")
 		self.Entity:Remove()
 	end

@@ -57,7 +57,7 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( self.YieldInverse*math.random( -1, 1 ) )
 			particle:SetColor(math.random(150,255), math.random(100,150), 100)
 			--particle:VelocityDecay( true )
-			//thanks, asshole
+			--thanks, asshole
 
 		end
 
@@ -78,7 +78,7 @@ function EFFECT:Init( data )
 				particle:SetRollDelta( self.YieldInverse*math.random( -1, 1 ) )
 				particle:SetColor(math.random(150,255), math.random(100,150), 100)
 				--particle:VelocityDecay( true )
-			//thanks, asshole
+			--thanks, asshole
 				end
 
 		end
@@ -102,7 +102,7 @@ function EFFECT:Init( data )
 			particle:SetColor(230,230,230)
 			--particle:VelocityDecay( true )
 
-			//thanks, asshole
+			--thanks, asshole
 			table.insert(self.smokeparticles,particle)
 
 		end

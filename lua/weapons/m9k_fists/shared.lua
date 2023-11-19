@@ -51,7 +51,7 @@ SWEP.Primary.Damage        = 25    -- Base damage per bullet
 SWEP.Primary.Spread        = .02    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.IronAccuracy = .01 -- Ironsight accuracy, should be the same for shotguns
 
-//Enter iron sight info and bone mod info below
+--Enter iron sight info and bone mod info below
 SWEP.IronSightsPos = Vector(-0.094, -6.755, 1.003)
 SWEP.IronSightsAng = Vector(36.123, 0, 0)
 SWEP.SightsPos = Vector(-0.094, -6.755, 1.003)
@@ -61,7 +61,7 @@ SWEP.RunSightsAng = Vector(-25.577, 0, 0)
 
 SWEP.Slash = 1
 
-SWEP.Primary.Sound    = Sound("Weapon_Knife.Slash") //woosh
+SWEP.Primary.Sound    = Sound("Weapon_Knife.Slash") --woosh
 punchtable = {"punchies/1.mp3","punchies/2.mp3","punchies/3.mp3","punchies/4.mp3","punchies/5.mp3",}
 woosh = {"punchies/miss1.mp3", "punchies/miss2.mp3"}
 
@@ -73,9 +73,9 @@ function SWEP:PrimaryAttack()
     self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             self.Owner:ViewPunch(Angle(math.random(-5,5),-10,5))
-            vm:SetSequence(vm:LookupSequence("punchmiss2")) //left
+            vm:SetSequence(vm:LookupSequence("punchmiss2")) --left
             vm:SetPlaybackRate( 1.5 )
-            self.Weapon:EmitSound(Sound(table.Random(woosh)))//slash in the wind sound here
+            self.Weapon:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
             timer.Create("LeftJab", .1, 1, function() if not IsValid(self) then return end
 
             if IsValid(self.Owner) and
@@ -110,9 +110,9 @@ function SWEP:LeftJab()
             if slashtrace.Hit then
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
-                    //find a way to splash a little blood
+                    --find a way to splash a little blood
 
-                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))//stab noise
+                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
@@ -124,7 +124,7 @@ function SWEP:LeftJab()
                         if targ:IsPlayer() then targ:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
                     end
                 else
-                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")//thunk
+                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
                 end
             end
         end end
@@ -139,9 +139,9 @@ function SWEP:SecondaryAttack()
     self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             self.Owner:ViewPunch(Angle(math.random(-5,5),10,-5))
-            vm:SetSequence(vm:LookupSequence("punchmiss1")) //right
+            vm:SetSequence(vm:LookupSequence("punchmiss1")) --right
             vm:SetPlaybackRate( 1.5 )
-            self.Weapon:EmitSound(Sound(table.Random(woosh)))//slash in the wind sound here
+            self.Weapon:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
 
             timer.Create("RightJab", .1, 1, function() if not IsValid(self) then return end
                 if IsValid(self.Owner) and IsValid(self.Weapon) then
@@ -173,8 +173,8 @@ function SWEP:RightJab()
             if rslashtrace.Hit then
                 rtarg = rslashtrace.Entity
                 if rtarg:IsPlayer() or rtarg:IsNPC() then
-                    //find a way to splash a little blood
-                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))//stab noise
+                    --find a way to splash a little blood
+                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
@@ -186,7 +186,7 @@ function SWEP:RightJab()
                         if rtarg:IsPlayer() then rtarg:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
                     end
                 else
-                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")//thunk
+                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
                 end
             end
         end end

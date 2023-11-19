@@ -56,9 +56,9 @@ end
 		self.Entity:Remove()
 		end
 
-	Table	={} 			//Table name is table name
-	Table[1]	=self.Owner 		//The person holding the gat
-	Table[2]	=self.Entity 		//The cap
+	Table	={} 			--Table name is table name
+	Table[1]	=self.Owner 		--The person holding the gat
+	Table[2]	=self.Entity 		--The cap
 
 	local trace = {}
 		trace.start = self.Entity:GetPos()
@@ -109,7 +109,7 @@ end
 
 if CLIENT then
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
 function ENT:Initialize()

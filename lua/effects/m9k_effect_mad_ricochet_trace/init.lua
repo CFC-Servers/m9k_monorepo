@@ -12,10 +12,10 @@ function EFFECT:Init(data)
 
     self.TracerTime     = 0.4
 
-    // Die when it reaches its target
+    -- Die when it reaches its target
     self.DieTime     = CurTime() + self.TracerTime
 
-    // Play ricochet sound with random pitch
+    -- Play ricochet sound with random pitch
 
     local vGrav     = Vector(0, 0, -450)
     local Dir         = self.Dir:GetNormalized()

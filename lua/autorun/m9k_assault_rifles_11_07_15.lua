@@ -91,7 +91,7 @@ if GetConVar("M9KUniqueSlots") == nil then
 	print("Unique Slots con var created")
 end
 
-//AN-94
+--AN-94
 sound.Add({
 	name = 			"an94.single",
 	channel = 		CHAN_USER_BASE+10,
@@ -133,7 +133,7 @@ sound.Add({
 	sound = 			"weapons/an94/draw.mp3"
 })
 
-//AMD 65
+--AMD 65
 sound.Add({
 	name = 			"amd65.single",
 	channel = 		CHAN_USER_BASE+10,
@@ -169,7 +169,7 @@ sound.Add({
 	sound = 			"weapons/amd65/boltrelease.mp3"
 })
 
-//tavor
+--tavor
 sound.Add({
 	name = 			"Wep_imitavor.single",
 	channel = 		CHAN_USER_BASE+10,
@@ -226,7 +226,7 @@ sound.Add({
 	sound = 			"weapons/tavor/famas_cloth.mp3"
 })
 
-//f2000
+--f2000
 sound.Add({
 	name = 			"Weapon_F2000.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -288,7 +288,7 @@ sound.Add({
 			"weapons/fokku_tc_f2000/chargefor1.mp3"}
 })
 
-//ak-47
+--ak-47
 sound.Add({
 	name = 			"47ak.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -317,7 +317,7 @@ sound.Add({
 	sound = 			"weapons/AYKAYFORTY/magout.mp3"
 })
 
-//m14
+--m14
 sound.Add({
 	name = 			"Weapon_M14SP.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -353,7 +353,7 @@ sound.Add({
 	sound = 			"weapons/fokku_tc_m14/sg550_deploy.mp3"
 })
 
-//g36
+--g36
 sound.Add({
 	name =				"G36.single",
 	channel =			CHAN_USER_BASE+10,
@@ -438,7 +438,7 @@ sound.Add({
 	sound			= "weapons/G36/Safety.mp3"
 })
 
-//winchester 1873
+--winchester 1873
 sound.Add({
 	name = 			"Weapon_73.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -460,7 +460,7 @@ sound.Add({
 	sound = 			"weapons/winchester73/w73insertshell.mp3"
 })
 
-//l85
+--l85
 sound.Add({
 	name = 			"Weapon_l85.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -510,7 +510,7 @@ sound.Add({
 	sound = 			"weapons/L85A2/tap.mp3"
 })
 
-//aug a3
+--aug a3
 sound.Add({
 	name = 			"aug_a3.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -547,7 +547,7 @@ sound.Add({
 	sound = 			"weapons/auga3/boltslap.mp3"
 })
 
-//famas
+--famas
 sound.Add({
 	name = 			"Weapon_FAMTC.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -577,7 +577,7 @@ sound.Add({
 	sound = 			"weapons/fokku_tc_famas/famas_forearm.mp3"
 })
 
-//Val
+--Val
 sound.Add({
 	name = 			"Dmgfok_vally.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -613,7 +613,7 @@ sound.Add({
 	sound = 			"weapons/dmg_val/draw.mp3"
 })
 
-//vikhr
+--vikhr
 sound.Add({
 	name = 			"Dmgfok_vikhr.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -656,7 +656,7 @@ sound.Add({
 	sound = 			"weapons/dmg_vikhr/draw.mp3"
 })
 
-//magpul masada ACR
+--magpul masada ACR
 sound.Add({
 	name = 			"Masada.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -748,7 +748,7 @@ sound.Add({
 	sound = 			"weapons/masadamagpul/removesilencer.mp3"
 })
 
-//m4a1
+--m4a1
 sound.Add({
 	name = 			"Dmgfok_M4A1.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -805,7 +805,7 @@ sound.Add({
 	sound = 			"weapons/dmg_m4a1/m4a1_boltpull.mp3"
 })
 
-//m16a4
+--m16a4
 sound.Add({
 	name = 			"Dmgfok_M16A4.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -843,7 +843,7 @@ sound.Add({
 
 -- Congratulations, you have found a secret message! Bob says hi, and hopes you are having fun with this addon.
 
-//ak47
+--ak47
 sound.Add({
 	name = 			"Tactic_AK47.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -872,7 +872,7 @@ sound.Add({
 	sound = 			"weapons/fokku_tc_ak47/ak47_boltpull.mp3"
 })
 
-//SCAR
+--SCAR
 sound.Add({
 	name = 			"Wep_fnscarh.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -910,7 +910,7 @@ sound.Add({
 	sound = 			"weapons/fnscarh/aug_clipin.mp3"
 })
 
-//fn fal
+--fn fal
 sound.Add({
 	name = 			"fnfal.Single",
 	channel = 		CHAN_USER_BASE+10,
@@ -939,7 +939,7 @@ sound.Add({
 	sound = 			"weapons/fn_fal/galil_boltpull.mp3"
 })
 
-//hk 416
+--hk 416
 sound.Add({
 	name = 			"hk416weapon.SilencedSingle",
 	channel = 		CHAN_USER_BASE+10,
@@ -1010,7 +1010,7 @@ sound.Add({
 	sound = 			"weapons/twinkie_hk416/m4a1_silencer_off.mp3"
 })
 
-//G3
+--G3
 sound.Add({
 	name = 			"hk_g3_weapon.Single",
 	channel = 		CHAN_USER_BASE+10,

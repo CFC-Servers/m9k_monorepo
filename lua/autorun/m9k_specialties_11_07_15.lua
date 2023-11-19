@@ -263,7 +263,7 @@ function PoisonChildChecker(victim, info)
 end
 hook.Add("EntityTakeDamage", "PoisonChildChecker", PoisonChildChecker )
 
-//EX41
+--EX41
 sound.Add({
     name =            "EX41.Pump",
     channel =        CHAN_ITEM,
@@ -285,7 +285,7 @@ sound.Add({
     sound =            "weapons/ex41/draw.mp3"
 })
 
-//RPG
+--RPG
 sound.Add({
     name =                "RPGF.single",
     channel =            CHAN_USER_BASE+10,
@@ -310,7 +310,7 @@ sound.Add({
     sound =                "GDC/Rockets/MATADORF.wav"
 })
 
-//Suicide bomb
+--Suicide bomb
 sound.Add({
     name =             "sb.click",
     channel =         CHAN_USER_BASE+10,
@@ -318,7 +318,7 @@ sound.Add({
     sound =             "weapons/suicidebomb/c4_click.mp3"
 })
 
-// m79 grenade launcher
+-- m79 grenade launcher
 
 sound.Add({
     name =             "M79_launcher.close",
@@ -329,7 +329,7 @@ sound.Add({
 })
 
 sound.Add({
-    name =             "M79_glauncher.barrelup",//GET THIS SOUND!
+    name =             "M79_glauncher.barrelup",--GET THIS SOUND!
     channel =         CHAN_ITEM,
     volume =         1.0,
     sound =             "weapons/M79/barrelup.mp3"
@@ -337,7 +337,7 @@ sound.Add({
 })
 
 sound.Add({
-    name =             "M79_glauncher.InsertShell",//GET THIS SOUND!
+    name =             "M79_glauncher.InsertShell",--GET THIS SOUND!
     channel =         CHAN_ITEM,
     volume =         1.0,
     sound =             "weapons/M79/xm_insert.mp3"

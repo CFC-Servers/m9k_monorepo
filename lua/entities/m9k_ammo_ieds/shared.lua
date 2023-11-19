@@ -102,12 +102,12 @@ function ENT:Explosion(attacker)
 	util.Effect("Explosion", exploeffect, true, true)
 
 	local effectdata = EffectData()
-	effectdata:SetOrigin(self.Entity:GetPos())			// Where is hits
-	effectdata:SetNormal(self:Normalizer())		// Direction of particles
-	effectdata:SetEntity(self.Entity)		// Who done it?
-	effectdata:SetScale(4)			// Size of explosion
-	effectdata:SetRadius(67)		// What texture it hits
-	effectdata:SetMagnitude(18)			// Length of explosion trails
+	effectdata:SetOrigin(self.Entity:GetPos())			-- Where is hits
+	effectdata:SetNormal(self:Normalizer())		-- Direction of particles
+	effectdata:SetEntity(self.Entity)		-- Who done it?
+	effectdata:SetScale(4)			-- Size of explosion
+	effectdata:SetRadius(67)		-- What texture it hits
+	effectdata:SetMagnitude(18)			-- Length of explosion trails
 	util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 	--generic default, you are a god among men
 
@@ -116,11 +116,11 @@ function ENT:Explosion(attacker)
 	local shake = ents.Create("env_shake")
 		shake:SetOwner(self:OwnerCheck(attacker))
 		shake:SetPos(self.Entity:GetPos())
-		shake:SetKeyValue("amplitude", "2000")	// Power of the shake
-		shake:SetKeyValue("radius", "1250")		// Radius of the shake
-		shake:SetKeyValue("duration", "2.5")	// Time of shake
-		shake:SetKeyValue("frequency", "255")	// How har should the screenshake be
-		shake:SetKeyValue("spawnflags", "4")	// Spawnflags(In Air)
+		shake:SetKeyValue("amplitude", "2000")	-- Power of the shake
+		shake:SetKeyValue("radius", "1250")		-- Radius of the shake
+		shake:SetKeyValue("duration", "2.5")	-- Time of shake
+		shake:SetKeyValue("frequency", "255")	-- How har should the screenshake be
+		shake:SetKeyValue("spawnflags", "4")	-- Spawnflags(In Air)
 		shake:Spawn()
 		shake:Activate()
 		shake:Fire("StartShake", "", 0)

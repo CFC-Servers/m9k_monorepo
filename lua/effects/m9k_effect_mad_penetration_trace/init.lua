@@ -12,7 +12,7 @@ function EFFECT:Init(data)
 
 	self.TracerTime 	= 0.4
 
-	// Die when it reaches its target
+	-- Die when it reaches its target
 	self.DieTime 	= CurTime() + self.TracerTime
 
 end

@@ -1,4 +1,4 @@
--- //Variables that are used on both client and server
+-- --Variables that are used on both client and server
 SWEP.Category                           = ""
 SWEP.Gun                                        = ""
 SWEP.Author                             = "Generic Default, Worshipper, Clavus, and Bob"
@@ -35,7 +35,7 @@ SWEP.Primary.Ammo                       = "none"                                
 -- SWEP.Secondary.DefaultClip                      = 0                                     -- Default number of bullets in a clip
 -- SWEP.Secondary.Automatic                        = false                                 -- Automatic/Semi Auto
 SWEP.Secondary.Ammo                     = ""
---//HAHA! GOTCHA, YA BASTARD!
+----HAHA! GOTCHA, YA BASTARD!
 
 -- SWEP.Secondary.IronFOV                  = 0                                     -- How much you 'zoom' in. Less is more!
 
@@ -111,12 +111,12 @@ function SWEP:Initialize()
                 self:SetNPCMinBurst(3)
                 self:SetNPCMaxBurst(10)                 -- None of this really matters but you need it here anyway
                 self:SetNPCFireRate(1/(self.Primary.RPM/60))
-                -- //self:SetCurrentWeaponProficiency( WEAPON_PROFICIENCY_VERY_GOOD )
+                -- --self:SetCurrentWeaponProficiency( WEAPON_PROFICIENCY_VERY_GOOD )
         end
 
         if CLIENT then
 
-                -- // Create a new table for every weapon instance
+                -- -- Create a new table for every weapon instance
                 self.VElements = table.FullCopy( self.VElements )
                 self.WElements = table.FullCopy( self.WElements )
                 self.ViewModelBoneMods = table.FullCopy( self.ViewModelBoneMods )
@@ -124,17 +124,17 @@ function SWEP:Initialize()
                 self:CreateModels(self.VElements) -- create viewmodels
                 self:CreateModels(self.WElements) -- create worldmodels
 
-                -- // init view model bone build function
+                -- -- init view model bone build function
                 if IsValid(self:GetOwner()) and self:GetOwner():IsPlayer() then
                 if self:GetOwner():Alive() then
                         local vm = self:GetOwner():GetViewModel()
                         if IsValid(vm) then
                                 self:ResetBonePositions(vm)
-                                -- // Init viewmodel visibility
+                                -- -- Init viewmodel visibility
                                 if (self.ShowViewModel == nil or self.ShowViewModel) then
                                         vm:SetColor(Color(255,255,255,255))
                                 else
-                                        -- // however for some reason the view model resets to render mode 0 every frame so we just apply a debug material to prevent it from drawing
+                                        -- -- however for some reason the view model resets to render mode 0 every frame so we just apply a debug material to prevent it from drawing
                                         vm:SetMaterial("Debug/hsv")
                                 end
                         end
@@ -330,15 +330,15 @@ function SWEP:ShootBullet(damage, recoil, num_bullets, aimcone)
         if IsValid(self:GetOwner()) then
             self:GetOwner():FireBullets(bullet)
         end
-        -- //if SERVER and !self:GetOwner():IsNPC() then
-        -- //        local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
-        -- //        self:GetOwner():ViewPunch(anglo)
+        -- --if SERVER and !self:GetOwner():IsNPC() then
+        -- --        local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
+        -- --        self:GetOwner():ViewPunch(anglo)
 
-        -- //        local eyes = self:GetOwner():EyeAngles()
-        -- //        eyes.pitch = eyes.pitch + anglo.pitch
-        -- //        eyes.yaw = eyes.yaw + anglo.yaw
-        -- //        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
-        -- //end
+        -- --        local eyes = self:GetOwner():EyeAngles()
+        -- --        eyes.pitch = eyes.pitch + anglo.pitch
+        -- --        eyes.yaw = eyes.yaw + anglo.yaw
+        -- --        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
+        -- --end
 
         local x = util.SharedRandom("m9k_recoil", -self.Primary.KickDown,-self.Primary.KickUp * self.KickUpMultiplier, 100)
         local y = util.SharedRandom("m9k_recoil", -self.Primary.KickHorizontal,self.Primary.KickHorizontal, 200)
@@ -400,12 +400,12 @@ function SWEP:RicochetCallback(bouncenum, attacker, tr, dmginfo)
         local DoDefaultEffect = true
         if (tr.HitSky) then return end
 
-        // -- Can we go through whatever we hit?
+        -- -- Can we go through whatever we hit?
         if (self.Penetration) and (self:BulletPenetrate(bouncenum, attacker, tr, dmginfo)) then
                 return {damage = true, effects = DoDefaultEffect}
         end
 
-        // -- Your screen will shake and you'll hear the savage hiss of an approaching bullet which passing if someone is shooting at you.
+        -- -- Your screen will shake and you'll hear the savage hiss of an approaching bullet which passing if someone is shooting at you.
         if (tr.MatType != MAT_METAL) then
                 if (SERVER) then
                         util.ScreenShake(tr.HitPos, 5, 0.1, 0.5, 64)
@@ -452,7 +452,7 @@ function SWEP:RicochetCallback(bouncenum, attacker, tr, dmginfo)
 
         if (bouncenum > self.MaxRicochet) then return end
 
-        // -- Bounce vector
+        -- -- Bounce vector
         local trace = {}
         trace.start = tr.HitPos
         trace.endpos = trace.start + (tr.HitNormal * 16384)
@@ -511,7 +511,7 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
         end
 
         local DoDefaultEffect = true
-        // -- Don't go through metal, sand or player
+        -- -- Don't go through metal, sand or player
 
         if self.Primary.Ammo == "pistol" or
                 self.Primary.Ammo == "buckshot" or
@@ -546,10 +546,10 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
 
         if (tr.MatType == MAT_METAL and self.Ricochet == true and self.Primary.Ammo != "SniperPenetratedRound" ) then return false end
 
-        // -- Don't go through more than 3 times
+        -- -- Don't go through more than 3 times
         if (bouncenum > self.MaxRicochet) then return false end
 
-        // -- Direction (and length) that we are going to penetrate
+        -- -- Direction (and length) that we are going to penetrate
         local PenetrationDirection = tr.Normal * MaxPenetration
 
         if (tr.MatType == MAT_GLASS or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_WOOD or tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH) then
@@ -564,10 +564,10 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
 
         local trace     = util.TraceLine(trace)
 
-        // -- Bullet didn't penetrate.
+        -- -- Bullet didn't penetrate.
         if (trace.StartSolid or trace.Fraction >= 1.0 or tr.Fraction <= 0.0) then return false end
 
-        // -- Damage multiplier depending on surface
+        -- -- Damage multiplier depending on surface
         local fDamageMulti = 0.5
 
         if self.Primary.Ammo == "SniperPenetratedRound" then
@@ -583,7 +583,7 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
         local damagedice = math.Rand(.85,1.3)
         local newdamage = self.Primary.Damage * damagedice
 
-        // -- Fire bullet from the exit point using the original trajectory
+        -- -- Fire bullet from the exit point using the original trajectory
         local penetratedbullet = {}
                 penetratedbullet.Num            = 1
                 penetratedbullet.Src            = trace.HitPos
@@ -801,7 +801,7 @@ function SWEP:IronSight()
                 end
         end
 
--- //copy this...
+-- --copy this...
         if self:GetOwner():KeyPressed(IN_SPEED) and not (self:GetNWBool("Reloading")) then            -- If you are running
         if self:GetNextPrimaryFire() <= (CurTime()+0.3) then
                 self:SetNextPrimaryFire(CurTime()+0.3)                           -- Make it so you can't shoot for another quarter second
@@ -819,9 +819,9 @@ function SWEP:IronSight()
         self.DrawCrosshair = self.OrigCrossHair
         end                                                             -- Shoulder the gun
 
--- //down to this
+-- --down to this
         if !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
-        -- //If the key E (Use Key) is not pressed, then
+        -- --If the key E (Use Key) is not pressed, then
 
                 if self:GetOwner():KeyPressed(IN_ATTACK2) and not (self:GetNWBool("Reloading")) then
                         self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -829,18 +829,18 @@ function SWEP:IronSight()
                         self.IronSightsAng = self.SightsAng                                     -- Bring it up
                         self:SetIronsights(true, self:GetOwner())
                         self.DrawCrosshair = false
-                        -- //Set the ironsight true
+                        -- --Set the ironsight true
 
                         if CLIENT then return end
                 end
         end
 
         if self:GetOwner():KeyReleased(IN_ATTACK2) and !self:GetOwner():KeyDown(IN_USE) and !self:GetOwner():KeyDown(IN_SPEED) then
-        -- //If the right click is released, then
+        -- --If the right click is released, then
                 self:GetOwner():SetFOV( 0, 0.3 )
                 self.DrawCrosshair = self.OrigCrossHair
                 self:SetIronsights(false, self:GetOwner())
-                -- //Set the ironsight false
+                -- --Set the ironsight false
 
                 if CLIENT then return end
         end
@@ -867,7 +867,7 @@ end
 GetViewModelPosition
 -----------------------------------------------------*/
 local IRONSIGHT_TIME = 0.3
--- //Time to enter in the ironsight mod
+-- --Time to enter in the ironsight mod
 
 function SWEP:GetViewModelPosition(pos, ang)
 
@@ -943,7 +943,7 @@ if CLIENT then
 
                 if (!self.vRenderOrder) then
 
-                        -- // we build a render order because sprites need to be drawn after models
+                        -- -- we build a render order because sprites need to be drawn after models
                         self.vRenderOrder = {}
 
                         for k, v in pairs( self.VElements ) do
@@ -979,7 +979,7 @@ if CLIENT then
                                 ang:RotateAroundAxis(ang:Forward(), v.angle.r)
 
                                 model:SetAngles(ang)
-                                -- //model:SetModelScale(v.size)
+                                -- --model:SetModelScale(v.size)
                                 local matrix = Matrix()
                                 matrix:Scale(v.size)
                                 model:EnableMatrix( "RenderMultiply", matrix )
@@ -1065,7 +1065,7 @@ if CLIENT then
                 if (IsValid(self:GetOwner())) then
                         bone_ent = self:GetOwner()
                 else
-                        -- // when the weapon is dropped
+                        -- -- when the weapon is dropped
                         bone_ent = self
                 end
 
@@ -1096,7 +1096,7 @@ if CLIENT then
                                 ang:RotateAroundAxis(ang:Forward(), v.angle.r)
 
                                 model:SetAngles(ang)
-                                -- //model:SetModelScale(v.size)
+                                -- --model:SetModelScale(v.size)
                                 local matrix = Matrix()
                                 matrix:Scale(v.size)
                                 model:EnableMatrix( "RenderMultiply", matrix )
@@ -1165,8 +1165,8 @@ if CLIENT then
 
                         if (!v) then return end
 
-                        -- // Technically, if there exists an element with the same name as a bone
-                        -- // you can get in an infinite loop. Let's just hope nobody's that stupid.
+                        -- -- Technically, if there exists an element with the same name as a bone
+                        -- -- you can get in an infinite loop. Let's just hope nobody's that stupid.
                         pos, ang = self:GetBoneOrientation( basetab, v, ent )
 
                         if (!pos) then return end
@@ -1190,7 +1190,7 @@ if CLIENT then
 
                         if (IsValid(self:GetOwner()) and self:GetOwner():IsPlayer() and
                                 ent == self:GetOwner():GetViewModel() and self.ViewModelFlip) then
-                                ang.r = -ang.r --// Fixes mirrored models
+                                ang.r = -ang.r ---- Fixes mirrored models
                         end
 
                 end
@@ -1202,7 +1202,7 @@ if CLIENT then
 
                 if (!tab) then return end
 
-                -- // Create the clientside models here because Garry says we can't do it in the render hook
+                -- -- Create the clientside models here because Garry says we can't do it in the render hook
                 for k, v in pairs( tab ) do
                         if (v.type == "Model" and v.model and v.model != "" and (!IsValid(v.modelEnt) or v.createdModel != v.model) and
                                         string.find(v.model, ".mdl") and file.Exists (v.model, "GAME") ) then
@@ -1223,7 +1223,7 @@ if CLIENT then
 
                                 local name = v.sprite.."-"
                                 local params = { ["$basetexture"] = v.sprite }
-                                -- // make sure we create a unique name based on the selected options
+                                -- -- make sure we create a unique name based on the selected options
                                 local tocheck = { "nocull", "additive", "vertexalpha", "vertexcolor", "ignorez" }
                                 for i, j in pairs( tocheck ) do
                                         if (v[j]) then
@@ -1251,8 +1251,8 @@ if CLIENT then
 
                         if (!vm:GetBoneCount()) then return end
 
-                        -- // !! WORKAROUND !! --//
-                        -- // We need to check all model names :/
+                        -- -- !! WORKAROUND !! ----
+                        -- -- We need to check all model names :/
                         local loopthrough = self.ViewModelBoneMods
                         if (!hasGarryFixedBoneScalingYet) then
                                 allbones = {}
@@ -1271,13 +1271,13 @@ if CLIENT then
 
                                 loopthrough = allbones
                         end
-                        //!! ----------- !! --
+                        --!! ----------- !! --
 
                         for k, v in pairs( loopthrough ) do
                                 local bone = vm:LookupBone(k)
                                 if (!bone) then continue end
 
-                                -- // !! WORKAROUND !! --//
+                                -- -- !! WORKAROUND !! ----
                                 local s = Vector(v.scale.x,v.scale.y,v.scale.z)
                                 local p = Vector(v.pos.x,v.pos.y,v.pos.z)
                                 local ms = Vector(1,1,1)
@@ -1291,7 +1291,7 @@ if CLIENT then
                                 end
 
                                 s = s * ms
-                                //!! ----------- !! --
+                                --!! ----------- !! --
 
                                 if vm:GetManipulateBoneScale(bone) != s then
                                         vm:ManipulateBoneScale( bone, s )
@@ -1324,9 +1324,9 @@ if CLIENT then
                 Global utility code
         **************************/
 
-        -- // Fully copies the table, meaning all tables inside this table are copied too and so on (normal table.Copy copies only their reference).
-        -- // Does not copy entities of course, only copies their reference.
-        -- // WARNING: do not use on tables that contain themselves somewhere down the line or you'll get an infinite loop
+        -- -- Fully copies the table, meaning all tables inside this table are copied too and so on (normal table.Copy copies only their reference).
+        -- -- Does not copy entities of course, only copies their reference.
+        -- -- WARNING: do not use on tables that contain themselves somewhere down the line or you'll get an infinite loop
         function table.FullCopy( tab )
 
                 if (!tab) then return nil end
@@ -1334,7 +1334,7 @@ if CLIENT then
                 local res = {}
                 for k, v in pairs( tab ) do
                         if (type(v) == "table") then
-                                res[k] = table.FullCopy(v) --// recursion ho!
+                                res[k] = table.FullCopy(v) ---- recursion ho!
                         elseif (type(v) == "Vector") then
                                 res[k] = Vector(v.x, v.y, v.z)
                         elseif (type(v) == "Angle") then

@@ -247,7 +247,7 @@ function SWEP:IronSight()
             end
         end
 
--- //copy this...
+-- --copy this...
         if self.Owner:KeyPressed(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then            -- If you are running
         if self.Weapon:GetNextPrimaryFire() <= (CurTime()+0.3) then
             self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                           -- Make it so you can't shoot for another quarter second
@@ -265,9 +265,9 @@ function SWEP:IronSight()
         self.DrawCrosshair = self.OrigCrossHair
         end                                                             -- Shoulder the gun
 
--- //down to this
+-- --down to this
         if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
-        -- //If the key E (Use Key) is not pressed, then
+        -- --If the key E (Use Key) is not pressed, then
 
                 if self.Owner:KeyPressed(IN_ATTACK2) and not (self.Weapon:GetNWBool("Reloading")) then
                         self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -275,18 +275,18 @@ function SWEP:IronSight()
                         self.IronSightsAng = self.SightsAng                                     -- Bring it up
                         self:SetIronsights(true, self.Owner)
                         self.DrawCrosshair = false
-                        -- //Set the ironsight true
+                        -- --Set the ironsight true
 
                         if CLIENT then return end
                 end
         end
 
         if self.Owner:KeyReleased(IN_ATTACK2) and !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
-        -- //If the right click is released, then
+        -- --If the right click is released, then
                 self.Owner:SetFOV( 0, 0.3 )
                 self.DrawCrosshair = self.OrigCrossHair
                 self:SetIronsights(false, self.Owner)
-                -- //Set the ironsight false
+                -- --Set the ironsight false
 
                 if CLIENT then return end
         end

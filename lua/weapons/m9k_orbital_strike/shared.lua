@@ -110,7 +110,7 @@ function SWEP:PrimaryAttack()
                 Satellite.Ground = Ground
                 Satellite.Sky = Sky
                 Satellite.Owner = self.Owner
-                Satellite:SetPos(Sky) //was sky but for testing, its this
+                Satellite:SetPos(Sky) --was sky but for testing, its this
                 Satellite:Spawn()
             end
             if SERVER then self.Owner:EmitSound(self.Primary.Sound) end
@@ -127,7 +127,7 @@ function SWEP:PrimaryAttack()
             skytrace2.endpos = thetarget:GetPos() + Vector(0,0,65000)
             skytrace2.filter = thetarget
             skycheck2 = util.TraceLine(skytrace2)
-            if skycheck2.HitSky then //someone's gonna be in big trouble
+            if skycheck2.HitSky then --someone's gonna be in big trouble
                 sky2 = skycheck2.HitPos - Vector(0,0,10)
                 if SERVER then
                     Satellite = ents.Create("m9k_oribital_cannon")

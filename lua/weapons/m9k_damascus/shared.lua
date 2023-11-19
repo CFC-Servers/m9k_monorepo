@@ -50,7 +50,7 @@ SWEP.Primary.Damage        = 75    -- Base damage per bullet
 SWEP.Primary.Spread        = .02    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.IronAccuracy = .01 -- Ironsight accuracy, should be the same for shotguns
 
-//Enter iron sight info and bone mod info below
+--Enter iron sight info and bone mod info below
 SWEP.IronSightsPos = Vector(-1.267, -15.895, -7.205)
 SWEP.IronSightsAng = Vector(70, -27.234, 70)
 SWEP.SightsPos = Vector(-1.267, -15.895, -7.205)
@@ -60,7 +60,7 @@ SWEP.RunSightsAng = Vector(-25.577, 0, 0)
 
 SWEP.Slash = 1
 
-SWEP.Primary.Sound    = Sound("weapons/blades/woosh.mp3") //woosh
+SWEP.Primary.Sound    = Sound("weapons/blades/woosh.mp3") --woosh
 SWEP.KnifeShink = Sound("weapons/blades/hitwall.mp3")
 SWEP.KnifeSlash = Sound("weapons/blades/slash.mp3")
 SWEP.KnifeStab = Sound("weapons/blades/nastystab.mp3")
@@ -110,7 +110,7 @@ function SWEP:PrimaryAttack()
                                 paininfo:SetDamageForce(slashtrace.Normal *35000)
                                 if SERVER then targ:TakeDamageInfo(paininfo) end
                             else
-                                self.Weapon:EmitSound(self.KnifeShink)//SHINK!
+                                self.Weapon:EmitSound(self.KnifeShink)--SHINK!
                                 look = self.Owner:GetEyeTrace()
                                 util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                             end

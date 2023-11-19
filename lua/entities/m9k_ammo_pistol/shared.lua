@@ -59,7 +59,7 @@ end
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data, physobj)
 
-	// Play sound on bounce
+	-- Play sound on bounce
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
 		self.Entity:EmitSound("Default.ImpactSoft")
 	end
@@ -98,7 +98,7 @@ function ENT:OnTakeDamage(dmginfo)
 			ouchies = util.TraceLine(ouchies)
 
 			if ouchies.Hit and not ouchies.HitSky then
-				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )//and ouchies.Entity then
+				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )--and ouchies.Entity then
 				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, self.Entity)
 			end
 			end

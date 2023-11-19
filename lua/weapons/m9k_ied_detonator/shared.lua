@@ -48,9 +48,9 @@ SWEP.Primary.Ammo            = "Improvised_Explosive"
 SWEP.Primary.Round             = ("m9k_improvised_explosive")    --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV            = 0        -- How much you 'zoom' in. Less is more!
-SWEP.Secondary.ClipSize            = 1                    // Size of a clip
-SWEP.Secondary.DefaultClip        = 1                    // Default number of bullets in a clip
-SWEP.Secondary.Automatic        = false                    // Automatic/Semi Auto
+SWEP.Secondary.ClipSize            = 1                    -- Size of a clip
+SWEP.Secondary.DefaultClip        = 1                    -- Default number of bullets in a clip
+SWEP.Secondary.Automatic        = false                    -- Automatic/Semi Auto
 SWEP.Secondary.Ammo            = ""
 
 SWEP.Primary.NumShots    = 0        -- How many bullets to shoot per trigger pull

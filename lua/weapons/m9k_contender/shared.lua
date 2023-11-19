@@ -151,7 +151,7 @@ end
 function SWEP:Reload()
 
 
-//    self.Weapon:DefaultReload(ACT_VM_RELOAD)
+--    self.Weapon:DefaultReload(ACT_VM_RELOAD)
 
         if not IsValid(self) then return end
         if not IsValid(self.Owner) then return end
@@ -181,11 +181,11 @@ function SWEP:Reload()
 
             if SERVER and self.Weapon ~= nil then
             if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
-            -- //When the current clip < full clip and the rest of your ammo > 0, then
+            -- --When the current clip < full clip and the rest of your ammo > 0, then
                     self.Owner:SetFOV( 0, 0.3 )
-                    -- //Zoom = 0
+                    -- --Zoom = 0
                     self:SetIronsights(false)
-                    -- //Set the ironsight to false
+                    -- --Set the ironsight to false
                     self.Weapon:SetNWBool("Reloading", true)
             end
             local waitdammit = (self.Owner:GetViewModel():SequenceDuration())

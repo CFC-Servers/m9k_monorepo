@@ -128,7 +128,7 @@ function ENT:OtherExplosion()
 
 	local fire = EffectData()
 		fire:SetOrigin(pos)
-		fire:SetEntity(self.Owner) //i dunno, just use it!
+		fire:SetEntity(self.Owner) --i dunno, just use it!
 		fire:SetScale(1)
 	util.Effect("m9k_frag_splode", fire)
 

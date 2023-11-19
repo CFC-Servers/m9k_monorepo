@@ -102,7 +102,7 @@ if GetConVar("M9KUniqueSlots") == nil then
     print("Unique Slots con var created")
 end
 
-//MP40
+--MP40
 sound.Add({
     name =             "mp40.single",
     channel =         CHAN_USER_BASE+10,
@@ -131,7 +131,7 @@ sound.Add({
     sound =             "weapons/mp40/boltback.mp3"
 })
 
-//Magpul PDR
+--Magpul PDR
 sound.Add({
     name =             "MAG_PDR.Single",
     channel =         CHAN_USER_BASE+10,
@@ -176,7 +176,7 @@ sound.Add({
     sound =             "weapons/pdr/pdr_clipout.mp3"
 })
 
-//KAC PDW
+--KAC PDW
 sound.Add({
     name =             "KAC_PDW.Single",
     channel =         CHAN_USER_BASE+10,
@@ -233,7 +233,7 @@ sound.Add({
     sound =             "weapons/kac_pdw/m4a1_silencer_off.mp3"
 })
 
-//MP5
+--MP5
 sound.Add({
     name =             "mp5_navy_Single",
     channel =         CHAN_USER_BASE+10,
@@ -297,7 +297,7 @@ sound.Add({
     sound =             "weapons/brightmp5/safety.mp3"
 })
 
-//tec9
+--tec9
 sound.Add({
     name =             "Weapon_Tec9.Single",
     channel =         CHAN_USER_BASE+10,
@@ -333,7 +333,7 @@ sound.Add({
     sound =             "weapons/tec9/tec9_charge.mp3"
 })
 
-//Kriss
+--Kriss
 sound.Add({
     name =             "kriss_vector.Single",
     channel =         CHAN_USER_BASE+10,
@@ -384,7 +384,7 @@ sound.Add({
     sound =             "weapons/Kriss/unfold.mp3"
 })
 
-//MP9
+--MP9
 sound.Add({
     name =             "Weapon_mp9.Single",
     channel =         CHAN_USER_BASE+10,
@@ -406,7 +406,7 @@ sound.Add({
     sound =             "weapons/mp9/tmp_clipout.mp3"
 })
 
-//ump45
+--ump45
 sound.Add({
     name =             "m9k_hk_ump45.Single",
     channel =         CHAN_USER_BASE+10,
@@ -457,7 +457,7 @@ sound.Add({
 })
 
 
-//p19 Bizon
+--p19 Bizon
 sound.Add({
     name =             "Weapon_P19.Single",
     channel =         CHAN_USER_BASE+10,
@@ -486,7 +486,7 @@ sound.Add({
     sound =             "weapons/p19/p90_boltpull.mp3"
 })
 
-//p90
+--p90
 sound.Add({
     name =             "P90_weapon.single",
     channel =         CHAN_USER_BASE+10,
@@ -522,7 +522,7 @@ sound.Add({
     sound =             "weapons/p90_smg/p90_cock.mp3"
 })
 
-//sten
+--sten
 sound.Add({
     name =             "Weaponsten.Single",
     channel =         CHAN_USER_BASE+10,
@@ -570,7 +570,7 @@ sound.Add({
 
 })
 
-//tommy gun
+--tommy gun
 sound.Add({
     name =             "Weapon_tmg.single",
     channel =         CHAN_USER_BASE+10,
@@ -599,7 +599,7 @@ sound.Add({
     sound =             "weapons/tmg/tmg_cock.mp3"
 })
 
-//MP7
+--MP7
 sound.Add({
     name =            "Weapon_MP7.single",
     channel =         CHAN_USER_BASE+10,
@@ -628,7 +628,7 @@ sound.Add({
     sound =             "weapons/mp7/mp7_charger.mp3"
 })
 
-//uzi
+--uzi
 sound.Add({
     name =             "Weapon_uzi.single",
     channel =         CHAN_USER_BASE+10,
@@ -657,7 +657,7 @@ sound.Add({
     sound =             "weapons/uzi/mac10_clipout.mp3"
 })
 
-//MP5SD
+--MP5SD
 sound.Add({
     name =             "Weapon_hkmp5sd.single",
     channel =         CHAN_USER_BASE+10,
@@ -714,7 +714,7 @@ sound.Add({
     sound =             "weapons/hkmp5sd/safety.mp3"
 })
 
-//Honey Badger
+--Honey Badger
 sound.Add({
     name =             "Weapon_HoneyB.single",
     channel =         CHAN_USER_BASE+10,
@@ -757,7 +757,7 @@ sound.Add({
     sound =             "weapons/hb/boltback.mp3"
 })
 
-//colt python
+--colt python
 sound.Add({
     name =             "Weapon_ColtPython.Single",
     channel =         CHAN_USER_BASE+10,
@@ -793,7 +793,7 @@ sound.Add({
     sound =             "weapons/coltpython/bulletsin.mp3"
 })
 
-//Raging Bull
+--Raging Bull
 sound.Add({
     name =             "weapon_r_bull.Single",
     channel =         CHAN_USER_BASE+10,
@@ -815,7 +815,7 @@ sound.Add({
     sound =             "weapons/r_bull/draw_gun.mp3"
 })
 
-//smith and wesson model 3
+--smith and wesson model 3
 sound.Add({
     name =             "Model3.Single",
     channel =         CHAN_USER_BASE+10,
@@ -872,7 +872,7 @@ sound.Add({
     sound =             "weapons/model3/Break_CLose.mp3"
 })
 
-//m29 satan
+--m29 satan
 sound.Add({
     name =             "Weapon_satan1.single",
     channel =         CHAN_USER_BASE+10,
@@ -908,7 +908,7 @@ sound.Add({
     sound =             "weapons/satan1/bulletsout.mp3"
 })
 
-//Remington 1858
+--Remington 1858
 sound.Add({
     name =             "Remington.single",
     channel =         CHAN_USER_BASE+10,
@@ -958,7 +958,7 @@ sound.Add({
     sound =             "weapons/remington/hammer.mp3"
 })
 
-//BERETTAM92
+--BERETTAM92
 sound.Add({
     name =             "Weapon_m92b.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1001,7 +1001,7 @@ sound.Add({
     sound =             "weapons/beretta92/berettam92_slideback.mp3"
 })
 
-//hk45c
+--hk45c
 sound.Add({
     name =             "Weapon_hk45.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1044,7 +1044,7 @@ sound.Add({
     sound =            "weapons/hk45/slidepull.mp3"
 })
 
-//usp
+--usp
 sound.Add({
     name =             "Weapon_fokkususp.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1080,7 +1080,7 @@ sound.Add({
     sound =             "weapons/fokku_tc_usp/fiveseven_slidepull.mp3"
 })
 
-// Sig P228
+-- Sig P228
 sound.Add({
     name =             "Sauer1_P228.Single",
     channel =        CHAN_USER_BASE+10,
@@ -1130,7 +1130,7 @@ sound.Add({
     sound =            "weapons/sig_p228/shift.mp3"
 })
 
-//glock 18
+--glock 18
 sound.Add({
     name =             "Dmgfok_glock.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1173,7 +1173,7 @@ sound.Add({
     sound =             "weapons/dmg_glock/mac10_deploy.mp3"
 })
 
-//colt 1911
+--colt 1911
 sound.Add({
     name =             "Dmgfok_co1911.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1209,7 +1209,7 @@ sound.Add({
     sound =             "weapons/dmg_colt1911/draw.mp3"
 })
 
-//luger
+--luger
 sound.Add({
     name =             "Weapon_luger.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1238,7 +1238,7 @@ sound.Add({
     sound =             "weapons/luger/luger_sliderelease.mp3"
 })
 
-//desert eagle
+--desert eagle
 sound.Add({
     name =             "Weapon_TDegle.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1274,7 +1274,7 @@ sound.Add({
     sound =             "weapons/fokku_tc_deagle/de_deploy.mp3"
 })
 
-// Sig P229R
+-- Sig P229R
 sound.Add({
     name =             "Sauer1_P228.Single",
     channel =        CHAN_USER_BASE+10,
@@ -1324,7 +1324,7 @@ sound.Add({
     sound =            "weapons/sig_p228/shift.mp3"
 })
 
-//Model 500
+--Model 500
 sound.Add({
     name =             "Model_500.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1360,7 +1360,7 @@ sound.Add({
     sound =             "weapons/model500/de_slideback.mp3"
 })
 
-//S&W 627
+--S&W 627
 sound.Add({
     name =             "model_627perf.Single",
     channel =         CHAN_USER_BASE+10,
@@ -1410,7 +1410,7 @@ sound.Add({
     sound =             "weapons/627/wheel_out.mp3"
 })
 
-//usc
+--usc
 sound.Add({
     name =             "Weapon_hkusc.Single",
     channel =         CHAN_USER_BASE+10,

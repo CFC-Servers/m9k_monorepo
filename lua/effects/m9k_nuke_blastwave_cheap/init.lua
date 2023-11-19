@@ -32,7 +32,7 @@ function EFFECT:Init( data )
 			particle:SetRollDelta( math.Rand( -1, 1 )*self.YieldInverse )
 			particle:SetColor(160,152,120)
 			--particle:VelocityDecay( false )
-			//thanks, asshole
+			--thanks, asshole
 			table.insert(self.dustparticles,particle)
 
 		end

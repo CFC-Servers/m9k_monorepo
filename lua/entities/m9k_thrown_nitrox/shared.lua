@@ -89,7 +89,7 @@ end
 if CLIENT then
 
  function ENT:Draw()
- self.Entity:DrawModel()       // Draw the model.
+ self.Entity:DrawModel()       -- Draw the model.
  end
 
 end

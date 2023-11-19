@@ -59,7 +59,7 @@ end
 ---------------------------------------------------------*/
 function ENT:PhysicsCollide(data, physobj)
 
-	// Play sound on bounce
+	-- Play sound on bounce
 	if (data.Speed > 80 and data.DeltaTime > 0.2) then
 		self.Entity:EmitSound("Default.ImpactSoft")
 	end
@@ -97,7 +97,7 @@ function ENT:OnTakeDamage(dmginfo)
 			ouchies = util.TraceLine(ouchies)
 
 			if ouchies.Hit and not ouchies.HitSky then
-				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )//and ouchies.Entity then
+				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )--and ouchies.Entity then
 				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, blaster)
 			end
 			end
@@ -112,7 +112,7 @@ end
 function ENT:Use(activator, caller)
 
 	if (activator:IsPlayer()) and not self.Planted then
-		// Give the collecting player some free health
+		-- Give the collecting player some free health
 		activator:GiveAmmo(100, "357")
 		self.Entity:Remove()
 	end
@@ -138,7 +138,7 @@ function ENT:Draw()
 
 	local ledcolor = Color(230, 45, 45, 255)
 
-  	local TargetPos = self.Entity:GetPos() + (self.Entity:GetUp() * 4) + (self.Entity:GetRight() * -2.5) + (self.Entity:GetForward() * -3.3)//-1.2
+  	local TargetPos = self.Entity:GetPos() + (self.Entity:GetUp() * 4) + (self.Entity:GetRight() * -2.5) + (self.Entity:GetForward() * -3.3)---1.2
 
 	local FixAngles = self.Entity:GetAngles()
 	local FixRotation = Vector(48, -90, 0)

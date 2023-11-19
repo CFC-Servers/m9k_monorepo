@@ -51,22 +51,22 @@ SWEP.Primary.Damage        = 30    -- Base damage per bullet
 SWEP.Primary.Spread        = .02    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.IronAccuracy = .01 -- Ironsight accuracy, should be the same for shotguns
 
-//Enter iron sight info and bone mod info below
+--Enter iron sight info and bone mod info below
 -- SWEP.IronSightsPos = Vector(-2.652, 0.187, -0.003)
--- SWEP.IronSightsAng = Vector(2.565, 0.034, 0)         //not for the knife
--- SWEP.SightsPos = Vector(-2.652, 0.187, -0.003)        //just lower it when running
+-- SWEP.IronSightsAng = Vector(2.565, 0.034, 0)         --not for the knife
+-- SWEP.SightsPos = Vector(-2.652, 0.187, -0.003)        --just lower it when running
 -- SWEP.SightsAng = Vector(2.565, 0.034, 0)
 SWEP.RunSightsPos = Vector(0, 0, 0)
 SWEP.RunSightsAng = Vector(-25.577, 0, 0)
 
 SWEP.Slash = 1
 
--- SWEP.Primary.Sound    = Sound("Weapon_Knife.Slash") //woosh
+-- SWEP.Primary.Sound    = Sound("Weapon_Knife.Slash") --woosh
 -- SWEP.KnifeShink = ("Weapon_Knife.HitWall")
 -- SWEP.KnifeSlash = ("Weapon_Knife.Hit")
 -- SWEP.KnifeStab = ("Weapon_Knife.Stab")
 
-SWEP.Primary.Sound    = Sound("weapons/blades/woosh.mp3") //woosh
+SWEP.Primary.Sound    = Sound("weapons/blades/woosh.mp3") --woosh
 SWEP.KnifeShink = Sound("weapons/blades/hitwall.mp3")
 SWEP.KnifeSlash = Sound("weapons/blades/slash.mp3")
 SWEP.KnifeStab = Sound("weapons/blades/nastystab.mp3")
@@ -91,7 +91,7 @@ function SWEP:PrimaryAttack()
                 vm:SetSequence(vm:LookupSequence("midslash2"))
                 self.Slash = 1
             end --if it looks stupid but works, it aint stupid!
-            self.Weapon:EmitSound(self.Primary.Sound)//slash in the wind sound here
+            self.Weapon:EmitSound(self.Primary.Sound)--slash in the wind sound here
             if CLIENT then return end
             timer.Create("cssslash", .15, 1, function()
             if not IsValid(self) then return end
@@ -126,8 +126,8 @@ function SWEP:PrimarySlash()
             if slashtrace.Hit then
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
-                    //find a way to splash a little blood
-                    self.Weapon:EmitSound(self.KnifeSlash)//stab noise
+                    --find a way to splash a little blood
+                    self.Weapon:EmitSound(self.KnifeSlash)--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_SLASH)
@@ -136,7 +136,7 @@ function SWEP:PrimarySlash()
                     paininfo:SetDamageForce(slashtrace.Normal *35000)
                     if SERVER then targ:TakeDamageInfo(paininfo) end
                 else
-                    self.Weapon:EmitSound(self.KnifeShink)//SHINK!
+                    self.Weapon:EmitSound(self.KnifeShink)--SHINK!
                     look = self.Owner:GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
@@ -208,9 +208,9 @@ function SWEP:Stab()
                     paininfo:SetInflictor(self.Weapon)
                     paininfo:SetDamageForce(stabtrace2.Normal *75000)
                     if SERVER then targ:TakeDamageInfo(paininfo) end
-                    self.Weapon:EmitSound(self.KnifeStab)//stab noise
+                    self.Weapon:EmitSound(self.KnifeStab)--stab noise
                 else
-                    self.Weapon:EmitSound(self.KnifeShink)//SHINK!
+                    self.Weapon:EmitSound(self.KnifeShink)--SHINK!
                     look = self.Owner:GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
