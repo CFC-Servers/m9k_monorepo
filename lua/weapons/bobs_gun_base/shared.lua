@@ -168,8 +168,8 @@ function SWEP:Deploy()
 
         self:SetNWBool("Reloading", false)
 
-        if !self:GetOwner():IsNPC() and self:GetOwner() ~= nil then
-                if self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
+        if !self:GetOwner():IsNPC() and self:GetOwner() != nil then
+                if self.ResetSights and self:GetOwner():GetViewModel() != nil then
                         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
                 end
         end
@@ -260,7 +260,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-        if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
+        if SERVER and self != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
                 if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
                         timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
                                 if self:GetOwner() == nil then return end
@@ -370,6 +370,17 @@ end
    Name: SWEP:RicochetCallback()
 -----------------------------------------------------*/
 
+local bulletMissSounds = {
+    "weapons/fx/nearmiss/bulletLtoR03.wav",
+    "weapons/fx/nearmiss/bulletLtoR04.wav",
+    "weapons/fx/nearmiss/bulletLtoR06.wav",
+    "weapons/fx/nearmiss/bulletLtoR07.wav",
+    "weapons/fx/nearmiss/bulletLtoR09.wav",
+    "weapons/fx/nearmiss/bulletLtoR10.wav",
+    "weapons/fx/nearmiss/bulletLtoR13.wav",
+    "weapons/fx/nearmiss/bulletLtoR14.wav"
+}
+
 function SWEP:RicochetCallback(bouncenum, attacker, tr, dmginfo)
 
         if not IsFirstTimePredicted() then
@@ -386,16 +397,6 @@ function SWEP:RicochetCallback(bouncenum, attacker, tr, dmginfo)
 
         if PenetrationChecker then return {damage = true, effects = DoDefaultEffect} end
 
-        bulletmiss = {}
-                bulletmiss[1]=Sound("weapons/fx/nearmiss/bulletLtoR03.wav")
-                bulletmiss[2]=Sound("weapons/fx/nearmiss/bulletLtoR04.wav")
-                bulletmiss[3]=Sound("weapons/fx/nearmiss/bulletLtoR06.wav")
-                bulletmiss[4]=Sound("weapons/fx/nearmiss/bulletLtoR07.wav")
-                bulletmiss[5]=Sound("weapons/fx/nearmiss/bulletLtoR09.wav")
-                bulletmiss[6]=Sound("weapons/fx/nearmiss/bulletLtoR10.wav")
-                bulletmiss[7]=Sound("weapons/fx/nearmiss/bulletLtoR13.wav")
-                bulletmiss[8]=Sound("weapons/fx/nearmiss/bulletLtoR14.wav")
-
         local DoDefaultEffect = true
         if (tr.HitSky) then return end
 
@@ -405,10 +406,11 @@ function SWEP:RicochetCallback(bouncenum, attacker, tr, dmginfo)
         end
 
         // -- Your screen will shake and you'll hear the savage hiss of an approaching bullet which passing if someone is shooting at you.
-        if (tr.MatType ~= MAT_METAL) then
+        if (tr.MatType != MAT_METAL) then
                 if (SERVER) then
                         util.ScreenShake(tr.HitPos, 5, 0.1, 0.5, 64)
-                        sound.Play(table.Random(bulletmiss), tr.HitPos, 75, math.random(75,150), 1)
+                        local missSound = bulletMissSounds[math.random( #bulletMissSounds )]
+                        sound.Play( missSound, tr.HitPos, 75, math.random(75,150), 1)
                 end
 
                 if self.Tracer == 0 or self.Tracer == 1 or self.Tracer == 2 then
@@ -542,7 +544,7 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
                 self.MaxRicochet = 8
         end
 
-        if (tr.MatType == MAT_METAL and self.Ricochet == true and self.Primary.Ammo ~= "SniperPenetratedRound" ) then return false end
+        if (tr.MatType == MAT_METAL and self.Ricochet == true and self.Primary.Ammo != "SniperPenetratedRound" ) then return false end
 
         // -- Don't go through more than 3 times
         if (bouncenum > self.MaxRicochet) then return false end
@@ -596,7 +598,7 @@ function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
                 if tr.MatType == MAT_GLASS then impactnum = 0 else impactnum = 1 end
                 return self:RicochetCallback(bouncenum + impactnum, a,b,c) end end
 
-        timer.Simple(0, function() if attacker ~= nil then attacker:FireBullets(penetratedbullet) end end)
+        timer.Simple(0, function() if attacker != nil then attacker:FireBullets(penetratedbullet) end end)
 
         return true
 end
@@ -699,7 +701,7 @@ end
 function SWEP:Silencer()
     if self.NextSilence > CurTime() then return end
 
-    if self ~= nil then
+    if self != nil then
         self:GetOwner():SetFOV( 0, 0.3 )
         self:SetIronsights(false)
         self:SetNWBool("Reloading", true) -- i know we're not reloading but it works
@@ -873,7 +875,7 @@ function SWEP:GetViewModelPosition(pos, ang)
 
         local bIron = self:GetNWBool("M9K_Ironsights")
 
-        if (bIron ~= self.bLastIron) then
+        if (bIron != self.bLastIron) then
                 self.bLastIron = bIron
                 self.fIronTime = CurTime()
 
@@ -984,17 +986,17 @@ if CLIENT then
 
                                 if (v.material == "") then
                                         model:SetMaterial("")
-                                elseif (model:GetMaterial() ~= v.material) then
+                                elseif (model:GetMaterial() != v.material) then
                                         model:SetMaterial( v.material )
                                 end
 
-                                if (v.skin and v.skin ~= model:GetSkin()) then
+                                if (v.skin and v.skin != model:GetSkin()) then
                                         model:SetSkin(v.skin)
                                 end
 
                                 if (v.bodygroup) then
                                         for k, v in pairs( v.bodygroup ) do
-                                                if (model:GetBodygroup(k) ~= v) then
+                                                if (model:GetBodygroup(k) != v) then
                                                         model:SetBodygroup(k, v)
                                                 end
                                         end
@@ -1101,17 +1103,17 @@ if CLIENT then
 
                                 if (v.material == "") then
                                         model:SetMaterial("")
-                                elseif (model:GetMaterial() ~= v.material) then
+                                elseif (model:GetMaterial() != v.material) then
                                         model:SetMaterial( v.material )
                                 end
 
-                                if (v.skin and v.skin ~= model:GetSkin()) then
+                                if (v.skin and v.skin != model:GetSkin()) then
                                         model:SetSkin(v.skin)
                                 end
 
                                 if (v.bodygroup) then
                                         for k, v in pairs( v.bodygroup ) do
-                                                if (model:GetBodygroup(k) ~= v) then
+                                                if (model:GetBodygroup(k) != v) then
                                                         model:SetBodygroup(k, v)
                                                 end
                                         end
@@ -1157,7 +1159,7 @@ if CLIENT then
         function SWEP:GetBoneOrientation( basetab, tab, ent, bone_override )
 
                 local bone, pos, ang
-                if (tab.rel and tab.rel ~= "") then
+                if (tab.rel and tab.rel != "") then
 
                         local v = basetab[tab.rel]
 
@@ -1202,7 +1204,7 @@ if CLIENT then
 
                 -- // Create the clientside models here because Garry says we can't do it in the render hook
                 for k, v in pairs( tab ) do
-                        if (v.type == "Model" and v.model and v.model ~= "" and (!IsValid(v.modelEnt) or v.createdModel ~= v.model) and
+                        if (v.type == "Model" and v.model and v.model != "" and (!IsValid(v.modelEnt) or v.createdModel != v.model) and
                                         string.find(v.model, ".mdl") and file.Exists (v.model, "GAME") ) then
 
                                 v.modelEnt = ClientsideModel(v.model, RENDER_GROUP_VIEW_MODEL_OPAQUE)
@@ -1216,7 +1218,7 @@ if CLIENT then
                                         v.modelEnt = nil
                                 end
 
-                        elseif (v.type == "Sprite" and v.sprite and v.sprite ~= "" and (!v.spriteMaterial or v.createdSprite ~= v.sprite)
+                        elseif (v.type == "Sprite" and v.sprite and v.sprite != "" and (!v.spriteMaterial or v.createdSprite != v.sprite)
                                 and file.Exists ("materials/"..v.sprite..".vmt", "GAME")) then
 
                                 local name = v.sprite.."-"
@@ -1291,13 +1293,13 @@ if CLIENT then
                                 s = s * ms
                                 //!! ----------- !! --
 
-                                if vm:GetManipulateBoneScale(bone) ~= s then
+                                if vm:GetManipulateBoneScale(bone) != s then
                                         vm:ManipulateBoneScale( bone, s )
                                 end
-                                if vm:GetManipulateBoneAngles(bone) ~= v.angle then
+                                if vm:GetManipulateBoneAngles(bone) != v.angle then
                                         vm:ManipulateBoneAngles( bone, v.angle )
                                 end
-                                if vm:GetManipulateBonePosition(bone) ~= p then
+                                if vm:GetManipulateBonePosition(bone) != p then
                                         vm:ManipulateBonePosition( bone, p )
                                 end
                         end
