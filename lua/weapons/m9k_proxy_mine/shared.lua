@@ -71,12 +71,12 @@ SWEP.RunSightsAng = Vector(0, 0, 0)
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-    self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-    self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+    self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+    self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     plant = self.Owner:GetViewModel():SequenceDuration()
-    timer.Simple(plant, function() if not IsValid(self) then return end if IsValid(self.Owner) and IsValid(self.Weapon) then
+    timer.Simple(plant, function() if not IsValid(self) then return end if IsValid(self.Owner) and IsValid(self) then
         if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
-            self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
+            self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
                 local tr = {}
                 tr.start = self.Owner:GetShootPos()
                 tr.endpos = self.Owner:GetShootPos() + 100 * self.Owner:GetAimVector()
@@ -141,12 +141,12 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
     timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
-        if SERVER and IsValid(self.Weapon) then
-            if IsValid(self.Owner) and self.Weapon:GetClass() == self.Gun then
-                if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
+        if SERVER and IsValid(self) then
+            if IsValid(self.Owner) and self:GetClass() == self.Gun then
+                if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
                     self.Owner:StripWeapon(self.Gun)
                 else
-                self.Weapon:DefaultReload(ACT_VM_DRAW)
+                self:DefaultReload(ACT_VM_DRAW)
                 end
             end
         end

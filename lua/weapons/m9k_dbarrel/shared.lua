@@ -98,31 +98,31 @@ function SWEP:SecondaryAttack()
     if (timer.Exists(timerName)) then return end
 
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    if self.Weapon:Clip1() == 2 then
+    if self:Clip1() == 2 then
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             self:ShootBulletInformation2()
-            self.Weapon:TakePrimaryAmmo(2)
-            self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            self.Weapon:EmitSound(self.Secondary.Sound)
+            self:TakePrimaryAmmo(2)
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+            self:EmitSound(self.Secondary.Sound)
             --self.Owner:ViewPunch(Angle(-15, math.Rand(-20,-25), 0))
 
             local fx         = EffectData()
-            fx:SetEntity(self.Weapon)
+            fx:SetEntity(self)
             fx:SetOrigin(self.Owner:GetShootPos())
             fx:SetNormal(self.Owner:GetAimVector())
             fx:SetAttachment(self.MuzzleAttachment)
 
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
             self.Owner:MuzzleFlash()
-            self.Weapon:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
+            self:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
             self:CheckWeaponsAndAmmo()
             self.RicochetCoin = (math.random(1,8))
         if self.BoltAction then self:BoltBack() end
         end
-    elseif self.Weapon:Clip1() == 1 then
-        self.Weapon:PrimaryAttack()
-        self.Weapon:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
-    elseif self.Weapon:Clip1() == 0 then
+    elseif self:Clip1() == 1 then
+        self:PrimaryAttack()
+        self:SetNextSecondaryFire(CurTime()+1/((self.Primary.RPM/2)/60))
+    elseif self:Clip1() == 0 then
         self:Reload()
     end
     end
@@ -134,37 +134,37 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
     if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
         self:ShootBulletInformation()
-        self.Weapon:TakePrimaryAmmo(1)
+        self:TakePrimaryAmmo(1)
 
         if self.Silenced then
-            self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
-            self.Weapon:EmitSound(self.Primary.SilencedSound)
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
+            self:EmitSound(self.Primary.SilencedSound)
         else
-            self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            self.Weapon:EmitSound(self.Primary.Sound)
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+            self:EmitSound(self.Primary.Sound)
         end
 
         local fx         = EffectData()
-        fx:SetEntity(self.Weapon)
+        fx:SetEntity(self)
         fx:SetOrigin(self.Owner:GetShootPos())
         fx:SetNormal(self.Owner:GetAimVector())
         fx:SetAttachment(self.MuzzleAttachment)
 
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+        self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         self:CheckWeaponsAndAmmo()
         self.RicochetCoin = (math.random(1,4))
         if self.BoltAction then self:BoltBack() end
     end
     elseif self:CanPrimaryAttack() and self.Owner:IsNPC() then
         self:ShootBulletInformation()
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self.Weapon:EmitSound(self.Primary.Sound)
+        self:TakePrimaryAmmo(1)
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound(self.Primary.Sound)
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+        self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         self.RicochetCoin = (math.random(1,4))
     end
 end
@@ -200,15 +200,15 @@ function SWEP:Reload()
     if not self.Owner:IsPlayer() then return end
 
     local maxcap = self.Primary.ClipSize
-    local spaceavail = self.Weapon:Clip1()
+    local spaceavail = self:Clip1()
     local shellz = (maxcap) - (spaceavail) + 1
 
     if (timer.Exists("ShotgunReload")) or self.Owner.NextReload > CurTime() or maxcap == spaceavail then return end
 
     if self.Owner:IsPlayer() then
 
-        self.Weapon:SetNextPrimaryFire(CurTime() + 1) -- wait one second before you can shoot again
-        self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
+        self:SetNextPrimaryFire(CurTime() + 1) -- wait one second before you can shoot again
+        self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
         self.Owner:SetAnimation( PLAYER_RELOAD )
 
         self.Owner.NextReload = CurTime() + 1
@@ -224,7 +224,7 @@ function SWEP:Reload()
             (self.ShellTime + .05),
             shellz,
             function() if not IsValid(self) then return end
-            if IsValid(self.Owner) and IsValid(self.Weapon) then
+            if IsValid(self.Owner) and IsValid(self) then
                 if self.Owner:Alive() then
                     self:InsertShell()
                 end
@@ -232,7 +232,7 @@ function SWEP:Reload()
         end
 
     elseif self.Owner:IsNPC() then
-        self.Weapon:DefaultReload(ACT_VM_RELOAD)
+        self:DefaultReload(ACT_VM_RELOAD)
     end
 
 end
@@ -275,17 +275,17 @@ function SWEP:InsertShell()
             timer.Destroy(timerName)
         return end
 
-        if (self.Weapon:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
+        if (self:Clip1() >= self.Primary.ClipSize or self.Owner:GetAmmoCount(self.Primary.Ammo) <= 0) then
         -- if clip is full or ammo is out, then...
-            self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
+            self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_FINISH) -- send the pump anim
             timer.Destroy(timerName) -- kill the timer
-            self.Weapon:SetNextPrimaryFire(CurTime()+.55)
-            self.Weapon:SetNextSecondaryFire(CurTime()+.55)
-        elseif (self.Weapon:Clip1() <= self.Primary.ClipSize and self.Owner:GetAmmoCount(self.Primary.Ammo) >= 0) then
+            self:SetNextPrimaryFire(CurTime()+.55)
+            self:SetNextSecondaryFire(CurTime()+.55)
+        elseif (self:Clip1() <= self.Primary.ClipSize and self.Owner:GetAmmoCount(self.Primary.Ammo) >= 0) then
             self.InsertingShell = true --well, I tried!
             timer.Simple( .05, function() self:ShellAnimCaller() end)
             self.Owner:RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-            self.Weapon:SetClip1(self.Weapon:Clip1() + 1) --  into the fire
+            self:SetClip1(self:Clip1() + 1) --  into the fire
         end
     else
         timer.Destroy(timerName) -- kill the timer

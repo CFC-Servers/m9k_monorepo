@@ -73,16 +73,16 @@ SWEP.KnifeStab = Sound("weapons/blades/nastystab.mp3")
 
 function SWEP:Deploy()
     self:SetHoldType(self.HoldType)
-    self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
-    self.Weapon:SetNextPrimaryFire(CurTime() + 1)
-    self.Weapon:EmitSound("weapons/knife/knife_draw_x.mp3", 50, 100)
+    self:SendWeaponAnim( ACT_VM_DRAW )
+    self:SetNextPrimaryFire(CurTime() + 1)
+    self:EmitSound("weapons/knife/knife_draw_x.mp3", 50, 100)
     return true
 end
 
 function SWEP:PrimaryAttack()
     vm = self.Owner:GetViewModel()
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             if self.Slash == 1 then
                 vm:SetSequence(vm:LookupSequence("midslash1"))
@@ -91,18 +91,18 @@ function SWEP:PrimaryAttack()
                 vm:SetSequence(vm:LookupSequence("midslash2"))
                 self.Slash = 1
             end --if it looks stupid but works, it aint stupid!
-            self.Weapon:EmitSound(self.Primary.Sound)--slash in the wind sound here
+            self:EmitSound(self.Primary.Sound)--slash in the wind sound here
             if CLIENT then return end
             timer.Create("cssslash", .15, 1, function()
             if not IsValid(self) then return end
             if IsValid(self.Owner)
 
-            and IsValid(self.Weapon)
+            and IsValid(self)
 
             then self:PrimarySlash() end end)
 
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         end
     end
 end
@@ -114,7 +114,7 @@ function SWEP:PrimarySlash()
     damagedice = math.Rand(.85,1.25)
     pain = self.Primary.Damage * damagedice
     self.Owner:LagCompensation(true)
-    if IsValid(self.Owner) and IsValid(self.Weapon) then
+    if IsValid(self.Owner) and IsValid(self) then
         if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             local slash = {}
             slash.start = pos
@@ -127,16 +127,16 @@ function SWEP:PrimarySlash()
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
                     --find a way to splash a little blood
-                    self.Weapon:EmitSound(self.KnifeSlash)--stab noise
+                    self:EmitSound(self.KnifeSlash)--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_SLASH)
                     paininfo:SetAttacker(self.Owner)
-                    paininfo:SetInflictor(self.Weapon)
+                    paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(slashtrace.Normal *35000)
                     if SERVER then targ:TakeDamageInfo(paininfo) end
                 else
-                    self.Weapon:EmitSound(self.KnifeShink)--SHINK!
+                    self:EmitSound(self.KnifeShink)--SHINK!
                     look = self.Owner:GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
@@ -152,7 +152,7 @@ function SWEP:SecondaryAttack()
     ang = self.Owner:GetAimVector()
     vm = self.Owner:GetViewModel()
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             local stab = {}
             stab.start = pos
@@ -168,15 +168,15 @@ function SWEP:SecondaryAttack()
             end
 
             timer.Create("cssstab", .33, 1 , function() if not IsValid(self) then return end
-            if IsValid(self.Owner) and IsValid(self.Weapon) then
+            if IsValid(self.Owner) and IsValid(self) then
                 if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
                     self:Stab() end
                 end
             end)
 
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-            self.Weapon:SetNextSecondaryFire(CurTime()+1.25)
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextSecondaryFire(CurTime()+1.25)
         end
     end
 end
@@ -196,7 +196,7 @@ function SWEP:Stab()
     stab2.maxs = Vector(10, 5, 5)
     local stabtrace2 =  util.TraceHull(stab2)
 
-    if IsValid(self.Owner) and IsValid(self.Weapon) then
+    if IsValid(self.Owner) and IsValid(self) then
         if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             if stabtrace2.Hit then
             targ = stabtrace2.Entity
@@ -205,17 +205,17 @@ function SWEP:Stab()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_SLASH)
                     paininfo:SetAttacker(self.Owner)
-                    paininfo:SetInflictor(self.Weapon)
+                    paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(stabtrace2.Normal *75000)
                     if SERVER then targ:TakeDamageInfo(paininfo) end
-                    self.Weapon:EmitSound(self.KnifeStab)--stab noise
+                    self:EmitSound(self.KnifeStab)--stab noise
                 else
-                    self.Weapon:EmitSound(self.KnifeShink)--SHINK!
+                    self:EmitSound(self.KnifeShink)--SHINK!
                     look = self.Owner:GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
             else
-                self.Weapon:EmitSound(self.Primary.Sound)
+                self:EmitSound(self.Primary.Sound)
             end
         end end
     end
@@ -236,13 +236,13 @@ function SWEP:IronSight()
     if self.Owner:KeyPressed(IN_RELOAD) then
         if !self.Owner:KeyDown(IN_ATTACK) and !self.Owner:KeyDown(IN_ATTACK2) and !self.Owner:KeyDown(IN_SPEED) then
             self:ThrowKnife()
-            self.Weapon:NextThink(CurTime() + 1)
+            self:NextThink(CurTime() + 1)
             return true
         end
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then        -- If you are running
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
+    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
     self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
@@ -262,7 +262,7 @@ end
 
 function SWEP:ThrowKnife()
     if IsFirstTimePredicted() then
-        self.Weapon:EmitSound(self.Primary.Sound)
+        self:EmitSound(self.Primary.Sound)
         if (SERVER) then
             local knife = ents.Create("m9k_thrown_spec_knife")
             if IsValid(knife) then

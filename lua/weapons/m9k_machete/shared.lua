@@ -68,29 +68,29 @@ SWEP.KnifeStab = Sound("weapons/blades/nastystab.mp3")
 
 function SWEP:Deploy()
     self:SetHoldType(self.HoldType)
-    self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
-    self.Weapon:SetNextPrimaryFire(CurTime() + 1)
-    self.Weapon:EmitSound("weapons/knife/knife_draw_x.mp3", 50, 100)
+    self:SendWeaponAnim( ACT_VM_DRAW )
+    self:SetNextPrimaryFire(CurTime() + 1)
+    self:EmitSound("weapons/knife/knife_draw_x.mp3", 50, 100)
     return true
 end
 
 
 function SWEP:PrimaryAttack()
     vm = self.Owner:GetViewModel()
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
     self.Owner:ViewPunch(Angle(-10,0,0))
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-        self.Weapon:EmitSound(self.Primary.Sound)
+        self:EmitSound(self.Primary.Sound)
         if SERVER then
             if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
                 vm:SetSequence(vm:LookupSequence("stab"))
                 timer.Create("hack-n-slash", .23, 1, function() if not IsValid(self) then return end
                 if IsValid(self.Owner) and
-                IsValid(self.Weapon) then
+                IsValid(self) then
                     if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
                         self:HackNSlash() end end end)
                 self.Owner:SetAnimation( PLAYER_ATTACK1 )
-                self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+                self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         end
         end
     end
@@ -111,7 +111,7 @@ function SWEP:HackNSlash()
     slash.maxs = Vector(8, 10, 5)
     local slashtrace = util.TraceHull(slash)
 
-    if IsValid(self.Owner) and IsValid(self.Weapon) then
+    if IsValid(self.Owner) and IsValid(self) then
         if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             local slash = {}
             slash.start = pos
@@ -125,16 +125,16 @@ function SWEP:HackNSlash()
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
                     --find a way to splash a little blood
-                    self.Weapon:EmitSound(self.KnifeSlash)--stab noise
+                    self:EmitSound(self.KnifeSlash)--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_SLASH)
                     paininfo:SetAttacker(self.Owner)
-                    paininfo:SetInflictor(self.Weapon)
+                    paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(slashtrace.Normal *35000)
                     targ:TakeDamageInfo(paininfo)
                 else
-                    self.Weapon:EmitSound(self.KnifeShink)--SHINK!
+                    self:EmitSound(self.KnifeShink)--SHINK!
                     look = self.Owner:GetEyeTrace()
                     util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
@@ -147,7 +147,7 @@ end
 function SWEP:SecondaryAttack()
     if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
 
-        self.Weapon:EmitSound(Sound("Weapon_Knife.Slash"))
+        self:EmitSound(Sound("Weapon_Knife.Slash"))
 
         if (SERVER) then
             local knife = ents.Create("m9k_thrown_knife")
@@ -191,8 +191,8 @@ function SWEP:IronSight()
         end
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then        -- If you are running
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
+    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
     self:SetIronsights(true, self.Owner)                    -- Set the ironsight true

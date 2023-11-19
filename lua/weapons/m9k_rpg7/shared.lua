@@ -68,12 +68,12 @@ SWEP.RunSightsAng = Vector (-20.1104, 35.1164, -12.959)
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() and not self.Owner:KeyPressed(IN_SPEED) then
         self:FireRocket()
-        self.Weapon:EmitSound("RPGF.single")
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound("RPGF.single")
+        self:TakePrimaryAmmo(1)
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+        self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     end
     self:CheckWeaponsAndAmmo()
 end
@@ -99,8 +99,8 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self.Weapon ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
+    if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
+        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then
                 if not IsValid(self.Owner) then return end
                 self.Owner:StripWeapon(self.Gun)

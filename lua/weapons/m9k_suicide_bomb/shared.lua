@@ -79,25 +79,25 @@ function SWEP:PrimaryAttack()
     tr.filter = {self.Owner}
     local trace = util.TraceLine(tr)
 
-    self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     timer.Simple(self.Owner:GetViewModel():SequenceDuration(), function()
-    if SERVER and self.Weapon ~= nil then if self.Weapon:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+    if SERVER and self ~= nil then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
     if self.Timer == 0 then
         if self:CanPrimaryAttack() then
             self.Owner:SetAnimation(PLAYER_ATTACK1)
-            self.Weapon:TakePrimaryAmmo(1)
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:TakePrimaryAmmo(1)
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
             self:Suicide()
         end
 
     elseif self.Timer >= 5     then
 
         if self:CanPrimaryAttack() then
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-            self.Weapon:SetNextSecondaryFire(CurTime() + 0.3)
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextSecondaryFire(CurTime() + 0.3)
             self.Owner:SetAnimation(PLAYER_ATTACK1)
 
-            self.Weapon:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
+            self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
 
             local tr = {}
             tr.start = self.Owner:GetShootPos()
@@ -193,8 +193,8 @@ end
 
 function SWEP:SecondaryAttack()
 
-    self.Weapon:SetNextPrimaryFire(CurTime() + 0.1)
-    self.Weapon:SetNextSecondaryFire(CurTime() + 0.1)
+    self:SetNextPrimaryFire(CurTime() + 0.1)
+    self:SetNextSecondaryFire(CurTime() + 0.1)
 
     if self.Timer == 5 then
         if (SERVER) then

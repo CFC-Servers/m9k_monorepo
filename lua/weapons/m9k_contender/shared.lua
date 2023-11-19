@@ -85,18 +85,18 @@ function SWEP:PrimaryAttack()
     if self.Owner:IsNPC() then return end
     if self:CanPrimaryAttack() and !self.Owner:KeyDown(IN_SPEED) then
         self:ShootBulletInformation()
-        self.Weapon:EmitSound(self.Primary.Sound)
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound(self.Primary.Sound)
+        self:TakePrimaryAmmo(1)
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         local fx         = EffectData()
-        fx:SetEntity(self.Weapon)
+        fx:SetEntity(self)
         fx:SetOrigin(self.Owner:GetShootPos())
         fx:SetNormal(self.Owner:GetAimVector())
         fx:SetAttachment(self.MuzzleAttachment)
         util.Effect("rg_muzzle_rifle",fx)
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+10)
+        self:SetNextPrimaryFire(CurTime()+10)
         self.RicochetCoin = (math.random(1,4))
         self:UseBolt()
     end
@@ -104,20 +104,20 @@ end
 
 function SWEP:UseBolt()
 
-    if self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) > 0 then
+    if self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
         timer.Simple(.25, function()
-        if SERVER and self.Weapon ~= nil then
-            self.Weapon:SetNWBool("Reloading", true)
-            if self.Weapon:GetClass() == self.Gun and self.BoltAction then
+        if SERVER and self ~= nil then
+            self:SetNWBool("Reloading", true)
+            if self:GetClass() == self.Gun and self.BoltAction then
                 self.Owner:SetFOV( 0, 0.3 )
                 self:SetIronsights(false)
                 self.Owner:DrawViewModel(true)
                 local boltactiontime = (self.Owner:GetViewModel():SequenceDuration())
                 timer.Simple(boltactiontime,
-                    function() if self.Weapon and self.Owner then if IsValid(self.Weapon) and IsValid(self.Owner) then
-                    self.Weapon:SetNWBool("Reloading", false)
-                    if SERVER and self.Weapon ~= nil then
-                        if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
+                    function() if self and self.Owner then if IsValid(self) and IsValid(self.Owner) then
+                    self:SetNWBool("Reloading", false)
+                    if SERVER and self ~= nil then
+                        if self.Owner:KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                             self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
                             self.IronSightsPos = self.SightsPos                    -- Bring it up
                             self.IronSightsAng = self.SightsAng                    -- Bring it up
@@ -126,17 +126,17 @@ function SWEP:UseBolt()
                             self.Owner:DrawViewModel(false)
 
                             self.Owner:RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-                            self.Weapon:SetClip1(self.Weapon:Clip1() + 1) --  into the fire
-                            self.Weapon:SetNextPrimaryFire(CurTime() + .1)
+                            self:SetClip1(self:Clip1() + 1) --  into the fire
+                            self:SetNextPrimaryFire(CurTime() + .1)
                         --well, hope this works
-                        elseif !self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
+                        elseif !self.Owner:KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                             self.Owner:RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-                            self.Weapon:SetClip1(self.Weapon:Clip1() + 1) --  into the fire
-                            self.Weapon:SetNextPrimaryFire(CurTime() + .1)
+                            self:SetClip1(self:Clip1() + 1) --  into the fire
+                            self:SetNextPrimaryFire(CurTime() + .1)
                         end
                     end
                 end end end)
-            -- else if self.Weapon:GetClass() == self.Gun and
+            -- else if self:GetClass() == self.Gun and
                 -- self.BoltAction and    (self:GetIronsights() == false) then
 
             end
@@ -151,26 +151,26 @@ end
 function SWEP:Reload()
 
 
---    self.Weapon:DefaultReload(ACT_VM_RELOAD)
+--    self:DefaultReload(ACT_VM_RELOAD)
 
         if not IsValid(self) then return end
         if not IsValid(self.Owner) then return end
-        if not IsValid(self.Weapon) then return end
+        if not IsValid(self) then return end
 
-        if  self.Weapon:GetNextPrimaryFire() > (CurTime() + 1) then
+        if  self:GetNextPrimaryFire() > (CurTime() + 1) then
             return
         else
 
             if self.Owner:IsNPC() then
-                    self.Weapon:DefaultReload(ACT_VM_RELOAD)
+                    self:DefaultReload(ACT_VM_RELOAD)
             return end
 
             if self.Owner:KeyDown(IN_USE) then return end
 
             if self.Silenced then
-                    self.Weapon:DefaultReload(ACT_VM_RELOAD_SILENCED)
+                    self:DefaultReload(ACT_VM_RELOAD_SILENCED)
             else
-                    self.Weapon:DefaultReload(ACT_VM_RELOAD)
+                    self:DefaultReload(ACT_VM_RELOAD)
             end
 
             if !self.Owner:IsNPC() then
@@ -179,21 +179,21 @@ function SWEP:Reload()
                     end
             end
 
-            if SERVER and self.Weapon ~= nil then
-            if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
+            if SERVER and self ~= nil then
+            if ( self:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
             -- --When the current clip < full clip and the rest of your ammo > 0, then
                     self.Owner:SetFOV( 0, 0.3 )
                     -- --Zoom = 0
                     self:SetIronsights(false)
                     -- --Set the ironsight to false
-                    self.Weapon:SetNWBool("Reloading", true)
+                    self:SetNWBool("Reloading", true)
             end
             local waitdammit = (self.Owner:GetViewModel():SequenceDuration())
             timer.Simple(waitdammit + .1,
                     function()
-                    if self.Weapon == nil then return end
-                    self.Weapon:SetNWBool("Reloading", false)
-                    if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
+                    if self == nil then return end
+                    self:SetNWBool("Reloading", false)
+                    if self.Owner:KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                             if CLIENT then return end
                             if self.Scoped == false then
                                     self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -202,9 +202,9 @@ function SWEP:Reload()
                                     self:SetIronsights(true, self.Owner)
                                     self.DrawCrosshair = false
                             else return end
-                    elseif self.Owner:KeyDown(IN_SPEED) and self.Weapon:GetClass() == self.Gun then
-                            if self.Weapon:GetNextPrimaryFire() <= (CurTime() + .03) then
-                                    self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                   -- Make it so you can't shoot for another quarter second
+                    elseif self.Owner:KeyDown(IN_SPEED) and self:GetClass() == self.Gun then
+                            if self:GetNextPrimaryFire() <= (CurTime() + .03) then
+                                    self:SetNextPrimaryFire(CurTime()+0.3)                   -- Make it so you can't shoot for another quarter second
                             end
                             self.IronSightsPos = self.RunSightsPos                                  -- Hold it down
                             self.IronSightsAng = self.RunSightsAng                                  -- Hold it down

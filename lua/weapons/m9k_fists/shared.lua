@@ -70,23 +70,23 @@ function SWEP:PrimaryAttack()
 
     vm = self.Owner:GetViewModel()
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             self.Owner:ViewPunch(Angle(math.random(-5,5),-10,5))
             vm:SetSequence(vm:LookupSequence("punchmiss2")) --left
             vm:SetPlaybackRate( 1.5 )
-            self.Weapon:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
+            self:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
             timer.Create("LeftJab", .1, 1, function() if not IsValid(self) then return end
 
             if IsValid(self.Owner) and
 
-            IsValid(self.Weapon) then
+            IsValid(self) then
 
             if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             self:LeftJab() end end end)
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-            self.Weapon:SetNextSecondaryFire((CurTime()+1/(self.Primary.RPM/60)))
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextSecondaryFire((CurTime()+1/(self.Primary.RPM/60)))
         end
     end
 end
@@ -98,7 +98,7 @@ function SWEP:LeftJab()
     damagedice = math.Rand(.95,1.95)
     pain = self.Primary.Damage * damagedice
     self.Owner:LagCompensation(true)
-    if SERVER and IsValid(self.Owner) and IsValid(self.Weapon) then
+    if SERVER and IsValid(self.Owner) and IsValid(self) then
         if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             local slash = {}
             slash.start = pos
@@ -112,19 +112,19 @@ function SWEP:LeftJab()
                 if targ:IsPlayer() or targ:IsNPC() then
                     --find a way to splash a little blood
 
-                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))--stab noise
+                    self:EmitSound(Sound(table.Random(punchtable)))--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
                     paininfo:SetAttacker(self.Owner)
-                    paininfo:SetInflictor(self.Weapon)
+                    paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(slashtrace.Normal *5000)
                     if SERVER then
                         targ:TakeDamageInfo(paininfo)
                         if targ:IsPlayer() then targ:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
                     end
                 else
-                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
+                    self:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
                 end
             end
         end end
@@ -136,20 +136,20 @@ function SWEP:SecondaryAttack()
 
     vm = self.Owner:GetViewModel()
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
             self.Owner:ViewPunch(Angle(math.random(-5,5),10,-5))
             vm:SetSequence(vm:LookupSequence("punchmiss1")) --right
             vm:SetPlaybackRate( 1.5 )
-            self.Weapon:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
+            self:EmitSound(Sound(table.Random(woosh)))--slash in the wind sound here
 
             timer.Create("RightJab", .1, 1, function() if not IsValid(self) then return end
-                if IsValid(self.Owner) and IsValid(self.Weapon) then
+                if IsValid(self.Owner) and IsValid(self) then
                 if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
                 self:RightJab()  end end end)
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Weapon:SetNextSecondaryFire(CurTime()+1/(self.Primary.RPM/60))
-            self.Weapon:SetNextPrimaryFire((CurTime()+1/(self.Primary.RPM/60)))
+            self:SetNextSecondaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextPrimaryFire((CurTime()+1/(self.Primary.RPM/60)))
         end
     end
 end
@@ -161,7 +161,7 @@ function SWEP:RightJab()
     damagedice = math.Rand(.95,1.95)
     pain = self.Primary.Damage * damagedice
     self.Owner:LagCompensation(true)
-    if SERVER and IsValid(self.Owner) and IsValid(self.Weapon)  then
+    if SERVER and IsValid(self.Owner) and IsValid(self)  then
         if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
             local rslash = {}
             rslash.start = rpos
@@ -174,19 +174,19 @@ function SWEP:RightJab()
                 rtarg = rslashtrace.Entity
                 if rtarg:IsPlayer() or rtarg:IsNPC() then
                     --find a way to splash a little blood
-                    self.Weapon:EmitSound(Sound(table.Random(punchtable)))--stab noise
+                    self:EmitSound(Sound(table.Random(punchtable)))--stab noise
                     paininfo = DamageInfo()
                     paininfo:SetDamage(pain)
                     paininfo:SetDamageType(DMG_CLUB)
                     paininfo:SetAttacker(self.Owner)
-                    paininfo:SetInflictor(self.Weapon)
+                    paininfo:SetInflictor(self)
                     paininfo:SetDamageForce(rslashtrace.Normal *5000)
                     if SERVER then
                         rtarg:TakeDamageInfo(paininfo)
                         if rtarg:IsPlayer() then rtarg:ViewPunch(Angle(math.random(-5, 5), math.random(-25,25), math.random(-50,50))) end
                     end
                 else
-                    self.Weapon:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
+                    self:EmitSound("Weapon_Crowbar.Melee_Hit")--thunk
                 end
             end
         end end
@@ -243,8 +243,8 @@ function SWEP:IronSight()
         self.Owner:SetNWBool("DukesAreUp", false)
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then        -- If you are running
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
+    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
     self:SetIronsights(true, self.Owner)                    -- Set the ironsight true

@@ -77,7 +77,7 @@ function SWEP:PrimaryAttack()
     damagedice = math.Rand(.85,1.25)
     pain = self.Primary.Damage * damagedice
     if self:CanPrimaryAttack() and self.Owner:IsPlayer() then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self:SendWeaponAnim( ACT_VM_IDLE )
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) and !self.Owner:KeyDown(IN_ATTACK2)  then
             if self.Slash == 1 then
                 --if CLIENT then return end
@@ -88,7 +88,7 @@ function SWEP:PrimaryAttack()
                 vm:SetSequence(vm:LookupSequence("midslash2"))
                 self.Slash = 1
             end --if it looks stupid but works, it aint stupid!
-            self.Weapon:EmitSound(self.Primary.Sound)--slash in the wind sound here
+            self:EmitSound(self.Primary.Sound)--slash in the wind sound here
                 if SERVER and IsValid(self.Owner) then
                     if self.Owner:Alive() then if self.Owner:GetActiveWeapon():GetClass() == self.Gun then
                         local slash = {}
@@ -101,16 +101,16 @@ function SWEP:PrimaryAttack()
                         if slashtrace.Hit then
                             targ = slashtrace.Entity
                             if targ:IsPlayer() or targ:IsNPC() then
-                                    self.Weapon:EmitSound(self.SwordChop)
+                                    self:EmitSound(self.SwordChop)
                                 paininfo = DamageInfo()
                                 paininfo:SetDamage(pain)
                                 paininfo:SetDamageType(DMG_SLASH)
                                 paininfo:SetAttacker(self.Owner)
-                                paininfo:SetInflictor(self.Weapon)
+                                paininfo:SetInflictor(self)
                                 paininfo:SetDamageForce(slashtrace.Normal *35000)
                                 if SERVER then targ:TakeDamageInfo(paininfo) end
                             else
-                                self.Weapon:EmitSound(self.KnifeShink)--SHINK!
+                                self:EmitSound(self.KnifeShink)--SHINK!
                                 look = self.Owner:GetEyeTrace()
                                 util.Decal("ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                             end
@@ -119,7 +119,7 @@ function SWEP:PrimaryAttack()
                 end
 
             self.Owner:SetAnimation( PLAYER_ATTACK1 )
-            self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         end
     end
 end
@@ -183,8 +183,8 @@ function SWEP:IronSight()
         self.Owner:SetNWBool("GuardIsUp", false)
     end
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then        -- If you are running
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
+    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then        -- If you are running
+    self:SetNextPrimaryFire(CurTime()+0.3)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
     self:SetIronsights(true, self.Owner)                    -- Set the ironsight true
@@ -200,7 +200,7 @@ function SWEP:IronSight()
     if !self.Owner:KeyDown(IN_USE) and !self.Owner:KeyDown(IN_SPEED) then
     -- If the key E (Use Key) is not pressed, then
 
-        if self.Owner:KeyPressed(IN_ATTACK2) and not (self.Weapon:GetNWBool("Reloading")) then
+        if self.Owner:KeyPressed(IN_ATTACK2) and not (self:GetNWBool("Reloading")) then
             self.Owner:SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos                    -- Bring it up
             self.IronSightsAng = self.SightsAng                    -- Bring it up

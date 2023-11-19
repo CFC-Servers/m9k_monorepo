@@ -68,16 +68,16 @@ end
 
 function SWEP:Reload()
 
-    self.Weapon:DefaultReload(ACT_VM_RELOAD)
+    self:DefaultReload(ACT_VM_RELOAD)
     if !self.Owner:IsNPC() then
         self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
-    if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
+    if ( self:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
     -- When the current clip < full clip and the rest of your ammo > 0, then
         self.Owner:SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights(false)
         -- Set the ironsight to false
-        self.Weapon:SetNWBool("Reloading", true)
+        self:SetNWBool("Reloading", true)
     end
     local waitdammit = (self.Owner:GetViewModel():SequenceDuration())
     self:MiniGunIdle(waitdammit)
@@ -85,18 +85,18 @@ end
 
 function SWEP:MiniGunIdle(wait)
     timer.Simple(wait + .05, function()
-    if self.Weapon ~= nil then
-    self.Weapon:SetNWBool("Reloading", false)
+    if self ~= nil then
+    self:SetNWBool("Reloading", false)
     if SERVER then
-        self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+        self:SendWeaponAnim( ACT_VM_IDLE )
     else return end end
     end)
 end
 
 function SWEP:IronSight()
 
-    if self.Owner:KeyDown(IN_SPEED) and not (self.Weapon:GetNWBool("Reloading")) then                    -- If you run then
-    self.Weapon:SetNextPrimaryFire(CurTime()+0.5)                -- Make it so you can't shoot for another quarter second
+    if self.Owner:KeyDown(IN_SPEED) and not (self:GetNWBool("Reloading")) then                    -- If you run then
+    self:SetNextPrimaryFire(CurTime()+0.5)                -- Make it so you can't shoot for another quarter second
     self.IronSightsPos = self.RunSightsPos                    -- Hold it down
     self.IronSightsAng = self.RunSightsAng                    -- Hold it down
     self:SetIronsights(true, self.Owner)                    -- Set the ironsight true

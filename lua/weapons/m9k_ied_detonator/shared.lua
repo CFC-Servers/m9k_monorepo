@@ -117,8 +117,8 @@ end
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+        self:TakePrimaryAmmo(1)
+        self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
         aim = self.Owner:GetAimVector()
         side = aim:Cross(Vector(0,0,1))
         up = side:Cross(aim)
@@ -137,7 +137,7 @@ function SWEP:PrimaryAttack()
             phys:ApplyForceCenter(self.Owner:GetAimVector() * 1500)
         end
         timer.Simple(.25, function() if not IsValid(self) then return end
-        if IsValid(self.Owner) and IsValid(self.Weapon) then
+        if IsValid(self.Owner) and IsValid(self) then
             if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() == self.Gun then
                 self:Reload()
             end
@@ -151,15 +151,15 @@ function SWEP:SecondaryAttack()
     for k, v in pairs ( ents.FindByClass( "m9k_improvised_explosive") ) do
         if v:GetNWEntity("Owner") == self.Owner then
             v.Boom=true
-            self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+            self:SendWeaponAnim(ACT_VM_DRAW)
         end
     end
     timer.Simple(.01, function()
-    if SERVER and self.Weapon ~= nil then
-        if IsValid(self.Owner) and IsValid(self.Weapon) then
+    if SERVER and self ~= nil then
+        if IsValid(self.Owner) and IsValid(self) then
             if self.Owner:Alive() and self.Owner:GetActiveWeapon():GetClass() then
-                if self.Weapon:Clip1() == 0
-                and self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0
+                if self:Clip1() == 0
+                and self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0
                 and (GetConVar("M9KWeaponStrip"):GetBool())    then
                     self.Owner:StripWeapon(self.Gun)
                 end

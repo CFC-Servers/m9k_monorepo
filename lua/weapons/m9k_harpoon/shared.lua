@@ -99,10 +99,10 @@ end
 function SWEP:PrimaryAttack()
     self:FireRocket()
     self.Owner:SetAnimation( PLAYER_ATTACK1 )
-    self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-    self.Weapon:EmitSound(Sound("Weapon_Knife.Slash"))
-    self.Weapon:TakePrimaryAmmo(1)
-    self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
+    self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+    self:EmitSound(Sound("Weapon_Knife.Slash"))
+    self:TakePrimaryAmmo(1)
+    self:SendWeaponAnim( ACT_VM_HITCENTER )
     self:CheckWeaponsAndAmmo()
 end
 
@@ -129,7 +129,7 @@ end
 
 function SWEP:CheckWeaponsAndAmmo()
 
-    if SERVER and self.Weapon ~= nil and ((gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool()) then
+    if SERVER and self ~= nil and ((gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool()) then
         timer.Simple(.1, function()
             if SERVER then
                 if not IsValid(self) then return end
@@ -139,8 +139,8 @@ function SWEP:CheckWeaponsAndAmmo()
         end)
     return end
 
-    if SERVER and self.Weapon ~= nil then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
+    if SERVER and self ~= nil then
+        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
                 if self.Owner == nil then return end
                 self.Owner:StripWeapon(self.Gun)
@@ -155,11 +155,11 @@ function SWEP:Reload()
     if not IsValid(self) then return end if not IsValid(self.Owner) then return end
 
     if self.Owner:IsNPC() then
-        self.Weapon:DefaultReload(ACT_VM_RELOAD)
+        self:DefaultReload(ACT_VM_RELOAD)
     return end
 
     if self.Owner:KeyDown(IN_USE) then return end
-        self.Weapon:DefaultReload(ACT_VM_DRAW)
+        self:DefaultReload(ACT_VM_DRAW)
 
     if !self.Owner:IsNPC() then
         if self.Owner:GetViewModel() == nil then self.ResetSights = CurTime() + 3 else

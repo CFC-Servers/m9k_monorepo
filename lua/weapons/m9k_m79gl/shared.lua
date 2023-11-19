@@ -82,12 +82,12 @@ function SWEP:Deploy()
         timer.Destroy(timerName)
     end
 
-    self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+    self:SendWeaponAnim(ACT_VM_DRAW)
 
-    self.Weapon:SetNextPrimaryFire(CurTime() + .25)
-    self.Weapon:SetNextSecondaryFire(CurTime() + .25)
+    self:SetNextPrimaryFire(CurTime() + .25)
+    self:SetNextSecondaryFire(CurTime() + .25)
     self.ActionDelay = (CurTime() + .25)
-    -----------------------------------------self.Weapon.NextFireTime = (CurTime() + .25)
+    -----------------------------------------self.NextFireTime = (CurTime() + .25)
 
     if (SERVER) then
         self:SetIronsights(false)
@@ -99,17 +99,17 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then ------------------------------------- and self.Weapon.NextFireTime <= CurTime() then
+    if self:CanPrimaryAttack() then ------------------------------------- and self.NextFireTime <= CurTime() then
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
         self:FireRocket()
-        self.Weapon:EmitSound(self.Primary.Sound)
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound(self.Primary.Sound)
+        self:TakePrimaryAmmo(1)
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         local fx         = EffectData()
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+1.75)
-        ----------------------------------------------------self.Weapon.NextFireTime = (CurTime() + 2)
+        self:SetNextPrimaryFire(CurTime()+1.75)
+        ----------------------------------------------------self.NextFireTime = (CurTime() + 2)
     else self:Reload()
     end
     end
@@ -141,15 +141,15 @@ function SWEP:Reload()
     if not self.Owner:IsPlayer() then return end
 
     local maxcap = self.Primary.ClipSize
-    local spaceavail = self.Weapon:Clip1()
+    local spaceavail = self:Clip1()
     local shellz = (maxcap) - (spaceavail) + 1
 
     if (timer.Exists("ShotgunReload")) or self.NextReload > CurTime() or maxcap == spaceavail then return end
 
     if self.Owner:IsPlayer() then
 
-        self.Weapon:SetNextPrimaryFire(CurTime() + 1.75) -- wait one second before you can shoot again
-        self.Weapon:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
+        self:SetNextPrimaryFire(CurTime() + 1.75) -- wait one second before you can shoot again
+        self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START) -- sending start reload anim
         self.Owner:SetAnimation( PLAYER_RELOAD )
 
         self.NextReload = CurTime() + 1
@@ -165,7 +165,7 @@ function SWEP:Reload()
             (self.ShellTime + .05),
             shellz,
             function() if not IsValid(self) then return end
-            if IsValid(self.Owner) and IsValid(self.Weapon) then
+            if IsValid(self.Owner) and IsValid(self) then
                 if self.Owner:Alive() then
                     self:InsertShell()
                 end
@@ -173,14 +173,14 @@ function SWEP:Reload()
         end
 
     elseif self.Owner:IsNPC() then
-        self.Weapon:DefaultReload(ACT_VM_RELOAD)
+        self:DefaultReload(ACT_VM_RELOAD)
     end
 
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self.Weapon ~= nil then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
+    if SERVER and self ~= nil then
+        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
             timer.Simple(.5, function() if SERVER then if not IsValid(self) then return end
                 if not IsValid(self.Owner) then return end
                 self.Owner:StripWeapon(self.Gun)

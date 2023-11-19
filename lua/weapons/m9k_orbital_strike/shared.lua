@@ -114,8 +114,8 @@ function SWEP:PrimaryAttack()
                 Satellite:Spawn()
             end
             if SERVER then self.Owner:EmitSound(self.Primary.Sound) end
-            self.Weapon:TakePrimaryAmmo(1)
-            self.Weapon:SetNextPrimaryFire(CurTime()+15)
+            self:TakePrimaryAmmo(1)
+            self:SetNextPrimaryFire(CurTime()+15)
             self.NextShoot = CurTime() + 15
             self:CheckWeaponsAndAmmo()
             self:Reload()
@@ -140,8 +140,8 @@ function SWEP:PrimaryAttack()
                     Satellite:Spawn()
                 end
                 self.Owner:EmitSound(self.Primary.Sound)
-                self.Weapon:TakePrimaryAmmo(1)
-                self.Weapon:SetNextPrimaryFire(CurTime()+15)
+                self:TakePrimaryAmmo(1)
+                self:SetNextPrimaryFire(CurTime()+15)
                 self.NextShoot = CurTime() + 15
                 self:CheckWeaponsAndAmmo()
                 self:Reload()
@@ -156,8 +156,8 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self.Weapon ~= nil then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
+    if SERVER and self ~= nil then
+        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar("M9KWeaponStrip"):GetBool()) then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
                 if not IsValid(self.Owner) then return end
                 self.Owner:StripWeapon(self.Gun)

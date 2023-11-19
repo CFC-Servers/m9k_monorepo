@@ -70,13 +70,13 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
         if !self.Owner:KeyDown(IN_SPEED) and !self.Owner:KeyDown(IN_RELOAD) then
         self:FireRocket()
-        self.Weapon:EmitSound(self.Primary.Sound)
-        self.Weapon:TakePrimaryAmmo(1)
-        self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound(self.Primary.Sound)
+        self:TakePrimaryAmmo(1)
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         local fx         = EffectData()
         self.Owner:SetAnimation( PLAYER_ATTACK1 )
         self.Owner:MuzzleFlash()
-        self.Weapon:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+        self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
     else self:Reload()
     end
     end
@@ -101,8 +101,8 @@ function SWEP:FireRocket()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self.Weapon ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-        if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
+    if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
+        if self:Clip1() == 0 && self.Owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.5, function() if SERVER then if not IsValid(self) then return end
                 if not IsValid(self.Owner) then return end
                 self.Owner:StripWeapon(self.Gun)
