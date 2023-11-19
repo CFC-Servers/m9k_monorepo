@@ -26,7 +26,7 @@ self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
 self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
 --self:SetColor(Color(45,55,40,255))
 
-Glow = ents.Create("env_sprite")
+local Glow = ents.Create("env_sprite")
 Glow:SetKeyValue("model","orangecore2.vmt")
 Glow:SetKeyValue("rendercolor","255 150 100")
 Glow:SetKeyValue("scale","0.3")

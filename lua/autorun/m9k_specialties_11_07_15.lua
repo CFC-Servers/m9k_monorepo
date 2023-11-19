@@ -115,7 +115,7 @@ if GetConVarString("nuke_yield") == nil then --if one of them doesn't exists, th
     CreateConVar("nuke_radiation_damage", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
 end
 
-function GuardUp(victim, info)
+local function GuardUp(victim, info)
 
     if not IsValid(victim) then return end
     if not victim:IsPlayer() then return end
@@ -139,7 +139,7 @@ function GuardUp(victim, info)
 end
 hook.Add("EntityTakeDamage", "GuardUp", GuardUp )
 
-function DukesUp(victim, info)
+local function DukesUp(victim, info)
     if not IsValid(victim) then return end
     if not victim:IsPlayer() then return end
     if not IsValid(victim:GetActiveWeapon()) then return end
@@ -334,7 +334,7 @@ table.insert(m9knpw, "m9k_ammo_sniper_rounds")
 table.insert(m9knpw, "m9k_ammo_stickynades")
 table.insert(m9knpw, "m9k_ammo_winchester")
 
-function PocketM9KWeapons(ply, wep)
+local function PocketM9KWeapons(ply, wep)
 
     if not IsValid(wep) then return end
     class = wep:GetClass()
@@ -355,5 +355,3 @@ function PocketM9KWeapons(ply, wep)
 
 end
 hook.Add("canPocket", "PocketM9KWeapons", PocketM9KWeapons )
-
-specialties_autorun_mounted = true

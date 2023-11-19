@@ -53,7 +53,7 @@ function EFFECT:Init( data )
     end
 
     self.Mat = math.ceil( self.Radius )
-    foundTheMat = false
+    local foundTheMat = false
     for k, v in pairs( mats ) do
         if k == self.Mat then
             foundTheMat = true

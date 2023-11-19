@@ -78,7 +78,7 @@ function ENT:OnTakeDamage(dmginfo)
 	blaster = dmginfo:GetAttacker()
 	pos = self:GetPos()+Vector(0,0,10)
 
-	dice = math.random(1,5)
+	local dice = math.random(1,5)
 
 	if dmginfo:GetDamage() >75 or dice == 1 then
 		self:Remove()

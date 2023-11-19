@@ -508,7 +508,7 @@ function ENT:Think()
 end
 
 
-function PlayPopSound(ent)
+function ENT:PlayPopSound(ent)
 
 	timer.Simple(0.05, function() ent:EmitSound(sndPop,500,100) end)
 

@@ -109,7 +109,7 @@ function SWEP:PrimaryAttack()
 
             if (CLIENT) then return end
 
-            C4 = ents.Create(self.Primary.Round)
+            local C4 = ents.Create(self.Primary.Round)
             C4:SetPos(trace.HitPos + trace.HitNormal)
             trace.HitNormal.z = -trace.HitNormal.z
             C4:SetAngles(trace.HitNormal:Angle() - Angle(90, 180, 0))

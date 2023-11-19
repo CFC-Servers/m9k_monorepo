@@ -27,7 +27,7 @@ self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
 self:SetMaterial("models/debug/debugwhite.vmt")
 self:SetColor(Color(55,67,44,255))
 
-Glow = ents.Create("env_sprite")
+local Glow = ents.Create("env_sprite")
 Glow:SetKeyValue("model","orangecore2.vmt")
 Glow:SetKeyValue("rendercolor","255 150 100")
 Glow:SetKeyValue("scale","0.3")

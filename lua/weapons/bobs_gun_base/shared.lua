@@ -67,7 +67,7 @@ else
         end
 end
 
-function NewM9KDamageMultiplier(cvar, previous, new)
+local function NewM9KDamageMultiplier(cvar, previous, new)
         print("multiplier has been changed ")
         if GetConVar("M9KDamageMultiplier") == nil then
                 PainMulti = 1
@@ -82,7 +82,7 @@ function NewM9KDamageMultiplier(cvar, previous, new)
 end
 cvars.AddChangeCallback("M9KDamageMultiplier", NewM9KDamageMultiplier)
 
-function NewDefClips(cvar, previous, new)
+local function NewDefClips(cvar, previous, new)
         print("Default clip multiplier has changed. A server restart will be required for these changes to take effect.")
 end
 cvars.AddChangeCallback("M9KDefaultClip", NewDefClips)
@@ -210,7 +210,7 @@ function SWEP:Precache()
 end
 
 function SWEP:PrimaryAttack()
-    OkaySoFar = true
+    local OkaySoFar = true
     if not IsValid(self) then
         OkaySoFar = false
     else if not IsValid(self) then

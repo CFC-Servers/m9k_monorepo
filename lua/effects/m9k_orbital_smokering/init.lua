@@ -19,7 +19,7 @@ function EFFECT:Init(data)
 			particle:SetBounce( 0 )
 		end
 		timer.Simple(2, function()
-			Emitter = ParticleEmitter(pos)
+			local Emitter = ParticleEmitter(pos)
 			local particle = Emitter:Add( "effects/strider_bulge_dudv.vmt", pos)
 			if (particle) then
 				particle:SetDieTime( .25 )

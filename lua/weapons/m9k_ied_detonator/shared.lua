@@ -119,10 +119,10 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
         self:TakePrimaryAmmo(1)
         self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-        aim = self:GetOwner():GetAimVector()
+        local aim = self:GetOwner():GetAimVector()
         side = aim:Cross(Vector(0,0,1))
-        up = side:Cross(aim)
-        pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
+        local up = side:Cross(aim)
+        local pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
         if SERVER then
             local rocket = ents.Create(self.Primary.Round)
             if !rocket:IsValid() then return false end

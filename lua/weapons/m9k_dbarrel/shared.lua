@@ -79,7 +79,7 @@ else
         end
 end
 
-function NewM9KDamageMultiplierDB(cvar, previous, new)
+local function NewM9KDamageMultiplierDB(cvar, previous, new)
         print("multiplier has been changed ")
         if GetConVar("M9KDamageMultiplier") == nil then
                 PainMulti = 1

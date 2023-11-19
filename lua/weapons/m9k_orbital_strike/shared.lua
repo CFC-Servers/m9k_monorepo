@@ -106,7 +106,7 @@ function SWEP:PrimaryAttack()
             if SERVER then
                 local Sky = skycheck.HitPos - Vector(0,0,10)
                 local Ground = mark.HitPos
-                Satellite = ents.Create("m9k_oribital_cannon")
+                local Satellite = ents.Create("m9k_oribital_cannon")
                 Satellite.Ground = Ground
                 Satellite.Sky = Sky
                 Satellite.Owner = self:GetOwner()
@@ -130,7 +130,7 @@ function SWEP:PrimaryAttack()
             if skycheck2.HitSky then --someone's gonna be in big trouble
                 sky2 = skycheck2.HitPos - Vector(0,0,10)
                 if SERVER then
-                    Satellite = ents.Create("m9k_oribital_cannon")
+                    local Satellite = ents.Create("m9k_oribital_cannon")
                     --Satellite.Ground = Ground
                     Satellite.PoorBastard = true
                     Satellite.Target = thetarget

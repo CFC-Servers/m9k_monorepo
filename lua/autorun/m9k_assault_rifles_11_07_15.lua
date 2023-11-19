@@ -116,7 +116,7 @@ table.insert(m9knpw, "m9k_ammo_sniper_rounds")
 table.insert(m9knpw, "m9k_ammo_stickynades")
 table.insert(m9knpw, "m9k_ammo_winchester")
 
-function PocketM9KWeapons(ply, wep)
+local function PocketM9KWeapons(ply, wep)
 
 	if not IsValid(wep) then return end
 	class = wep:GetClass()
@@ -137,5 +137,3 @@ function PocketM9KWeapons(ply, wep)
 
 end
 hook.Add("canPocket", "PocketM9KWeapons", PocketM9KWeapons )
-
-assault_autorun_mounted = true

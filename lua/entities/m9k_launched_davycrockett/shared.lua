@@ -25,7 +25,7 @@ function ENT:Initialize()
     self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
     self:SetColor(Color(82,102,39,254))
 
-    Glow = ents.Create("env_sprite")
+    local Glow = ents.Create("env_sprite")
     Glow:SetKeyValue("model","orangecore2.vmt")
     Glow:SetKeyValue("rendercolor","255 150 100")
     Glow:SetKeyValue("scale","0.3")
