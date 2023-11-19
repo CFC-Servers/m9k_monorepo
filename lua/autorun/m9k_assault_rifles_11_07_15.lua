@@ -17,40 +17,10 @@ So, by using a legacy addon, you accept the fact that I cannot help fix anything
 I know it's tough love, but that's the way it's got to be.
 
 ------------------------------------------------------*/
-local icol = Color( 255, 255, 255, 255 )
-if CLIENT then
-
-	killicon.Add(  "m9k_acr",		"vgui/hud/m9k_acr", icol  )
-	killicon.Add(  "m9k_ak47",		"vgui/hud/m9k_ak47", icol  )
-	killicon.Add(  "m9k_ak74",		"vgui/hud/m9k_ak74", icol  )
-	killicon.Add(  "m9k_amd65", 	"vgui/hud/m9k_amd65", icol )
-	killicon.Add(  "m9k_an94", 		"vgui/hud/m9k_an94", icol )
-	killicon.Add(  "m9k_auga3",		"vgui/hud/m9k_auga3", icol  )
-	killicon.Add(  "m9k_f2000",		"vgui/hud/m9k_f2000", icol )
-	killicon.Add(  "m9k_fal",		"vgui/hud/m9k_fal", icol )
-	killicon.Add(  "m9k_famas",		"vgui/hud/m9k_famas", icol  )
-	killicon.Add(  "m9k_g3a3",		"vgui/hud/m9k_g3a3", icol )
-	killicon.Add(  "m9k_g36", 		"vgui/hud/m9k_g36", icol )
-	killicon.Add(  "m9k_l85", 		"vgui/hud/m9k_l85", icol )
-	killicon.Add(  "m9k_m4a1", 		"vgui/hud/m9k_m4a1", icol )
-	killicon.Add(  "m9k_m14sp", 	"vgui/hud/m9k_m14sp", icol )
-	killicon.Add(  "m9k_m16a4_acog", "vgui/hud/m9k_m16a4_acog", icol )
-	killicon.Add(  "m9k_m416", 		"vgui/hud/m9k_m416", icol )
-	killicon.Add(  "m9k_scar", 		"vgui/hud/m9k_scar", icol )
-	killicon.Add(  "m9k_tar21", 	"vgui/hud/m9k_tar21", icol )
-	killicon.Add(  "m9k_val", 		"vgui/hud/m9k_val", icol )
-	killicon.Add(  "m9k_vikhr", 	"vgui/hud/m9k_vikhr", icol )
-	killicon.Add(  "m9k_winchester73", "vgui/hud/m9k_winchester73", icol  )
-
-end
 
 --I'm pretty sure we don't need these anymore...
 --Almost 99 percent sure that's I'm 100 percent sure...
 
--- if GetConVar("M9KDisableHolster") == nil then
-	-- CreateConVar("M9KDisableHolster", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Disable my totally worthless and broken holster system? Won't hurt my feelings any. 1 for true, 2 for false. A map change may be required.")
-	-- print("Holster Disable con var created")
--- end
 
 if GetConVar("DebugM9K") == nil then
 	CreateConVar("DebugM9K", "0", { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "Debugging for some m9k stuff, turning it on won't change much.")
