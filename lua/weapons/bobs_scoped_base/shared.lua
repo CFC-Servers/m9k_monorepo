@@ -233,7 +233,8 @@ function SWEP:Reload()
         waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
     end
     timer.Simple(waitdammit + .1, function()
-        if not IsValid( self ) then return end
+        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+
         self:SetNWBool("Reloading", false)
         if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
             if CLIENT then return end
