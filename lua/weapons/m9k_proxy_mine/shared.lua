@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_proxy_mine") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Specialties"
@@ -110,7 +110,7 @@ function SWEP:PrimaryAttack()
             parentme[15] = "m9k_ammo_sniper_rounds"
             parentme[16] = "m9k_ammo_winchester"
 
-                if trace.Entity != nil and trace.Entity:IsValid() then
+                if trace.Entity ~= nil and trace.Entity:IsValid() then
                     for k, v in pairs (parentme) do
                         if trace.Entity:GetClass() == v then
                             boxes = trace.Entity
@@ -160,7 +160,7 @@ function SWEP:Think()
 end
 
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

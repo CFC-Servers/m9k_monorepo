@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_damascus") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Specialties"
@@ -131,7 +131,7 @@ end
     if not IsValid(info) then return end
     if not IsValid(info:GetInflictor()) then return end
 
-    if info:GetInflictor():GetClass() != nil then
+    if info:GetInflictor():GetClass() ~= nil then
         if info:GetInflictor():GetClass() == "m9k_damascus" then
             if victim:IsPlayer() and victim:Alive() then
                 if victim:GetNWBool("GuardIsUp", false) then
@@ -234,7 +234,7 @@ function SWEP:IronSight()
         end
 end
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

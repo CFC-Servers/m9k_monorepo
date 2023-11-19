@@ -167,7 +167,7 @@ function SWEP:InsertShell()
     local timerName = "ShotgunReload_" ..  self:GetOwner():UniqueID()
     if self:GetOwner():Alive() then
         local curwep = self:GetOwner():GetActiveWeapon()
-        if curwep:GetClass() != self.Gun then
+        if curwep:GetClass() ~= self.Gun then
             timer.Destroy(timerName)
         return end
 

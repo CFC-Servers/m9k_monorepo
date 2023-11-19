@@ -72,7 +72,7 @@ function ENT:PhysicsCollide(data, phys)
 	parentme[15] = "m9k_ammo_sniper_rounds"
 	parentme[16] = "m9k_ammo_winchester"
 
-	if data.HitEntity != nil and data.HitEntity:IsValid() then
+	if data.HitEntity ~= nil and data.HitEntity:IsValid() then
 		for k, v in pairs (parentme) do
 			if data.HitEntity:GetClass() == v then
 				boxes = data.HitEntity

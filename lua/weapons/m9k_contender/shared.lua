@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_contender") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Sniper Rifles"
@@ -106,7 +106,7 @@ function SWEP:UseBolt()
 
     if self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) > 0 then
         timer.Simple(.25, function()
-        if SERVER and self.Weapon != nil then
+        if SERVER and self.Weapon ~= nil then
             self.Weapon:SetNWBool("Reloading", true)
             if self.Weapon:GetClass() == self.Gun and self.BoltAction then
                 self.Owner:SetFOV( 0, 0.3 )
@@ -116,7 +116,7 @@ function SWEP:UseBolt()
                 timer.Simple(boltactiontime,
                     function() if self.Weapon and self.Owner then if IsValid(self.Weapon) and IsValid(self.Owner) then
                     self.Weapon:SetNWBool("Reloading", false)
-                    if SERVER and self.Weapon != nil then
+                    if SERVER and self.Weapon ~= nil then
                         if self.Owner:KeyDown(IN_ATTACK2) and self.Weapon:GetClass() == self.Gun then
                             self.Owner:SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
                             self.IronSightsPos = self.SightsPos                    -- Bring it up
@@ -179,7 +179,7 @@ function SWEP:Reload()
                     end
             end
 
-            if SERVER and self.Weapon != nil then
+            if SERVER and self.Weapon ~= nil then
             if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
             -- //When the current clip < full clip and the rest of your ammo > 0, then
                     self.Owner:SetFOV( 0, 0.3 )
@@ -221,12 +221,12 @@ end
 if GetConVar("M9KDefaultClip") == nil then
     print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else
-    if GetConVar("M9KDefaultClip"):GetInt() != -1 then
+    if GetConVar("M9KDefaultClip"):GetInt() ~= -1 then
         SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
     end
 end
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

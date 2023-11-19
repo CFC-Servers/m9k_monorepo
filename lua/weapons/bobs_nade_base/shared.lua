@@ -84,13 +84,13 @@ function SWEP:Throw()
 
     if SERVER then
 
-    if self:GetOwner() != nil and self != nil then
+    if self:GetOwner() ~= nil and self ~= nil then
     if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
 
     self:SendWeaponAnim(ACT_VM_THROW)
     timer.Simple( 0.35, function() if not IsValid(self) then return end
-    if self:GetOwner() != nil
-    and self != nil
+    if self:GetOwner() ~= nil
+    and self ~= nil
     then if(self:AllIsWell()) then
     self:GetOwner():SetAnimation(PLAYER_ATTACK1)
             aim = self:GetOwner():GetAimVector()
@@ -109,9 +109,9 @@ function SWEP:Throw()
                 rocket:Spawn()
                 local phys = rocket:GetPhysicsObject()
                 if self:GetOwner():KeyDown(IN_ATTACK2) and (phys:IsValid()) then
-                    if phys != nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 2000) end
+                    if phys ~= nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 2000) end
                 else
-                    if phys != nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 5500) end
+                    if phys ~= nil then phys:ApplyForceCenter(self:GetOwner():GetAimVector() * 5500) end
                 end
                 self:TakePrimaryAmmo(1)
         end
@@ -143,7 +143,7 @@ end
 
 function SWEP:AllIsWell()
 
-    if self:GetOwner() != nil and self != nil then
+    if self:GetOwner() ~= nil and self ~= nil then
         if self:GetClass() == self.Gun and self:GetOwner():Alive() then
             return true
             else return false

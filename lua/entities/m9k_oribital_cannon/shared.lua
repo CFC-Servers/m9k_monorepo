@@ -480,15 +480,15 @@ function ENT:MassiveFuckingExplosion(ground, sky)
 	tr4.filter = self.Entity
 	tr4 = util.TraceLine(tr4)
 
-	if tr2.HitPos != ground then
+	if tr2.HitPos ~= ground then
 		self:SmallerExplo(tr2.HitPos, tr2.Normal)
 	end
 
-	if tr3.HitPos != ground then
+	if tr3.HitPos ~= ground then
 		self:SmallerExplo(tr3.HitPos, tr3.Normal)
 	end
 
-	if tr4.HitPos != ground then
+	if tr4.HitPos ~= ground then
 		self:SmallerExplo(tr4.HitPos, tr4.Normal)
 	end
 
@@ -583,15 +583,15 @@ function ENT:MassiveFuckingExplosionPerson(ground, sky)
 	tr4.filter = self.Entity, ground
 	tr4 = util.TraceLine(tr4)
 
-	if tr2.Entity != ground then
+	if tr2.Entity ~= ground then
 		self:SmallerExplo(tr2.HitPos, tr2.Normal)
 	end
 
-	if tr3.Entity != ground then
+	if tr3.Entity ~= ground then
 		self:SmallerExplo(tr3.HitPos, tr3.Normal)
 	end
 
-	if tr4.Entity != ground then
+	if tr4.Entity ~= ground then
 		self:SmallerExplo(tr4.HitPos, tr4.Normal)
 	end
 

@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_sl8") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Sniper Rifles"
@@ -78,12 +78,12 @@ SWEP.RunSightsAng = Vector(-10.671, -64.598, 0)
 if GetConVar("M9KDefaultClip") == nil then
     print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else
-    if GetConVar("M9KDefaultClip"):GetInt() != -1 then
+    if GetConVar("M9KDefaultClip"):GetInt() ~= -1 then
         SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
     end
 end
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

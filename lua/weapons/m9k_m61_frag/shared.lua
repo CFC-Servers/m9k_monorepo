@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_m61_frag") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Specialties"
@@ -73,7 +73,7 @@ SWEP.ViewModelBoneMods = {
     ["v_weapon.Root17"] = { scale = Vector(1, 1, 1), pos = Vector(0, 0, 0), angle = Angle(0.423, 12.668, 1.228) }
 }
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

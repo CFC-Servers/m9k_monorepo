@@ -245,7 +245,7 @@ function PoisonChildChecker(victim, info)
     if not IsValid(info:GetAttacker()) then return end
     if not IsValid(info:GetInflictor()) then return end
 
-    if info:GetInflictor() != nil then
+    if info:GetInflictor() ~= nil then
         if info:GetInflictor():GetClass() == "POINT_HURT" then
             dealer = info:GetInflictor()
             if IsValid(dealer:GetParent()) then

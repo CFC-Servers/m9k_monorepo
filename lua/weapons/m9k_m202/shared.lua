@@ -1,6 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_m202") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) != nil then
+if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
     if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Category                = "M9K Specialties"
@@ -105,7 +105,7 @@ function SWEP:Reload()
 
     if !self.Owner:IsNPC() then
         self.ResetSights = CurTime() + self.Owner:GetViewModel():SequenceDuration() end
-    if SERVER and self.Weapon != nil then
+    if SERVER and self.Weapon ~= nil then
         if ( self.Weapon:Clip1() < self.Primary.ClipSize ) and !self.Owner:IsNPC() then
             self.Owner:SetFOV( 0, 0.3 )
             self:SetIronsights(false)
@@ -142,7 +142,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self.Weapon != nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
+    if SERVER and self.Weapon ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
         if self.Weapon:Clip1() == 0 && self.Owner:GetAmmoCount( self.Weapon:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
                 if not IsValid(self.Owner) then return end
@@ -156,12 +156,12 @@ end
 if GetConVar("M9KDefaultClip") == nil then
     print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else
-    if GetConVar("M9KDefaultClip"):GetInt() != -1 then
+    if GetConVar("M9KDefaultClip"):GetInt() ~= -1 then
         SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
     end
 end
 
-if GetConVar("M9KUniqueSlots") != nil then
+if GetConVar("M9KUniqueSlots") ~= nil then
     if not (GetConVar("M9KUniqueSlots"):GetBool()) then
         SWEP.SlotPos = 2
     end

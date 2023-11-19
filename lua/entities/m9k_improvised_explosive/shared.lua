@@ -120,8 +120,8 @@ end
 OnTakeDamage
 ---------------------------------------------------------*/
 function ENT:OnTakeDamage( dmginfo )
-	if (dmginfo:GetInflictor() != self.Entity)
-	and (dmginfo:GetInflictor():GetClass() != "m9k_improvised_explosive") then
+	if (dmginfo:GetInflictor() ~= self.Entity)
+	and (dmginfo:GetInflictor():GetClass() ~= "m9k_improvised_explosive") then
 		local GoodLuck = math.random(1,10)
 		if GoodLuck == 1 then
 			self:Explosion()
