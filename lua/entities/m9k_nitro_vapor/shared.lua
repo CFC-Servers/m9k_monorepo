@@ -23,7 +23,6 @@ function ENT:Initialize()
 	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 	self:SetRenderMode( RENDERMODE_TRANSALPHA )
 	self:SetColor( Color(0,0,0,0) ) --fix this later
-	self.Owner = self.Owner
 	self.CanTool = false
 
 	timer.Simple(.3, function() if IsValid(self) then self:Blammo() end end)

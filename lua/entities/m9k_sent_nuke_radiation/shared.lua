@@ -25,7 +25,6 @@ function ENT:Initialize()
 	self.Duration = (GetConVarNumber("nuke_radiation_duration") or 100)*0.40*self.YieldSlowest
 	self.Radius = 12000*self.YieldSlow
 
-	self.Owner = self.Owner
 	self.Weapon = self
 	self.lastThink = CurTime() + 3
 	self.RadTime = CurTime() + self.Duration

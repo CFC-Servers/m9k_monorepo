@@ -22,8 +22,6 @@ AddCSLuaFile("shared.lua")
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Owner = self.Owner
-
 	self:SetModel("models/maxofs2d/hover_classic.mdl") --fix that
 	self:SetMoveType(MOVETYPE_FLY)
 	self:DrawShadow(false)

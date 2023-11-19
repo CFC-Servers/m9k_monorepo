@@ -61,7 +61,6 @@ function ENT:Initialize()
 	self.YieldSlowest = self.Yield^0.5
 	self.SplodePos = self:GetPos() + Vector(0,0,4)
 
-	self.Owner = self.Owner
 	self.Weapon = self
 
 	--remove this ent after awhile

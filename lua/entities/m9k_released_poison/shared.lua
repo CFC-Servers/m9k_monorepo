@@ -23,8 +23,8 @@ function ENT:Initialize()
 	self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 	self:SetRenderMode( RENDERMODE_TRANSALPHA )
 	self:SetColor( Color(0,0,0,0) ) --fix this later
-	self.Owner = self.Owner
-	if self.Big then
+
+    if self.Big then
 		self.timeleft = CurTime() + 28
 	else
 		self.timeleft = CurTime() + 18

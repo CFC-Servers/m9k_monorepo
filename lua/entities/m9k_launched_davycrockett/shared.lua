@@ -15,26 +15,25 @@ if SERVER then
 AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
-	self.CanTool = false
+    self.CanTool = false
 
-self.flightvector = self:GetUp() * ((115*52.5)/66)
-self.timeleft = CurTime() + 5
-self.Owner = self.Owner
-self:SetModel( "models/failure/mk6/m62.mdl" )
-self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
-self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
-self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
-self:SetColor(Color(82,102,39,254))
+    self.flightvector = self:GetUp() * ((115*52.5)/66)
+    self.timeleft = CurTime() + 5
+    self:SetModel( "models/failure/mk6/m62.mdl" )
+    self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
+    self:SetMoveType( MOVETYPE_NONE )   --after all, gmod is a physics
+    self:SetSolid( SOLID_VPHYSICS )        -- CHEESECAKE!    >:3
+    self:SetColor(Color(82,102,39,254))
 
-Glow = ents.Create("env_sprite")
-Glow:SetKeyValue("model","orangecore2.vmt")
-Glow:SetKeyValue("rendercolor","255 150 100")
-Glow:SetKeyValue("scale","0.3")
-Glow:SetPos(self:GetPos())
-Glow:SetParent(self)
-Glow:Spawn()
-Glow:Activate()
-self:SetNWBool("smoke", true)
+    Glow = ents.Create("env_sprite")
+    Glow:SetKeyValue("model","orangecore2.vmt")
+    Glow:SetKeyValue("rendercolor","255 150 100")
+    Glow:SetKeyValue("scale","0.3")
+    Glow:SetPos(self:GetPos())
+    Glow:SetParent(self)
+    Glow:Spawn()
+    Glow:Activate()
+    self:SetNWBool("smoke", true)
 end
 
  function ENT:Think()

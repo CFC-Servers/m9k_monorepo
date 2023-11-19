@@ -14,9 +14,6 @@ if SERVER then
 AddCSLuaFile( "shared.lua" )
 
 function ENT:Initialize()
-
-	self.Owner = self.Owner
-
 	self:SetModel("models/weapons/w_sticky_grenade_thrown.mdl")
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )

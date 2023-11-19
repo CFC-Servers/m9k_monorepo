@@ -17,8 +17,6 @@ AddCSLuaFile( "shared.lua" )
 function ENT:Initialize()
 	self.CanTool = false
 
-	self.Owner = self.Owner
-
 	self:SetModel("models/props_junk/cardboard_box004a.mdl")
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
