@@ -71,11 +71,12 @@ SWEP.SwordClash = Sound("weapons/blades/clash.mp3")
 
 function SWEP:PrimaryAttack()
     if not self:GetOwner():IsPlayer() then return end
-    pos = self:GetOwner():GetShootPos()
-    ang = self:GetOwner():GetAimVector()
-    vm = self:GetOwner():GetViewModel()
-    damagedice = math.Rand(.85,1.25)
-    pain = self.Primary.Damage * damagedice
+    local pos = self:GetOwner():GetShootPos()
+    local ang = self:GetOwner():GetAimVector()
+    local vm = self:GetOwner():GetViewModel()
+    local damagedice = math.Rand(.85,1.25)
+    local pain = self.Primary.Damage * damagedice
+
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
     self:SendWeaponAnim( ACT_VM_IDLE )
         if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) and !self:GetOwner():KeyDown(IN_ATTACK2)  then

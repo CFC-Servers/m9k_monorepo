@@ -97,11 +97,11 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:HackNSlash()
+    local pos = self:GetOwner():GetShootPos()
+    local ang = self:GetOwner():GetAimVector()
+    local damagedice = math.Rand(.85,1.25)
+    local pain = self.Primary.Damage * damagedice
 
-    pos = self:GetOwner():GetShootPos()
-    ang = self:GetOwner():GetAimVector()
-    damagedice = math.Rand(.85,1.25)
-    pain = self.Primary.Damage * damagedice
     self:GetOwner():LagCompensation(true)
     local slash = {}
     slash.start = pos

@@ -92,11 +92,11 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:LeftJab()
+    local  pos = self:GetOwner():GetShootPos()
+    local ang = self:GetOwner():GetAimVector()
+    local damagedice = math.Rand(.95,1.95)
+    local pain = self.Primary.Damage * damagedice
 
-    pos = self:GetOwner():GetShootPos()
-    ang = self:GetOwner():GetAimVector()
-    damagedice = math.Rand(.95,1.95)
-    pain = self.Primary.Damage * damagedice
     self:GetOwner():LagCompensation(true)
     if SERVER and IsValid(self:GetOwner()) and IsValid(self) then
         if self:GetOwner():Alive() then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then

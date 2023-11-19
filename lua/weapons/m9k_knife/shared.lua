@@ -108,11 +108,11 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:PrimarySlash()
+    local pos = self:GetOwner():GetShootPos()
+    local ang = self:GetOwner():GetAimVector()
+    local damagedice = math.Rand(.85,1.25)
+    local pain = self.Primary.Damage * damagedice
 
-    pos = self:GetOwner():GetShootPos()
-    ang = self:GetOwner():GetAimVector()
-    damagedice = math.Rand(.85,1.25)
-    pain = self.Primary.Damage * damagedice
     self:GetOwner():LagCompensation(true)
     if IsValid(self:GetOwner()) and IsValid(self) then
         if self:GetOwner():Alive() then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then

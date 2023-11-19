@@ -116,7 +116,7 @@ function SWEP:FireRocket()
     rocket:SetOwner(self:GetOwner())
     rocket:Spawn()
     rocket:Activate()
-    eyes = self:GetOwner():EyeAngles()
+    local eyes = self:GetOwner():EyeAngles()
         local phys = rocket:GetPhysicsObject()
             phys:SetVelocity(self:GetOwner():GetAimVector() * 2000)
     end
