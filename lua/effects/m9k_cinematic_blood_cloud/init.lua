@@ -123,7 +123,7 @@ end
 		Debris:SetStartSize( 8 )
 		Debris:SetEndSize( 9 )
 		Debris:SetRoll( math.Rand(0, 360) )
-		Debris:SetRollDelta( maRand(-5, 5) )			
+		Debris:SetRollDelta( math.Rand(-5, 5) )			
 		Debris:SetAirResistance( 30 ) 			 			
 		Debris:SetColor( 70,35,35 )
 		Debris:SetGravity( Vector( 0, 0, -600) ) 
