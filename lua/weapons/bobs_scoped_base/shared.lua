@@ -178,7 +178,7 @@ function SWEP:BoltBack()
     if not SERVER then return end
     if self:Clip1() > 0 or self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
         timer.Simple(.25, function()
-            if not IsValid( self ) then return end
+            if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
             self:SetNWBool("Reloading", true)
             if self:GetClass() ~= self.Gun then return end
