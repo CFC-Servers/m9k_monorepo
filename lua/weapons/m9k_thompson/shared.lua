@@ -66,13 +66,6 @@ SWEP.GSightsAng = Vector (0, 0, 0)
 SWEP.RunSightsPos = Vector (-2.3095, -3.0514, 2.3965)
 SWEP.RunSightsAng = Vector (-19.8471, -33.9181, 10)
 
-if (gmod.GetGamemode().Name == "Murderthon 9000") then
-
-    SWEP.Slot        = 1                -- Slot in the weapon selection menu
-    SWEP.Weight        = 3            -- rank relative ot other weapons. bigger is better
-
-end
-
 if GetConVar("M9KDefaultClip") == nil then
     print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else

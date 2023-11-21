@@ -128,17 +128,6 @@ function SWEP:FireRocket()
 end
 
 function SWEP:CheckWeaponsAndAmmo()
-
-    if SERVER and self ~= nil and ((gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool()) then
-        timer.Simple(.1, function()
-            if SERVER then
-                if not IsValid(self) then return end
-                if self:GetOwner() == nil then return end
-                self:GetOwner():StripWeapon(self.Gun)
-            end
-        end)
-    return end
-
     if SERVER and self ~= nil then
         if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
@@ -173,12 +162,6 @@ return false
 end
 
 function SWEP:Think()
-end
-
-if (gmod.GetGamemode().Name == "Murderthon 9000") or GetConVar("DebugM9K"):GetBool() then
-    SWEP.Primary.ClipSize            = -1        -- Size of a clip
-    SWEP.Primary.DefaultClip        = -1        -- Bullets you start with
-    SWEP.Primary.Ammo            = "none"
 end
 
 if GetConVar("M9KUniqueSlots") ~= nil then

@@ -57,14 +57,8 @@ SWEP.Primary.IronAccuracy = .035 -- Ironsight accuracy, should be the same for s
 -- Enter iron sight info and bone mod info below
 SWEP.RunSightsPos = Vector(0, -11.148, -8.033)
 SWEP.RunSightsAng = Vector(55.082, 0, 0)
-
-if ((gmod.GetGamemode().Name) == "Murderthon 9000") or ((gmod.GetGamemode().Name) == "Murderthon 9000 beta") then
-    SWEP.Primary.ClipSize            = 100        -- Size of a clip
-    SWEP.Primary.DefaultClip        = 200        -- Bullets you start with
-else
-    SWEP.Primary.ClipSize            = 300        -- Size of a clip
-    SWEP.Primary.DefaultClip        = 600        -- Bullets you start with
-end
+SWEP.Primary.ClipSize            = 300        -- Size of a clip
+SWEP.Primary.DefaultClip        = 600        -- Bullets you start with
 
 function SWEP:Reload()
 

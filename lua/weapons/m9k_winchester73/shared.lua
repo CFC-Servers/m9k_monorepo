@@ -69,13 +69,6 @@ SWEP.ViewModelBoneMods = {
     ["shell"] = { scale = Vector(0.009, 0.009, 0.009), pos = Vector(0, 0, 0), angle = Angle(0, 0, 0) }
 }
 
-if (gmod.GetGamemode().Name == "Murderthon 9000") then
-
-    SWEP.Slot        = 1                -- Slot in the weapon selection menu
-    SWEP.Weight        = 3            -- rank relative ot other weapons. bigger is better
-
-end
-
 if GetConVar("M9KDefaultClip") == nil then
     print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else

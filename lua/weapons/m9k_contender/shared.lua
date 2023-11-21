@@ -66,20 +66,12 @@ SWEP.Primary.Spread        = .01    --define from-the-hip accuracy 1 is terrible
 SWEP.Primary.IronAccuracy = .00015 -- ironsight accuracy, should be the same for shotguns
 
 -- enter iron sight info and bone mod info below
-
 SWEP.IronSightsPos = Vector(-3, -0.857, 0.36)
 SWEP.IronSightsAng = Vector(0, 0, 0)
 SWEP.SightsPos = Vector(-3, -0.857, 0.36)
 SWEP.SightsAng = Vector(0, 0, 0)
 SWEP.RunSightsPos = Vector(3.714, -1.429, 0)
 SWEP.RunSightsAng = Vector(-11, 31, 0)
-
-if (gmod.GetGamemode().Name == "Murderthon 9000") then
-
-    SWEP.Slot        = 1                -- Slot in the weapon selection menu
-    SWEP.Weight        = 3            -- rank relative ot other weapons. bigger is better
-
-end
 
 function SWEP:PrimaryAttack()
     if self:GetOwner():IsNPC() then return end
