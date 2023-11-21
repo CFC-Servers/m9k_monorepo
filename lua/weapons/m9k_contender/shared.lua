@@ -103,50 +103,47 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:UseBolt()
-
     if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
-        timer.Simple(.25, function()
-        if SERVER and self ~= nil then
-            self:SetNWBool("Reloading", true)
+        if CLIENT then return end
+        timer.Simple( .25, function()
+            if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+            self:SetNWBool( "Reloading", true )
+
             if self:GetClass() == self.Gun and self.BoltAction then
                 self:GetOwner():SetFOV( 0, 0.3 )
-                self:SetIronsights(false)
-                self:GetOwner():DrawViewModel(true)
-                local boltactiontime = (self:GetOwner():GetViewModel():SequenceDuration())
-                timer.Simple(boltactiontime,
-                    function() if self and self:GetOwner() then if IsValid(self) and IsValid(self:GetOwner()) then
-                    self:SetNWBool("Reloading", false)
-                    if SERVER and self ~= nil then
-                        if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
-                            self:GetOwner():SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
-                            self.IronSightsPos = self.SightsPos                    -- Bring it up
-                            self.IronSightsAng = self.SightsAng                    -- Bring it up
-                            self.DrawCrosshair = false
-                            self:SetIronsights(true, self:GetOwner())
-                            self:GetOwner():DrawViewModel(false)
+                self:SetIronsights( false )
+                self:GetOwner():DrawViewModel( true )
 
-                            self:GetOwner():RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-                            self:SetClip1(self:Clip1() + 1) --  into the fire
-                            self:SetNextPrimaryFire(CurTime() + .1)
+                local boltactiontime = self:GetOwner():GetViewModel():SequenceDuration()
+                timer.Simple( boltactiontime, function()
+                    if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+                    self:SetNWBool( "Reloading", false )
+                    if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+                        self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
+                        self.IronSightsPos = self.SightsPos -- Bring it up
+                        self.IronSightsAng = self.SightsAng -- Bring it up
+                        self.DrawCrosshair = false
+                        self:SetIronsights( true, self:GetOwner() )
+                        self:GetOwner():DrawViewModel( false )
+                        self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+                        self:SetClip1( self:Clip1() + 1 ) --  into the fire
+                        self:SetNextPrimaryFire( CurTime() + .1 )
                         --well, hope this works
-                        elseif !self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
-                            self:GetOwner():RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
-                            self:SetClip1(self:Clip1() + 1) --  into the fire
-                            self:SetNextPrimaryFire(CurTime() + .1)
-                        end
+                    elseif not self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+                        self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+                        self:SetClip1( self:Clip1() + 1 ) --  into the fire
+                        self:SetNextPrimaryFire( CurTime() + .1 )
                     end
-                end end end)
-            -- else if self:GetClass() == self.Gun and
-                -- self.BoltAction and    (self:GetIronsights() == false) then
-
+                end )
             end
-        end
         end )
     else
-        timer.Simple(.1, function() self:CheckWeaponsAndAmmo() end)
+        timer.Simple( .1, function()
+            self:CheckWeaponsAndAmmo()
+        end )
     end
-
 end
+
 
 function SWEP:Reload()
 
