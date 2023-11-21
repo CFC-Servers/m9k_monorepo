@@ -210,66 +210,52 @@ function SWEP:Precache()
 end
 
 function SWEP:PrimaryAttack()
-    local OkaySoFar = true
-    if not IsValid(self) then
-        OkaySoFar = false
-    else if not IsValid(self) then
-        OkaySoFar = false
-    else if not IsValid(self:GetOwner()) then
-        OkaySoFar = false
-    end    end    end
-
-    if not OkaySoFar then return end
+    if not IsValid( self ) and not IsValid( self:GetOwner() ) then return end
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
-        if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
-                self:ShootBulletInformation()
-                self:TakePrimaryAmmo(1)
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+            self:ShootBulletInformation()
+            self:TakePrimaryAmmo( 1 )
 
-                if self.Silenced then
-                        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
-                        self:EmitSound(self.Primary.SilencedSound)
-                else
-                        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                        self:EmitSound(self.Primary.Sound)
-                end
-
-                local fx                = EffectData()
-                fx:SetEntity(self)
-                fx:SetOrigin(self:GetOwner():GetShootPos())
-                fx:SetNormal(self:GetOwner():GetAimVector())
-                fx:SetAttachment(self.MuzzleAttachment)
-
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                self:GetOwner():MuzzleFlash()
-                self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-                self:CheckWeaponsAndAmmo()
-                self.RicochetCoin = (math.random(1,4))
-                if self.BoltAction then self:BoltBack() end
-        end
-        elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
-                self:ShootBulletInformation()
-                self:TakePrimaryAmmo(1)
+            if self.Silenced then
+                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
+                self:EmitSound( self.Primary.SilencedSound )
+            else
                 self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                self:EmitSound(self.Primary.Sound)
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                self:GetOwner():MuzzleFlash()
-                self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-                self.RicochetCoin = (math.random(1,4))
+                self:EmitSound( self.Primary.Sound )
+            end
+
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            self:GetOwner():MuzzleFlash()
+            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+            self:CheckWeaponsAndAmmo()
+            self.RicochetCoin = ( math.random( 1, 4 ) )
+            if self.BoltAction then self:BoltBack() end
         end
+    elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
+        self:ShootBulletInformation()
+        self:TakePrimaryAmmo( 1 )
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        self:EmitSound( self.Primary.Sound )
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
+        self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+        self.RicochetCoin = ( math.random( 1, 4 ) )
+    end
 end
 
+local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
-        if SERVER and self ~= nil and (GetConVar("M9KWeaponStrip"):GetBool()) then
-                if self:Clip1() == 0 && self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-                        timer.Simple(.1, function() if SERVER then if not IsValid(self) then return end
-                                if self:GetOwner() == nil then return end
-                                self:GetOwner():StripWeapon(self.Gun)
-                        end end)
-                end
-        end
-end
+    if not SERVER then return end
+    if not weaponStrip:GetBool() then return end
+    if self:Clip1() ~= 0 or self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) ~= 0 then return end
 
+    timer.Simple( .1, function()
+        if not IsValid( self ) and not IsValid( self:GetOwner() ) then return end
+        if self:GetOwner() == nil then return end
+        self:GetOwner():StripWeapon( self.Gun )
+    end )
+end
 
 /*---------------------------------------------------------
    Name: SWEP:ShootBulletInformation()
