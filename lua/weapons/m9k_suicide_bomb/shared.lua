@@ -1,12 +1,13 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_suicide_bomb") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar(SWEP.Gun.."_allowed")) ~= nil then
-    if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
+SWEP.Gun = "m9k_suicide_bomb" -- must be the name of your swep but NO CAPITALS!
+if GetConVar( SWEP.Gun .. "_allowed" ) ~= nil then
+    if not ( GetConVar( SWEP.Gun .. "_allowed" ):GetBool() ) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
+
 SWEP.Category                = "M9K Specialties"
 SWEP.Author                = ""
 SWEP.Contact                = ""
-SWEP.Purpose                = ("Right click to select delay".."\n".."Left click to plant.")
+SWEP.Purpose                = "Right click to select delay" .. "\n" .. "Left click to plant."
 SWEP.Instructions                = ""
 SWEP.MuzzleAttachment            = "1"     -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment            = "2"     -- Should be "2" for CSS models or "1" for hl2 models
@@ -34,7 +35,7 @@ SWEP.Spawnable                = true
 SWEP.AdminSpawnable            = true
 SWEP.FiresUnderwater         = true
 
-SWEP.Primary.Sound            = Sound("")        -- Script that calls the primary fire sound
+SWEP.Primary.Sound            = ""        -- Script that calls the primary fire sound
 SWEP.Primary.RPM                = 10        -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize            = 1        -- Size of a clip
 SWEP.Primary.DefaultClip        = 1        -- Bullets you start with
@@ -46,15 +47,14 @@ SWEP.Primary.Ammo            = "C4Explosive"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
-SWEP.Primary.Round             = ("m9k_mad_c4")    --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round = "m9k_mad_c4" --NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV            = 0        -- How much you 'zoom' in. Less is more!
+SWEP.Secondary.IronFOV = 0 -- How much you 'zoom' in. Less is more!
+SWEP.Timer = 0
 
-SWEP.Timer                = 0
-
-SWEP.Primary.NumShots    = 0        -- How many bullets to shoot per trigger pull
-SWEP.Primary.Damage        = 0    -- Base damage per bullet
-SWEP.Primary.Spread        = 0    -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.NumShots = 0 -- How many bullets to shoot per trigger pull
+SWEP.Primary.Damage = 0 -- Base damage per bullet
+SWEP.Primary.Spread = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.IronAccuracy = 0 -- Ironsight accuracy, should be the same for shotguns
 --none of this matters for IEDs and other ent-tossing sweps
 
@@ -66,104 +66,95 @@ SWEP.SightsAng = Vector(0, 0, 0)    -- No, I don't know why
 SWEP.RunSightsPos = Vector(0, 0, 0)
 SWEP.RunSightsAng = Vector(0, 0, 0)
 
--- SWEP.WElements = {
-    -- ["c4"] = { type = "Model", model = "models/weapons/w_sb.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(6.337, 2.444, -5.351), angle = Angle(-170.318, 7.367, 14.25), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
--- }
-
---and now to the nasty parts of this swep...
+local ammoBoxes = {
+    ["m9k_ammo_40mm"] = true,
+    ["m9k_ammo_c4"] = true,
+    ["m9k_ammo_frags"] = true,
+    ["m9k_ammo_ieds"] = true,
+    ["m9k_ammo_nervegas"] = true,
+    ["m9k_ammo_nuke"] = true,
+    ["m9k_ammo_proxmines"] = true,
+    ["m9k_ammo_rockets"] = true,
+    ["m9k_ammo_stickynades"] = true,
+    ["m9k_ammo_357"] = true,
+    ["m9k_ammo_ar2"] = true,
+    ["m9k_ammo_buckshot"] = true,
+    ["m9k_ammo_pistol"] = true,
+    ["m9k_ammo_smg"] = true,
+    ["m9k_ammo_sniper_rounds"] = true,
+    ["m9k_ammo_winchester"] = true
+}
 
 function SWEP:PrimaryAttack()
-    local tr = {}
-    tr.start = self:GetOwner():GetShootPos()
-    tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
-    tr.filter = {self:GetOwner()}
-    local trace = util.TraceLine(tr)
+    if not self:CanPrimaryAttack() then
+        return
+    end
 
-    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    timer.Simple(self:GetOwner():GetViewModel():SequenceDuration(), function()
-    if SERVER and self ~= nil then if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-    if self.Timer == 0 then
-        if self:CanPrimaryAttack() then
-            self:GetOwner():SetAnimation(PLAYER_ATTACK1)
-            self:TakePrimaryAmmo(1)
-            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
+    self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+    local wait = self:GetOwner():GetViewModel():SequenceDuration() + .75
+    self:SetNextPrimaryFire( CurTime() + wait )
+
+    timer.Simple( wait, function()
+        if not IsValid( self ) then return end
+        self:SendWeaponAnim( ACT_VM_DRAW )
+        self:Reload()
+    end )
+
+    if CLIENT then return end
+
+    timer.Simple( self:GetOwner():GetViewModel():SequenceDuration(), function()
+        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+        if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then return end
+
+        if self.Timer == 0 and self:CanPrimaryAttack() then
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            self:TakePrimaryAmmo( 1 )
+            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
             self:Suicide()
+
+            return
         end
 
-    elseif self.Timer >= 5     then
+        if self.Timer >= 5 and self:CanPrimaryAttack() then
+            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+            self:SetNextSecondaryFire( CurTime() + 0.3 )
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+            self:TakePrimaryAmmo( 1 )
 
-        if self:CanPrimaryAttack() then
-            self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-            self:SetNextSecondaryFire(CurTime() + 0.3)
-            self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+            local tr = {
+                start = self:GetOwner():GetShootPos(),
+                endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector(),
+                filter = { self:GetOwner() }
+            }
+            local trace = util.TraceLine( tr )
 
-            self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
-
-            local tr = {}
-            tr.start = self:GetOwner():GetShootPos()
-            tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
-            tr.filter = {self:GetOwner()}
-            local trace = util.TraceLine(tr)
-
-            self:TakePrimaryAmmo(1)
-
-            if (CLIENT) then return end
-
-            local C4 = ents.Create(self.Primary.Round)
-            C4:SetPos(trace.HitPos + trace.HitNormal)
+            local C4 = ents.Create( self.Primary.Round )
+            C4:SetPos( trace.HitPos + trace.HitNormal )
             trace.HitNormal.z = -trace.HitNormal.z
-            C4:SetAngles(trace.HitNormal:Angle() - Angle(90, 180, 0))
+            C4:SetAngles( trace.HitNormal:Angle() - Angle( 90, 180, 0 ) )
             C4.BombOwner = self:GetOwner()
             C4.Timer = self.Timer
             C4:Spawn()
 
-            local boxes
-            parentme = {}
-            parentme[1] = "m9k_ammo_40mm"
-            parentme[2] = "m9k_ammo_c4"
-            parentme[3] = "m9k_ammo_frags"
-            parentme[4] = "m9k_ammo_ieds"
-            parentme[5] = "m9k_ammo_nervegas"
-            parentme[6] = "m9k_ammo_nuke"
-            parentme[7] = "m9k_ammo_proxmines"
-            parentme[8] = "m9k_ammo_rockets"
-            parentme[9] = "m9k_ammo_stickynades"
-            parentme[10] = "m9k_ammo_357"
-            parentme[11] = "m9k_ammo_ar2"
-            parentme[12] = "m9k_ammo_buckshot"
-            parentme[13] = "m9k_ammo_pistol"
-            parentme[14] = "m9k_ammo_smg"
-            parentme[15] = "m9k_ammo_sniper_rounds"
-            parentme[16] = "m9k_ammo_winchester"
+            local traceEnt = trace.Entity
 
-            if trace.Entity ~= nil and trace.Entity:IsValid() then
-                for k, v in pairs (parentme) do
-                    if trace.Entity:GetClass() == v then
-                        boxes = trace.Entity
-                    end
+            if trace.Hit and IsValid( traceEnt ) then
+                if ammoBoxes[traceEnt:GetClass()] then
+                    C4:SetParent( traceEnt )
+                    traceEnt.Planted = true
+                    return
                 end
-            end
 
-            if trace.Entity and trace.Entity:IsValid() then
-                if boxes and trace.Entity:GetPhysicsObject():IsValid() then
-                C4:SetParent(trace.Entity)
-                trace.Entity.Planted = true
-            elseif not trace.Entity:IsNPC() and not trace.Entity:IsPlayer() and trace.Entity:GetPhysicsObject():IsValid() then
-                    constraint.Weld(C4, trace.Entity)
+                if not traceEnt:IsNPC() and not traceEnt:IsPlayer() then
+                    C4:SetParent( traceEnt )
+                    return
                 end
             else
-                C4:SetMoveType(MOVETYPE_NONE)
-            end
-
-            if not trace.Hit then
-                C4:SetMoveType(MOVETYPE_VPHYSICS)
-            end
-
+                C4:SetMoveType( MOVETYPE_VPHYSICS )
             end
         end
-    end end end)
-    local wait = self:GetOwner():GetViewModel():SequenceDuration() + .75
-    self:CheckWeaponsAndAmmo(wait)
+    end )
 end
 
 function SWEP:Suicide()
@@ -192,45 +183,39 @@ function SWEP:Suicide()
 end
 
 function SWEP:SecondaryAttack()
-
-    self:SetNextPrimaryFire(CurTime() + 0.1)
-    self:SetNextSecondaryFire(CurTime() + 0.1)
+    self:SetNextPrimaryFire( CurTime() + 0.1 )
+    self:SetNextSecondaryFire( CurTime() + 0.1 )
 
     if self.Timer == 5 then
-        if (SERVER) then
-            self:GetOwner():PrintMessage(HUD_PRINTTALK, "10 Seconds.")
+        if CLIENT then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 10 Seconds." )
         end
         self.Timer = 10
-        self:GetOwner():EmitSound("C4.PlantSound")
-
+        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 10 then
-        if (SERVER) then
-            self:GetOwner():PrintMessage(HUD_PRINTTALK, "15 Seconds.")
+        if CLIENT then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 15 Seconds." )
         end
         self.Timer = 15
-        self:GetOwner():EmitSound("C4.PlantSound")
-
+        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 15 then
-        if (SERVER) then
-            self:GetOwner():PrintMessage(HUD_PRINTTALK, "20 Seconds.")
+        if CLIENT then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 20 Seconds." )
         end
         self.Timer = 20
-        self:GetOwner():EmitSound("C4.PlantSound")
-
+        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 20 then
-        if (SERVER) then
-            self:GetOwner():PrintMessage(HUD_PRINTTALK, "WARNING! TIMER REDUCED TO ZERO!")
+        if CLIENT then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
         end
         self.Timer = 0
-        self:GetOwner():EmitSound("C4.PlantSound")
-
+        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 0 then
-        if (SERVER) then
-            self:GetOwner():PrintMessage(HUD_PRINTTALK, "5 Seconds.")
+        if CLIENT then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 5 Seconds." )
         end
         self.Timer = 5
-        self:GetOwner():EmitSound("C4.PlantSound")
-
+        self:GetOwner():EmitSound( "C4.PlantSound" )
     end
 end
 
@@ -238,27 +223,6 @@ function SWEP:Think()
     if self.BetterBeDead then
         self:GetOwner():Kill()
     end
-end
-
-function SWEP:CheckWeaponsAndAmmo( wait )
-    timer.Simple( wait, function()
-        if not IsValid( self ) then return end
-        if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then return end
-
-        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-            if SERVER then
-                timer.Simple( .01, function()
-                    if not IsValid( self ) or not IsValid( self ) then return end
-                    self:GetOwner():StripWeapon( self.Gun )
-                end )
-            end
-        else
-            timer.Simple( .25, function()
-                self:Reload()
-                self:SendWeaponAnim( ACT_VM_DRAW )
-            end )
-        end
-    end )
 end
 
 if GetConVar("M9KUniqueSlots") ~= nil then
