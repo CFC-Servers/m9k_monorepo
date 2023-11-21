@@ -63,7 +63,7 @@ SWEP.IronSightsAng = Vector (0.0186, -0.0547, 0)
 
 function SWEP:Initialize()
     self:SetNWBool("Reloading", false)
-    util.PrecacheSound(self.Primary.Sound)
+
     if CLIENT then
 
         -- We need to get these so we can scale everything to the player's current resolution.

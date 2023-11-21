@@ -204,9 +204,8 @@ function SWEP:GetCapabilities()
 end
 
 function SWEP:Precache()
-        util.PrecacheSound(self.Primary.Sound)
-        util.PrecacheModel(self.ViewModel)
-        util.PrecacheModel(self.WorldModel)
+    util.PrecacheModel(self.ViewModel)
+    util.PrecacheModel(self.WorldModel)
 end
 
 function SWEP:PrimaryAttack()
