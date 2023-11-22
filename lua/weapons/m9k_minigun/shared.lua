@@ -79,11 +79,13 @@ end
 
 function SWEP:MiniGunIdle(wait)
     timer.Simple(wait + .05, function()
-    if self ~= nil then
-    self:SetNWBool("Reloading", false)
-    if SERVER then
-        self:SendWeaponAnim( ACT_VM_IDLE )
-    else return end end
+        if not IsValid( self ) then return end
+        self:SetNWBool("Reloading", false)
+        if SERVER then
+            self:SendWeaponAnim( ACT_VM_IDLE )
+        else 
+            return
+        end
     end)
 end
 
