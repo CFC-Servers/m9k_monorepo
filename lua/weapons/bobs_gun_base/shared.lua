@@ -458,126 +458,126 @@ end
 /*---------------------------------------------------------
    Name: SWEP:BulletPenetrate()
 -----------------------------------------------------*/
-function SWEP:BulletPenetrate(bouncenum, attacker, tr, paininfo)
+function SWEP:BulletPenetrate( bouncenum, attacker, tr, paininfo )
+    local MaxPenetration
+    if self.Primary.Ammo == "SniperPenetratedRound" then -- .50 Ammo
+        MaxPenetration = 20
+    elseif self.Primary.Ammo == "pistol" then -- pistols
+        MaxPenetration = 9
+    elseif self.Primary.Ammo == "357" then -- revolvers with big ass bullets
+        MaxPenetration = 12
+    elseif self.Primary.Ammo == "smg1" then -- smgs
+        MaxPenetration = 14
+    elseif self.Primary.Ammo == "ar2" then -- assault rifles
+        MaxPenetration = 16
+    elseif self.Primary.Ammo == "buckshot" then -- shotguns
+        MaxPenetration = 5
+    elseif self.Primary.Ammo == "slam" then -- secondary shotguns
+        MaxPenetration = 5
+    elseif self.Primary.Ammo ==     "AirboatGun" then -- metal piercing shotgun pellet
+        MaxPenetration = 17
+    else
+        MaxPenetration = 14
+    end
 
-        local MaxPenetration
-
-        if self.Primary.Ammo == "SniperPenetratedRound" then -- .50 Ammo
-                MaxPenetration = 20
-        elseif self.Primary.Ammo == "pistol" then -- pistols
-                MaxPenetration = 9
-        elseif self.Primary.Ammo == "357" then -- revolvers with big ass bullets
-                MaxPenetration = 12
-        elseif self.Primary.Ammo == "smg1" then -- smgs
-                MaxPenetration = 14
-        elseif self.Primary.Ammo == "ar2" then -- assault rifles
-                MaxPenetration = 16
-        elseif self.Primary.Ammo == "buckshot" then -- shotguns
-                MaxPenetration = 5
-        elseif self.Primary.Ammo == "slam" then -- secondary shotguns
-                MaxPenetration = 5
-        elseif self.Primary.Ammo ==     "AirboatGun" then -- metal piercing shotgun pellet
-                MaxPenetration = 17
-        else
-                MaxPenetration = 14
+    if self.Primary.Ammo == "pistol" or self.Primary.Ammo == "buckshot" or self.Primary.Ammo == "slam" then
+        self.Ricochet = true
+    else
+        if self.RicochetCoin == 1 then
+            self.Ricochet = true
+        elseif self.RicochetCoin >= 2 then
+            self.Ricochet = false
         end
+    end
 
-        local DoDefaultEffect = true
-        -- -- Don't go through metal, sand or player
+    if self.Primary.Ammo == "SniperPenetratedRound" then self.Ricochet = true end
 
-        if self.Primary.Ammo == "pistol" or
-                self.Primary.Ammo == "buckshot" or
-                self.Primary.Ammo == "slam" then self.Ricochet = true
-        else
-                if self.RicochetCoin == 1 then
-                self.Ricochet = true
-                elseif self.RicochetCoin >= 2 then
-                self.Ricochet = false
-                end
+    if self.Primary.Ammo == "SniperPenetratedRound" then -- .50 Ammo
+        self.MaxRicochet = 10
+    elseif self.Primary.Ammo == "pistol" then -- pistols
+        self.MaxRicochet = 2
+    elseif self.Primary.Ammo == "357" then -- revolvers with big ass bullets
+        self.MaxRicochet = 5
+    elseif self.Primary.Ammo == "smg1" then -- smgs
+        self.MaxRicochet = 4
+    elseif self.Primary.Ammo == "ar2" then -- assault rifles
+        self.MaxRicochet = 5
+    elseif self.Primary.Ammo == "buckshot" then -- shotguns
+        self.MaxRicochet = 0
+    elseif self.Primary.Ammo == "slam" then -- secondary shotguns
+        self.MaxRicochet = 0
+    elseif self.Primary.Ammo ==     "AirboatGun" then -- metal piercing shotgun pellet
+        self.MaxRicochet = 8
+    end
+
+    if tr.MatType == MAT_METAL and self.Ricochet == true and self.Primary.Ammo ~= "SniperPenetratedRound" then
+        return false
+    end
+
+    if bouncenum > self.MaxRicochet then return false end
+
+    local PenetrationDirection = tr.Normal * MaxPenetration
+    if tr.MatType == MAT_GLASS or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_WOOD or tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH then
+        PenetrationDirection = tr.Normal * ( MaxPenetration * 2 )
+    end
+
+    local trace = util.TraceLine( {
+        endpos = tr.HitPos,
+        start = tr.HitPos + PenetrationDirection,
+        mask = MASK_SHOT,
+        filter = function( ent )
+            if ent == tr.Entity then return true end
+            return false
         end
+    } )
 
-        if self.Primary.Ammo == "SniperPenetratedRound" then self.Ricochet = true end
+    -- debugoverlay.Axis( tr.HitPos, Angle( 0, 0, 0 ), 5, 10, true )
+    -- debugoverlay.Line( tr.HitPos + PenetrationDirection, trace.HitPos, 10, Color( 255, 0, 0 ), true )
 
-        if self.Primary.Ammo == "SniperPenetratedRound" then -- .50 Ammo
-                self.MaxRicochet = 10
-        elseif self.Primary.Ammo == "pistol" then -- pistols
-                self.MaxRicochet = 2
-        elseif self.Primary.Ammo == "357" then -- revolvers with big ass bullets
-                self.MaxRicochet = 5
-        elseif self.Primary.Ammo == "smg1" then -- smgs
-                self.MaxRicochet = 4
-        elseif self.Primary.Ammo == "ar2" then -- assault rifles
-                self.MaxRicochet = 5
-        elseif self.Primary.Ammo == "buckshot" then -- shotguns
-                self.MaxRicochet = 0
-        elseif self.Primary.Ammo == "slam" then -- secondary shotguns
-                self.MaxRicochet = 0
-        elseif self.Primary.Ammo ==     "AirboatGun" then -- metal piercing shotgun pellet
-                self.MaxRicochet = 8
+    -- Bullet didn't penetrate.
+    if not trace.Hit or trace.Fraction < 0.01 then
+        return false
+    end
+
+    -- Damage multiplier depending on surface
+    local fDamageMulti = 0.5
+    if self.Primary.Ammo == "SniperPenetratedRound" then
+        fDamageMulti = 1
+    elseif tr.MatType == MAT_CONCRETE or tr.MatType == MAT_METAL then
+        fDamageMulti = 0.3
+    elseif tr.MatType == MAT_WOOD or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_GLASS then
+        fDamageMulti = 0.8
+    elseif tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH then
+        fDamageMulti = 0.9
+    end
+
+    -- -- Fire bullet from the exit point using the original trajectory
+    local penetratedbullet = {
+        Num = 1,
+        Src = trace.HitPos,
+        Dir = tr.Normal,
+        Spread = Vector( 0, 0, 0 ),
+        Tracer = 2,
+        TracerName = "m9k_effect_mad_penetration_trace",
+        Force = 5,
+        Damage = paininfo:GetDamage() * fDamageMulti,
+        Callback = function( a, b, c )
+            if not self.Ricochet then return end
+            local impactnum = tr.MatType == MAT_GLASS and 0 or 1
+            return self:RicochetCallback( bouncenum + impactnum, a, b, c )
         end
+    }
 
-        if (tr.MatType == MAT_METAL and self.Ricochet == true and self.Primary.Ammo ~= "SniperPenetratedRound" ) then return false end
+    timer.Simple( 0, function()
+        if not IsValid( attacker ) then return false end
+        attacker:FireBullets( penetratedbullet )
+    end )
 
-        -- -- Don't go through more than 3 times
-        if (bouncenum > self.MaxRicochet) then return false end
-
-        -- -- Direction (and length) that we are going to penetrate
-        local PenetrationDirection = tr.Normal * MaxPenetration
-
-        if (tr.MatType == MAT_GLASS or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_WOOD or tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH) then
-                PenetrationDirection = tr.Normal * (MaxPenetration * 2)
-        end
-
-        local trace     = {}
-        trace.endpos    = tr.HitPos
-        trace.start     = tr.HitPos + PenetrationDirection
-        trace.mask              = MASK_SHOT
-        trace.filter    = {self:GetOwner()}
-
-        local trace     = util.TraceLine(trace)
-
-        -- -- Bullet didn't penetrate.
-        if (trace.StartSolid or trace.Fraction >= 1.0 or tr.Fraction <= 0.0) then return false end
-
-        -- -- Damage multiplier depending on surface
-        local fDamageMulti = 0.5
-
-        if self.Primary.Ammo == "SniperPenetratedRound" then
-                fDamageMulti = 1
-        elseif(tr.MatType == MAT_CONCRETE or tr.MatType == MAT_METAL) then
-                fDamageMulti = 0.3
-        elseif (tr.MatType == MAT_WOOD or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_GLASS) then
-                fDamageMulti = 0.8
-        elseif (tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH) then
-                fDamageMulti = 0.9
-        end
-
-        local damagedice = math.Rand(.85,1.3)
-        local newdamage = self.Primary.Damage * damagedice
-
-        -- -- Fire bullet from the exit point using the original trajectory
-        local penetratedbullet = {}
-                penetratedbullet.Num            = 1
-                penetratedbullet.Src            = trace.HitPos
-                penetratedbullet.Dir            = tr.Normal
-                penetratedbullet.Spread         = Vector(0, 0, 0)
-                penetratedbullet.Tracer = 2
-                penetratedbullet.TracerName     = "m9k_effect_mad_penetration_trace"
-                penetratedbullet.Force          = 5
-                penetratedbullet.Damage = paininfo:GetDamage() * fDamageMulti
-                penetratedbullet.Callback       = function(a, b, c) if (self.Ricochet) then
-                local impactnum
-                if tr.MatType == MAT_GLASS then impactnum = 0 else impactnum = 1 end
-                return self:RicochetCallback(bouncenum + impactnum, a,b,c) end end
-
-        timer.Simple(0, function() if attacker ~= nil then attacker:FireBullets(penetratedbullet) end end)
-
-        return true
+    return true
 end
 
-
 function SWEP:SecondaryAttack()
-        return false
+    return false
 end
 
 function SWEP:Reload()
@@ -1321,4 +1321,3 @@ if CLIENT then
         end
 
 end
-
