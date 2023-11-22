@@ -53,6 +53,11 @@ SWEP.SelectiveFire              = false
 SWEP.NextFireSelect             = 0
 SWEP.OrigCrossHair = true
 
+local CLIENT = CLIENT
+local SERVER = SERVER
+local MASK_SHOT = MASK_SHOT
+local IN_USE = IN_USE
+
 local PainMulti = 1
 
 if GetConVar("M9KDamageMultiplier") == nil then
@@ -518,7 +523,6 @@ function SWEP:BulletPenetrate( bouncenum, attacker, tr, paininfo )
     -- debugoverlay.Line( tr.HitPos + PenetrationDirection, trace.HitPos, 10, Color( 255, 0, 0 ), true )
 
     -- Bullet didn't penetrate.
-    print( trace.Fraction )
     if not trace.Hit or trace.Fraction == 0 then
         return false
     end
