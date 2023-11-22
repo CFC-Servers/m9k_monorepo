@@ -433,7 +433,7 @@ function SWEP:RicochetCallback( bouncenum, attacker, tr, dmginfo )
     local dotProduct = tr.HitNormal:Dot( tr.Normal * -1 )
     local ricochetbullet = {
         Num = 1,
-        Src = tr.HitPos + ( tr.HitNormal * 5 ),
+        Src = tr.HitPos + tr.HitNormal,
         Dir = ( ( 2 * tr.HitNormal * dotProduct ) + tr.Normal ) + ( VectorRand() * 0.05 ),
         Spread = Vector( 0, 0, 0 ),
         Tracer = 1,
