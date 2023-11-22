@@ -430,13 +430,7 @@ function SWEP:RicochetCallback( bouncenum, attacker, tr, dmginfo )
 
     if bouncenum > self.MaxRicochet then return end
 
-    -- -- Bounce vector
-    local trace = util.TraceLine( {
-        start = tr.HitPos,
-        endpos = trace.start + ( tr.HitNormal * 16384 )
-    } )
     local dotProduct = tr.HitNormal:Dot( tr.Normal * -1 )
-
     local ricochetbullet = {
         Num = 1,
         Src = tr.HitPos + ( tr.HitNormal * 5 ),
