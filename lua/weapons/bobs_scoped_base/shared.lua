@@ -50,7 +50,6 @@ SWEP.BoltAction        = false
 
 SWEP.Penetration            = true
 SWEP.Ricochet            = true
-SWEP.MaxRicochet            = 10
 
 SWEP.Tracer                = 0
 
