@@ -497,6 +497,7 @@ function SWEP:BulletPenetrate( bouncenum, attacker, tr, paininfo )
     end
 
     if bouncenum > ( maxPenetrations[self.Primary.Ammo] or 5 ) then return false end
+    if tr.Normal.x == 0 and tr.Normal.y == 0 and tr.Normal.z == 1 then return end
 
     local PenetrationDirection = tr.Normal * MaxPenetration
     if tr.MatType == MAT_GLASS or tr.MatType == MAT_PLASTIC or tr.MatType == MAT_WOOD or tr.MatType == MAT_FLESH or tr.MatType == MAT_ALIENFLESH then
