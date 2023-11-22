@@ -13,8 +13,8 @@ SWEP.ViewModelFlip                      = true          -- True for CSS models, 
 SWEP.Spawnable                          = false
 SWEP.AdminSpawnable                     = false
 
-SWEP.Primary.Sound                      = Sound("")                             -- Sound of the gun
-SWEP.Primary.Round                      = ("")                                  -- What kind of bullet?
+SWEP.Primary.Sound                      = ""                                    -- Sound of the gun
+SWEP.Primary.Round                      = ""                                    -- What kind of bullet?
 SWEP.Primary.Cone                       = 0.2                                   -- Accuracy of NPCs
 SWEP.Primary.Recoil             = 10
 SWEP.Primary.Damage             = 10
@@ -61,44 +61,44 @@ local IN_USE = IN_USE
 local PainMulti = 1
 
 if GetConVar("M9KDamageMultiplier") == nil then
-        PainMulti = 1
-        print("M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1.")
+    PainMulti = 1
+    print("M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1.")
 else
-        PainMulti = GetConVar("M9KDamageMultiplier"):GetFloat()
-        if PainMulti < 0 then
-                PainMulti = PainMulti * -1
-                print("Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now "..PainMulti)
-        end
+    PainMulti = GetConVar("M9KDamageMultiplier"):GetFloat()
+    if PainMulti < 0 then
+        PainMulti = PainMulti * -1
+        print("Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now "..PainMulti)
+    end
 end
 
 local function NewM9KDamageMultiplier(cvar, previous, new)
-        print("multiplier has been changed ")
-        if GetConVar("M9KDamageMultiplier") == nil then
-                PainMulti = 1
-                print("M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1, you will notice no changes.")
-        else
-                PainMulti = GetConVar("M9KDamageMultiplier"):GetFloat()
-                if PainMulti < 0 then
-                        PainMulti = PainMulti * -1
-                        print("Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now "..PainMulti)
-                end
+    print("multiplier has been changed ")
+    if GetConVar("M9KDamageMultiplier") == nil then
+        PainMulti = 1
+        print("M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1, you will notice no changes.")
+    else
+        PainMulti = GetConVar("M9KDamageMultiplier"):GetFloat()
+        if PainMulti < 0 then
+            PainMulti = PainMulti * -1
+            print("Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now "..PainMulti)
         end
+    end
 end
 cvars.AddChangeCallback("M9KDamageMultiplier", NewM9KDamageMultiplier)
 
 local function NewDefClips(cvar, previous, new)
-        print("Default clip multiplier has changed. A server restart will be required for these changes to take effect.")
+    print("Default clip multiplier has changed. A server restart will be required for these changes to take effect.")
 end
 cvars.AddChangeCallback("M9KDefaultClip", NewDefClips)
 
 if GetConVar("M9KDefaultClip") == nil then
-        print("M9KDefaultClip is missing! You may have hit the lua limit!")
+    print("M9KDefaultClip is missing! You may have hit the lua limit!")
 else
-        if GetConVar("M9KDefaultClip"):GetInt() >= 0 then
-                print("M9K Weapons will now spawn with "..GetConVar("M9KDefaultClip"):GetFloat().." clips.")
-        else
-                print("Default clips will be not be modified")
-        end
+    if GetConVar("M9KDefaultClip"):GetInt() >= 0 then
+        print("M9K Weapons will now spawn with "..GetConVar("M9KDefaultClip"):GetFloat().." clips.")
+    else
+        print("Default clips will be not be modified")
+    end
 end
 
 SWEP.IronSightsPos = Vector (2.4537, 1.0923, 0.2696)
