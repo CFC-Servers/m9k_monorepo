@@ -808,7 +808,7 @@ local IRONSIGHT_TIME = 0.3
 function SWEP:GetViewModelPosition(pos, ang)
     if (not self.IronSightsPos) then return pos, ang end
 
-    local bIron = self:GetNWBool("M9K_Ironsights")
+    local bIron = self:GetIronsights()
 
     if (bIron ~= self.bLastIron) then
         self.bLastIron = bIron
@@ -852,13 +852,12 @@ end
 SetIronsights
 -----------------------------------------------------*/
 function SWEP:SetIronsights(b)
-    self:SetNWBool("M9K_Ironsights", b)
+    self:SetNW2Bool("M9K_Ironsights", b)
 end
 
 function SWEP:GetIronsights()
-    return self:GetNWBool("M9K_Ironsights")
+    return self:GetNW2Bool("M9K_Ironsights")
 end
-
 
 if CLIENT then
         SWEP.vRenderOrder = nil
