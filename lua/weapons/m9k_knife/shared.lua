@@ -148,9 +148,10 @@ end
 
 
 function SWEP:SecondaryAttack()
-    pos = self:GetOwner():GetShootPos()
-    ang = self:GetOwner():GetAimVector()
-    vm = self:GetOwner():GetViewModel()
+    local pos = self:GetOwner():GetShootPos()
+    local ang = self:GetOwner():GetAimVector()
+    local vm = self:GetOwner():GetViewModel()
+
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
     self:SendWeaponAnim( ACT_VM_IDLE )
         if !self:GetOwner():KeyDown(IN_SPEED) and !self:GetOwner():KeyDown(IN_RELOAD) then
@@ -182,12 +183,13 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Stab()
+    local pos2 = self:GetOwner():GetShootPos()
+    local ang2 = self:GetOwner():GetAimVector()
+    local damagedice = math.Rand(.85,1.25)
+    local pain = 100 * damagedice
 
-    pos2 = self:GetOwner():GetShootPos()
-    ang2 = self:GetOwner():GetAimVector()
-    damagedice = math.Rand(.85,1.25)
-    pain = 100 * damagedice
     self:GetOwner():LagCompensation(true)
+
     local stab2 = {}
     stab2.start = pos2
     stab2.endpos = pos2 + (ang2 * 24)

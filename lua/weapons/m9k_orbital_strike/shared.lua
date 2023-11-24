@@ -128,7 +128,7 @@ function SWEP:PrimaryAttack()
             skytrace2.filter = thetarget
             skycheck2 = util.TraceLine(skytrace2)
             if skycheck2.HitSky then --someone's gonna be in big trouble
-                sky2 = skycheck2.HitPos - Vector(0,0,10)
+                local sky2 = skycheck2.HitPos - Vector(0,0,10)
                 if SERVER then
                     local Satellite = ents.Create("m9k_oribital_cannon")
                     --Satellite.Ground = Ground

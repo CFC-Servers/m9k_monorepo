@@ -73,7 +73,7 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
     self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
     self:SetNextPrimaryFire(CurTime()+1/(self.Primary.RPM/60))
-    plant = self:GetOwner():GetViewModel():SequenceDuration()
+    local plant = self:GetOwner():GetViewModel():SequenceDuration()
     timer.Simple(plant, function() if not IsValid(self) then return end if IsValid(self:GetOwner()) and IsValid(self) then
         if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
             self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)

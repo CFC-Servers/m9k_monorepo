@@ -93,10 +93,10 @@ function SWEP:Throw()
     and self ~= nil
     then if(self:AllIsWell()) then
     self:GetOwner():SetAnimation(PLAYER_ATTACK1)
-            aim = self:GetOwner():GetAimVector()
-            side = aim:Cross(Vector(0,0,1))
-            up = side:Cross(aim)
-            pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
+            local aim = self:GetOwner():GetAimVector()
+            local side = aim:Cross(Vector(0,0,1))
+            local up = side:Cross(aim)
+            local pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
             if SERVER then
                 local rocket = ents.Create(self.Primary.Round)
                 if !rocket:IsValid() then return false end
