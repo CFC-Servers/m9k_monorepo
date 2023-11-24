@@ -283,7 +283,10 @@ function SWEP:InsertShell()
             self:SetNextSecondaryFire(CurTime()+.55)
         elseif (self:Clip1() <= self.Primary.ClipSize and self:GetOwner():GetAmmoCount(self.Primary.Ammo) >= 0) then
             self.InsertingShell = true --well, I tried!
-            timer.Simple( .05, function() self:ShellAnimCaller() end)
+            timer.Simple( .05, function()
+                if not IsValid( self ) then return end
+                self:ShellAnimCaller()
+            end)
             self:GetOwner():RemoveAmmo(1, self.Primary.Ammo, false) -- out of the frying pan
             self:SetClip1(self:Clip1() + 1) --  into the fire
         end
