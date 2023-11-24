@@ -102,7 +102,6 @@ function ENT:OnTakeDamage(dmginfo)
 			end
 		end )
 	end
-
 end
 
 
