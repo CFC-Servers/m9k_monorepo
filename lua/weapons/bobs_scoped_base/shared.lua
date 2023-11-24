@@ -189,7 +189,7 @@ function SWEP:BoltBack()
 
             local boltactiontime = (self:GetOwner():GetViewModel():SequenceDuration())
             timer.Simple(boltactiontime + .1, function()
-                if not IsValid( self ) then return end
+                if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
                 self:SetNWBool("Reloading", false)
                 if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
                     self:GetOwner():SetFOV( 75/self.Secondary.ScopeZoom, 0.15 )
