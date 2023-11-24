@@ -79,32 +79,28 @@ function ENT:OnTakeDamage(dmginfo)
 
 	local dice = math.random(1,5)
 
-	if dmginfo:GetDamage() >75 or dice == 1 then
+	if dmginfo:GetDamage() > 75 or dice == 1 then
 		self:Remove()
 
 		local effectdata = EffectData()
-		effectdata:SetOrigin(self:GetPos())
-		util.Effect("ThumperDust", effectdata)
-		util.Effect("Explosion", effectdata)
+		effectdata:SetOrigin( self:GetPos() )
+		util.Effect( "ThumperDust", effectdata )
+		util.Effect( "Explosion", effectdata )
 
-		timer.Simple(.01, function()
+		timer.Simple( 0.01, function()
+			for _ = 1, 100 do
+				local trace = util.TraceLine( {
+					start = pos,
+					endpos = pos + Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( 0, 1 ) ) * 64000
+				} )
 
-			for i=1, 100 do
-
-			ouchies = {}
-			ouchies.start = pos
-			ouchies.endpos = pos + Vector(math.Rand(-1,1), math.Rand(-1,1), math.Rand(0,1)) * 64000
-			ouchies = util.TraceLine(ouchies)
-
-			if ouchies.Hit and not ouchies.HitSky then
-				util.Decal("Impact.Concrete", ouchies.HitPos + ouchies.HitNormal, ouchies.HitPos - ouchies.HitNormal )--and ouchies.Entity then
-				ouchies.Entity:TakeDamage(30 * math.Rand(.85,1.15), blaster, self)
+				if trace.Hit and not trace.HitSky then
+					util.Decal( "Impact.Concrete", trace.HitPos + trace.HitNormal, trace.HitPos - trace.HitNormal )
+					trace.Entity:TakeDamage( 30 * math.Rand( 0.85, 1.15 ), blaster, self )
+				end
 			end
-			end
-		end)
+		end )
 	end
-
-
 end
 
 
