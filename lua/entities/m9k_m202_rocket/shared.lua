@@ -38,22 +38,17 @@ self:SetNWBool("smoke", true)
 end
 
  function ENT:Think()
-
 	if not IsValid(self) then return end
 	if not IsValid(self) then return end
 
-		if self.timeleft < CurTime() then
+	if self.timeleft < CurTime() then
 		self:Remove()
-		end
-
-	Table	={} 			--Table name is table name
-	Table[1]	=self.Owner 		--The person holding the gat
-	Table[2]	=self 		--The cap
+	end
 
 	local trace = {}
 		trace.start = self:GetPos()
 		trace.endpos = self:GetPos() + self.flightvector
-		trace.filter = Table
+		trace.filter = { self:GetOwner(), self }
 	local tr = util.TraceLine( trace )
 
 
