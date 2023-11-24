@@ -178,33 +178,31 @@ function SWEP:Reload()
                     self:SetNWBool("Reloading", true)
             end
             local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
-            timer.Simple(waitdammit + .1,
-                    function()
-                    if self == nil then return end
-                    self:SetNWBool("Reloading", false)
-                    if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
-                            if CLIENT then return end
-                            if self.Scoped == false then
-                                    self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
-                                    self.IronSightsPos = self.SightsPos                                     -- Bring it up
-                                    self.IronSightsAng = self.SightsAng                                     -- Bring it up
-                                    self:SetIronsights(true, self:GetOwner())
-                                    self.DrawCrosshair = false
-                            else return end
-                    elseif self:GetOwner():KeyDown(IN_SPEED) and self:GetClass() == self.Gun then
-                            if self:GetNextPrimaryFire() <= (CurTime() + .03) then
-                                    self:SetNextPrimaryFire(CurTime()+0.3)                   -- Make it so you can't shoot for another quarter second
-                            end
-                            self.IronSightsPos = self.RunSightsPos                                  -- Hold it down
-                            self.IronSightsAng = self.RunSightsAng                                  -- Hold it down
-                            self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
-                            self:GetOwner():SetFOV( 0, 0.3 )
-                    else return end
-                    end)
-            end
+            timer.Simple(waitdammit + .1, function()
+                if not IsValid( self ) then return end
+                self:SetNWBool("Reloading", false)
 
+                if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
+                    if CLIENT then return end
+                    if self.Scoped == false then
+                        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                        self.IronSightsPos = self.SightsPos                                     -- Bring it up
+                        self.IronSightsAng = self.SightsAng                                     -- Bring it up
+                        self:SetIronsights(true, self:GetOwner())
+                        self.DrawCrosshair = false
+                    end
+                elseif self:GetOwner():KeyDown(IN_SPEED) and self:GetClass() == self.Gun then
+                    if self:GetNextPrimaryFire() <= (CurTime() + .03) then
+                            self:SetNextPrimaryFire(CurTime()+0.3)                   -- Make it so you can't shoot for another quarter second
+                    end
+                    self.IronSightsPos = self.RunSightsPos                                  -- Hold it down
+                    self.IronSightsAng = self.RunSightsAng                                  -- Hold it down
+                    self:SetIronsights(true, self:GetOwner())                                    -- Set the ironsight true
+                    self:GetOwner():SetFOV( 0, 0.3 )
+                end
+            end)
         end
-
+    end
 end
 
 if GetConVar("M9KDefaultClip") == nil then
