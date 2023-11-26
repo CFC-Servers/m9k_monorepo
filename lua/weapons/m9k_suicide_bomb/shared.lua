@@ -186,36 +186,31 @@ function SWEP:SecondaryAttack()
     self:SetNextPrimaryFire( CurTime() + 0.1 )
     self:SetNextSecondaryFire( CurTime() + 0.1 )
 
+    if not IsFirstTimePredicted() then return end
+
     if self.Timer == 5 then
-        if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 10 Seconds." )
-        end
         self.Timer = 10
         self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 10 then
-        if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 15 Seconds." )
-        end
         self.Timer = 15
         self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 15 then
-        if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 20 Seconds." )
-        end
         self.Timer = 20
         self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 20 then
-        if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
-        end
         self.Timer = 0
         self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 0 then
-        if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Timer set to 5 Seconds." )
-        end
         self.Timer = 5
         self:GetOwner():EmitSound( "C4.PlantSound" )
+    end
+
+    if CLIENT then
+        if self.Timer == 0 then
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
+        else
+            self:GetOwner():PrintMessage( HUD_PRINTCENTER, string.format( "Timer set to %s Seconds.", self.Timer ) )
+        end
     end
 end
 
