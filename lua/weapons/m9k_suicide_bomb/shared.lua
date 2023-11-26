@@ -197,20 +197,16 @@ function SWEP:SecondaryAttack()
 
     if self.Timer == 5 then
         self.Timer = 10
-        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 10 then
         self.Timer = 15
-        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 15 then
         self.Timer = 20
-        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 20 then
         self.Timer = 0
-        self:GetOwner():EmitSound( "C4.PlantSound" )
     elseif self.Timer == 0 then
         self.Timer = 5
-        self:GetOwner():EmitSound( "C4.PlantSound" )
     end
+    self:GetOwner():EmitSound( "C4.PlantSound" )
 
     if CLIENT then
         if self.Timer == 0 then
