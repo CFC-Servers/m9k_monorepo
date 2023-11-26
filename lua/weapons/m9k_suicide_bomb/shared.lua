@@ -96,8 +96,15 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( wait, function()
         if not IsValid( self ) then return end
-        self:SendWeaponAnim( ACT_VM_DRAW )
-        self:Reload()
+        local owner = self:GetOwner()
+        if self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0  then
+            if SERVER then
+                owner:StripWeapon( self.Gun )
+            end
+        else
+            self:SendWeaponAnim( ACT_VM_DRAW )
+            self:Reload()
+        end
     end )
 
     if CLIENT then return end
