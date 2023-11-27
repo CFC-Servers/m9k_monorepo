@@ -33,7 +33,7 @@ end
 
 function ENT:Think()
     if self.TimeLeft < CurTime() then
-        for _, v in pairs ( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
+        for _, v in pairs( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
             if v:IsPlayer() or v:IsNPC() then
                 local trace = {
                     start = self:WorldSpaceCenter(),
@@ -73,8 +73,8 @@ function ENT:Explosion()
     effectBoom:SetMagnitude( 18 )
     util.Effect( "m9k_gdcw_cinematicboom", effectBoom )
 
-    util.BlastDamage( self, self.ProxyBombOwner, self:GetPos(), 200, 250	)
-    util.ScreenShake( self:GetPos(), 2000, 255, 2.5, 1250		)
+    util.BlastDamage( self, self.ProxyBombOwner, self:GetPos(), 200, 250 )
+    util.ScreenShake( self:GetPos(), 2000, 255, 2.5, 1250 )
 
     self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
     self:Remove()
@@ -94,7 +94,6 @@ function ENT:VectorGet()
     else
         return Vector( 0, 0, 1 )
     end
-
 end
 
 function ENT:OnTakeDamage( dmginfo )

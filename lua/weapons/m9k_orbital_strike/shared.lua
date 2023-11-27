@@ -97,7 +97,7 @@ function SWEP:PrimaryAttack()
     self.PoorBastard = false
     if not IsFirstTimePredicted() then return end
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() and self.NextShoot <= CurTime() then
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             local mark = self:GetOwner():GetEyeTrace()
             if mark.HitSky then
                 self:GetOwner():EmitSound( "player/suit_denydevice.wav" )
@@ -197,4 +197,3 @@ if GetConVar( "M9KUniqueSlots" ) ~= nil then
         SWEP.SlotPos = 2
     end
 end
-

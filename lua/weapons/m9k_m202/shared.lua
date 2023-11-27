@@ -70,7 +70,7 @@ SWEP.RunSightsAng           = Vector( -15.596, 53.0059, -11.98 )
 
 SWEP.WElements              = {
     ["m202"] = { type = "Model", model = "models/weapons/w_m202.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( 13.255, 1.021, -2.869 ), angle = Angle( 180, 90, -11.981 ), size = Vector(
-    1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+        1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
 --and now to the nasty parts of this swep...
@@ -95,7 +95,7 @@ function SWEP:FireRocket()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
-        if ! rocket:IsValid() then return false end
+        if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 0, 0, 0 ) )
         rocket:SetPos( pos )
         rocket:SetOwner( self:GetOwner() )
@@ -107,11 +107,11 @@ end
 function SWEP:Reload()
     self:DefaultReload( ACT_VM_DRAW )
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
     if SERVER and self ~= nil then
-        if (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+        if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
             self:GetOwner():SetFOV( 0, 0.3 )
             self:SetIronsights( false )
             self:SetNWBool( "Reloading", true )
@@ -178,4 +178,3 @@ if GetConVar( "M9KUniqueSlots" ) ~= nil then
         SWEP.SlotPos = 2
     end
 end
-

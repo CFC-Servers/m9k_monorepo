@@ -93,7 +93,7 @@ function SWEP:FireRocket()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
-        if ! rocket:IsValid() then return false end
+        if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         rocket:SetPos( pos )
         rocket:SetOwner( self:GetOwner() )
@@ -132,4 +132,3 @@ if GetConVar( "M9KUniqueSlots" ) ~= nil then
         SWEP.SlotPos = 2
     end
 end
-
