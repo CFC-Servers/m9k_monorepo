@@ -139,4 +139,3 @@ if CLIENT then
         cam.End3D2D()
     end
 end
-

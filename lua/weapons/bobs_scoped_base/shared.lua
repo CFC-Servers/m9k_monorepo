@@ -201,11 +201,11 @@ function SWEP:Reload()
     if self:GetOwner():KeyDown( IN_USE ) then return end
 
     self:DefaultReload( ACT_VM_RELOAD )
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         self.Idle = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
 
-    if (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+    if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
         -- When the current clip < full clip and the rest of your ammo > 0, then
 
         self:GetOwner():SetFOV( 0, 0.3 )
@@ -313,7 +313,7 @@ function SWEP:IronSight()
         self:GetOwner():DrawViewModel( true )
     end
 
-    if self:GetOwner():KeyPressed( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then
+    if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then
         self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
@@ -331,7 +331,7 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 
-    if (self:GetOwner():KeyReleased( IN_ATTACK2 ) or self:GetOwner():KeyDown( IN_SPEED )) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if (self:GetOwner():KeyReleased( IN_ATTACK2 ) or self:GetOwner():KeyDown( IN_SPEED )) and not self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
         self:GetOwner():SetFOV( 0, 0.2 )
         self:SetIronsights( false, self:GetOwner() )
         self.DrawCrosshair = self.XHair
@@ -340,7 +340,7 @@ function SWEP:IronSight()
         self:GetOwner():DrawViewModel( true )
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else
@@ -350,7 +350,7 @@ function SWEP:IronSight()
 end
 
 function SWEP:DrawHUD()
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and (self:GetIronsights() == true) and (! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_USE )) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and (self:GetIronsights() == true) and (not self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_USE )) then
         if self.Secondary.UseACOG then
             -- Draw the FAKE SCOPE THANG
             surface.SetDrawColor( 0, 0, 0, 255 )
@@ -441,4 +441,3 @@ function SWEP:AdjustMouseSensitivity()
         return 1
     end
 end
-

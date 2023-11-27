@@ -5,7 +5,7 @@ local function melee( victim, info )
     if not IsValid( info:GetAttacker() ) then return end
     if not IsValid( info:GetInflictor() ) then return end
 
-    if not victim:IsPlayer() or not  victim:Alive() then return end
+    if not victim:IsPlayer() or not victim:Alive() then return end
     if victim:GetActiveWeapon():GetClass() == "m9k_fists" and victim:GetNWBool( "DukesAreUp", false ) and info:GetDamageType() == DMG_CLUB then
         info:SetDamage( 1 )
     end
@@ -42,4 +42,5 @@ function PoisonChildChecker( victim, info )
     info:SetAttacker( dealerParent:GetOwner() )
     info:SetInflictor( dealerParent )
 end
+
 hook.Add( "EntityTakeDamage", "m9k_Poison_PoisonChildChecker", PoisonChildChecker )

@@ -39,4 +39,3 @@ function EFFECT:Render()
 
     render.DrawBeam( self.StartPos, self.EndPos, 8 * fDelta, 1, 0, color )
 end
-

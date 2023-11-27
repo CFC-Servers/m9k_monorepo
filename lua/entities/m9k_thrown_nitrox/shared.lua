@@ -84,4 +84,3 @@ if CLIENT then
         self:DrawModel() -- Draw the model.
     end
 end
-

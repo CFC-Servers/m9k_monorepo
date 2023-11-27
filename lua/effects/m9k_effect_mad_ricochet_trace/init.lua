@@ -94,4 +94,3 @@ function EFFECT:Render()
 
     render.DrawBeam( self.StartPos, self.EndPos, 8 * fDelta, 0.5, 0.5, color )
 end
-

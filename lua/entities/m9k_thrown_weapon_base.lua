@@ -70,7 +70,7 @@ if SERVER then
         end
 
         local ent = data.HitEntity
-        if not ( ent:IsValid() or ent:IsWorld() ) then return end
+        if not (ent:IsValid() or ent:IsWorld()) then return end
 
         if data.TheirSurfaceProps == 76 then
             self:Remove()

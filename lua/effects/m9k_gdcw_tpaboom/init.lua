@@ -591,7 +591,7 @@ function EFFECT:Metal()
     for i = 0, 30 * self.Scale do
         local Sparks = self.Emitter:Add( "effects/spark", self.Pos )
         if Sparks then
-            Sparks:SetVelocity( ( self.DirVec * 0.75 + VectorRand() ) * math.Rand( 200, 600 ) * self.Scale )
+            Sparks:SetVelocity( (self.DirVec * 0.75 + VectorRand()) * math.Rand( 200, 600 ) * self.Scale )
             Sparks:SetDieTime( math.Rand( 0.3, 1 ) )
             Sparks:SetStartAlpha( 255 )
             Sparks:SetStartSize( math.Rand( 7, 15 ) * self.Scale )

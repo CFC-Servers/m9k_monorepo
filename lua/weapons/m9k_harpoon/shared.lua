@@ -88,7 +88,7 @@ else
     SWEP.ViewModel         = "models/weapons/v_invisib.mdl" -- Weapon view model
     SWEP.VElements         = {
         ["harpoon"] = { type = "Model", model = "models/props_junk/harpoon002a.mdl", bone = "Da Machete", rel = "", pos = Vector( -9.362, 2.611, 12.76 ), angle = Angle( 60.882, 128.927, 105.971 ), size =
-        Vector( 0.5, 0.5, 0.5 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+            Vector( 0.5, 0.5, 0.5 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
     }
     SWEP.ViewModelBoneMods = {
         ["l-upperarm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -7.286, 1.628, 7.461 ), angle = Angle( 7.182, 0, 0 ) },
@@ -115,7 +115,7 @@ function SWEP:FireRocket()
     pos = self:GetOwner():GetShootPos()
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
-        if ! rocket:IsValid() then return false end
+        if not rocket:IsValid() then return false end
         rocket:SetAngles( self:GetOwner():GetAimVector():Angle() )
         rocket:SetPos( pos )
         rocket:SetOwner( self:GetOwner() )
@@ -125,7 +125,7 @@ function SWEP:FireRocket()
         local phys = rocket:GetPhysicsObject()
         phys:SetVelocity( self:GetOwner():GetAimVector() * 2000 )
     end
-    if SERVER and ! self:GetOwner():IsNPC() then
+    if SERVER and not self:GetOwner():IsNPC() then
         local anglo = Angle( -10, -5, 0 )
         self:GetOwner():ViewPunch( anglo )
     end
@@ -159,7 +159,7 @@ function SWEP:Reload()
     if self:GetOwner():KeyDown( IN_USE ) then return end
     self:DefaultReload( ACT_VM_DRAW )
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self:GetOwner():GetViewModel() == nil then
             self.ResetSights = CurTime() + 3
         else
@@ -180,4 +180,3 @@ if GetConVar( "M9KUniqueSlots" ) ~= nil then
         SWEP.SlotPos = 2
     end
 end
-
