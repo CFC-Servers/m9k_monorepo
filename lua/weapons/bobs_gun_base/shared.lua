@@ -288,19 +288,19 @@ local iterationCount = {
     ["357"] = 5,
     ["smg1"] = 4,
     ["ar2"] = 5,
-    ["buckshot"] = 0,
-    ["slam"] = 0,
+    ["buckshot"] = 1,
+    ["slam"] = 1,
     ["AirboatGun"] = 8
 }
 
-local maxPenetrationsTbl = {
+local penetrationDepthTbl = {
     ["SniperPenetratedRound"] = 20,
     ["pistol"] = 9,
     ["357"] = 12,
     ["smg1"] = 14,
     ["ar2"] = 16,
-    ["buckshot"] = 5,
-    ["slam"] = 5,
+    ["buckshot"] = 3,
+    ["slam"] = 3,
     ["AirboatGun"] = 17
 }
 
@@ -342,10 +342,10 @@ function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, directi
 end
 
 function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
-    local maxPenetrations = maxPenetrationsTbl[self.Primary.Ammo] or 5
-    local penDirection = direction * maxPenetrations
+    local penDepth = penetrationDepthTbl[self.Primary.Ammo] or 5
+    local penDirection = direction * penDepth
     if easyPenMaterials[bulletTrace.MatType] then
-        penDirection = direction * maxPenetrations * 2
+        penDirection = direction * penDepth * 2
     end
 
     local hitEnt = bulletTrace.Entity
