@@ -175,4 +175,3 @@ Draw
         self:DrawModel()
     end
 end
-

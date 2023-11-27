@@ -1,14 +1,14 @@
-ENT.Type 		= "anim"
-ENT.PrintName	= "Explosive C4"
-ENT.Author		= "Worshipper"
-ENT.Contact		= "Josephcadieux@hotmail.com"
-ENT.Purpose		= ""
-ENT.Instructions	= ""
-ENT.Spawnable			= false
-ENT.AdminOnly = true
-ENT.DoNotDuplicate = true
+ENT.Type              = "anim"
+ENT.PrintName         = "Explosive C4"
+ENT.Author            = "Worshipper"
+ENT.Contact           = "Josephcadieux@hotmail.com"
+ENT.Purpose           = ""
+ENT.Instructions      = ""
+ENT.Spawnable         = false
+ENT.AdminOnly         = true
+ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
-ENT.CanTool = false
+ENT.CanTool           = false
 
 function ENT:SetupDataTables()
     self:DTVar( "Int", 0, "Timer" )
@@ -92,8 +92,8 @@ if SERVER then
         boomEffect:SetMagnitude( 18 )
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 
-        util.ScreenShake( self:WorldSpaceCenter(), 2000, 255, 2.5, 1250		)
-        util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), 500, 500	)
+        util.ScreenShake( self:WorldSpaceCenter(), 2000, 255, 2.5, 1250 )
+        util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), 500, 500 )
 
         self:EmitSound( Sound( "C4.Explode" ) )
 
@@ -114,7 +114,6 @@ if SERVER then
         else
             return Vector( 0, 0, 1 )
         end
-
     end
 end
 
@@ -129,7 +128,7 @@ if CLIENT then
         FixAngles:RotateAroundAxis( FixAngles:Up(), FixRotation.y )
         FixAngles:RotateAroundAxis( FixAngles:Forward(), FixRotation.z )
 
-        local TargetPos = self:GetPos() + ( self:GetUp() * 7 ) + ( self:GetRight() * -.5 ) + ( self:GetForward() * 1.15 )
+        local TargetPos = self:GetPos() + (self:GetUp() * 7) + (self:GetRight() * -.5) + (self:GetForward() * 1.15)
 
         local m, s = self:FormatTime( self.C4CountDown )
 

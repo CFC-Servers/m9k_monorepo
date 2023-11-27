@@ -1,72 +1,76 @@
 -- Variables that are used on both client and server
 SWEP.Gun = "m9k_suicide_bomb" -- must be the name of your swep but NO CAPITALS!
 if GetConVar( SWEP.Gun .. "_allowed" ) ~= nil then
-    if not ( GetConVar( SWEP.Gun .. "_allowed" ):GetBool() ) then SWEP.Base = "bobs_blacklisted" SWEP.PrintName = SWEP.Gun return end
+    if not (GetConVar( SWEP.Gun .. "_allowed" ):GetBool()) then
+        SWEP.Base = "bobs_blacklisted"
+        SWEP.PrintName = SWEP.Gun
+        return
+    end
 end
 
-SWEP.Category                = "M9K Specialties"
-SWEP.Author                = ""
+SWEP.Category               = "M9K Specialties"
+SWEP.Author                 = ""
 SWEP.Contact                = ""
 SWEP.Purpose                = "Right click to select delay" .. "\n" .. "Left click to plant."
-SWEP.Instructions                = ""
-SWEP.MuzzleAttachment            = "1"     -- Should be "1" for CSS models or "muzzle" for hl2 models
-SWEP.ShellEjectAttachment            = "2"     -- Should be "2" for CSS models or "1" for hl2 models
-SWEP.PrintName                = "Timed C4"        -- Weapon name (Shown on HUD)
-SWEP.Slot                = 4                -- Slot in the weapon selection menu
-SWEP.SlotPos                = 27            -- Position in the slot
-SWEP.DrawAmmo                = true        -- Should draw the default HL2 ammo counter
-SWEP.DrawWeaponInfoBox            = true        -- Should draw the weapon info box
-SWEP.BounceWeaponIcon           =     false    -- Should the weapon icon bounce?
-SWEP.DrawCrosshair            = false        -- set false if you want no crosshair
-SWEP.Weight                = 30            -- rank relative ot other weapons. bigger is better
-SWEP.AutoSwitchTo            = true        -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom            = true        -- Auto switch from if you pick up a better weapon
-SWEP.HoldType                 = "slam"        -- how others view you carrying the weapon
+SWEP.Instructions           = ""
+SWEP.MuzzleAttachment       = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
+SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2 models
+SWEP.PrintName              = "Timed C4" -- Weapon name (Shown on HUD)
+SWEP.Slot                   = 4 -- Slot in the weapon selection menu
+SWEP.SlotPos                = 27 -- Position in the slot
+SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
+SWEP.DrawWeaponInfoBox      = true -- Should draw the weapon info box
+SWEP.BounceWeaponIcon       = false -- Should the weapon icon bounce?
+SWEP.DrawCrosshair          = false -- set false if you want no crosshair
+SWEP.Weight                 = 30 -- rank relative ot other weapons. bigger is better
+SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
+SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
+SWEP.HoldType               = "slam" -- how others view you carrying the weapon
 -- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
-SWEP.ViewModelFOV            = 70
-SWEP.ViewModelFlip            = false
-SWEP.ViewModel                = "models/weapons/v_sb.mdl"    -- Weapon view model
-SWEP.WorldModel                = "models/weapons/w_sb.mdl"    -- Weapon world model
-SWEP.ShowWorldModel            = true
-SWEP.Base                = "bobs_gun_base"
-SWEP.Spawnable                = true
-SWEP.AdminSpawnable            = true
-SWEP.FiresUnderwater         = true
+SWEP.ViewModelFOV           = 70
+SWEP.ViewModelFlip          = false
+SWEP.ViewModel              = "models/weapons/v_sb.mdl" -- Weapon view model
+SWEP.WorldModel             = "models/weapons/w_sb.mdl" -- Weapon world model
+SWEP.ShowWorldModel         = true
+SWEP.Base                   = "bobs_gun_base"
+SWEP.Spawnable              = true
+SWEP.AdminSpawnable         = true
+SWEP.FiresUnderwater        = true
 
-SWEP.Primary.Sound            = ""        -- Script that calls the primary fire sound
-SWEP.Primary.RPM                = 10        -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize            = 1        -- Size of a clip
-SWEP.Primary.DefaultClip        = 1        -- Bullets you start with
-SWEP.Primary.KickUp                = 0        -- Maximum up recoil (rise)
-SWEP.Primary.KickDown            = 0        -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal        = 0        -- Maximum up recoil (stock)
-SWEP.Primary.Automatic            = false        -- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo            = "C4Explosive"
+SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
+SWEP.Primary.RPM            = 10 -- This is in Rounds Per Minute
+SWEP.Primary.ClipSize       = 1 -- Size of a clip
+SWEP.Primary.DefaultClip    = 1 -- Bullets you start with
+SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
+SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
+SWEP.Primary.Ammo           = "C4Explosive"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
-SWEP.Primary.Round = "m9k_mad_c4" --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_mad_c4" --NAME OF ENTITY GOES HERE
 
-SWEP.Secondary.IronFOV = 0 -- How much you 'zoom' in. Less is more!
-SWEP.Timer = 0
+SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
+SWEP.Timer                  = 0
 
-SWEP.Primary.NumShots = 0 -- How many bullets to shoot per trigger pull
-SWEP.Primary.Damage = 0 -- Base damage per bullet
-SWEP.Primary.Spread = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy = 0 -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.NumShots       = 0 -- How many bullets to shoot per trigger pull
+SWEP.Primary.Damage         = 0 -- Base damage per bullet
+SWEP.Primary.Spread         = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.IronAccuracy   = 0 -- Ironsight accuracy, should be the same for shotguns
 --none of this matters for IEDs and other ent-tossing sweps
 
 -- Enter iron sight info and bone mod info below
-SWEP.IronSightsPos = Vector(0, 0, 0)
-SWEP.IronSightsAng = Vector(0, 0, 0)
-SWEP.SightsPos = Vector(0, 0, 0)    -- These are the same as IronSightPos and IronSightAng
-SWEP.SightsAng = Vector(0, 0, 0)    -- No, I don't know why
-SWEP.RunSightsPos = Vector(0, 0, 0)
-SWEP.RunSightsAng = Vector(0, 0, 0)
+SWEP.IronSightsPos          = Vector( 0, 0, 0 )
+SWEP.IronSightsAng          = Vector( 0, 0, 0 )
+SWEP.SightsPos              = Vector( 0, 0, 0 ) -- These are the same as IronSightPos and IronSightAng
+SWEP.SightsAng              = Vector( 0, 0, 0 ) -- No, I don't know why
+SWEP.RunSightsPos           = Vector( 0, 0, 0 )
+SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
-local ammoBoxes = {
+local ammoBoxes             = {
     ["m9k_ammo_40mm"] = true,
     ["m9k_ammo_c4"] = true,
     ["m9k_ammo_frags"] = true,
@@ -97,7 +101,7 @@ function SWEP:PrimaryAttack()
     timer.Simple( wait, function()
         if not IsValid( self ) then return end
         local owner = self:GetOwner()
-        if IsValid(owner) and self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0  then
+        if IsValid( owner ) and self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             if SERVER then
                 owner:StripWeapon( self.Gun )
             end
@@ -116,14 +120,14 @@ function SWEP:PrimaryAttack()
         if self.Timer == 0 and self:CanPrimaryAttack() then
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:TakePrimaryAmmo( 1 )
-            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             self:Suicide()
 
             return
         end
 
         if self.Timer >= 5 and self:CanPrimaryAttack() then
-            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             self:SetNextSecondaryFire( CurTime() + 0.3 )
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
@@ -223,8 +227,8 @@ function SWEP:Think()
     end
 end
 
-if GetConVar("M9KUniqueSlots") ~= nil then
-    if not (GetConVar("M9KUniqueSlots"):GetBool()) then
+if GetConVar( "M9KUniqueSlots" ) ~= nil then
+    if not (GetConVar( "M9KUniqueSlots" ):GetBool()) then
         SWEP.SlotPos = 2
     end
 end

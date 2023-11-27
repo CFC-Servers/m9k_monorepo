@@ -204,7 +204,7 @@ end
 
 SWEP.VElements = {
     ["bomb"] = { type = "Model", model = "models/Failure/MK6/m62.mdl", bone = "Rocket", rel = "", pos = Vector( -0.093, 7.412, -0.005 ), angle = Angle( -45, 0, 90 ), size = Vector( 0.449, 0.449, 0.449 ), color =
-    Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+        Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
 SWEP.WElements = {
@@ -311,4 +311,3 @@ function SWEP:IronSight()
         self.BobScale  = 1.0
     end
 end
-

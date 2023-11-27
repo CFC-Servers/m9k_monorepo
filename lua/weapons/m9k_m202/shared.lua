@@ -70,7 +70,7 @@ SWEP.RunSightsAng           = Vector( -15.596, 53.0059, -11.98 )
 
 SWEP.WElements              = {
     ["m202"] = { type = "Model", model = "models/weapons/w_m202.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( 13.255, 1.021, -2.869 ), angle = Angle( 180, 90, -11.981 ), size = Vector(
-    1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+        1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
 --and now to the nasty parts of this swep...
@@ -178,4 +178,3 @@ if GetConVar( "M9KUniqueSlots" ) ~= nil then
         SWEP.SlotPos = 2
     end
 end
-

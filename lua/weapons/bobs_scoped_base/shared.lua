@@ -441,4 +441,3 @@ function SWEP:AdjustMouseSensitivity()
         return 1
     end
 end
-
