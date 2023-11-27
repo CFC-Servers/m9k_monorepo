@@ -74,7 +74,7 @@ function SWEP:PrimaryAttack()
     vm = self:GetOwner():GetViewModel()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:GetOwner():ViewPunch( Angle( math.random( -5, 5 ), -10, 5 ) )
             vm:SetSequence( vm:LookupSequence( "punchmiss2" ) ) --left
             vm:SetPlaybackRate( 1.5 )
@@ -144,7 +144,7 @@ function SWEP:SecondaryAttack()
     vm = self:GetOwner():GetViewModel()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:GetOwner():ViewPunch( Angle( math.random( -5, 5 ), 10, -5 ) )
             vm:SetSequence( vm:LookupSequence( "punchmiss1" ) ) --right
             vm:SetPlaybackRate( 1.5 )
@@ -238,7 +238,7 @@ function SWEP:Holster()
 end
 
 function SWEP:IronSight()
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self:GetOwner():GetNWBool( "DukesAreUp" ) == nil then
             self:GetOwner():SetNWBool( "DukesAreUp", false )
         end
@@ -265,7 +265,7 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( 0, 0.3 )
     end -- Shoulder the gun
 
-    if ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the key E (Use Key) is not pressed, then
 
         if self:GetOwner():KeyPressed( IN_RELOAD ) then
@@ -280,7 +280,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_RELOAD ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyReleased( IN_RELOAD ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self:SetIronsights( false, self:GetOwner() )

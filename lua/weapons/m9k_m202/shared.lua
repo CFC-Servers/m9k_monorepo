@@ -95,7 +95,7 @@ function SWEP:FireRocket()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
-        if ! rocket:IsValid() then return false end
+        if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 0, 0, 0 ) )
         rocket:SetPos( pos )
         rocket:SetOwner( self:GetOwner() )
@@ -107,11 +107,11 @@ end
 function SWEP:Reload()
     self:DefaultReload( ACT_VM_DRAW )
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
     if SERVER and self ~= nil then
-        if (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+        if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
             self:GetOwner():SetFOV( 0, 0.3 )
             self:SetIronsights( false )
             self:SetNWBool( "Reloading", true )

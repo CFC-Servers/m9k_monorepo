@@ -115,7 +115,7 @@ function SWEP:PrimaryAttack()
             end
         end
 
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( self.ShootThese )
             if self.Silenced then
