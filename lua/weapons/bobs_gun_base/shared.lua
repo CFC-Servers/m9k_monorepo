@@ -299,8 +299,8 @@ local penetrationDepthTbl = {
     ["357"] = 12,
     ["smg1"] = 14,
     ["ar2"] = 16,
-    ["buckshot"] = 3,
-    ["slam"] = 3,
+    ["buckshot"] = 5,
+    ["slam"] = 5,
     ["AirboatGun"] = 17
 }
 
