@@ -168,7 +168,7 @@ function SWEP:Deploy()
 
     self:SetNWBool( "Reloading", false )
 
-    if ! self:GetOwner():IsNPC() and self:GetOwner() ~= nil then
+    if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil then
         if self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
             self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
         end
@@ -329,7 +329,7 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
     local anglo1 = Angle( x, y, 0 )
     self:GetOwner():ViewPunch( anglo1 )
 
-    if SERVER and game.SinglePlayer() and ! self:GetOwner():IsNPC() then
+    if SERVER and game.SinglePlayer() and not self:GetOwner():IsNPC() then
         local offlineeyes = self:GetOwner():EyeAngles()
         offlineeyes.pitch = offlineeyes.pitch + anglo1.pitch
         offlineeyes.yaw = offlineeyes.yaw + anglo1.yaw
@@ -338,7 +338,7 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
         end
     end
 
-    if CLIENT and ! game.SinglePlayer() and ! self:GetOwner():IsNPC() then
+    if CLIENT and not game.SinglePlayer() and not self:GetOwner():IsNPC() then
         -- case 1 old random
         local eyes = self:GetOwner():EyeAngles()
         eyes.pitch = eyes.pitch + (anglo1.pitch / 3)
@@ -565,7 +565,7 @@ function SWEP:Reload()
         self:DefaultReload( ACT_VM_RELOAD )
     end
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self:GetOwner():GetViewModel() == nil then
             self.ResetSights = CurTime() + 3
         else
@@ -573,7 +573,7 @@ function SWEP:Reload()
         end
     end
 
-    if SERVER and (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+    if SERVER and (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
         -- When the current clip < full clip and the rest of your ammo > 0, then
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
@@ -721,7 +721,7 @@ function SWEP:IronSight()
     if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
 
@@ -764,7 +764,7 @@ function SWEP:IronSight()
     end -- Shoulder the gun
 
     -- --down to this
-    if ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- --If the key E (Use Key) is not pressed, then
 
         if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
@@ -779,7 +779,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- --If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
@@ -789,7 +789,7 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else
@@ -871,13 +871,13 @@ if CLIENT then
         if not IsValid( self ) then return end
         if not IsValid( self:GetOwner() ) then return end
         local vm = self:GetOwner():GetViewModel()
-        if ! IsValid( vm ) then return end
+        if not IsValid( vm ) then return end
 
-        if (! self.VElements) then return end
+        if (not self.VElements) then return end
 
         self:UpdateBonePositions( vm )
 
-        if (! self.vRenderOrder) then
+        if (not self.vRenderOrder) then
             -- -- we build a render order because sprites need to be drawn after models
             self.vRenderOrder = {}
 
@@ -892,7 +892,7 @@ if CLIENT then
 
         for k, name in ipairs( self.vRenderOrder ) do
             local v = self.VElements[name]
-            if (! v) then
+            if (not v) then
                 self.vRenderOrder = nil
                 break
             end
@@ -901,11 +901,11 @@ if CLIENT then
             local model = v.modelEnt
             local sprite = v.spriteMaterial
 
-            if (! v.bone) then continue end
+            if (not v.bone) then continue end
 
             local pos, ang = self:GetBoneOrientation( self.VElements, v, vm )
 
-            if (! pos) then continue end
+            if (not pos) then continue end
 
             if (v.type == "Model" and IsValid( model )) then
                 model:SetPos( pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z )
@@ -973,9 +973,9 @@ if CLIENT then
             self:DrawModel()
         end
 
-        if (! self.WElements) then return end
+        if (not self.WElements) then return end
 
-        if (! self.wRenderOrder) then
+        if (not self.wRenderOrder) then
             self.wRenderOrder = {}
 
             for k, v in pairs( self.WElements ) do
@@ -996,7 +996,7 @@ if CLIENT then
 
         for k, name in pairs( self.wRenderOrder ) do
             local v = self.WElements[name]
-            if (! v) then
+            if (not v) then
                 self.wRenderOrder = nil
                 break
             end
@@ -1010,7 +1010,7 @@ if CLIENT then
                 pos, ang = self:GetBoneOrientation( self.WElements, v, bone_ent, "ValveBiped.Bip01_R_Hand" )
             end
 
-            if (! pos) then continue end
+            if (not pos) then continue end
 
             local model = v.modelEnt
             local sprite = v.spriteMaterial
@@ -1080,13 +1080,13 @@ if CLIENT then
         if (tab.rel and tab.rel ~= "") then
             local v = basetab[tab.rel]
 
-            if (! v) then return end
+            if (not v) then return end
 
             -- -- Technically, if there exists an element with the same name as a bone
             -- -- you can get in an infinite loop. Let's just hope nobody's that stupid.
             pos, ang = self:GetBoneOrientation( basetab, v, ent )
 
-            if (! pos) then return end
+            if (not pos) then return end
 
             pos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
             ang:RotateAroundAxis( ang:Up(), v.angle.y )
@@ -1095,7 +1095,7 @@ if CLIENT then
         else
             bone = ent:LookupBone( bone_override or tab.bone )
 
-            if (! bone) then return end
+            if (not bone) then return end
 
             pos, ang = Vector( 0, 0, 0 ), Angle( 0, 0, 0 )
             local m = ent:GetBoneMatrix( bone )
@@ -1113,7 +1113,7 @@ if CLIENT then
     end
 
     function SWEP:CreateModels( tab )
-        if (! tab) then return end
+        if (not tab) then return end
 
         -- -- Create the clientside models here because Garry says we can't do it in the render hook
         for k, v in pairs( tab ) do
@@ -1154,12 +1154,12 @@ if CLIENT then
 
     function SWEP:UpdateBonePositions( vm )
         if self.ViewModelBoneMods then
-            if (! vm:GetBoneCount()) then return end
+            if (not vm:GetBoneCount()) then return end
 
             -- -- !! WORKAROUND !! ----
             -- -- We need to check all model names :/
             local loopthrough = self.ViewModelBoneMods
-            if (! hasGarryFixedBoneScalingYet) then
+            if (not hasGarryFixedBoneScalingYet) then
                 allbones = {}
                 for i = 0, vm:GetBoneCount() do
                     local bonename = vm:GetBoneName( i )
@@ -1180,13 +1180,13 @@ if CLIENT then
 
             for k, v in pairs( loopthrough ) do
                 local bone = vm:LookupBone( k )
-                if (! bone) then continue end
+                if (not bone) then continue end
 
                 -- -- !! WORKAROUND !! ----
                 local s = Vector( v.scale.x, v.scale.y, v.scale.z )
                 local p = Vector( v.pos.x, v.pos.y, v.pos.z )
                 local ms = Vector( 1, 1, 1 )
-                if (! hasGarryFixedBoneScalingYet) then
+                if (not hasGarryFixedBoneScalingYet) then
                     local cur = vm:GetBoneParent( bone )
                     while (cur >= 0) do
                         local pscale = loopthrough[vm:GetBoneName( cur )].scale
@@ -1214,7 +1214,7 @@ if CLIENT then
     end
 
     function SWEP:ResetBonePositions( vm )
-        if (! vm:GetBoneCount()) then return end
+        if (not vm:GetBoneCount()) then return end
         for i = 0, vm:GetBoneCount() do
             vm:ManipulateBoneScale( i, Vector( 1, 1, 1 ) )
             vm:ManipulateBoneAngles( i, Angle( 0, 0, 0 ) )
@@ -1230,7 +1230,7 @@ if CLIENT then
     -- -- Does not copy entities of course, only copies their reference.
     -- -- WARNING: do not use on tables that contain themselves somewhere down the line or you'll get an infinite loop
     function table.FullCopy( tab )
-        if (! tab) then return nil end
+        if (not tab) then return nil end
 
         local res = {}
         for k, v in pairs( tab ) do

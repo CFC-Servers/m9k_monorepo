@@ -331,7 +331,7 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 
-    if (self:GetOwner():KeyReleased( IN_ATTACK2 ) or self:GetOwner():KeyDown( IN_SPEED )) and not self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if (self:GetOwner():KeyReleased( IN_ATTACK2 ) or self:GetOwner():KeyDown( IN_SPEED )) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:GetOwner():SetFOV( 0, 0.2 )
         self:SetIronsights( false, self:GetOwner() )
         self.DrawCrosshair = self.XHair
@@ -350,7 +350,7 @@ function SWEP:IronSight()
 end
 
 function SWEP:DrawHUD()
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and (self:GetIronsights() == true) and (not self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_USE )) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and (self:GetIronsights() == true) and (not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_USE )) then
         if self.Secondary.UseACOG then
             -- Draw the FAKE SCOPE THANG
             surface.SetDrawColor( 0, 0, 0, 255 )

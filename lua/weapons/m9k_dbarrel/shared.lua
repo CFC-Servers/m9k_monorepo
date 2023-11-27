@@ -103,7 +103,7 @@ function SWEP:SecondaryAttack()
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         if self:Clip1() == 2 then
-            if not self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+            if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
                 self:ShootBulletInformation2()
                 self:TakePrimaryAmmo( 2 )
                 self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
@@ -136,7 +136,7 @@ function SWEP:PrimaryAttack()
     local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
     if (timer.Exists( timerName )) then return end
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( 1 )
 

@@ -108,7 +108,7 @@ function SWEP:Deploy()
         self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
     end
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
 
@@ -162,7 +162,7 @@ function SWEP:FireRocket()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
-        if ! rocket:IsValid() then return false end
+        if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         rocket:SetPos( pos )
         rocket:SetOwner( self:GetOwner() )
@@ -241,7 +241,7 @@ function SWEP:IronSight()
     if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
         end
@@ -278,7 +278,7 @@ function SWEP:IronSight()
     end -- Shoulder the gun
 
     -- --down to this
-    if ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- --If the key E (Use Key) is not pressed, then
 
         if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
@@ -293,7 +293,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- --If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
@@ -303,7 +303,7 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

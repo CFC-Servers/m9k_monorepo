@@ -79,7 +79,7 @@ SWEP.RunSightsAng             = Vector( -11, 31, 0 )
 
 function SWEP:PrimaryAttack()
     if self:GetOwner():IsNPC() then return end
-    if self:CanPrimaryAttack() and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:ShootBulletInformation()
         self:EmitSound( self.Primary.Sound )
         self:TakePrimaryAmmo( 1 )
@@ -163,7 +163,7 @@ function SWEP:Reload()
             self:DefaultReload( ACT_VM_RELOAD )
         end
 
-        if ! self:GetOwner():IsNPC() then
+        if not self:GetOwner():IsNPC() then
             if self:GetOwner():GetViewModel() == nil then
                 self.ResetSights = CurTime() + 3
             else
@@ -172,7 +172,7 @@ function SWEP:Reload()
         end
 
         if SERVER and self ~= nil then
-            if (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+            if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
                 -- --When the current clip < full clip and the rest of your ammo > 0, then
                 self:GetOwner():SetFOV( 0, 0.3 )
                 -- --Zoom = 0

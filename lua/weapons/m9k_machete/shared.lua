@@ -85,7 +85,7 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
-            if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+            if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
                 vm:SetSequence( vm:LookupSequence( "stab" ) )
                 timer.Create( "hack-n-slash", .23, 1, function()
                     if not IsValid( self ) then return end
@@ -154,7 +154,7 @@ function SWEP:HackNSlash()
 end
 
 function SWEP:SecondaryAttack()
-    if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+    if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
         self:EmitSound( Sound( "Weapon_Knife.Slash" ) )
 
         if (SERVER) then
@@ -175,7 +175,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:IronSight()
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
 

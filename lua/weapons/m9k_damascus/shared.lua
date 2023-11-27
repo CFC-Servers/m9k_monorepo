@@ -83,7 +83,7 @@ function SWEP:PrimaryAttack()
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) and ! self:GetOwner():KeyDown( IN_ATTACK2 ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) and not self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if self.Slash == 1 then
                 --if CLIENT then return end
                 vm:SetSequence( vm:LookupSequence( "midslash1" ) )
@@ -170,7 +170,7 @@ function SWEP:Holster()
 end
 
 function SWEP:IronSight()
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self:GetOwner():GetNWBool( "GuardIsUp" ) == nil then
             self:GetOwner():SetNWBool( "GuardIsUp", false )
         end
@@ -201,7 +201,7 @@ function SWEP:IronSight()
     end -- Shoulder the gun
 
     --down to this
-    if ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the key E (Use Key) is not pressed, then
 
         if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
@@ -217,7 +217,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = true
@@ -229,7 +229,7 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_USE ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

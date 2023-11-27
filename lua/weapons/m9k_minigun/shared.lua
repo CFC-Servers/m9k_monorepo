@@ -66,10 +66,10 @@ SWEP.Primary.DefaultClip    = 600 -- Bullets you start with
 
 function SWEP:Reload()
     self:DefaultReload( ACT_VM_RELOAD )
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
-    if (self:Clip1() < self.Primary.ClipSize) and ! self:GetOwner():IsNPC() then
+    if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
         -- When the current clip < full clip and the rest of your ammo > 0, then
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0

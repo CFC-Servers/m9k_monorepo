@@ -130,7 +130,7 @@ function SWEP:PrimaryAttack()
         local pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
         if SERVER then
             local rocket = ents.Create( self.Primary.Round )
-            if ! rocket:IsValid() then return false end
+            if not rocket:IsValid() then return false end
             rocket:SetNWEntity( "Owner", self:GetOwner() )
             rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
             rocket:SetPos( pos )

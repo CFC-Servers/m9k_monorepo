@@ -87,7 +87,7 @@ function SWEP:PrimaryAttack()
     vm = self:GetOwner():GetViewModel()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             if self.Slash == 1 then
                 vm:SetSequence( vm:LookupSequence( "midslash1" ) )
                 self.Slash = 2
@@ -162,7 +162,7 @@ function SWEP:SecondaryAttack()
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if ! self:GetOwner():KeyDown( IN_SPEED ) and ! self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             local stab = {}
             stab.start = pos
             stab.endpos = pos + (ang * 24)
@@ -237,7 +237,7 @@ function SWEP:Stab()
 end
 
 function SWEP:IronSight()
-    if ! self:GetOwner():IsNPC() then
+    if not self:GetOwner():IsNPC() then
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
             self:SendWeaponAnim( ACT_VM_IDLE )
@@ -247,7 +247,7 @@ function SWEP:IronSight()
 
 
     if self:GetOwner():KeyPressed( IN_RELOAD ) then
-        if ! self:GetOwner():KeyDown( IN_ATTACK ) and ! self:GetOwner():KeyDown( IN_ATTACK2 ) and ! self:GetOwner():KeyDown( IN_SPEED ) then
+        if not self:GetOwner():KeyDown( IN_ATTACK ) and not self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) then
             self:ThrowKnife()
             self:NextThink( CurTime() + 1 )
             return true
