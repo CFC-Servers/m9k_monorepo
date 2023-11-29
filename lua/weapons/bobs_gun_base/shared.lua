@@ -354,8 +354,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         start = bulletTrace.HitPos + penDirection,
         mask = MASK_SHOT,
         filter = function( ent )
-            if ent == hitEnt then return true end
-            return false
+            return ent == hitEnt 
         end
     } )
 
