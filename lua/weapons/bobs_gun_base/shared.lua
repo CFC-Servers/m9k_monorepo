@@ -206,7 +206,7 @@ function SWEP:Precache()
 end
 
 function SWEP:PrimaryAttack()
-    if not IsValid( self ) and not IsValid( self:GetOwner() ) then return end
+    if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
