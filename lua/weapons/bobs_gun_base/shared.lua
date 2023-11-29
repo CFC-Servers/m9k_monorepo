@@ -495,11 +495,6 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
     -- --        local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
     -- --        self:GetOwner():ViewPunch(anglo)
 
-    -- --        local eyes = self:GetOwner():EyeAngles()
-    -- --        eyes.pitch = eyes.pitch + anglo.pitch
-    -- --        eyes.yaw = eyes.yaw + anglo.yaw
-    -- --        if game.SinglePlayer() then self:GetOwner():SetEyeAngles(eyes) end
-    -- --end
 
     local x = util.SharedRandom( "m9k_recoil", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
     local y = util.SharedRandom( "m9k_recoil", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
