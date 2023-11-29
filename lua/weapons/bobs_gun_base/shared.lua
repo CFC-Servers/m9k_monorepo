@@ -491,9 +491,6 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
     if IsValid( self:GetOwner() ) then
         self:GetOwner():FireBullets( bullet )
     end
-    -- --if SERVER and !self:GetOwner():IsNPC() then
-    -- --        local anglo = Angle(math.Rand(-self.Primary.KickDown,-self.Primary.KickUp), math.Rand(-self.Primary.KickHorizontal,self.Primary.KickHorizontal), 0)
-    -- --        self:GetOwner():ViewPunch(anglo)
 
 
     local x = util.SharedRandom( "m9k_recoil", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
