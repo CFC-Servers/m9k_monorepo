@@ -377,6 +377,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         Force = 5,
         Damage = dmginfo:GetDamage() * damageMult,
         Callback = function( a, b, c )
+            if not IsValid( self ) then return end
             return self:BulletCallback( iteration, a, b, c, direction )
         end
     }
@@ -443,6 +444,7 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
         Force = dmginfo:GetDamage() * 0.15,
         Damage = dmginfo:GetDamage() * 0.5,
         Callback = function( a, b, c )
+            if not IsValid( self ) then return end
             return self:BulletCallback( iteration, a, b, c )
         end
     }
@@ -484,6 +486,7 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
         Force = damage * 0.25,
         Damage = damage,
         Callback = function( attacker, tracedata, dmginfo )
+            if not IsValid( self ) then return end
             return self:BulletCallback( 0, attacker, tracedata, dmginfo )
         end
     }
