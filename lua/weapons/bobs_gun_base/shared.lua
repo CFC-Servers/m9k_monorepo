@@ -325,20 +325,22 @@ local easyPenMaterials = {
 local spreadVec = Vector( 0, 0, 0 )
 
 function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, direction )
-    if CLIENT then return { damage = false, effects = false } end
-    if bulletTrace.HitSky then return { damage = false, effects = false } end
+    if not IsFirstTimePredicted() then return end
+    if bulletTrace.HitSky then return end
 
     iteration = iteration and iteration + 1 or 0
     local maxIterations = iterationCount[self.Primary.Ammo] or 14
-    if iteration > maxIterations then return { damage = true, effects = true } end
+    if iteration > maxIterations then return end
 
     direction = direction or bulletTrace.Normal
 
     local penetrated = self:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
-    if penetrated then return { damage = true, effects = true } end
+    if penetrated then return end
+
+    if CLIENT then return end -- Only penetration effects need to be done clientside
 
     local ricochet = self:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
-    if ricochet then return { damage = true, effects = true } end
+    if ricochet then return end
 end
 
 function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
@@ -354,7 +356,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         start = bulletTrace.HitPos + penDirection,
         mask = MASK_SHOT,
         filter = function( ent )
-            return ent == hitEnt 
+            return ent == hitEnt
         end
     } )
 
@@ -365,7 +367,6 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
 
     debugoverlay.Text( penTrace.HitPos, "Pen:" .. tostring( iteration ), 10 )
-
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
     local bullet = {
         Num = 1,
@@ -378,7 +379,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         Damage = dmginfo:GetDamage() * damageMult,
         Callback = function( a, b, c )
             if not IsValid( self ) then return end
-            return self:BulletCallback( iteration, a, b, c, direction )
+            self:BulletCallback( iteration, a, b, c, direction )
         end
     }
 
@@ -412,7 +413,6 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
     if not shouldRicochet and self.RicochetCoin ~= 1 then return false end
 
     if bulletTrace.MatType ~= MAT_METAL then
-        util.ScreenShake( bulletTrace.HitPos, 5, 0.1, 0.5, 64 )
         local missSound = bulletMissSounds[math.random( #bulletMissSounds )]
         sound.Play( missSound, bulletTrace.HitPos, 75, math.random( 75, 150 ), 1 )
 
@@ -439,15 +439,17 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
         Src = bulletTrace.HitPos + bulletTrace.HitNormal,
         Dir = ( ( 2 * bulletTrace.HitNormal * dotProduct ) + direction ) + ( VectorRand() * 0.05 ),
         Spread = spreadVec,
-        Tracer = 1,
+        Tracer = SERVER and 1 or 0,
         TracerName = "m9k_effect_mad_ricochet_trace",
         Force = dmginfo:GetDamage() * 0.15,
         Damage = dmginfo:GetDamage() * 0.5,
         Callback = function( a, b, c )
             if not IsValid( self ) then return end
-            return self:BulletCallback( iteration, a, b, c )
+            self:BulletCallback( iteration, a, b, c )
         end
     }
+
+    debugoverlay.Line( bulletTrace.HitPos, bulletTrace.HitPos + bullet.Dir * 100, 10, SERVER and Color( 255, 0, 0 ) or Color( 0, 255, 0 ), true )
 
     timer.Simple( 0, function()
         attacker:FireBullets( bullet )
@@ -487,7 +489,7 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
         Damage = damage,
         Callback = function( attacker, tracedata, dmginfo )
             if not IsValid( self ) then return end
-            return self:BulletCallback( 0, attacker, tracedata, dmginfo )
+            self:BulletCallback( 0, attacker, tracedata, dmginfo )
         end
     }
     if IsValid( self:GetOwner() ) then
