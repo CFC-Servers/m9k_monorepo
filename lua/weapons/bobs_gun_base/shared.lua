@@ -325,7 +325,7 @@ local easyPenMaterials = {
 local spreadVec = Vector( 0, 0, 0 )
 
 function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, direction )
-    if not IsFirstTimePredicted() then return end
+    if CLIENT then return end
     if bulletTrace.HitSky then return end
 
     iteration = iteration and iteration + 1 or 0
@@ -336,8 +336,6 @@ function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, directi
 
     local penetrated = self:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
     if penetrated then return end
-
-    if CLIENT then return end -- Only penetration effects need to be done clientside
 
     local ricochet = self:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
     if ricochet then return end
@@ -373,7 +371,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         Src = penTrace.HitPos,
         Dir = direction,
         Spread = spreadVec,
-        Tracer = 2,
+        Tracer = 1,
         TracerName = "m9k_effect_mad_penetration_trace",
         Force = 5,
         Damage = dmginfo:GetDamage() * damageMult,
