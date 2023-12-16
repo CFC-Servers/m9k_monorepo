@@ -358,7 +358,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         end
     } )
 
-    debugoverlay.Line( bulletTrace.HitPos + penDirection, penTrace.HitPos, 10, Color( 255, 0, 0 ), true )
+    --debugoverlay.Line( bulletTrace.HitPos + penDirection, penTrace.HitPos, 10, Color( 255, 0, 0 ), true )
 
     if penTrace.AllSolid and penTrace.HitWorld then return false end
     if not penTrace.Hit then return false end
@@ -447,7 +447,7 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
         end
     }
 
-    debugoverlay.Line( bulletTrace.HitPos, bulletTrace.HitPos + bullet.Dir * 100, 10, SERVER and Color( 255, 0, 0 ) or Color( 0, 255, 0 ), true )
+    --debugoverlay.Line( bulletTrace.HitPos, bulletTrace.HitPos + bullet.Dir * 100, 10, SERVER and Color( 255, 0, 0 ) or Color( 0, 255, 0 ), true )
 
     timer.Simple( 0, function()
         attacker:FireBullets( bullet )
