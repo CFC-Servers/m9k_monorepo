@@ -1,0 +1,34 @@
+name: Deploy to Workshop
+
+on:
+  workflow_dispatch:
+    inputs:
+      changelog:
+        type: string
+        required: false
+        default: "Deployment via Github to latest changes"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: project
+
+      - name: Remove Non-content
+        run: |
+          rm -rfv $GITHUB_WORKSPACE/project/.git*
+          rm -fv $GITHUB_WORKSPACE/project/LICENSE
+          rm -fv $GITHUB_WORKSPACE/project/README
+
+      - uses: CFC-Servers/gmod-upload@master
+        with:
+          id: 3097864891
+          changelog: ${{ inputs.changelog }} 
+        env:
+          STEAM_USERNAME: ${{ secrets.WORKSHOP_UPLOADER_USERNAME }}
+          STEAM_PASSWORD: ${{ secrets.WORKSHOP_UPLOADER_PASSWORD }}
+
