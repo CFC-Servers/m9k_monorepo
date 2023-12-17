@@ -466,8 +466,6 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
     num_bullets = num_bullets or 1
     aimcone = aimcone or 0
 
-    self:ShootEffects()
-
     if self.Tracer == 1 then
         TracerName = "Ar2Tracer"
     elseif self.Tracer == 2 then
