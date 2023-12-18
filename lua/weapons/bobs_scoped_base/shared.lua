@@ -435,9 +435,11 @@ function SWEP:DrawHUD()
 end
 
 function SWEP:AdjustMouseSensitivity()
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-        return (1 / (self.Secondary.ScopeZoom / 2))
-    else
-        return 1
+    local owner = self:GetOwner()
+    if owner:KeyDown( IN_SPEED ) then return end
+    if not self:GetIronsights() then return end
+
+    if owner:KeyDown( IN_ATTACK2 ) then
+        return 1 / ( self.Secondary.ScopeZoom / 2 )
     end
 end
