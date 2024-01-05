@@ -100,7 +100,9 @@ if SERVER then
         if not IsValid( self ) then return end
         if not IsValid( self ) then return end
 
-        if not IsValid( self.Owner ) then
+        local owner = self:GetNWEntity( "M9K_Owner" )
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -120,7 +122,7 @@ if SERVER then
         util.Effect( "ThumperDust", effectdata )
         util.Effect( "Explosion", effectdata )
 
-        util.BlastDamage( self, self.Owner, self:GetPos(), 220, 220 )
+        util.BlastDamage( self, owner, self:GetPos(), 220, 220 )
         util.ScreenShake( self:GetPos(), 1000, 255, 2.5, 1200 )
 
         self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )

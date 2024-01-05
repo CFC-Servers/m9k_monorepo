@@ -43,7 +43,9 @@ if SERVER then
     end
 
     function ENT:Explosion()
-        if not IsValid( self.Owner ) then
+        local owner = self:GetNWEntity( "M9K_Owner" )
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -72,7 +74,7 @@ if SERVER then
         local scorchstart = self:GetPos() + ((Vector( 0, 0, 1 )) * 5)
         local scorchend = self:GetPos() + ((Vector( 0, 0, -1 )) * 5)
 
-        util.BlastDamage( self, self.Owner, self:GetPos(), 350, 100 )
+        util.BlastDamage( self, owner, self:GetPos(), 350, 100 )
         util.ScreenShake( self:GetPos(), 500, 500, 1.25, 500 )
         self:Remove()
         util.Decal( "Scorch", scorchstart, scorchend )
