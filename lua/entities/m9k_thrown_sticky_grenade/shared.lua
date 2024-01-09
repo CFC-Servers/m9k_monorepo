@@ -37,11 +37,6 @@ if SERVER then
             self:Explosion()
         end
 
-        if (self.HitWeld) then
-            self.HitWeld = false
-            constraint.Weld( self.HitEnt, self, 0, 0, 0, true )
-        end
-
         self:NextThink( CurTime() )
         return true
     end
@@ -84,12 +79,7 @@ if SERVER then
         phys:Sleep()
 
         if data.HitEntity:IsValid() then
-            if data.HitEntity:IsNPC() or data.HitEntity:IsPlayer() then
-                self:SetParent( data.HitEntity )
-            else
-                self.HitEnt = data.HitEntity
-                self.HitWeld = true
-            end
+            self:SetParent( data.HitEntity )
 
             phys:EnableMotion( true )
             phys:Wake()
