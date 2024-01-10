@@ -102,7 +102,7 @@ function SWEP:Throw()
                             if SERVER then
                                 local rocket = ents.Create( self.Primary.Round )
                                 if not rocket:IsValid() then return false end
-                                rocket:SetNWEntity( "M9K_Owner", self:GetOwner() )
+                                rocket._m9kOwner = self:GetOwner()
                                 rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
                                 rocket:SetPos( pos )
                                 rocket:Spawn()

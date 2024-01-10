@@ -90,7 +90,7 @@ if SERVER then
         if not IsValid( self ) then return end
         if not IsValid( self ) then return end
 
-        local owner = self:GetNWEntity( "M9K_Owner" )
+        local owner = self._m9kOwner
 
         if not IsValid( owner ) then
             self:Remove()

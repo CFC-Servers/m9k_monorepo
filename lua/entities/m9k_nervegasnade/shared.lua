@@ -55,7 +55,7 @@ PhysicsCollide
     end
 
     function ENT:BreakVial()
-        local owner = self:GetNWEntity( "M9K_Owner" )
+        local owner = self._m9kOwner
 
         if not IsValid( owner ) then
             self:Remove()
