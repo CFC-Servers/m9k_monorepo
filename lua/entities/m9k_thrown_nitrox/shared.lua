@@ -50,7 +50,9 @@ PhysicsCollide
     end
 
     function ENT:QueueExplosion()
-        if not IsValid( self.Owner ) then
+        local owner = self._m9kOwner
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -60,8 +62,8 @@ PhysicsCollide
 
         local vaporize = ents.Create( "m9k_nitro_vapor" )
         vaporize:SetPos( pos )
-        vaporize:SetOwner( self.Owner )
-        vaporize.Owner = self.Owner
+        vaporize:SetOwner( owner )
+        vaporize.Owner = owner
         vaporize:Spawn()
 
         self:Remove()

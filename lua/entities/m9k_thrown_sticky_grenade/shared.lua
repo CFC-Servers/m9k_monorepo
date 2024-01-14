@@ -37,11 +37,6 @@ if SERVER then
             self:Explosion()
         end
 
-        if (self.HitWeld) then
-            self.HitWeld = false
-            constraint.Weld( self.HitEnt, self, 0, 0, 0, true )
-        end
-
         self:NextThink( CurTime() )
         return true
     end
@@ -84,12 +79,7 @@ if SERVER then
         phys:Sleep()
 
         if data.HitEntity:IsValid() then
-            if data.HitEntity:IsNPC() or data.HitEntity:IsPlayer() then
-                self:SetParent( data.HitEntity )
-            else
-                self.HitEnt = data.HitEntity
-                self.HitWeld = true
-            end
+            self:SetParent( data.HitEntity )
 
             phys:EnableMotion( true )
             phys:Wake()
@@ -100,7 +90,9 @@ if SERVER then
         if not IsValid( self ) then return end
         if not IsValid( self ) then return end
 
-        if not IsValid( self.Owner ) then
+        local owner = self._m9kOwner
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -120,7 +112,7 @@ if SERVER then
         util.Effect( "ThumperDust", effectdata )
         util.Effect( "Explosion", effectdata )
 
-        util.BlastDamage( self, self.Owner, self:GetPos(), 220, 220 )
+        util.BlastDamage( self, owner, self:GetPos(), 220, 220 )
         util.ScreenShake( self:GetPos(), 1000, 255, 2.5, 1200 )
 
         self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )

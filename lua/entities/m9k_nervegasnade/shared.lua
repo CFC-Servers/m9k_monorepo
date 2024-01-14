@@ -55,7 +55,9 @@ PhysicsCollide
     end
 
     function ENT:BreakVial()
-        if not IsValid( self.Owner ) then
+        local owner = self._m9kOwner
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -65,16 +67,16 @@ PhysicsCollide
         if GetConVar( "M9KExplosiveNerveGas" ) == nil or GetConVar( "M9KExplosiveNerveGas" ):GetBool() then
             local poison = ents.Create( "m9k_released_poison" )
             poison:SetPos( pos )
-            poison:SetOwner( self.Owner )
-            poison.Owner = self.Owner
+            poison:SetOwner( owner )
+            poison.Owner = owner
             poison.Big = false
             poison.PosToKeep = pos
             poison:Spawn()
         else
             local painParent = ents.Create( "m9k_poison_parent" )
             painParent:SetPos( pos )
-            painParent:SetOwner( self.Owner )
-            painParent.Owner = self.Owner
+            painParent:SetOwner( owner )
+            painParent.Owner = owner
             painParent:Spawn()
             painParent.Big = false
 
@@ -101,7 +103,7 @@ PhysicsCollide
 
         local gas = EffectData()
         gas:SetOrigin( pos )
-        gas:SetEntity( self.Owner ) --i dunno, just use it!
+        gas:SetEntity( owner ) --i dunno, just use it!
         gas:SetScale( 1 ) --otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
         util.Effect( "m9k_released_nerve_gas", gas )
 
