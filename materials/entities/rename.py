@@ -7,8 +7,9 @@ def rename():
     i = 0
     path = os.getcwd()
     for filename in os.listdir(path):
-        if filename.endswith(".png"):
-            os.rename(filename, "m9k_" + str(i) + ".png")
+        if filename.startswith("m9k_m9k_"):
+            # remove first 4 characters
+            os.rename(filename, filename[4:])
             i = i + 1
 
 rename()
