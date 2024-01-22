@@ -82,28 +82,28 @@ SWEP.FireDelay = SWEP.NextFireTime
 --and now to the nasty parts of this swep...
 function SWEP:Deploy()
     if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then
-        timer.Destroy( "davy_crocket_" .. self:GetOwner():UniqueID() )
+        timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
     end
     self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight false
     self:SendWeaponAnim( ACT_VM_DRAW )
 
-    if (GetConVar( "DavyCrockettAllowed" ):GetBool()) then
-        self.FireDelay = (CurTime() + self.NextFireTime)
+    if GetConVar( "DavyCrockettAllowed" ):GetBool() then
+        self.FireDelay = CurTime() + self.NextFireTime
+        self:SetNextPrimaryFire( self.FireDelay )
         self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in " .. self.Countdown .. " seconds." )
         self:GetOwner().DCCount = self.Countdown - 1
-        timer.Create( "davy_crocket_" .. self:GetOwner():UniqueID(), 1, self.Countdown,
-            function()
-                if not IsValid( self ) then return end
-                if not IsValid( self:GetOwner() ) then return end
-                if not IsValid( self ) then return end
-                if not IsValid( self:GetOwner():GetActiveWeapon() ) then return end
-                if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
-                    timer.Destroy( "davy_crocket_" .. self:GetOwner():UniqueID() )
-                    return
-                end
-                self:DeployCountDownFunc( self:GetOwner().DCCount )
-                self:GetOwner().DCCount = self:GetOwner().DCCount - 1
-            end )
+        timer.Create( "davy_crocket_" .. self:GetOwner():UniqueID(), 1, self.Countdown, function()
+            if not IsValid( self ) then return end
+            if not IsValid( self:GetOwner() ) then return end
+            if not IsValid( self:GetOwner():GetActiveWeapon() ) then return end
+            if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
+                timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
+                return
+            end
+
+            self:DeployCountDownFunc( self:GetOwner().DCCount )
+            self:GetOwner().DCCount = self:GetOwner().DCCount - 1
+        end )
     else
         self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
     end
