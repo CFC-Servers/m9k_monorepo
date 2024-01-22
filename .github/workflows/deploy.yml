@@ -26,7 +26,7 @@ jobs:
 
       - uses: CFC-Servers/gmod-upload@master
         with:
-          id: 3097864891
+          id: 3114933414
           changelog: ${{ inputs.changelog }} 
         env:
           STEAM_USERNAME: ${{ secrets.WORKSHOP_UPLOADER_USERNAME }}
