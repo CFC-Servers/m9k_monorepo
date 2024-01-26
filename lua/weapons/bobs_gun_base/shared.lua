@@ -364,7 +364,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     if not penTrace.Hit then return false end
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
 
-    debugoverlay.Text( penTrace.HitPos, "Pen:" .. tostring( iteration ), 10 )
+    --debugoverlay.Text( penTrace.HitPos, "Pen:" .. tostring( iteration ), 10 )
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
     local bullet = {
         Num = 1,
@@ -474,10 +474,11 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
         TracerName = "Tracer"
     end
 
+    local owner = self:GetOwner()
     local bullet = {
         Num = num_bullets,
-        Src = self:GetOwner():GetShootPos(),
-        Dir = ( self:GetOwner():GetAimVector():Angle() + self:GetOwner():GetViewPunchAngles() ):Forward(),
+        Src = owner:GetShootPos(),
+        Dir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward(),
         Spread = Vector( aimcone, aimcone, 0 ),
         Tracer = 3,
         TracerName = TracerName,
@@ -488,32 +489,32 @@ function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
             self:BulletCallback( 0, attacker, tracedata, dmginfo )
         end
     }
-    if IsValid( self:GetOwner() ) then
-        self:GetOwner():FireBullets( bullet )
+    if IsValid( owner ) then
+        owner:FireBullets( bullet )
     end
 
 
     local x = util.SharedRandom( "m9k_recoil", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
     local y = util.SharedRandom( "m9k_recoil", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
     local anglo1 = Angle( x, y, 0 )
-    self:GetOwner():ViewPunch( anglo1 )
+    owner:ViewPunch( anglo1 )
 
-    if SERVER and game.SinglePlayer() and not self:GetOwner():IsNPC() then
-        local offlineeyes = self:GetOwner():EyeAngles()
+    if SERVER and game.SinglePlayer() and not owner:IsNPC() then
+        local offlineeyes = owner:EyeAngles()
         offlineeyes.pitch = offlineeyes.pitch + anglo1.pitch
         offlineeyes.yaw = offlineeyes.yaw + anglo1.yaw
         if GetConVar( "M9KDynamicRecoil" ):GetBool() then
-            self:GetOwner():SetEyeAngles( offlineeyes )
+            owner:SetEyeAngles( offlineeyes )
         end
     end
 
-    if CLIENT and not game.SinglePlayer() and not self:GetOwner():IsNPC() then
+    if CLIENT and not game.SinglePlayer() and not owner:IsNPC() then
         -- case 1 old random
-        local eyes = self:GetOwner():EyeAngles()
+        local eyes = owner:EyeAngles()
         eyes.pitch = eyes.pitch + ( anglo1.pitch / 3 )
         eyes.yaw = eyes.yaw + ( anglo1.yaw / 3 )
         if IsFirstTimePredicted() and GetConVar( "M9KDynamicRecoil" ):GetBool() then
-            self:GetOwner():SetEyeAngles( eyes )
+            owner:SetEyeAngles( eyes )
         end
     end
 end
