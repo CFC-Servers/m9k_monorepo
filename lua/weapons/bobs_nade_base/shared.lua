@@ -62,82 +62,66 @@ SWEP.SightsAng              = Vector( 0, 0, 0 ) -- No, I don't know why
 SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
---and now to the nasty parts of this swep...
-
 function SWEP:PrimaryAttack()
     if self:GetOwner():IsNPC() then return end
-    if self:CanPrimaryAttack() then
-        self:SendWeaponAnim( ACT_VM_PULLPIN )
+    if not self:CanPrimaryAttack() then return end
+    self:SendWeaponAnim( ACT_VM_PULLPIN )
 
-        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        timer.Simple( 0.6, function()
-            if SERVER then
-                if not IsValid( self ) then return end
-                if IsValid( self:GetOwner() ) then
-                    if (self:AllIsWell()) then
-                        self:Throw()
-                    end
-                end
-            end
-        end )
-    end
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+    if CLIENT then return end
+
+    timer.Simple( 0.6, function()
+        if not IsValid( self ) then return end
+        if IsValid( self:GetOwner() ) and self:AllIsWell() then
+            self:Throw()
+        end
+    end )
 end
 
 function SWEP:Throw()
-    if SERVER then
-        if self:GetOwner() ~= nil and self ~= nil then
-            if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                self:SendWeaponAnim( ACT_VM_THROW )
-                timer.Simple( 0.35, function()
-                    if not IsValid( self ) then return end
-                    if self:GetOwner() ~= nil
-                        and self ~= nil
-                    then
-                        if (self:AllIsWell()) then
-                            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                            local aim = self:GetOwner():GetAimVector()
-                            local side = aim:Cross( Vector( 0, 0, 1 ) )
-                            local up = side:Cross( aim )
-                            local pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
-                            if SERVER then
-                                local rocket = ents.Create( self.Primary.Round )
-                                if not rocket:IsValid() then return false end
-                                rocket._m9kOwner = self:GetOwner()
-                                rocket.DoNotDuplicate = true
-                                rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
-                                rocket:SetPos( pos )
-                                rocket:Spawn()
-                                local phys = rocket:GetPhysicsObject()
-                                if self:GetOwner():KeyDown( IN_ATTACK2 ) and (phys:IsValid()) then
-                                    if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 2000 ) end
-                                else
-                                    if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 5500 ) end
-                                end
-                                self:TakePrimaryAmmo( 1 )
-                            end
-                            self:checkitycheckyoself()
-                        end
-                    end
-                end )
-            end
-        end
-    end
-end
+    self:SendWeaponAnim( ACT_VM_THROW )
+    timer.Simple( 0.35, function()
+        if not IsValid( self ) then return end
+        if not IsValid( self:GetOwner() ) then return end
+        if not self:AllIsWell() then return end
 
-function SWEP:SecondaryAttack()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+
+        local aim = self:GetOwner():GetAimVector()
+        local side = aim:Cross( Vector( 0, 0, 1 ) )
+        local up = side:Cross( aim )
+        local pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
+
+        local grenade = ents.Create( self.Primary.Round )
+        if not grenade:IsValid() then return end
+
+        grenade._m9kOwner = self:GetOwner()
+        grenade.DoNotDuplicate = true
+        grenade:SetOwner( self:GetOwner() )
+        grenade:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
+        grenade:SetPos( pos )
+        grenade:Spawn()
+        local phys = grenade:GetPhysicsObject()
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) and (phys:IsValid()) then
+            if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 2000 ) end
+        else
+            if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 5500 ) end
+        end
+
+        self:TakePrimaryAmmo( 1 )
+        self:checkitycheckyoself()
+    end )
 end
 
 function SWEP:checkitycheckyoself()
     timer.Simple( .15, function()
         if not IsValid( self ) then return end
-        if IsValid( self:GetOwner() ) then
-            if SERVER and (self:AllIsWell()) then
-                if self:Clip1() == 0
-                    and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-                    self:GetOwner():StripWeapon( self.Gun )
-                else
-                    self:DefaultReload( ACT_VM_DRAW )
-                end
+        if IsValid( self:GetOwner() ) and self:AllIsWell() then
+            if self:Clip1() == 0
+                and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+                self:GetOwner():StripWeapon( self.Gun )
+            else
+                self:DefaultReload( ACT_VM_DRAW )
             end
         end
     end )
@@ -158,3 +142,5 @@ end
 function SWEP:Think()
 end
 
+function SWEP:SecondaryAttack()
+end
