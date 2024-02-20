@@ -95,7 +95,7 @@ if SERVER then
         util.ScreenShake( self:WorldSpaceCenter(), 2000, 255, 2.5, 1250 )
         util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), 500, 500 )
 
-        self:EmitSound( Sound( "C4.Explode" ) )
+        self:EmitSound( "C4.Explode", 70 )
 
         self:Remove()
     end

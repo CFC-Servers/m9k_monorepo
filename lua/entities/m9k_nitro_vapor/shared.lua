@@ -54,7 +54,7 @@ if SERVER then
 
         util.BlastDamage( self, nitro_owner, pos, radius, damage )
         util.ScreenShake( pos, 500, 500, .25, 500 )
-        sound.Play( "ambient/explosions/explode_7.wav", pos, 95 )
+        sound.Play( "ambient/explosions/explode_7.wav", pos, 80 )
 
         local scorchstart = self:GetPos() + ((Vector( 0, 0, 1 )) * 5)
         local scorchend = self:GetPos() + ((Vector( 0, 0, -1 )) * 5)

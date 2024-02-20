@@ -186,7 +186,7 @@ function SWEP:Suicide()
     util.ScreenShake( owner:GetPos(), 2000, 255, 2.5, 1250 )
     util.BlastDamage( self, self:GetOwner(), owner:GetPos(), 500, 500 )
 
-    owner:EmitSound( Sound( "C4.Explode" ) )
+    owner:EmitSound( "C4.Explode", 70 )
 end
 
 function SWEP:SecondaryAttack()
