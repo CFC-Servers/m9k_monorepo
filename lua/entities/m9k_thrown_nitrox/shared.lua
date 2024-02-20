@@ -44,7 +44,7 @@ if SERVER then
 PhysicsCollide
 -----------------------------------------------------------]]
     function ENT:PhysicsCollide( data, phys )
-        self:EmitSound( Sound( "GlassBottle.Break" ) )
+        self:EmitSound( "GlassBottle.Break" )
 
         self:QueueExplosion()
     end
@@ -77,7 +77,7 @@ OnTakeDamage
         if not IsValid( dmginfo:GetInflictor() ) then return end
         if dmginfo:GetInflictor() == "m9k_released_poison" then return end
         self:QueueExplosion()
-        self:EmitSound( Sound( "GlassBottle.Break" ) )
+        self:EmitSound( "GlassBottle.Break" )
     end
 end
 

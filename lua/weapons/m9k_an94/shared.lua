@@ -38,7 +38,7 @@ SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
-SWEP.Primary.Sound          = Sound( "an94.Single" ) -- Script that calls the primary fire sound
+SWEP.Primary.Sound          = "an94.Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 600 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 30 -- Size of a clip
 SWEP.Primary.DefaultClip    = 60 -- Bullets you start with
@@ -80,7 +80,7 @@ function SWEP:SelectFireMode()
         end
         self:EmitSound( "Weapon_AR2.Empty" )
         self.Primary.NumShots  = 1
-        self.Primary.Sound     = Sound( "an94.single" )
+        self.Primary.Sound     = "an94.single"
         self.Primary.Automatic = true
         self.Primary.RPM       = 600
     else
@@ -91,7 +91,7 @@ function SWEP:SelectFireMode()
         end
         self:EmitSound( "Weapon_AR2.Empty" )
         self.Primary.NumShots  = 2
-        self.Primary.Sound     = Sound( "an94.double" )
+        self.Primary.Sound     = "an94.double"
         self.Primary.Automatic = false
         self.Primary.RPM       = 300
     end
@@ -107,11 +107,11 @@ function SWEP:PrimaryAttack()
             if self.Primary.NumShots > self:GetOwner():GetActiveWeapon():Clip1() then
                 self.Primary.NumShots = 1
                 self.ShootThese       = 1
-                self.Primary.Sound    = Sound( "an94.single" )
+                self.Primary.Sound    = "an94.single"
             else
                 self.Primary.NumShots = 2
                 self.ShootThese       = 2
-                self.Primary.Sound    = Sound( "an94.double" )
+                self.Primary.Sound    = "an94.double"
             end
         end
 

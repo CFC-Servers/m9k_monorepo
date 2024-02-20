@@ -70,10 +70,10 @@ SWEP.Slash                  = 1
 -- SWEP.KnifeSlash = ("Weapon_Knife.Hit")
 -- SWEP.KnifeStab = ("Weapon_Knife.Stab")
 
-SWEP.Primary.Sound          = Sound( "weapons/blades/woosh.mp3" ) --woosh
-SWEP.KnifeShink             = Sound( "weapons/blades/hitwall.mp3" )
-SWEP.KnifeSlash             = Sound( "weapons/blades/slash.mp3" )
-SWEP.KnifeStab              = Sound( "weapons/blades/nastystab.mp3" )
+SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
+SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
+SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
+SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )

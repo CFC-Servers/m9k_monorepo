@@ -36,7 +36,7 @@ SWEP.Base                   = "bobs_shotty_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 
-SWEP.Primary.Sound          = Sound( "Double_Barrel.Single" ) -- script that calls the primary fire sound
+SWEP.Primary.Sound          = "Double_Barrel.Single" -- script that calls the primary fire sound
 SWEP.Primary.RPM            = 180 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 2 -- Size of a clip
 SWEP.Primary.DefaultClip    = 30 -- Default number of bullets in a clip
@@ -68,7 +68,7 @@ SWEP.SightsAng              = Vector( 0, 0, 0 )
 SWEP.RunSightsPos           = Vector( 11.475, -7.705, -2.787 )
 SWEP.RunSightsAng           = Vector( 0.574, 51.638, 5.737 )
 
-SWEP.Secondary.Sound        = Sound( "dbarrel_dblast" )
+SWEP.Secondary.Sound        = "dbarrel_dblast"
 
 local PainMulti             = 1
 

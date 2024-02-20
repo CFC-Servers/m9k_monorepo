@@ -85,7 +85,7 @@ PhysicsCollide
 -----------------------------------------------------------]]
     function ENT:PhysicsCollide( data, phys )
         if data.Speed > 50 then
-            self:EmitSound( Sound( "HEGrenade.Bounce" ) )
+            self:EmitSound( "HEGrenade.Bounce" )
         end
 
         local impulse = -data.Speed * data.HitNormal * .4 + (data.OurOldVelocity * -.6)

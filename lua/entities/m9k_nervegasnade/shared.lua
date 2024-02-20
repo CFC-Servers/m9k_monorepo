@@ -48,7 +48,7 @@ PhysicsCollide
         --self.timeleft = CurTime() + 20
 
         if data.Speed > 50 then
-            self:EmitSound( Sound( "GlassBottle.Break" ) )
+            self:EmitSound( "GlassBottle.Break" )
         end
 
         self:BreakVial()
@@ -118,7 +118,7 @@ OnTakeDamage
         if not IsValid( dmginfo:GetInflictor() ) then return end
         if dmginfo:GetInflictor() == "m9k_released_poison" then return end
         self:BreakVial()
-        self:EmitSound( Sound( "GlassBottle.Break" ) )
+        self:EmitSound( "GlassBottle.Break" )
     end
 end
 

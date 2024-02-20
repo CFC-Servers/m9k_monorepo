@@ -57,7 +57,7 @@ if SERVER then
 -----------------------------------------------------------]]
     function ENT:PhysicsCollide( data, physobj )
         if (data.Speed > 80 and data.DeltaTime > 0.2) then
-            self:EmitSound( Sound( "Wood.ImpactHard" ) )
+            self:EmitSound( "Wood.ImpactHard" )
         end
     end
 
