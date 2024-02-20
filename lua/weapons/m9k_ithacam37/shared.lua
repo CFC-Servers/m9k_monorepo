@@ -36,7 +36,7 @@ SWEP.Base                   = "bobs_shotty_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 
-SWEP.Primary.Sound          = Sound( "IthacaM37.Single" ) -- script that calls the primary fire sound
+SWEP.Primary.Sound          = "IthacaM37.Single" -- script that calls the primary fire sound
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 6 -- Size of a clip
 SWEP.Primary.DefaultClip    = 30 -- Default number of bullets in a clip

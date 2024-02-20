@@ -37,7 +37,7 @@ SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
-SWEP.Primary.Sound          = Sound( "mp5_navy_Single" ) -- Script that calls the primary fire sound
+SWEP.Primary.Sound          = "mp5_navy_Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 800 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 30 -- Size of a clip
 SWEP.Primary.DefaultClip    = 60 -- Bullets you start with

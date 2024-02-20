@@ -16,7 +16,7 @@ SWEP.ViewModelFlip          = true -- True for CSS models, False for HL2 models
 SWEP.Spawnable              = false
 SWEP.AdminSpawnable         = false
 
-SWEP.Primary.Sound          = Sound( "" ) -- Sound of the gun
+SWEP.Primary.Sound          = "" -- Sound of the gun
 SWEP.Primary.RPM            = 0 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 0 -- Size of a clip
 SWEP.Primary.DefaultClip    = 0 -- Default number of bullets in a clip

@@ -38,7 +38,7 @@ SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 SWEP.ShowWorldModel         = true
 
-SWEP.Primary.Sound          = Sound( "" ) -- Script that calls the primary fire sound
+SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1 -- Size of a clip
 SWEP.Primary.DefaultClip    = 1 -- Bullets you start with
@@ -105,7 +105,7 @@ function SWEP:PrimaryAttack()
     self:FireRocket()
     self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
     self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-    self:EmitSound( Sound( "Weapon_Knife.Slash" ) )
+    self:EmitSound( "Weapon_Knife.Slash" )
     self:TakePrimaryAmmo( 1 )
     self:SendWeaponAnim( ACT_VM_HITCENTER )
     self:CheckWeaponsAndAmmo()

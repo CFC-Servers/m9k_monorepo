@@ -65,10 +65,10 @@ SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 -- SWEP.KnifeSlash = ("Weapon_Knife.Hit")
 -- SWEP.KnifeStab = ("Weapon_Knife.Stab")
 
-SWEP.Primary.Sound          = Sound( "weapons/blades/woosh.mp3" ) --woosh
-SWEP.KnifeShink             = Sound( "weapons/blades/hitwall.mp3" )
-SWEP.KnifeSlash             = Sound( "weapons/blades/slash.mp3" )
-SWEP.KnifeStab              = Sound( "weapons/blades/nastystab.mp3" )
+SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
+SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
+SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
+SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
@@ -155,7 +155,7 @@ end
 
 function SWEP:SecondaryAttack()
     if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
-        self:EmitSound( Sound( "Weapon_Knife.Slash" ) )
+        self:EmitSound( "Weapon_Knife.Slash" )
 
         if (SERVER) then
             local knife = ents.Create( "m9k_thrown_knife" )

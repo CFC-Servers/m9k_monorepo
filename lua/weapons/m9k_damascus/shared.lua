@@ -64,13 +64,13 @@ SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 
 SWEP.Slash                  = 1
 
-SWEP.Primary.Sound          = Sound( "weapons/blades/woosh.mp3" ) --woosh
-SWEP.KnifeShink             = Sound( "weapons/blades/hitwall.mp3" )
-SWEP.KnifeSlash             = Sound( "weapons/blades/slash.mp3" )
-SWEP.KnifeStab              = Sound( "weapons/blades/nastystab.mp3" )
+SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
+SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
+SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
+SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 
-SWEP.SwordChop              = Sound( "weapons/blades/swordchop.mp3" )
-SWEP.SwordClash             = Sound( "weapons/blades/clash.mp3" )
+SWEP.SwordChop              = "weapons/blades/swordchop.mp3"
+SWEP.SwordClash             = "weapons/blades/clash.mp3"
 
 
 function SWEP:PrimaryAttack()

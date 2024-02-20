@@ -390,11 +390,11 @@ if SERVER then
 end
 
 if CLIENT then
-    local sndWaveBlast = Sound( "ambient/levels/streetwar/city_battle11.wav" )
-    local sndWaveIncoming = Sound( "ambient/levels/labs/teleport_preblast_suckin1.wav" )
-    local sndSplode = Sound( "ambient/explosions/explode_6.wav" )
-    local sndRumble = Sound( "ambient/explosions/exp1.wav" )
-    local sndPop = Sound( "weapons/pistol/pistol_fire3.wav" )
+    local sndWaveBlast = "ambient/levels/streetwar/city_battle11.wav"
+    local sndWaveIncoming = "ambient/levels/labs/teleport_preblast_suckin1.wav"
+    local sndSplode = "ambient/explosions/explode_6.wav"
+    local sndRumble = "ambient/explosions/exp1.wav"
+    local sndPop = "weapons/pistol/pistol_fire3.wav"
 
 
     function ENT:Initialize()
