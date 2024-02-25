@@ -693,83 +693,82 @@ end
 IronSight
 -------------------------------------------------------]]
 function SWEP:IronSight()
-    if not IsValid( self ) then return end
-    if not IsValid( self:GetOwner() ) then return end
+    local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
 
-    if not self:GetOwner():IsNPC() then
-        if self.ResetSights and CurTime() >= self.ResetSights then
-            self.ResetSights = nil
+    local selfTbl = self:GetTable()
+    if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
+        selfTbl.ResetSights = nil
 
-            if self.Silenced then
-                self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
-            else
-                self:SendWeaponAnim( ACT_VM_IDLE )
-            end
+        if selfTbl.Silenced then
+            self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
+        else
+            self:SendWeaponAnim( ACT_VM_IDLE )
         end
     end
 
-    if self.CanBeSilenced and self.NextSilence < CurTime() then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) then
+    local pressingE = owner:KeyDown( IN_USE )
+    local pressingM2 = owner:KeyDown( IN_ATTACK2 )
+
+    if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() then
+        if pressingE and pressingM2 then
             self:Silencer()
         end
     end
 
-    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetNWBool( "Reloading" )) then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
+    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not (self:GetNWBool( "Reloading" )) then
+        if pressingE and owner:KeyPressed( IN_RELOAD ) then
             self:SelectFireMode()
         end
     end
 
     -- --copy this...
-    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
-        if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
+    if owner:KeyPressed( IN_SPEED ) and not self:GetNWBool( "Reloading" ) then -- If you are running
+        if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-        self.DrawCrosshair = false
+        selfTbl.IronSightsPos = selfTbl.RunSightsPos -- Hold it down
+        selfTbl.IronSightsAng = selfTbl.RunSightsAng -- Hold it down
+        self:SetIronsights( true, owner ) -- Set the ironsight true
+        owner:SetFOV( 0, 0.3 )
+        selfTbl.DrawCrosshair = false
     end
 
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-        self.DrawCrosshair = self.OrigCrossHair
+    if owner:KeyReleased( IN_SPEED ) then -- If you release run then
+        self:SetIronsights( false, owner ) -- Set the ironsight true
+        owner:SetFOV( 0, 0.3 )
+        selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
     end -- Shoulder the gun
 
     -- --down to this
-    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if not pressingE and not owner:KeyDown( IN_SPEED ) and owner:KeyPressed( IN_ATTACK2 ) and not self:GetNWBool( "Reloading" ) then
         -- --If the key E (Use Key) is not pressed, then
+        owner:SetFOV( selfTbl.Secondary.IronFOV, 0.3 )
+        selfTbl.IronSightsPos = selfTbl.SightsPos -- Bring it up
+        selfTbl.IronSightsAng = selfTbl.SightsAng -- Bring it up
+        self:SetIronsights( true, owner )
+        selfTbl.DrawCrosshair = false
+        -- --Set the ironsight true
 
-        if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
-            self.IronSightsPos = self.SightsPos -- Bring it up
-            self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true, self:GetOwner() )
-            self.DrawCrosshair = false
-            -- --Set the ironsight true
-
-            if CLIENT then return end
-        end
+        if CLIENT then return end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if owner:KeyReleased( IN_ATTACK2 ) and not pressingE and not owner:KeyDown( IN_SPEED ) then
         -- --If the right click is released, then
-        self:GetOwner():SetFOV( 0, 0.3 )
-        self.DrawCrosshair = self.OrigCrossHair
-        self:SetIronsights( false, self:GetOwner() )
+        owner:SetFOV( 0, 0.3 )
+        selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
+        self:SetIronsights( false, owner )
         -- --Set the ironsight false
 
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
-        self.SwayScale = 0.05
-        self.BobScale  = 0.05
+    if pressingM2 and not pressingE and not owner:KeyDown( IN_SPEED ) then
+        selfTbl.SwayScale = 0.05
+        selfTbl.BobScale  = 0.05
     else
-        self.SwayScale = 1.0
-        self.BobScale  = 1.0
+        selfTbl.SwayScale = 1.0
+        selfTbl.BobScale  = 1.0
     end
 end
 
