@@ -100,7 +100,7 @@ end
 function SWEP:LeftJab()
     local pos = self:GetOwner():GetShootPos()
     local ang = self:GetOwner():GetAimVector()
-    local damagedice = math.Rand( .95, 1.95 )
+    local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
 
     self:GetOwner():LagCompensation( true )

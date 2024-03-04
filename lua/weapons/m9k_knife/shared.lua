@@ -117,7 +117,7 @@ end
 function SWEP:PrimarySlash()
     local pos = self:GetOwner():GetShootPos()
     local ang = self:GetOwner():GetAimVector()
-    local damagedice = math.Rand( .85, 1.25 )
+    local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
 
     self:GetOwner():LagCompensation( true )
@@ -195,7 +195,7 @@ end
 function SWEP:Stab()
     local pos2 = self:GetOwner():GetShootPos()
     local ang2 = self:GetOwner():GetAimVector()
-    local damagedice = math.Rand( .85, 1.25 )
+    local damagedice = math.Rand( 0.95, 1.05 )
     local pain = 100 * damagedice
 
     self:GetOwner():LagCompensation( true )

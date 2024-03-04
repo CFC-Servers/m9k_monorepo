@@ -78,7 +78,7 @@ function SWEP:PrimaryAttack()
     local pos = self:GetOwner():GetShootPos()
     local ang = self:GetOwner():GetAimVector()
     local vm = self:GetOwner():GetViewModel()
-    local damagedice = math.Rand( .85, 1.25 )
+    local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then

@@ -182,7 +182,7 @@ function SWEP:ShootBulletInformation2()
     local CurrentDamage
     local CurrentRecoil
     local basedamage
-    local damagedice = math.Rand( .85, 1.3 )
+    local damagedice = math.Rand( 0.95, 1.05 )
 
     basedamage = PainMulti * self.Primary.Damage
     CurrentDamage = basedamage * damagedice
