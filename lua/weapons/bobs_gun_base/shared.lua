@@ -265,7 +265,7 @@ function SWEP:ShootBulletInformation()
         currentCone = self.Primary.Spread
     end
 
-    local damagedice = math.Rand( .95, 1.5 )
+    local damagedice = math.Rand( 0.95, 1.05 )
 
     local basedamage = PainMulti * self.Primary.Damage
     local currentDamage = basedamage * damagedice
