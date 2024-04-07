@@ -1,12 +1,3 @@
--- Variables that are used on both client and server
-SWEP.Gun = ("m9k_harpoon") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar( SWEP.Gun .. "_allowed" )) ~= nil then
-    if not (GetConVar( SWEP.Gun .. "_allowed" ):GetBool()) then
-        SWEP.Base = "bobs_blacklisted"
-        SWEP.PrintName = SWEP.Gun
-        return
-    end
-end
 SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
 SWEP.Contact                = ""
@@ -24,14 +15,15 @@ SWEP.DrawCrosshair          = false -- set false if you want no crosshair
 SWEP.Weight                 = 1 -- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
-SWEP.HoldType               = "melee" -- how others view you carrying the weapon
+SWEP.HoldType               = "grenade" -- how others view you carrying the weapon
 -- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
 -- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
 
-SWEP.ViewModelFOV           = 70
+SWEP.ViewModelFOV           = 40
 SWEP.ViewModelFlip          = false
---SWEP.ViewModel                = "models/weapons/v_invisib.mdl"    -- Weapon view model
-SWEP.WorldModel             = "models/weapons/w_harpooner.mdl" -- Weapon world model
+SWEP.ViewModel              = "models/weapons/v_pistol.mdl"
+SWEP.WorldModel             = "models/weapons/w_harpooner.mdl"
+SWEP.ShowViewModel          = false
 SWEP.Base                   = "bobs_gun_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
@@ -47,10 +39,7 @@ SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "Harpoon"
--- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
--- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
-
-SWEP.Primary.Round          = ("m9k_thrown_harpoon") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_thrown_harpoon" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 60 -- How much you 'zoom' in. Less is more!
 
@@ -60,46 +49,25 @@ SWEP.Primary.Spread         = 0 -- Define from-the-hip accuracy (1 is terrible, 
 SWEP.Primary.IronAccuracy   = 0 -- Ironsight accuracy, should be the same for shotguns
 --none of this matters for IEDs and other ent-tossing sweps
 
--- Enter iron sight info and bone mod info below
-SWEP.IronSightsPos          = Vector( 0, -12.952, -2.951 )
-SWEP.IronSightsAng          = Vector( 64.835, 0, 0 )
-SWEP.SightsPos              = Vector( 0, -12.952, -2.951 )
-SWEP.SightsAng              = Vector( 64.835, 0, 0 )
-SWEP.RunSightsPos           = Vector( 0, 12.295, 10.656 )
-SWEP.RunSightsAng           = Vector( -145, 3.5, 0 )
-
-
-
--- SWEP.WElements = {
--- ["harpoon"] = { type = "Model", model = "models/props_junk/harpoon002a.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(4.413, 5.945, -0.894), angle = Angle(-5.52, -71.026, -122.169), size = Vector(0.578, 0.578, 0.578), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
--- }
-
-if file.Exists( "models/weapons/v_knife_t.mdl", "GAME" ) then
-    SWEP.ViewModel         = "models/weapons/v_knife_t.mdl" -- Weapon view model
-    SWEP.VElements         = {
-        ["harpoon"] = { type = "Model", model = "models/props_junk/harpoon002a.mdl", bone = "v_weapon.knife_Parent", rel = "", pos = Vector( 6.3, -6.481, -5.825 ), angle = Angle( 128.731, -17.442,
-            -142.782 ), size = Vector( 0.5, 0.5, 0.5 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+SWEP.VElements = {
+    ["javelin"] = {
+        type = "Model",
+        model = "models/props_junk/harpoon002a.mdl",
+        bone = "ValveBiped.square",
+        rel = "",
+        pos = Vector( -2, -7, 12 ),
+        angle = Angle( 90, 10, 10 ),
+        size = Vector( 0.9, 0.5, 0.5 )
     }
-    SWEP.ViewModelBoneMods = {
-        ["v_weapon.Knife_Handle"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -30, 30, -30 ), angle = Angle( 0, 0, 0 ) },
-        ["v_weapon.Right_Arm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -30, 30, 30 ), angle = Angle( 0, 0, 0 ) }
-    }
-else
-    SWEP.ViewModel         = "models/weapons/v_invisib.mdl" -- Weapon view model
-    SWEP.VElements         = {
-        ["harpoon"] = { type = "Model", model = "models/props_junk/harpoon002a.mdl", bone = "Da Machete", rel = "", pos = Vector( -9.362, 2.611, 12.76 ), angle = Angle( 60.882, 128.927, 105.971 ), size =
-            Vector( 0.5, 0.5, 0.5 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-    }
-    SWEP.ViewModelBoneMods = {
-        ["l-upperarm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -7.286, 1.628, 7.461 ), angle = Angle( 7.182, 0, 0 ) },
-        ["r-upperarm-movement"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -30, -30, -30 ), angle = Angle( 0, 0, 0 ) },
-        ["l-upperarm-movement"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 3.615, 0.547, 4.635 ), angle = Angle( -45.929, -39.949, -76.849 ) },
-        ["l-forearm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -3.932, -42.389, 171.466 ) },
-        ["r-upperarm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 7.336, 0, 0 ) },
-        ["lwrist"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -47.502, -5.645, 0.551 ) }
-    }
-end
+}
 
+SWEP.ViewModelBoneMods = {
+    ["ValveBiped.Bip01_R_Hand"] = {
+        scale = Vector( 0.009, 0.009, 0.009 ),
+        pos = Vector( 0, 0, 0 ),
+        angle = Angle( 0, 0, 0 )
+    },
+}
 
 function SWEP:PrimaryAttack()
     self:FireRocket()
@@ -121,12 +89,11 @@ function SWEP:FireRocket()
         rocket:SetOwner( self:GetOwner() )
         rocket:Spawn()
         rocket:Activate()
-        local eyes = self:GetOwner():EyeAngles()
         local phys = rocket:GetPhysicsObject()
         phys:SetVelocity( self:GetOwner():GetAimVector() * 2000 )
     end
     if SERVER and not self:GetOwner():IsNPC() then
-        local anglo = Angle( -10, -5, 0 )
+        local anglo = Angle( 3, 5, 0 )
         self:GetOwner():ViewPunch( anglo )
     end
 end
@@ -173,10 +140,4 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Think()
-end
-
-if GetConVar( "M9KUniqueSlots" ) ~= nil then
-    if not (GetConVar( "M9KUniqueSlots" ):GetBool()) then
-        SWEP.SlotPos = 2
-    end
 end
