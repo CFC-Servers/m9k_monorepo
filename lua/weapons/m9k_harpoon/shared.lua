@@ -11,7 +11,7 @@ SWEP.SlotPos                = 23 -- Position in the slot
 SWEP.DrawAmmo               = false -- Should draw the default HL2 ammo counter
 SWEP.DrawWeaponInfoBox      = false -- Should draw the weapon info box
 SWEP.BounceWeaponIcon       = false -- Should the weapon icon bounce?
-SWEP.DrawCrosshair          = false -- set false if you want no crosshair
+SWEP.DrawCrosshair          = true -- set false if you want no crosshair
 SWEP.Weight                 = 1 -- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
@@ -57,7 +57,8 @@ SWEP.VElements = {
         rel = "",
         pos = Vector( -2, -7, 12 ),
         angle = Angle( 90, 10, 10 ),
-        size = Vector( 0.9, 0.5, 0.5 )
+        size = Vector( 0.9, 0.5, 0.5 ),
+        color = Color( 255, 255, 255, 255 ),
     }
 }
 
