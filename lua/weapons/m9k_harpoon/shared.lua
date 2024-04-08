@@ -8,7 +8,7 @@ SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2
 SWEP.PrintName              = "Harpoon" -- Weapon name (Shown on HUD)
 SWEP.Slot                   = 0 -- Slot in the weapon selection menu
 SWEP.SlotPos                = 23 -- Position in the slot
-SWEP.DrawAmmo               = false -- Should draw the default HL2 ammo counter
+SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawWeaponInfoBox      = false -- Should draw the weapon info box
 SWEP.BounceWeaponIcon       = false -- Should the weapon icon bounce?
 SWEP.DrawCrosshair          = true -- set false if you want no crosshair
@@ -33,7 +33,7 @@ SWEP.ShowWorldModel         = true
 SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1 -- Size of a clip
-SWEP.Primary.DefaultClip    = 1 -- Bullets you start with
+SWEP.Primary.DefaultClip    = 2 -- Bullets you start with
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
@@ -71,17 +71,26 @@ SWEP.ViewModelBoneMods = {
 }
 
 function SWEP:PrimaryAttack()
+    if not self:CanPrimaryAttack() then return end
+
     self:FireRocket()
     self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-    self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     self:EmitSound( "Weapon_Knife.Slash" )
     self:TakePrimaryAmmo( 1 )
     self:SendWeaponAnim( ACT_VM_HITCENTER )
-    self:CheckWeaponsAndAmmo()
+
+    if SERVER then
+        if self:GetOwner():GetAmmoCount( self.Primary.Ammo ) == 0 then
+            self:GetOwner():StripWeapon( self:GetClass() )
+        else
+            self:Reload()
+        end
+    end
 end
 
 function SWEP:FireRocket()
-    pos = self:GetOwner():GetShootPos()
+    local pos = self:GetOwner():GetShootPos()
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
@@ -96,22 +105,6 @@ function SWEP:FireRocket()
     if SERVER and not self:GetOwner():IsNPC() then
         local anglo = Angle( 3, 5, 0 )
         self:GetOwner():ViewPunch( anglo )
-    end
-end
-
-function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self ~= nil then
-        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-            timer.Simple( .1, function()
-                if SERVER then
-                    if not IsValid( self ) then return end
-                    if self:GetOwner() == nil then return end
-                    self:GetOwner():StripWeapon( self.Gun )
-                end
-            end )
-        else
-            self:Reload()
-        end
     end
 end
 
