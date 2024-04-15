@@ -943,53 +943,54 @@ if CLIENT then
 
     SWEP.wRenderOrder = nil
     function SWEP:DrawWorldModel()
-        if (self.ShowWorldModel == nil or self.ShowWorldModel) then
+        local selfTbl = self:GetTable()
+        if selfTbl.ShowWorldModel == nil or selfTbl.ShowWorldModel then
             self:DrawModel()
         end
 
-        if (not self.WElements) then return end
+        if not selfTbl.WElements then return end
 
-        if (not self.wRenderOrder) then
-            self.wRenderOrder = {}
+        if not selfTbl.wRenderOrder then
+            selfTbl.wRenderOrder = {}
 
-            for k, v in pairs( self.WElements ) do
+            for k, v in pairs( selfTbl.WElements ) do
                 if (v.type == "Model") then
-                    table.insert( self.wRenderOrder, 1, k )
+                    table.insert( selfTbl.wRenderOrder, 1, k )
                 elseif (v.type == "Sprite" or v.type == "Quad") then
-                    table.insert( self.wRenderOrder, k )
+                    table.insert( selfTbl.wRenderOrder, k )
                 end
             end
         end
 
-        if (IsValid( self:GetOwner() )) then
+        if IsValid( self:GetOwner() ) then
             bone_ent = self:GetOwner()
         else
             -- -- when the weapon is dropped
             bone_ent = self
         end
 
-        for k, name in pairs( self.wRenderOrder ) do
-            local v = self.WElements[name]
-            if (not v) then
-                self.wRenderOrder = nil
+        for _, name in pairs( selfTbl.wRenderOrder ) do
+            local v = selfTbl.WElements[name]
+            if not v then
+                selfTbl.wRenderOrder = nil
                 break
             end
-            if (v.hide) then continue end
+            if v.hide then continue end
 
             local pos, ang
 
-            if (v.bone) then
-                pos, ang = self:GetBoneOrientation( self.WElements, v, bone_ent )
+            if v.bone then
+                pos, ang = self:GetBoneOrientation( selfTbl.WElements, v, bone_ent )
             else
-                pos, ang = self:GetBoneOrientation( self.WElements, v, bone_ent, "ValveBiped.Bip01_R_Hand" )
+                pos, ang = self:GetBoneOrientation( selfTbl.WElements, v, bone_ent, "ValveBiped.Bip01_R_Hand" )
             end
 
-            if (not pos) then continue end
+            if not pos then continue end
 
             local model = v.modelEnt
             local sprite = v.spriteMaterial
 
-            if (v.type == "Model" and IsValid( model )) then
+            if v.type == "Model" and IsValid( model ) then
                 model:SetPos( pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z )
                 ang:RotateAroundAxis( ang:Up(), v.angle.y )
                 ang:RotateAroundAxis( ang:Right(), v.angle.p )
@@ -1001,25 +1002,25 @@ if CLIENT then
                 matrix:Scale( v.size )
                 model:EnableMatrix( "RenderMultiply", matrix )
 
-                if (v.material == "") then
+                if v.material == "" then
                     model:SetMaterial( "" )
-                elseif (model:GetMaterial() ~= v.material) then
+                elseif model:GetMaterial() ~= v.material then
                     model:SetMaterial( v.material )
                 end
 
-                if (v.skin and v.skin ~= model:GetSkin()) then
+                if v.skin and v.skin ~= model:GetSkin() then
                     model:SetSkin( v.skin )
                 end
 
-                if (v.bodygroup) then
+                if v.bodygroup then
                     for k, v in pairs( v.bodygroup ) do
-                        if (model:GetBodygroup( k ) ~= v) then
+                        if model:GetBodygroup( k ) ~= v then
                             model:SetBodygroup( k, v )
                         end
                     end
                 end
 
-                if (v.surpresslightning) then
+                if v.surpresslightning then
                     render.SuppressEngineLighting( true )
                 end
 
@@ -1029,14 +1030,14 @@ if CLIENT then
                 render.SetBlend( 1 )
                 render.SetColorModulation( 1, 1, 1 )
 
-                if (v.surpresslightning) then
+                if v.surpresslightning then
                     render.SuppressEngineLighting( false )
                 end
-            elseif (v.type == "Sprite" and sprite) then
+            elseif v.type == "Sprite" and sprite then
                 local drawpos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
                 render.SetMaterial( sprite )
                 render.DrawSprite( drawpos, v.size.x, v.size.y, v.color )
-            elseif (v.type == "Quad" and v.draw_func) then
+            elseif v.type == "Quad" and v.draw_func then
                 local drawpos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
                 ang:RotateAroundAxis( ang:Up(), v.angle.y )
                 ang:RotateAroundAxis( ang:Right(), v.angle.p )
