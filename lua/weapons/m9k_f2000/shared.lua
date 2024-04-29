@@ -19,7 +19,6 @@ SWEP.Slot                     = 2 -- Slot in the weapon selection menu
 SWEP.SlotPos                  = 27 -- Position in the slot
 SWEP.DrawAmmo                 = true -- Should draw the default HL2 ammo counter
 SWEP.DrawWeaponInfoBox        = false -- Should draw the weapon info box
-SWEP.BounceWeaponIcon         = false -- Should the weapon icon bounce?
 SWEP.DrawCrosshair            = true -- Set false if you want no crosshair from hip
 SWEP.XHair                    = true -- Used for returning crosshair after scope. Must be the same as DrawCrosshair
 SWEP.Weight                   = 30 -- Rank relative ot other weapons. bigger is better

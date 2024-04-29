@@ -160,9 +160,7 @@ function SWEP:Initialize()
     end
 
     if CLIENT then
-        local oldpath = "vgui/hud/name" -- the path goes here
-        local newpath = string.gsub( oldpath, "name", self.Gun )
-        self.WepSelectIcon = surface.GetTextureID( newpath )
+        self:SetupWepSelectIcon()
     end
 end
 
