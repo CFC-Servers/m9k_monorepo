@@ -39,7 +39,7 @@ if SERVER then
     end
 
     function ENT:Think()
-        self.lifetime = self.lifetime or CurTime() + 20
+        self.lifetime = self.lifetime or CurTime() + 10
 
         if CurTime() > self.lifetime then
             self:Remove()
