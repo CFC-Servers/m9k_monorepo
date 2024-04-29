@@ -858,12 +858,10 @@ if CLIENT then
         -- Borders
         y = y + 10
         x = x + 10
-        wide = wide - 20
+        wide = wide - 30
 
         -- Draw that mother
         surface.DrawTexturedRect( x, y,  wide, wide / 2 )
-        -- Draw weapon info box
-        self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
     end
 
     SWEP.vRenderOrder = nil

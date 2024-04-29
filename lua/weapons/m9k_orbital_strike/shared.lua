@@ -18,7 +18,6 @@ SWEP.PrintName                = "Orbital Strike Marker" -- Weapon name (Shown on
 SWEP.Slot                     = 4 -- Slot in the weapon selection menu
 SWEP.SlotPos                  = 35 -- Position in the slot
 SWEP.DrawAmmo                 = true -- Should draw the default HL2 ammo counter
-SWEP.DrawWeaponInfoBox        = false -- Should draw the weapon info box
 SWEP.DrawCrosshair            = false -- Set false if you want no crosshair from hip
 SWEP.Weight                   = 50 -- Rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo             = true -- Auto switch to if we pick it up

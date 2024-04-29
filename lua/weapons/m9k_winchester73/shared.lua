@@ -14,7 +14,6 @@ SWEP.PrintName                = "73 Winchester Carbine"        -- Weapon name (S
 SWEP.Slot                = 2                -- Slot in the weapon selection menu
 SWEP.SlotPos                = 41            -- Position in the slot
 SWEP.DrawAmmo                = true        -- Should draw the default HL2 ammo counter
-SWEP.DrawWeaponInfoBox            = false        -- Should draw the weapon info box
 SWEP.DrawCrosshair            = true        -- set false if you want no crosshair
 SWEP.Weight                = 3            -- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo            = true        -- Auto switch to if we pick it up

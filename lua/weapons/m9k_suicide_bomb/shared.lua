@@ -15,7 +15,6 @@ SWEP.PrintName                = "Timed C4"        -- Weapon name (Shown on HUD)
 SWEP.Slot                = 4                -- Slot in the weapon selection menu
 SWEP.SlotPos                = 27            -- Position in the slot
 SWEP.DrawAmmo                = true        -- Should draw the default HL2 ammo counter
-SWEP.DrawWeaponInfoBox            = true        -- Should draw the weapon info box
 SWEP.DrawCrosshair            = false        -- set false if you want no crosshair
 SWEP.Weight                = 30            -- rank relative ot other weapons. bigger is better
 SWEP.AutoSwitchTo            = true        -- Auto switch to if we pick it up

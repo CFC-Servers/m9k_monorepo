@@ -14,7 +14,6 @@ SWEP.PrintName                = "Remington 7615P"        -- Weapon name (Shown o
 SWEP.Slot                = 3                -- Slot in the weapon selection menu
 SWEP.SlotPos                = 46            -- Position in the slot
 SWEP.DrawAmmo                = true        -- Should draw the default HL2 ammo counter
-SWEP.DrawWeaponInfoBox        = false        -- Should draw the weapon info box
 SWEP.DrawCrosshair            = false        -- Set false if you want no crosshair from hip
 SWEP.XHair                    = false        -- Used for returning crosshair after scope. Must be the same as DrawCrosshair
 SWEP.Weight                = 50            -- Rank relative ot other weapons. bigger is better
