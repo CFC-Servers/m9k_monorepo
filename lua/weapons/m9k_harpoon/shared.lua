@@ -107,7 +107,6 @@ function SWEP:PrimaryAttack()
     end
 
     self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     self:EmitSound( "Weapon_Knife.Slash" )
     self:TakePrimaryAmmo( 1 )
     self:SendWeaponAnim( ACT_VM_HITCENTER )
@@ -119,6 +118,8 @@ function SWEP:PrimaryAttack()
             self:Reload()
         end
     end
+
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
 end
 
 function SWEP:Reload()
