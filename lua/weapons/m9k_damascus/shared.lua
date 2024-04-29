@@ -93,34 +93,30 @@ function SWEP:PrimaryAttack()
                 vm:SetSequence( vm:LookupSequence( "midslash2" ) )
                 self.Slash = 1
             end --if it looks stupid but works, it aint stupid!
-            self:EmitSound( self.Primary.Sound ) --slash in the wind sound here
-            if SERVER and IsValid( self:GetOwner() ) then
-                if self:GetOwner():Alive() then
-                    if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                        local slash = {}
-                        slash.start = pos
-                        slash.endpos = pos + (ang * 52)
-                        slash.filter = self:GetOwner()
-                        slash.mins = Vector( -15, -5, 0 )
-                        slash.maxs = Vector( 15, 5, 5 )
-                        local slashtrace = util.TraceHull( slash )
-                        if slashtrace.Hit then
-                            targ = slashtrace.Entity
-                            if targ:IsPlayer() or targ:IsNPC() then
-                                self:EmitSound( self.SwordChop )
-                                paininfo = DamageInfo()
-                                paininfo:SetDamage( pain )
-                                paininfo:SetDamageType( DMG_SLASH )
-                                paininfo:SetAttacker( self:GetOwner() )
-                                paininfo:SetInflictor( self )
-                                paininfo:SetDamageForce( slashtrace.Normal * 35000 )
-                                if SERVER then targ:TakeDamageInfo( paininfo ) end
-                            else
-                                self:EmitSound( self.KnifeShink ) --SHINK!
-                                look = self:GetOwner():GetEyeTrace()
-                                util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
-                            end
-                        end
+                self:EmitSound( self.Primary.Sound ) --slash in the wind sound here
+            if SERVER and self:GetOwner():Alive() then
+                local slash = {}
+                slash.start = pos
+                slash.endpos = pos + ( ang * 52 )
+                slash.filter = self:GetOwner()
+                slash.mins = Vector( -15, -5, 0 )
+                slash.maxs = Vector( 15, 5, 5 )
+                local slashtrace = util.TraceHull( slash )
+                if slashtrace.Hit then
+                    targ = slashtrace.Entity
+                    if targ:IsPlayer() or targ:IsNPC() then
+                        self:EmitSound( self.SwordChop )
+                        paininfo = DamageInfo()
+                        paininfo:SetDamage( pain )
+                        paininfo:SetDamageType( DMG_SLASH )
+                        paininfo:SetAttacker( self:GetOwner() )
+                        paininfo:SetInflictor( self )
+                        paininfo:SetDamageForce( slashtrace.Normal * 35000 )
+                        targ:TakeDamageInfo( paininfo )
+                    else
+                        self:EmitSound( self.KnifeShink ) --SHINK!
+                        local look = self:GetOwner():GetEyeTrace()
+                        util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                     end
                 end
             end

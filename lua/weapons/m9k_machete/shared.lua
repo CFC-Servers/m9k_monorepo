@@ -82,6 +82,7 @@ function SWEP:PrimaryAttack()
     vm = self:GetOwner():GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
     self:GetOwner():ViewPunch( Angle( -10, 0, 0 ) )
+
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
@@ -110,45 +111,33 @@ function SWEP:HackNSlash()
     local pain = self.Primary.Damage * damagedice
 
     self:GetOwner():LagCompensation( true )
-    local slash = {}
-    slash.start = pos
-    slash.endpos = pos + (ang * 42)
-    slash.filter = self:GetOwner()
-    slash.mins = Vector( -8, -10, 0 )
-    slash.maxs = Vector( 8, 10, 5 )
-    local slashtrace = util.TraceHull( slash )
-
-    if IsValid( self:GetOwner() ) and IsValid( self ) then
-        if self:GetOwner():Alive() then
-            if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                local slash = {}
-                slash.start = pos
-                slash.endpos = pos + (ang * 42)
-                slash.filter = self:GetOwner()
-                slash.mins = Vector( -8, -10, 0 )
-                slash.maxs = Vector( 8, 10, 5 )
-                local slashtrace = util.TraceHull( slash )
-                self:GetOwner():ViewPunch( Angle( 20, 0, 0 ) )
-                if slashtrace.Hit then
-                    targ = slashtrace.Entity
-                    if targ:IsPlayer() or targ:IsNPC() then
-                        --find a way to splash a little blood
-                        self:EmitSound( self.KnifeSlash ) --stab noise
-                        paininfo = DamageInfo()
-                        paininfo:SetDamage( pain )
-                        paininfo:SetDamageType( DMG_SLASH )
-                        paininfo:SetAttacker( self:GetOwner() )
-                        paininfo:SetInflictor( self )
-                        paininfo:SetDamageForce( slashtrace.Normal * 35000 )
-                        targ:TakeDamageInfo( paininfo )
-                    else
-                        self:EmitSound( self.KnifeShink ) --SHINK!
-                        look = self:GetOwner():GetEyeTrace()
-                        util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
-                    end
+    if self:GetOwner():Alive() then
+            local slash = {}
+            slash.start = pos
+            slash.endpos = pos + (ang * 42)
+            slash.filter = self:GetOwner()
+            slash.mins = Vector( -8, -10, 0 )
+            slash.maxs = Vector( 8, 10, 5 )
+            local slashtrace = util.TraceHull( slash )
+            self:GetOwner():ViewPunch( Angle( 20, 0, 0 ) )
+            if slashtrace.Hit then
+                targ = slashtrace.Entity
+                if targ:IsPlayer() or targ:IsNPC() then
+                    --find a way to splash a little blood
+                    self:EmitSound( self.KnifeSlash ) --stab noise
+                    paininfo = DamageInfo()
+                    paininfo:SetDamage( pain )
+                    paininfo:SetDamageType( DMG_SLASH )
+                    paininfo:SetAttacker( self:GetOwner() )
+                    paininfo:SetInflictor( self )
+                    paininfo:SetDamageForce( slashtrace.Normal * 35000 )
+                    targ:TakeDamageInfo( paininfo )
+                else
+                    self:EmitSound( self.KnifeShink ) --SHINK!
+                    local look = self:GetOwner():GetEyeTrace()
+                    util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
             end
-        end
     end
     self:GetOwner():LagCompensation( false )
 end
