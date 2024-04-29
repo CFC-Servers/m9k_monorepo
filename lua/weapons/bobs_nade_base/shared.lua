@@ -72,7 +72,7 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( 0.6, function()
         if not IsValid( self ) then return end
-        if IsValid( self:GetOwner() ) and self:AllIsWell() then
+        if IsValid( self:GetOwner() ) then
             self:Throw()
         end
     end )
@@ -83,7 +83,6 @@ function SWEP:Throw()
     timer.Simple( 0.35, function()
         if not IsValid( self ) then return end
         if not IsValid( self:GetOwner() ) then return end
-        if not self:AllIsWell() then return end
 
         self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
 
@@ -101,42 +100,27 @@ function SWEP:Throw()
         grenade:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         grenade:SetPos( pos )
         grenade:Spawn()
+
         local phys = grenade:GetPhysicsObject()
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and (phys:IsValid()) then
-            if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 2000 ) end
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) and phys:IsValid() then
+            phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 2000 )
         else
-            if phys ~= nil then phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 5500 ) end
+            phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 5500 )
         end
 
         self:TakePrimaryAmmo( 1 )
-        self:checkitycheckyoself()
-    end )
-end
 
-function SWEP:checkitycheckyoself()
-    timer.Simple( .15, function()
-        if not IsValid( self ) then return end
-        if IsValid( self:GetOwner() ) and self:AllIsWell() then
-            if self:Clip1() == 0
-                and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+        timer.Simple( 0.15, function()
+            if not IsValid( self ) then return end
+            if not IsValid( self:GetOwner() ) then return end
+
+            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
                 self:GetOwner():StripWeapon( self.Gun )
             else
                 self:DefaultReload( ACT_VM_DRAW )
             end
-        end
+        end )
     end )
-end
-
-function SWEP:AllIsWell()
-    if self:GetOwner() ~= nil and self ~= nil then
-        if self:GetClass() == self.Gun and self:GetOwner():Alive() then
-            return true
-        else
-            return false
-        end
-    else
-        return false
-    end
 end
 
 function SWEP:Think()
