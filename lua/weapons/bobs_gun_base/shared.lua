@@ -841,15 +841,13 @@ if CLIENT then
     function SWEP:SetupWepSelectIcon()
         if self:GetOwner() ~= LocalPlayer() then return end
 
-        local WepSelectIconMaterial = self.WepSelectIconMaterial
-        if not WepSelectIconMaterial then
+        local stored = weapons.GetStored( self:GetClass() )
+        if not stored.WepSelectIconMaterial then
             local path = "vgui/hud/" .. self:GetClass()
-            local stored = weapons.GetStored( self:GetClass() )
-            WepSelectIconMaterial = Material( path )
-            stored.WepSelectIconMaterial = WepSelectIconMaterial
+            stored.WepSelectIconMaterial = Material( path )
         end
 
-        self.WepSelectIconMaterial = WepSelectIconMaterial
+        self.WepSelectIconMaterial = stored.WepSelectIconMaterial
     end
 
     function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
