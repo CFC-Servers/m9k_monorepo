@@ -93,12 +93,10 @@ end
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local pos = self:GetOwner():GetShootPos()
-    local throwPos = pos + self:GetForward() * 40
-
+    local shootPos = self:GetOwner():GetShootPos()
     local tracedata = {
-        start = pos,
-        endpos = throwPos,
+        start = shootPos,
+        endpos = shootPos + self:GetForward() * 40,
         filter = self:GetOwner()
     }
     local trace = util.TraceLine( tracedata )
