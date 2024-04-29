@@ -591,8 +591,8 @@ function SWEP:Reload()
 end
 
 function SWEP:PostReloadScopeCheck()
-    if self == nil then return end
     self:SetNWBool( "Reloading", false )
+
     if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
         if CLIENT then return end
         if self.Scoped == false then
@@ -601,19 +601,15 @@ function SWEP:PostReloadScopeCheck()
             self.IronSightsAng = self.SightsAng -- Bring it up
             self:SetIronsights( true, self:GetOwner() )
             self.DrawCrosshair = false
-        else
-            return
         end
     elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
-        if self:GetNextPrimaryFire() <= (CurTime() + .03) then
+        if self:GetNextPrimaryFire() <= CurTime() + 0.03 then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
         self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
         self:GetOwner():SetFOV( 0, 0.3 )
-    else
-        return
     end
 end
 
@@ -634,7 +630,7 @@ function SWEP:Silencer()
         self.Silenced = true
     end
 
-    local siltimer = CurTime() + (self:GetOwner():GetViewModel():SequenceDuration()) + 0.1
+    local siltimer = CurTime() + self:GetOwner():GetViewModel():SequenceDuration() + 0.1
     if self:GetNextPrimaryFire() <= siltimer then
         self:SetNextPrimaryFire( siltimer )
     end
@@ -708,16 +704,12 @@ function SWEP:IronSight()
     local pressingE = owner:KeyDown( IN_USE )
     local pressingM2 = owner:KeyDown( IN_ATTACK2 )
 
-    if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() then
-        if pressingE and pressingM2 then
-            self:Silencer()
-        end
+    if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingE and pressingM2 then
+        self:Silencer()
     end
 
-    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not (self:GetNWBool( "Reloading" )) then
-        if pressingE and owner:KeyPressed( IN_RELOAD ) then
-            self:SelectFireMode()
-        end
+    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not self:GetNWBool( "Reloading" ) and pressingE and owner:KeyPressed( IN_RELOAD ) then
+        self:SelectFireMode()
     end
 
     -- --copy this...
@@ -784,31 +776,31 @@ local IRONSIGHT_TIME = 0.3
 -- --Time to enter in the ironsight mod
 
 function SWEP:GetViewModelPosition( pos, ang )
-    if (not self.IronSightsPos) then return pos, ang end
+    if not self.IronSightsPos then return pos, ang end
 
     local bIron = self:GetIronsights()
 
-    if (bIron ~= self.bLastIron) then
+    if bIron ~= self.bLastIron then
         self.bLastIron = bIron
         self.fIronTime = CurTime()
     end
 
     local fIronTime = self.fIronTime or 0
 
-    if (not bIron and fIronTime < CurTime() - IRONSIGHT_TIME) then
+    if not bIron and fIronTime < CurTime() - IRONSIGHT_TIME then
         return pos, ang
     end
 
     local Mul = 1.0
-    if (fIronTime > CurTime() - IRONSIGHT_TIME) then
-        Mul = math.Clamp( (CurTime() - fIronTime) / IRONSIGHT_TIME, 0, 1 )
+    if fIronTime > CurTime() - IRONSIGHT_TIME then
+        Mul = math.Clamp( ( CurTime() - fIronTime ) / IRONSIGHT_TIME, 0, 1 )
 
         if not bIron then Mul = 1 - Mul end
     end
 
     local Offset = self.IronSightsPos
 
-    if (self.IronSightsAng) then
+    if self.IronSightsAng then
         ang = ang * 1
         ang:RotateAroundAxis( ang:Right(), self.IronSightsAng.x * Mul )
         ang:RotateAroundAxis( ang:Up(), self.IronSightsAng.y * Mul )
@@ -850,7 +842,7 @@ if CLIENT then
         self.WepSelectIconMaterial = stored.WepSelectIconMaterial
     end
 
-    function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
+    function SWEP:DrawWeaponSelection( x, y, wide, _tall, alpha )
         -- Set us up the texture
         surface.SetDrawColor( 255, 255, 255, alpha )
         surface.SetMaterial( self.WepSelectIconMaterial )
@@ -871,41 +863,41 @@ if CLIENT then
         local vm = self:GetOwner():GetViewModel()
         if not IsValid( vm ) then return end
 
-        if (not self.VElements) then return end
+        if not self.VElements then return end
 
         self:UpdateBonePositions( vm )
 
-        if (not self.vRenderOrder) then
+        if not self.vRenderOrder then
             -- -- we build a render order because sprites need to be drawn after models
             self.vRenderOrder = {}
 
             for k, v in pairs( self.VElements ) do
-                if (v.type == "Model") then
+                if v.type == "Model" then
                     table.insert( self.vRenderOrder, 1, k )
-                elseif (v.type == "Sprite" or v.type == "Quad") then
+                elseif v.type == "Sprite" or v.type == "Quad" then
                     table.insert( self.vRenderOrder, k )
                 end
             end
         end
 
-        for k, name in ipairs( self.vRenderOrder ) do
+        for _, name in ipairs( self.vRenderOrder ) do
             local v = self.VElements[name]
-            if (not v) then
+            if not v then
                 self.vRenderOrder = nil
                 break
             end
-            if (v.hide) then continue end
+            if v.hide then continue end
 
             local model = v.modelEnt
             local sprite = v.spriteMaterial
 
-            if (not v.bone) then continue end
+            if not v.bone then continue end
 
             local pos, ang = self:GetBoneOrientation( self.VElements, v, vm )
 
-            if (not pos) then continue end
+            if not pos then continue end
 
-            if (v.type == "Model" and IsValid( model )) then
+            if v.type == "Model" and IsValid( model ) then
                 model:SetPos( pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z )
                 ang:RotateAroundAxis( ang:Up(), v.angle.y )
                 ang:RotateAroundAxis( ang:Right(), v.angle.p )
@@ -917,25 +909,25 @@ if CLIENT then
                 matrix:Scale( v.size )
                 model:EnableMatrix( "RenderMultiply", matrix )
 
-                if (v.material == "") then
+                if v.material == "" then
                     model:SetMaterial( "" )
-                elseif (model:GetMaterial() ~= v.material) then
+                elseif model:GetMaterial() ~= v.material then
                     model:SetMaterial( v.material )
                 end
 
-                if (v.skin and v.skin ~= model:GetSkin()) then
+                if v.skin and v.skin ~= model:GetSkin() then
                     model:SetSkin( v.skin )
                 end
 
-                if (v.bodygroup) then
+                if v.bodygroup then
                     for k, v in pairs( v.bodygroup ) do
-                        if (model:GetBodygroup( k ) ~= v) then
+                        if model:GetBodygroup( k ) ~= v then
                             model:SetBodygroup( k, v )
                         end
                     end
                 end
 
-                if (v.surpresslightning) then
+                if v.surpresslightning then
                     render.SuppressEngineLighting( true )
                 end
 
@@ -945,14 +937,14 @@ if CLIENT then
                 render.SetBlend( 1 )
                 render.SetColorModulation( 1, 1, 1 )
 
-                if (v.surpresslightning) then
+                if v.surpresslightning then
                     render.SuppressEngineLighting( false )
                 end
-            elseif (v.type == "Sprite" and sprite) then
+            elseif v.type == "Sprite" and sprite then
                 local drawpos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
                 render.SetMaterial( sprite )
                 render.DrawSprite( drawpos, v.size.x, v.size.y, v.color )
-            elseif (v.type == "Quad" and v.draw_func) then
+            elseif v.type == "Quad" and v.draw_func then
                 local drawpos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
                 ang:RotateAroundAxis( ang:Up(), v.angle.y )
                 ang:RotateAroundAxis( ang:Right(), v.angle.p )
@@ -978,9 +970,9 @@ if CLIENT then
             selfTbl.wRenderOrder = {}
 
             for k, v in pairs( selfTbl.WElements ) do
-                if (v.type == "Model") then
+                if v.type == "Model" then
                     table.insert( selfTbl.wRenderOrder, 1, k )
-                elseif (v.type == "Sprite" or v.type == "Quad") then
+                elseif v.type == "Sprite" or v.type == "Quad" then
                     table.insert( selfTbl.wRenderOrder, k )
                 end
             end
@@ -1076,16 +1068,15 @@ if CLIENT then
 
     function SWEP:GetBoneOrientation( basetab, tab, ent, bone_override )
         local bone, pos, ang
-        if (tab.rel and tab.rel ~= "") then
+        if tab.rel and tab.rel ~= "" then
             local v = basetab[tab.rel]
 
-            if (not v) then return end
+            if not v then return end
 
             -- -- Technically, if there exists an element with the same name as a bone
             -- -- you can get in an infinite loop. Let's just hope nobody's that stupid.
             pos, ang = self:GetBoneOrientation( basetab, v, ent )
-
-            if (not pos) then return end
+            if not pos then return end
 
             pos = pos + ang:Forward() * v.pos.x + ang:Right() * v.pos.y + ang:Up() * v.pos.z
             ang:RotateAroundAxis( ang:Up(), v.angle.y )
@@ -1094,16 +1085,15 @@ if CLIENT then
         else
             bone = ent:LookupBone( bone_override or tab.bone )
 
-            if (not bone) then return end
+            if not bone then return end
 
             pos, ang = Vector( 0, 0, 0 ), Angle( 0, 0, 0 )
             local m = ent:GetBoneMatrix( bone )
-            if (m) then
+            if m then
                 pos, ang = m:GetTranslation(), m:GetAngles()
             end
 
-            if (IsValid( self:GetOwner() ) and self:GetOwner():IsPlayer() and
-                    ent == self:GetOwner():GetViewModel() and self.ViewModelFlip) then
+            if IsValid( self:GetOwner() ) and self:GetOwner():IsPlayer() and ent == self:GetOwner():GetViewModel() and self.ViewModelFlip then
                 ang.r = -ang.r ---- Fixes mirrored models
             end
         end
@@ -1112,10 +1102,10 @@ if CLIENT then
     end
 
     function SWEP:CreateModels( tab )
-        if (not tab) then return end
+        if not tab then return end
 
         -- -- Create the clientside models here because Garry says we can't do it in the render hook
-        for k, v in pairs( tab ) do
+        for _, v in pairs( tab ) do
             if (v.type == "Model" and v.model and v.model ~= "" and (! IsValid( v.modelEnt ) or v.createdModel ~= v.model) and
                     string.find( v.model, ".mdl" ) and file.Exists( v.model, "GAME" )) then
                 v.modelEnt = ClientsideModel( v.model, RENDER_GROUP_VIEW_MODEL_OPAQUE )
