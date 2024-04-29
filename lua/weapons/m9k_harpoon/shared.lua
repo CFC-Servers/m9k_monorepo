@@ -70,10 +70,44 @@ SWEP.ViewModelBoneMods = {
     },
 }
 
+if SERVER then
+    function SWEP:FireRocket()
+        local pos = self:GetOwner():GetShootPos()
+        local rocket = ents.Create( self.Primary.Round )
+        rocket:SetAngles( self:GetOwner():GetAimVector():Angle() )
+        rocket:SetPos( pos )
+        rocket:SetOwner( self:GetOwner() )
+        rocket:Spawn()
+        rocket:Activate()
+
+        local phys = rocket:GetPhysicsObject()
+        phys:SetVelocity( self:GetOwner():GetAimVector() * 2000 )
+
+        if not self:GetOwner():IsNPC() then
+            local anglo = Angle( 3, 5, 0 )
+            self:GetOwner():ViewPunch( anglo )
+        end
+    end
+end
+
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    self:FireRocket()
+    local pos = self:GetOwner():GetShootPos()
+    local throwPos = pos + self:GetForward() * 40
+
+    local tracedata = {
+        start = pos,
+        endpos = throwPos,
+        filter = self:GetOwner()
+    }
+    local trace = util.TraceLine( tracedata )
+    if trace.Hit then return end
+
+    if SERVER then
+        self:FireRocket()
+    end
+
     self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
     self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     self:EmitSound( "Weapon_Knife.Slash" )
@@ -86,25 +120,6 @@ function SWEP:PrimaryAttack()
         else
             self:Reload()
         end
-    end
-end
-
-function SWEP:FireRocket()
-    local pos = self:GetOwner():GetShootPos()
-    if SERVER then
-        local rocket = ents.Create( self.Primary.Round )
-        if not rocket:IsValid() then return false end
-        rocket:SetAngles( self:GetOwner():GetAimVector():Angle() )
-        rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
-        rocket:Spawn()
-        rocket:Activate()
-        local phys = rocket:GetPhysicsObject()
-        phys:SetVelocity( self:GetOwner():GetAimVector() * 2000 )
-    end
-    if SERVER and not self:GetOwner():IsNPC() then
-        local anglo = Angle( 3, 5, 0 )
-        self:GetOwner():ViewPunch( anglo )
     end
 end
 
