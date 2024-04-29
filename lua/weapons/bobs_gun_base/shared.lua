@@ -146,9 +146,7 @@ function SWEP:Initialize()
     end
 
     if CLIENT then
-        local oldpath = "vgui/hud/name" -- the path goes here
-        local newpath = string.gsub( oldpath, "name", self.Gun )
-        self.WepSelectIcon = surface.GetTextureID( newpath )
+        self:SetupWepSelectIcon()
     end
 end
 
@@ -840,6 +838,36 @@ function SWEP:GetIronsights()
 end
 
 if CLIENT then
+    function SWEP:SetupWepSelectIcon()
+        if self:GetOwner() ~= LocalPlayer() then return end
+
+        local WepSelectIconMaterial = self.WepSelectIconMaterial
+        if not WepSelectIconMaterial then
+            local path = "vgui/hud/" .. self:GetClass()
+            local stored = weapons.GetStored( self:GetClass() )
+            WepSelectIconMaterial = Material( path )
+            stored.WepSelectIconMaterial = WepSelectIconMaterial
+        end
+
+        self.WepSelectIconMaterial = WepSelectIconMaterial
+    end
+
+    function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
+        -- Set us up the texture
+        surface.SetDrawColor( 255, 255, 255, alpha )
+        surface.SetMaterial( self.WepSelectIconMaterial )
+
+        -- Borders
+        y = y + 10
+        x = x + 10
+        wide = wide - 20
+
+        -- Draw that mother
+        surface.DrawTexturedRect( x + fsin, y - fsin,  wide - fsin * 2 , ( wide / 2 ) + fsin )
+        -- Draw weapon info box
+        self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
+    end
+
     SWEP.vRenderOrder = nil
     function SWEP:ViewModelDrawn()
         if not IsValid( self ) then return end
