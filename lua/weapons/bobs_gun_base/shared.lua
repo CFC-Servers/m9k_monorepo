@@ -858,7 +858,7 @@ if CLIENT then
         -- Borders
         y = y + 10
         x = x + 10
-        wide = wide - 30
+        wide = wide - 20
 
         -- Draw that mother
         surface.DrawTexturedRect( x, y,  wide, wide / 2 )
