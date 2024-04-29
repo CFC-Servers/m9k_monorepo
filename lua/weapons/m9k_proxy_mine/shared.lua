@@ -147,7 +147,7 @@ end
 function SWEP:CheckWeaponsAndAmmo()
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration(), function()
         if SERVER and IsValid( self ) then
-            if IsValid( self:GetOwner() ) and self:GetClass() == self.Gun then
+            if IsValid( self:GetOwner() ) then
                 if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
                     self:GetOwner():StripWeapon( self.Gun )
                 else

@@ -80,7 +80,7 @@ function SWEP:Reload()
             self:SetIronsights(false)
         end
         timer.Simple(.65, function() if not IsValid(self) then return end if not IsValid(self:GetOwner()) then return end if not IsValid(self) then return end
-            if IsValid(self:GetOwner()) and self:GetClass() == self.Gun then
+            if IsValid(self:GetOwner()) then
                 self:EmitSound(Sound("Weapon_usas.draw"))
             end
         end)
@@ -93,7 +93,7 @@ end
 function SWEP:ReloadFinish()
 if not IsValid(self) then return end
     if IsValid(self:GetOwner()) and self ~= nil then
-        if self:GetOwner():Alive() and self:GetClass() == self.Gun then
+        if self:GetOwner():Alive() then
             self:DefaultReload(ACT_SHOTGUN_RELOAD_FINISH)
 
             if !self:GetOwner():IsNPC() then
@@ -110,7 +110,7 @@ if not IsValid(self) then return end
         function() if not IsValid(self) then return end if not IsValid(self:GetOwner()) then return end if not IsValid(self) then return end
         if self == nil then return end
         self:SetNWBool("Reloading", false)
-        if self:GetOwner():KeyDown(IN_ATTACK2) and self:GetClass() == self.Gun then
+        if self:GetOwner():KeyDown(IN_ATTACK2) then
             if CLIENT then return end
             if self.Scoped == false then
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -119,7 +119,7 @@ if not IsValid(self) then return end
                 self:SetIronsights(true, self:GetOwner())
                 self.DrawCrosshair = false
             else return end
-        elseif self:GetOwner():KeyDown(IN_SPEED) and self:GetClass() == self.Gun then
+        elseif self:GetOwner():KeyDown(IN_SPEED) then
             self:SetNextPrimaryFire(CurTime()+0.3)            -- Make it so you can't shoot for another quarter second
             self.IronSightsPos = self.RunSightsPos                    -- Hold it down
             self.IronSightsAng = self.RunSightsAng                    -- Hold it down

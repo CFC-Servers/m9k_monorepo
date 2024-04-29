@@ -565,7 +565,7 @@ function SWEP:Reload()
         end
 
         self:SetNWBool( "Reloading", false )
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -576,7 +576,7 @@ function SWEP:Reload()
             else
                 return
             end
-        elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+        elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= (CurTime() + .03) then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
             end
@@ -593,7 +593,7 @@ end
 function SWEP:PostReloadScopeCheck()
     self:SetNWBool( "Reloading", false )
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
         if CLIENT then return end
         if self.Scoped == false then
             self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -602,7 +602,7 @@ function SWEP:PostReloadScopeCheck()
             self:SetIronsights( true, self:GetOwner() )
             self.DrawCrosshair = false
         end
-    elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+    elseif self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetNextPrimaryFire() <= CurTime() + 0.03 then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
@@ -639,7 +639,7 @@ function SWEP:Silencer()
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
         self:SetNWBool( "Reloading", false )
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -650,7 +650,7 @@ function SWEP:Silencer()
             else
                 return
             end
-        elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+        elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + 0.3 then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
             end

@@ -120,7 +120,7 @@ function SWEP:Reload()
                 if IsValid( self ) and IsValid( self:GetOwner() ) then
                     if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
                         self:SetNWBool( "Reloading", false )
-                        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+                        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                             if CLIENT then return end
                             if self.Scoped == false then
                                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
@@ -131,7 +131,7 @@ function SWEP:Reload()
                             else
                                 return
                             end
-                        elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+                        elseif self:GetOwner():KeyDown( IN_SPEED ) then
                             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                             self.IronSightsPos = self.RunSightsPos -- Hold it down
                             self.IronSightsAng = self.RunSightsAng -- Hold it down

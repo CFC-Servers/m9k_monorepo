@@ -182,7 +182,7 @@ function SWEP:BoltBack()
             timer.Simple( boltactiontime + .1, function()
                 if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
                 self:SetNWBool( "Reloading", false )
-                if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+                if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                     self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                     self.IronSightsPos = self.SightsPos -- Bring it up
                     self.IronSightsAng = self.SightsAng -- Bring it up
@@ -226,7 +226,7 @@ function SWEP:Reload()
         if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
         self:SetNWBool( "Reloading", false )
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
@@ -234,7 +234,7 @@ function SWEP:Reload()
             self.DrawCrosshair = false
             self:SetIronsights( true, self:GetOwner() )
             self:GetOwner():DrawViewModel( false )
-        elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+        elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
             end
@@ -248,7 +248,7 @@ end
 
 function SWEP:PostReloadScopeCheck()
     self:SetNWBool( "Reloading", false )
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and self:GetClass() == self.Gun then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
         if CLIENT then return end
         self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
         self.IronSightsPos = self.SightsPos -- Bring it up
@@ -256,7 +256,7 @@ function SWEP:PostReloadScopeCheck()
         self.DrawCrosshair = false
         self:SetIronsights( true, self:GetOwner() )
         self:GetOwner():DrawViewModel( false )
-    elseif self:GetOwner():KeyDown( IN_SPEED ) and self:GetClass() == self.Gun then
+    elseif self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
