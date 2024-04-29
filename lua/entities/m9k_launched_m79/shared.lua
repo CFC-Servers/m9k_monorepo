@@ -29,7 +29,6 @@ if SERVER then
 
     function ENT:Think()
         if not IsValid( self ) then return end
-        if not IsValid( self ) then return end
 
         local trace = {}
         trace.start = self:GetPos()

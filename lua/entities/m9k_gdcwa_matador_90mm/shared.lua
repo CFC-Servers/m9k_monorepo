@@ -38,7 +38,6 @@ if SERVER then
 
     function ENT:Think()
         if not IsValid( self ) then return end
-        if not IsValid( self ) then return end
 
         if self.timeleft < CurTime() then
             self:Remove()

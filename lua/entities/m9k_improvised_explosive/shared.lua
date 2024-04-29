@@ -36,7 +36,6 @@ if SERVER then
 
     function ENT:Think()
         if not IsValid( self ) then return end
-        if not IsValid( self ) then return end
 
         if self.Boom then
             self:Explosion()

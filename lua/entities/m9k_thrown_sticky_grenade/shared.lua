@@ -31,7 +31,6 @@ if SERVER then
 
     function ENT:Think()
         if not IsValid( self ) then return end
-        if not IsValid( self ) then return end
 
         if self.timeleft < CurTime() then
             self:Explosion()
@@ -87,7 +86,6 @@ if SERVER then
     end
 
     function ENT:Explosion()
-        if not IsValid( self ) then return end
         if not IsValid( self ) then return end
 
         local owner = self._m9kOwner
