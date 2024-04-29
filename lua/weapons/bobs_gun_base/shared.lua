@@ -863,7 +863,7 @@ if CLIENT then
         wide = wide - 20
 
         -- Draw that mother
-        surface.DrawTexturedRect( x + fsin, y - fsin,  wide - fsin * 2 , ( wide / 2 ) + fsin )
+        surface.DrawTexturedRect( x, y,  wide, wide / 2 )
         -- Draw weapon info box
         self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
     end
