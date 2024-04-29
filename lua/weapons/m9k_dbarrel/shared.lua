@@ -239,14 +239,6 @@ function SWEP:Think()
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
     if self:GetOwner().NextReload == nil then self:GetOwner().NextReload = CurTime() + 1 end
-    local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-    --if the owner presses shoot while the timer is in effect, then...
-    -- if (self:GetOwner():KeyPressed(IN_ATTACK)) and (timer.Exists(timerName)) and not (self:GetOwner():KeyDown(IN_SPEED)) then
-    -- if self:CanPrimaryAttack() then --well first, if we actually can attack, then...
-    -- timer.Destroy(timerName) -- kill the timer, and
-    -- self:PrimaryAttack()-- ATTAAAAACK!
-    -- end
-    -- end
 
     if self.InsertingShell == true and self:GetOwner():Alive() then
         vm = self:GetOwner():GetViewModel() -- its a messy way to do it, but holy shit, it works!
