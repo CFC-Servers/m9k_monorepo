@@ -18,7 +18,7 @@ SWEP.Primary.Round          = "" -- What kind of bullet?
 SWEP.Primary.Cone           = 0.2 -- Accuracy of NPCs
 SWEP.Primary.Recoil         = 10
 SWEP.Primary.Damage         = 10
-SWEP.Primary.Spread         = .01 --define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.SpreadHip         = .01 --define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.NumShots       = 1
 SWEP.Primary.RPM            = 0 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 0 -- Size of a clip
@@ -258,9 +258,9 @@ end
 function SWEP:ShootBulletInformation()
     local currentCone
     if self:GetIronsights() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
-        currentCone = self.Primary.IronAccuracy
+        currentCone = self.Primary.SpreadIronSights
     else
-        currentCone = self.Primary.Spread
+        currentCone = self.Primary.SpreadHip
     end
 
     local damagedice = math.Rand( 0.95, 1.05 )

@@ -46,8 +46,8 @@ SWEP.Primary.Automatic      = true -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "ar2"
 SWEP.Primary.NumShots       = 1 -- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage         = 33 -- Base damage per bullet
-SWEP.Primary.Spread         = .035 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy   = .01 -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.SpreadHip         = .035 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.SpreadIronSights   = .01 -- Ironsight accuracy, should be the same for shotguns
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 

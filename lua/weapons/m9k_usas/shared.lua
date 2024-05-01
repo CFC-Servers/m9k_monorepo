@@ -50,8 +50,8 @@ SWEP.data.ironsights            = 1
 
 SWEP.Primary.NumShots    = 10        -- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage        = 7    -- Base damage per bullet
-SWEP.Primary.Spread        = .048    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy = .048 -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.SpreadHip        = .048    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
+SWEP.Primary.SpreadIronSights = .048 -- Ironsight accuracy, should be the same for shotguns
 
 -- Enter iron sight info and bone mod info below
 SWEP.IronSightsPos = Vector(4.519, -2.159, 1.039)

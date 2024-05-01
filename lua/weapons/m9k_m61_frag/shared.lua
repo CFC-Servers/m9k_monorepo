@@ -55,8 +55,8 @@ SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
 
 SWEP.Primary.NumShots       = 0 -- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage         = 0 -- Base damage per bullet
-SWEP.Primary.Spread         = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
-SWEP.Primary.IronAccuracy   = 0 -- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.SpreadHip         = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
+SWEP.Primary.SpreadIronSights   = 0 -- Ironsight accuracy, should be the same for shotguns
 
 -- enter bone mod and other custom stuff below. Irons aren't used for grenades
 
