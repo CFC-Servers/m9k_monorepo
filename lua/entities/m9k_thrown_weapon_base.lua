@@ -55,11 +55,11 @@ if SERVER then
     function ENT:Disable()
         self.PhysicsCollide = function() end
         self.Lifetime = CurTime() + 10
-        self.InFlight = false
     end
 
     function ENT:PhysicsCollide( data )
         if not self.InFlight then return end
+        self.InFlight = false
 
         local damager = self:GetOwner()
         if not IsValid( damager ) then
@@ -107,7 +107,6 @@ if SERVER then
                 self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / 4 )
 
                 self:DamageFunction( ent, damager, data )
-                self.InFlight = false
             end
         end
 
