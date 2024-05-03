@@ -39,10 +39,12 @@ if SERVER then
     end
 
     function ENT:Think()
-        self.lifetime = self.lifetime or CurTime() + 10
+        self.Lifetime = self.Lifetime or CurTime() + 10
 
-        if CurTime() > self.lifetime then
-            self:Remove()
+        if CurTime() > self.Lifetime then
+            self:SetRenderMode( RENDERMODE_TRANSALPHA )
+            self:SetRenderFX( kRenderFxFadeFast )
+            SafeRemoveEntityDelayed( self, 1 )
         end
 
         if self.InFlight and self:GetAngles().pitch <= 55 then
@@ -52,32 +54,27 @@ if SERVER then
 
     function ENT:Disable()
         self.PhysicsCollide = function() end
-        self.lifetime = CurTime() + 30
+        self.Lifetime = CurTime() + 10
         self.InFlight = false
-
-        timer.Simple( 0, function()
-            if not IsValid( self ) then return end
-            self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-        end )
     end
 
     function ENT:PhysicsCollide( data )
-        local damager
-        if IsValid( self:GetOwner() ) then
-            damager = self:GetOwner()
-        else
+        if not self.InFlight then return end
+
+        local damager = self:GetOwner()
+        if not IsValid( damager ) then
             return
         end
 
         local ent = data.HitEntity
-        if not (ent:IsValid() or ent:IsWorld()) then return end
+        if not ( ent:IsValid() or ent:IsWorld() ) then return end
 
         if data.TheirSurfaceProps == 76 then
-            self:Remove()
+            SafeRemoveEntityDelayed( self, 0 )
             return
         end
 
-        if ent:IsWorld() and self.InFlight then
+        if ent:IsWorld() then
             if data.Speed > 500 then
                 self:EmitSound( "weapons/blades/impact.mp3" )
                 timer.Simple( 0, function()
@@ -110,10 +107,11 @@ if SERVER then
                 self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / 4 )
 
                 self:DamageFunction( ent, damager, data )
+                self.InFlight = false
             end
         end
 
-        timer.Simple( 0, function()
+        timer.Simple( 0.1, function()
             if not IsValid( self ) then return end
             self:SetOwner( NULL )
         end )
