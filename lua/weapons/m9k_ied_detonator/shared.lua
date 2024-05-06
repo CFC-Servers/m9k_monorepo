@@ -119,62 +119,61 @@ else
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then
-        self:TakePrimaryAmmo( 1 )
-        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        local aim = self:GetOwner():GetAimVector()
-        side = aim:Cross( Vector( 0, 0, 1 ) )
-        local up = side:Cross( aim )
-        local pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
-        if SERVER then
-            local rocket = ents.Create( self.Primary.Round )
-            if not rocket:IsValid() then return false end
-            rocket:SetNWEntity( "Owner", self:GetOwner() )
-            rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
-            rocket:SetPos( pos )
-            rocket:SetOwner( self:GetOwner() )
-            rocket.Owner = self:GetOwner() -- redundancy department of redundancy checking in
-            rocket:SetNWEntity( "Owner", self:GetOwner() )
-            rocket:Spawn()
-            local phys = rocket:GetPhysicsObject()
-            phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 1500 )
-        end
-        timer.Simple( .25, function()
-            if not IsValid( self ) then return end
-            if IsValid( self:GetOwner() ) and IsValid( self ) then
-                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                    self:Reload()
-                end
-            end
-        end )
-    else
-        return
-    end
-end
+    if not self:CanPrimaryAttack() then return end
+    self:TakePrimaryAmmo( 1 )
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
 
-function SWEP:SecondaryAttack()
-    for k, v in pairs( ents.FindByClass( "m9k_improvised_explosive" ) ) do
-        if v:GetNWEntity( "Owner" ) == self:GetOwner() then
-            v.Boom = true
-            self:SendWeaponAnim( ACT_VM_DRAW )
-        end
-    end
-    timer.Simple( .01, function()
-        if SERVER and self ~= nil then
-            if IsValid( self:GetOwner() ) and IsValid( self ) then
-                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() then
-                    if self:Clip1() == 0
-                        and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0
-                        and (GetConVar( "M9KWeaponStrip" ):GetBool()) then
-                        self:GetOwner():StripWeapon( self.Gun )
-                    end
-                end
-            end
+    if CLIENT then return end
+
+    local aim = self:GetOwner():GetAimVector()
+    local side = aim:Cross( Vector( 0, 0, 1 ) )
+    local up = side:Cross( aim )
+    local pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
+
+    local rocket = ents.Create( self.Primary.Round )
+    if not rocket:IsValid() then return false end
+
+    rocket:SetNWEntity( "Owner", self:GetOwner() )
+    rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
+    rocket:SetPos( pos )
+    rocket.BombOwner = self:GetOwner()
+    rocket:SetNWEntity( "Owner", self:GetOwner() )
+    rocket:Spawn()
+
+    local phys = rocket:GetPhysicsObject()
+    phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 1500 )
+
+    timer.Simple( 0.25, function()
+        if not IsValid( self ) then return end
+        if not IsValid( self:GetOwner() ) then return end
+        if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+            self:Reload()
         end
     end )
 end
 
-function SWEP:Think()
+if SERVER then
+    function SWEP:SecondaryAttack()
+        local foundBomb = false
+        for _, v in pairs( ents.FindByClass( "m9k_improvised_explosive" ) ) do
+            if v.BombOwner == self:GetOwner() then
+                v.Boom = true
+                foundBomb = true
+            end
+        end
+
+        if foundBomb then
+            self:SendWeaponAnim( ACT_VM_DRAW )
+        end
+
+        timer.Simple( 0.01, function()
+            if not IsValid( self ) then return end
+            if not IsValid( self:GetOwner() ) then return end
+            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and GetConVar( "M9KWeaponStrip" ):GetBool() then
+                self:GetOwner():StripWeapon( self.Gun )
+            end
+        end )
+    end
 end
 
 if GetConVar( "M9KDefaultClip" ) == nil then

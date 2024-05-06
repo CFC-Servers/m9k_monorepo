@@ -47,7 +47,7 @@ if SERVER then
 
     function ENT:Explosion()
         if not IsValid( self ) then return end
-        if not IsValid( self.Owner ) then
+        if not IsValid( self.BombOwner ) then
             self:Remove()
             return
         end
@@ -63,7 +63,7 @@ if SERVER then
         util.Effect( "HelicopterMegaBomb", effectdata )
         util.Effect( "ThumperDust", effectdata )
 
-        util.BlastDamage( self, self.Owner, self:GetPos(), 500, 170 )
+        util.BlastDamage( self, self.BombOwner, self:GetPos(), 500, 170 )
         util.ScreenShake( self:GetPos(), 3000, 255, 2.25, 2000 )
 
         self.IEDSounds = {}
@@ -81,7 +81,7 @@ if SERVER then
 
     function ENT:TinyExplo()
         if not IsValid( self ) then return end
-        if not IsValid( self.Owner ) then
+        if not IsValid( self.BombOwner ) then
             self:Remove()
             return
         end
@@ -97,10 +97,10 @@ if SERVER then
         util.Effect( "HelicopterMegaBomb", effectdata )
         util.Effect( "ThumperDust", effectdata )
 
-        util.BlastDamage( self, self.Owner, self:GetPos(), 100, 60 )
+        util.BlastDamage( self, self.BombOwner, self:GetPos(), 100, 60 )
         util.ScreenShake( self:GetPos(), 1500, 255, 2.25, 800 )
 
-        self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self:GetPos(), 35, 100 )
+        self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", 70, 35, 100 )
 
         self:Remove()
     end
