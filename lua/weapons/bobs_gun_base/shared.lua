@@ -322,6 +322,11 @@ local easyPenMaterials = {
 
 local spreadVec = Vector( 0, 0, 0 )
 
+local disablepen = GetConVar( "M9KDisablePenetration" ):GetBool()
+cvars.AddChangeCallback( "M9KDisablePenetration", function( _, _, new )
+    disablepen = tobool( new )
+end )
+
 function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, direction )
     if CLIENT then return end
     if bulletTrace.HitSky then return end
@@ -332,8 +337,10 @@ function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, directi
 
     direction = direction or bulletTrace.Normal
 
-    local penetrated = self:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
-    if penetrated then return end
+    if not disablepen then
+        local penetrated = self:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
+        if penetrated then return end
+    end
 
     local ricochet = self:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
     if ricochet then return end
