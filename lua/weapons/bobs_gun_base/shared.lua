@@ -845,7 +845,12 @@ if CLIENT then
     function SWEP:DrawWeaponSelection( x, y, wide, _tall, alpha )
         -- Set us up the texture
         surface.SetDrawColor( 255, 255, 255, alpha )
-        surface.SetMaterial( self.WepSelectIconMaterial )
+        if self.WepSelectIconMaterial then
+            surface.SetMaterial( self.WepSelectIconMaterial )
+        else
+            self:SetupWepSelectIcon()
+            surface.SetTexture( surface.GetTextureID( "weapons/swep" ) )
+        end
 
         -- Borders
         y = y + 10
