@@ -288,10 +288,3 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 end
-
-if GetConVar( "M9KUniqueSlots" ) ~= nil then
-    if not (GetConVar( "M9KUniqueSlots" ):GetBool()) then
-        SWEP.SlotPos = 2
-    end
-end
-

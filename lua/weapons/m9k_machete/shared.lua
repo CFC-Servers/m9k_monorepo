@@ -199,10 +199,3 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( 0, 0.3 )
     end -- Shoulder the gun
 end
-
-if GetConVar( "M9KUniqueSlots" ) ~= nil then
-    if not (GetConVar( "M9KUniqueSlots" ):GetBool()) then
-        SWEP.SlotPos = 2
-    end
-end
-

@@ -68,9 +68,3 @@ SWEP.ViewModelBoneMods = {
 SWEP.WElements = {
     ["mr blue"] = { type = "Model", model = "models/weapons/w_sticky_grenade.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(20.322, 2.828, -1.349), angle = Angle(180, -3.81, 5.743), size = Vector(1.376, 1.376, 1.376), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
-
-if GetConVar("M9KUniqueSlots") ~= nil then
-    if not (GetConVar("M9KUniqueSlots"):GetBool()) then
-        SWEP.SlotPos = 2
-    end
-end

@@ -76,10 +76,3 @@ SWEP.ViewModelBoneMods      = {
     ["v_weapon.Left_Thumb01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -0.362, 0, 0 ), angle = Angle( 0.465, 15.345, 9.413 ) },
     ["v_weapon.Root17"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0.423, 12.668, 1.228 ) }
 }
-
-if GetConVar( "M9KUniqueSlots" ) ~= nil then
-    if not (GetConVar( "M9KUniqueSlots" ):GetBool()) then
-        SWEP.SlotPos = 2
-    end
-end
-
