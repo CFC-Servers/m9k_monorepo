@@ -1,12 +1,6 @@
 -- Variables that are used on both client and server
 SWEP.Gun = ("m9k_remington870") -- must be the name of your swep but NO CAPITALS!
-if (GetConVar( SWEP.Gun .. "_allowed" )) ~= nil then
-    if not (GetConVar( SWEP.Gun .. "_allowed" ):GetBool()) then
-        SWEP.Base = "bobs_blacklisted"
-        SWEP.PrintName = SWEP.Gun
-        return
-    end
-end
+
 SWEP.Category               = "M9K Shotguns"
 SWEP.Author                 = ""
 SWEP.Contact                = ""
