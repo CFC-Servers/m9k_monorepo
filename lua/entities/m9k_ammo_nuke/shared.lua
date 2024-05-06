@@ -13,7 +13,7 @@ ENT.AdminOnly      = false
 ENT.DoNotDuplicate = true
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    AddCSLuaFile()
 
     function ENT:SpawnFunction( ply, tr )
         if (not tr.Hit) then return end

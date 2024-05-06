@@ -10,7 +10,7 @@ ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    AddCSLuaFile()
 
     function ENT:Initialize()
         self:SetModel( "models/weapons/w_m61_fraggynade_thrown.mdl" )

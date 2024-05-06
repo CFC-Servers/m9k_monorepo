@@ -13,7 +13,7 @@ ENT.PoorBastard       = false
 ENT.Target            = false
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    AddCSLuaFile()
 
     --[[---------------------------------------------------------
    Name: ENT:Initialize()

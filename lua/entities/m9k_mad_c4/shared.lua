@@ -39,7 +39,7 @@ function ENT:OnRemove()
 end
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    AddCSLuaFile()
 
     function ENT:Initialize()
         if not IsValid( self.BombOwner ) then

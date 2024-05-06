@@ -12,7 +12,7 @@ ENT.CanTool = false
 
 if CLIENT then return end
 
-AddCSLuaFile( "shared.lua" )
+AddCSLuaFile()
 
 function ENT:Initialize()
     self:SetModel( "models/weapons/w_px_planted.mdl" )

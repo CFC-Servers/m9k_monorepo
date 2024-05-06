@@ -24,7 +24,7 @@ if GetConVarString( "nuke_yield" ) == "" then --if one of them doesn't exists, t
 end
 
 if SERVER then
-    AddCSLuaFile( "shared.lua" )
+    AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
