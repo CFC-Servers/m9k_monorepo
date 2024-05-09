@@ -14,13 +14,17 @@ ENT.ExplosionEffectScale = 2 -- Size of the explosion
 ENT.ExplosionRadius = 150
 ENT.ExplosionDamage = 350
 
+local expectedTickSpeed = 1 / 67
+local tickSpeed = engine.TickInterval()
+local speedModifier = tickSpeed / expectedTickSpeed
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
 
-        self.Flightvector = self:GetUp() * self.FlightDrop
+        self.Flightvector = self:GetUp() * self.FlightDrop * speedModifier
         self.timeleft = CurTime() + 15
         self:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,
@@ -61,7 +65,6 @@ if SERVER then
         if self.InFlight then
             self:SetPos( self:GetPos() + self.Flightvector )
             self.Flightvector = self.Flightvector - ( self.Flightvector / 350 ) + self:GetFlightRand()
-            --             self.flightvector = self.flightvector - (self.flightvector / 350) + Vector( math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.035 )
             self:SetAngles( self.Flightvector:Angle() + Angle( 90, 0, 0 ) )
         end
 
