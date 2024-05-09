@@ -45,7 +45,11 @@ PhysicsCollide
     function ENT:PhysicsCollide( data, phys )
         self:EmitSound( "GlassBottle.Break" )
 
-        self:QueueExplosion()
+        timer.Simple( 0, function()
+            if IsValid( self ) then
+                self:QueueExplosion()
+            end
+        end )
     end
 
     function ENT:QueueExplosion()
