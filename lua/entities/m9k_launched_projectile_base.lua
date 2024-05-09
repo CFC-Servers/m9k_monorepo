@@ -7,9 +7,12 @@ ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
 ENT.FlightDrop = ( 80 * 52.5 ) / 66
-ENT.ExplosionEffectScale = 2
-ENT.ExplosionDamage = 350
+
+ENT.ExplosionEffectMagnitude = 14 -- Length of explosion trails
+ENT.ExplosionEffectScale = 2 -- Size of the explosion
+
 ENT.ExplosionRadius = 150
+ENT.ExplosionDamage = 350
 
 if SERVER then
     AddCSLuaFile()
@@ -37,7 +40,6 @@ if SERVER then
         }
         local tr = util.TraceLine( trace )
 
-
         if tr.HitSky then
             self:Remove()
             return true
@@ -49,44 +51,17 @@ if SERVER then
                 return
             end
 
-            if not (tr.MatType == 70 or tr.MatType == 50) then
-                util.BlastDamage( self, self:GetOwner(), tr.HitPos, 350, 150 )
-                local effectdata = EffectData()
-                effectdata:SetOrigin( tr.HitPos ) -- Where is hits
-                effectdata:SetNormal( tr.HitNormal ) -- Direction of particles
-                effectdata:SetEntity( self ) -- Who done it?
-                effectdata:SetScale( self.ExplosionEffectScale ) -- Size of explosion
-                effectdata:SetRadius( tr.MatType ) -- What texture it hits
-                effectdata:SetMagnitude( 14 ) -- Length of explosion trails
-                util.Effect( "m9k_gdcw_cinematicboom", effectdata )
-                util.ScreenShake( tr.HitPos, 10, 5, 1, 3000 )
-                util.Decal( "Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal )
-                self:Remove()
+            if not ( tr.MatType == 70 or tr.MatType == 50 ) then
+                self:Explosion( tr.HitPos, tr.HitNormal, tr.MatType )
             else
-                if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() ) then tr.Entity:TakeDamage( 150, self:GetOwner(), self ) end
-                local effectdata = EffectData()
-                effectdata:SetOrigin( tr.HitPos ) -- Where is hits
-                effectdata:SetNormal( tr.HitNormal ) -- Direction of particles
-                effectdata:SetEntity( self ) -- Who done it?
-                effectdata:SetScale( 1 ) -- Size of explosion
-                effectdata:SetRadius( tr.MatType ) -- What texture it hits
-                effectdata:SetMagnitude( 10 ) -- Length of explosion trails
-                tr.Entity:EmitSound( "physics/flesh/flesh_squishy_impact_hard" .. math.random( 1, 4 ) .. ".wav", 500, 100 )
-                util.Effect( "m9k_cinematic_blood_cloud", effectdata )
-                self:SetMoveType( MOVETYPE_VPHYSICS )
-                self:SetPos( tr.HitPos )
-                local phys = self:GetPhysicsObject()
-                phys:Wake()
-                phys:SetMass( 3 )
-                self.InFlight = false
-                self:SetNWBool( "smoke", false )
-                self.timeleft = CurTime() + 2
+                self:DirectHit( tr )
             end
         end
 
         if self.InFlight then
             self:SetPos( self:GetPos() + self.Flightvector )
-            self.Flightvector = self.Flightvector - ( self.Flightvector / 350 ) + Vector( math.Rand( -0.2, 0.2 ), math.Rand( -0.2, 0.2 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.111 )
+            self.Flightvector = self.Flightvector - ( self.Flightvector / 350 ) + self:GetFlightRand()
+            --             self.flightvector = self.flightvector - (self.flightvector / 350) + Vector( math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.035 )
             self:SetAngles( self.Flightvector:Angle() + Angle( 90, 0, 0 ) )
         end
 
@@ -98,22 +73,59 @@ if SERVER then
         return true
     end
 
-    function ENT:Explosion()
+    function ENT:GetFlightRand()
+        return Vector( math.Rand( -0.2, 0.2 ), math.Rand( -0.2, 0.2 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.111 )
+    end
+
+    function ENT:DirectHit( tr )
+        if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() ) then
+            tr.Entity:TakeDamage( 150, self:GetOwner(), self )
+        end
+
+        local effectdata = EffectData()
+        effectdata:SetOrigin( tr.HitPos ) -- Where is hits
+        effectdata:SetNormal( tr.HitNormal ) -- Direction of particles
+        effectdata:SetEntity( self ) -- Who done it?
+        effectdata:SetScale( 1 ) -- Size of explosion
+        effectdata:SetRadius( tr.MatType ) -- What texture it hits
+        effectdata:SetMagnitude( 10 ) -- Length of explosion trails
+
+        tr.Entity:EmitSound( "physics/flesh/flesh_squishy_impact_hard" .. math.random( 1, 4 ) .. ".wav", 500, 100 )
+        util.Effect( "m9k_cinematic_blood_cloud", effectdata )
+
+        self:SetMoveType( MOVETYPE_VPHYSICS )
+        self:SetPos( tr.HitPos )
+
+        local phys = self:GetPhysicsObject()
+        phys:Wake()
+        phys:SetMass( 3 )
+
+        self.InFlight = false
+        self:SetNWBool( "smoke", false )
+        self.timeleft = CurTime() + 2
+    end
+
+    function ENT:Explosion( pos, normal, mattype )
         if not IsValid( self:GetOwner() ) then
             self:Remove()
             return
         end
 
-        util.BlastDamage( self, self:GetOwner(), self:GetPos(), self.ExplosionRadius, self.ExplosionDamage )
+        pos = pos or self:GetPos()
+        normal = normal or Vector( 0, 0, 1 )
+        mattype = mattype or 67
+
+        util.BlastDamage( self, self:GetOwner(), pos, self.ExplosionRadius, self.ExplosionDamage )
         local effectdata = EffectData()
-        effectdata:SetOrigin( self:GetPos() ) -- Where is hits
-        effectdata:SetNormal( Vector( 0, 0, 1 ) ) -- Direction of particles
-        effectdata:SetEntity( self ) -- Who done it?
-        effectdata:SetScale( 1.3 ) -- Size of explosion
-        effectdata:SetRadius( 67 ) -- What texture it hits
-        effectdata:SetMagnitude( 14 ) -- Length of explosion trails
+        effectdata:SetOrigin( pos )
+        effectdata:SetNormal( normal )
+        effectdata:SetEntity( self )
+        effectdata:SetScale( self.ExplosionEffectScale )
+        effectdata:SetRadius( mattype )
+        effectdata:SetMagnitude( self.ExplosionEffectMagnitude )
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
         util.ScreenShake( self:GetPos(), 10, 5, 1, 3000 )
+        util.Decal( "Scorch", pos + normal, pos - normal )
         self:Remove()
     end
 end
