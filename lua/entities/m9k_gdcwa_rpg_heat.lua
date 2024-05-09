@@ -16,7 +16,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetForward() * ((115 * 52.5) / 66)
+        self.flightvector = self:GetForward() * ((115 * 52.5) / 66) * M9K.TickspeedMult
         self.timeleft = CurTime() + 10
         self.Owner = self:GetOwner()
         self:SetModel( "models/Weapons/W_missile_closed.mdl" )

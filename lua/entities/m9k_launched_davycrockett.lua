@@ -16,7 +16,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetUp() * ((115 * 52.5) / 66)
+        self.flightvector = self:GetUp() * ((115 * 52.5) / 66) * M9K.TickspeedMult
         self.timeleft = CurTime() + 5
         self:SetModel( "models/failure/mk6/m62.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,
