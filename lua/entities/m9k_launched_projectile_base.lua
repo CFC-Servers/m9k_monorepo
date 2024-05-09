@@ -124,7 +124,7 @@ if SERVER then
         effectdata:SetRadius( mattype )
         effectdata:SetMagnitude( self.ExplosionEffectMagnitude )
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
-        util.ScreenShake( self:GetPos(), 10, 5, 1, 3000 )
+        util.ScreenShake( self:GetPos(), 10 * self.ExplosionEffectScale, 5, 1, self.ExplosionRadius * 3 )
         util.Decal( "Scorch", pos + normal, pos - normal )
         self:Remove()
     end
