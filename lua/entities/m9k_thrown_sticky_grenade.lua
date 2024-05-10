@@ -40,31 +40,31 @@ if SERVER then
         return true
     end
 
-    function ENT:PhysicsCollide( data, phys )
-        local boxes
-        parentme = {}
-        parentme[1] = "m9k_ammo_40mm"
-        parentme[2] = "m9k_ammo_c4"
-        parentme[3] = "m9k_ammo_frags"
-        parentme[4] = "m9k_ammo_ieds"
-        parentme[5] = "m9k_ammo_nervegas"
-        parentme[6] = "m9k_ammo_nuke"
-        parentme[7] = "m9k_ammo_proxmines"
-        parentme[8] = "m9k_ammo_rockets"
-        parentme[9] = "m9k_ammo_stickynades"
-        parentme[10] = "m9k_ammo_357"
-        parentme[11] = "m9k_ammo_ar2"
-        parentme[12] = "m9k_ammo_buckshot"
-        parentme[13] = "m9k_ammo_pistol"
-        parentme[14] = "m9k_ammo_smg"
-        parentme[15] = "m9k_ammo_sniper_rounds"
-        parentme[16] = "m9k_ammo_winchester"
+    local parentme = {
+        "m9k_ammo_40mm",
+        "m9k_ammo_c4",
+        "m9k_ammo_frags",
+        "m9k_ammo_ieds",
+        "m9k_ammo_nervegas",
+        "m9k_ammo_nuke",
+        "m9k_ammo_proxmines",
+        "m9k_ammo_rockets",
+        "m9k_ammo_stickynades",
+        "m9k_ammo_357",
+        "m9k_ammo_ar2",
+        "m9k_ammo_buckshot",
+        "m9k_ammo_pistol",
+        "m9k_ammo_smg",
+        "m9k_ammo_sniper_rounds",
+        "m9k_ammo_winchester"
+    }
 
+    function ENT:PhysicsCollide( data, phys )
         if data.HitEntity ~= nil and data.HitEntity:IsValid() then
-            for k, v in pairs( parentme ) do
+            for _, v in pairs( parentme ) do
                 if data.HitEntity:GetClass() == v then
-                    boxes = data.HitEntity
-                    boxes.Planted = true
+                    local box = data.HitEntity
+                    box.Planted = true
                 end
             end
         end
@@ -78,7 +78,10 @@ if SERVER then
         phys:Sleep()
 
         if data.HitEntity:IsValid() then
-            self:SetParent( data.HitEntity )
+            timer.Simple( 0, function()
+                if not IsValid( self ) then return end
+                self:SetParent( data.HitEntity )
+            end )
 
             phys:EnableMotion( true )
             phys:Wake()
