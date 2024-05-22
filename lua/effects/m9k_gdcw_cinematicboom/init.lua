@@ -57,9 +57,7 @@ function EFFECT:Init( data )
         mat = 84
     end
 
-    --THERE! I FIXED IT!
     local matNum = mats[mat]
-    print( matNum )
     if matNum == 1 then
         self:Dust()
     elseif matNum == 2 then
@@ -81,6 +79,8 @@ function EFFECT:Init( data )
     else
         self:Smoke()
     end
+
+    self.Emitter:Finish()
 end
 
 function EFFECT:Dust()
@@ -808,7 +808,6 @@ function EFFECT:YellowBlood()
 end
 
 function EFFECT:Think()
-    self.Emitter:Finish()
     return false
 end
 
