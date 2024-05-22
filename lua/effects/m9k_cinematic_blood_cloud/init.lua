@@ -1,42 +1,3 @@
--- this is only called for when a grenade hits a body. it doesn't make an explosion sound
---other code left because i don't want to risk breaking anything
---Sound,Impact
-
--- 1        2       3      4      5
---Dirt, Concrete, Metal, Glass, Flesh
-
--- 1     2     3      4      5      6      7      8         9
---Dust, Dirt, Sand, Metal, Smoke, Wood,  Glass, Blood, YellowBlood
-local mats = {
-    [MAT_ALIENFLESH]  = { 5, 9 },
-    [MAT_ANTLION]     = { 5, 9 },
-    [MAT_BLOODYFLESH] = { 5, 8 },
-    [45]              = { 5, 8 }, -- Metrocop heads are a source glitch, they have no enumeration
-    [MAT_CLIP]        = { 3, 5 },
-    [MAT_COMPUTER]    = { 4, 5 },
-    [MAT_FLESH]       = { 5, 8 },
-    [MAT_GRATE]       = { 3, 4 },
-    [MAT_METAL]       = { 3, 4 },
-    [MAT_PLASTIC]     = { 2, 5 },
-    [MAT_SLOSH]       = { 5, 5 },
-    [MAT_VENT]        = { 3, 4 },
-    [MAT_FOLIAGE]     = { 1, 5 },
-    [MAT_TILE]        = { 2, 5 },
-    [MAT_CONCRETE]    = { 2, 1 },
-    [MAT_DIRT]        = { 1, 2 },
-    [MAT_SAND]        = { 1, 3 },
-    [MAT_WOOD]        = { 2, 6 },
-    [MAT_GLASS]       = { 4, 7 },
-}
-
-local sounds = {
-    [1] = { "Bullet.Dirt", },
-    [2] = { "Bullet.Concrete", },
-    [3] = { "Bullet.Metal", },
-    [4] = { "Bullet.Glass", },
-    [5] = { "Bullet.Flesh", },
-}
-
 function EFFECT:Init( data )
     self.Entity            = data:GetEntity() -- Entity determines what is creating the dynamic light			--
 
@@ -138,6 +99,4 @@ function EFFECT:Think()
 end
 
 function EFFECT:Render()
-
 end
-
