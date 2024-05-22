@@ -1,6 +1,5 @@
 function EFFECT:Init( data )
-    self.Entity = data:GetEntity()
-    pos = data:GetOrigin()
+    local pos = data:GetOrigin()
     self.Emitter = ParticleEmitter( pos )
     if data:GetScale() == 1 then
         self:RingBlast()
@@ -33,11 +32,13 @@ function EFFECT:Init( data )
                 particle:SetCollide( false )
                 particle:SetBounce( 0 )
             end
+            Emitter:Finish()
         end )
     end
 end
 
 function EFFECT:Think()
+    self.Emitter:Finish()
     return false
 end
 

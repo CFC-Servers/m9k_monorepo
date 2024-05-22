@@ -1,6 +1,5 @@
 function EFFECT:Init( data )
-    self.Entity = data:GetEntity()
-    pos = data:GetOrigin()
+    local pos = data:GetOrigin()
     self.Emitter = ParticleEmitter( pos )
     if data:GetScale() == 1 then
         for i = 1, 50 do
@@ -49,6 +48,8 @@ function EFFECT:Init( data )
             end
         end
     end
+
+    self.Emitter:Finish()
 end
 
 function EFFECT:Think()

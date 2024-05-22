@@ -51,7 +51,5 @@ function EFFECT:Think()
     end
 end
 
--- Draw the effect
 function EFFECT:Render()
-
 end

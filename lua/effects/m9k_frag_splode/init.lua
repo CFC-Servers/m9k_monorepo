@@ -1,10 +1,9 @@
 function EFFECT:Init( data )
-    self.Entity = data:GetEntity()
-    pos = data:GetOrigin()
-    self.Emitter = ParticleEmitter( pos )
-    for i = 1, 5 do
+    local pos = data:GetOrigin()
+    local emitter = ParticleEmitter( pos )
+    for _ = 1, 5 do
         local particle = self.Emitter:Add( "effects/advisoreffect/advisorblast1", pos )
-        if (particle) then
+        if particle then
             particle:SetDieTime( .15 )
             particle:SetStartAlpha( 50 )
             particle:SetEndAlpha( 255 )
@@ -18,6 +17,8 @@ function EFFECT:Init( data )
             particle:SetBounce( 1 )
         end
     end
+
+    emitter:Finish()
 end
 
 function EFFECT:Think()
@@ -25,6 +26,4 @@ function EFFECT:Think()
 end
 
 function EFFECT:Render()
-
 end
-

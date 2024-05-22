@@ -58,6 +58,8 @@ function EFFECT:Init( data )
 
     self.Mat = math.ceil( self.Radius )
     self:Blood()
+
+    self.Emitter:Finish()
 end
 
 function EFFECT:Blood()
