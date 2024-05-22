@@ -4,34 +4,25 @@
 -- 1     2     3      4      5      6      7      8         9
 --Dust, Dirt, Sand, Metal, Smoke, Wood,  Glass, Blood, YellowBlood
 local mats = {
-    [MAT_ALIENFLESH] = { 5, 9 },
-    [MAT_ANTLION] = { 5, 9 },
-    [MAT_BLOODYFLESH] = { 5, 8 },
-    [45] = { 5, 8 }, -- Metrocop heads are a source glitch, they have no enumeration
-    [MAT_CLIP] = { 3, 5 },
-    [MAT_COMPUTER] = { 4, 5 },
-    [MAT_FLESH] = { 5, 8 },
-    [MAT_GRATE] = { 3, 4 },
-    [MAT_METAL] = { 3, 4 },
-    [MAT_PLASTIC] = { 2, 5 },
-    [MAT_SLOSH] = { 5, 5 },
-    [MAT_VENT] = { 3, 4 },
-    [MAT_FOLIAGE] = { 1, 5 },
-    [MAT_TILE] = { 2, 5 },
-    [MAT_CONCRETE] = { 2, 1 },
-    [MAT_DIRT] = { 1, 2 },
-    --[85]			={1,2},
-    [MAT_SAND] = { 1, 3 },
-    [MAT_WOOD] = { 2, 6 },
-    [MAT_GLASS] = { 4, 7 },
-}
-
-local sounds = {
-    [1] = { "Bullet.Dirt", },
-    [2] = { "Bullet.Concrete", },
-    [3] = { "Bullet.Metal", },
-    [4] = { "Bullet.Glass", },
-    [5] = { "Bullet.Flesh", },
+    [MAT_ALIENFLESH] = 9,
+    [MAT_ANTLION] = 9,
+    [MAT_BLOODYFLESH] = 8,
+    [45] = 8, -- Metrocop heads are a source glitch, they have no enumeration
+    [MAT_CLIP] = 5,
+    [MAT_COMPUTER] = 5,
+    [MAT_FLESH] = 8,
+    [MAT_GRATE] = 4,
+    [MAT_METAL] = 4,
+    [MAT_PLASTIC] = 5,
+    [MAT_SLOSH] = 5,
+    [MAT_VENT] = 4,
+    [MAT_FOLIAGE] = 5,
+    [MAT_TILE] = 5,
+    [MAT_CONCRETE] = 1,
+    [MAT_DIRT] = 2,
+    [MAT_SAND] = 3,
+    [MAT_WOOD] = 6,
+    [MAT_GLASS] = 7,
 }
 
 function EFFECT:Init( data )
@@ -53,37 +44,39 @@ function EFFECT:Init( data )
         sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
     end
 
-    self.Mat = math.ceil( self.Radius )
+    local mat = math.ceil( self.Radius )
     local foundTheMat = false
-    for k, v in pairs( mats ) do
-        if k == self.Mat then
+    for k in pairs( mats ) do
+        if k == mat then
             foundTheMat = true
             break
         end
     end
 
     if not foundTheMat then
-        self.Mat = 84
+        mat = 84
     end
 
     --THERE! I FIXED IT!
-    if mats[self.Mat][2] == 1 then
+    local matNum = mats[mat]
+    print( matNum )
+    if matNum == 1 then
         self:Dust()
-    elseif mats[self.Mat][2] == 2 then
+    elseif matNum == 2 then
         self:Dirt()
-    elseif mats[self.Mat][2] == 3 then
+    elseif matNum == 3 then
         self:Sand()
-    elseif mats[self.Mat][2] == 4 then
+    elseif matNum == 4 then
         self:Metal()
-    elseif mats[self.Mat][2] == 5 then
+    elseif matNum == 5 then
         self:Smoke()
-    elseif mats[self.Mat][2] == 6 then
+    elseif matNum == 6 then
         self:Wood()
-    elseif mats[self.Mat][2] == 7 then
+    elseif matNum == 7 then
         self:Glass()
-    elseif mats[self.Mat][2] == 8 then
+    elseif matNum == 8 then
         self:Blood()
-    elseif mats[self.Mat][2] == 9 then
+    elseif matNum == 9 then
         self:YellowBlood()
     else
         self:Smoke()
@@ -419,7 +412,6 @@ function EFFECT:Sand()
 end
 
 function EFFECT:Metal()
-    sound.Play( "Bullet.Impact", self.Pos )
     -- Blast flash
     for i = 1, 5 do
         local Flash = self.Emitter:Add( "effects/muzzleflash" .. math.random( 1, 4 ), self.Pos )
@@ -486,7 +478,6 @@ function EFFECT:Metal()
 end
 
 function EFFECT:Smoke()
-    sound.Play( "Bullet.Impact", self.Pos )
     -- Blast flash
     for i = 1, 5 do
         local Flash = self.Emitter:Add( "effects/muzzleflash" .. math.random( 1, 4 ), self.Pos )
@@ -817,6 +808,7 @@ function EFFECT:YellowBlood()
 end
 
 function EFFECT:Think()
+    self.Emitter:Finish()
     return false
 end
 
