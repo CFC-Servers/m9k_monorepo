@@ -95,21 +95,26 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:HackNSlash()
-    local pos = self:GetOwner():GetShootPos()
-    local ang = self:GetOwner():GetAimVector()
+    local owner = self:GetOwner()
+    local pos = owner:GetShootPos()
+    local ang = owner:GetAimVector()
     local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
 
-    self:GetOwner():LagCompensation( true )
-    if self:GetOwner():Alive() then
-            local slash = {}
-            slash.start = pos
-            slash.endpos = pos + (ang * 42)
-            slash.filter = self:GetOwner()
-            slash.mins = Vector( -8, -10, 0 )
-            slash.maxs = Vector( 8, 10, 5 )
+    if owner:Alive() then
+            local slash = {
+                start = pos,
+                endpos = pos + ( ang * 42 ),
+                filter = owner,
+                mins = Vector( -8, -10, 0 ),
+                maxs = Vector( 8, 10, 5 )
+            }
+
+            owner:LagCompensation( true )
             local slashtrace = util.TraceHull( slash )
-            self:GetOwner():ViewPunch( Angle( 20, 0, 0 ) )
+            owner:LagCompensation( false )
+
+            owner:ViewPunch( Angle( 20, 0, 0 ) )
             if slashtrace.Hit then
                 targ = slashtrace.Entity
                 if targ:IsPlayer() or targ:IsNPC() then
@@ -118,18 +123,17 @@ function SWEP:HackNSlash()
                     paininfo = DamageInfo()
                     paininfo:SetDamage( pain )
                     paininfo:SetDamageType( DMG_SLASH )
-                    paininfo:SetAttacker( self:GetOwner() )
+                    paininfo:SetAttacker( owner )
                     paininfo:SetInflictor( self )
                     paininfo:SetDamageForce( slashtrace.Normal * 35000 )
                     targ:TakeDamageInfo( paininfo )
                 else
                     self:EmitSound( self.KnifeShink ) --SHINK!
-                    local look = self:GetOwner():GetEyeTrace()
+                    local look = owner:GetEyeTrace()
                     util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
                 end
             end
     end
-    self:GetOwner():LagCompensation( false )
 end
 
 function SWEP:SecondaryAttack()

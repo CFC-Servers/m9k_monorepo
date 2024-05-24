@@ -91,13 +91,17 @@ function SWEP:PrimaryAttack()
     self:EmitSound( self.Primary.Sound )
 
     if owner:Alive() then
-        local slash = {}
-        slash.start = pos
-        slash.endpos = pos + ( ang * 52 )
-        slash.filter = owner
-        slash.mins = Vector( -15, -5, 0 )
-        slash.maxs = Vector( 15, 5, 5 )
+        local slash = {
+            start = pos,
+            endpos = pos + ( ang * 52 ),
+            filter = owner,
+            mins = Vector( -15, -5, 0 ),
+            maxs = Vector( 15, 5, 5 )
+        }
+        self:GetOwner():LagCompensation( true )
         local slashtrace = util.TraceHull( slash )
+        self:GetOwner():LagCompensation( false )
+
         if slashtrace.Hit then
             targ = slashtrace.Entity
             if targ:IsPlayer() or targ:IsNPC() then

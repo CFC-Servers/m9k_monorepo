@@ -148,20 +148,26 @@ function SWEP:PrimarySlash()
 end
 
 function SWEP:SecondaryAttack()
-    local pos = self:GetOwner():GetShootPos()
-    local ang = self:GetOwner():GetAimVector()
-    local vm = self:GetOwner():GetViewModel()
+    local owner = self:GetOwner()
+    local pos = owner:GetShootPos()
+    local ang = owner:GetAimVector()
+    local vm = owner:GetViewModel()
 
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
+    if self:CanPrimaryAttack() and owner:IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if not self:GetOwner():KeyDown( IN_RELOAD ) then
-            local stab = {}
-            stab.start = pos
-            stab.endpos = pos + (ang * 24)
-            stab.filter = self:GetOwner()
-            stab.mins = Vector( -10, -5, 0 )
-            stab.maxs = Vector( 10, 5, 5 )
+        if not owner:KeyDown( IN_RELOAD ) then
+            local stab = {
+                start = pos,
+                endpos = pos + ( ang * 24 ),
+                filter = owner,
+                mins = Vector( -10, -5, 0 ),
+                maxs = Vector( 10, 5, 5 )
+            }
+
+            owner:LagCompensation( true )
             local stabtrace = util.TraceHull( stab )
+            owner:LagCompensation( false )
+
             if stabtrace.Hit then
                 vm:SetSequence( vm:LookupSequence( "stab" ) )
             else
@@ -170,14 +176,13 @@ function SWEP:SecondaryAttack()
 
             timer.Create( "cssstab", .33, 1, function()
                 if not IsValid( self ) then return end
-                if IsValid( self:GetOwner() ) and IsValid( self ) then
-                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                        self:Stab()
-                    end
+                if not IsValid( owner ) then return end
+                if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
+                    self:Stab()
                 end
             end )
 
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             self:SetNextSecondaryFire( CurTime() + 1.25 )
         end
