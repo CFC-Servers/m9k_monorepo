@@ -150,7 +150,7 @@ function SWEP:IronSight()
         end
     end
 
-    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if not self:GetOwner():KeyDown( IN_USE ) then
         -- If the key E (Use Key) is not pressed, then
 
         if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
