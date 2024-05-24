@@ -79,7 +79,7 @@ function SWEP:PrimaryAttack()
     vm = self:GetOwner():GetViewModel()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_RELOAD ) then
             if self.Slash == 1 then
                 vm:SetSequence( vm:LookupSequence( "midslash1" ) )
                 self.Slash = 2
@@ -154,7 +154,7 @@ function SWEP:SecondaryAttack()
 
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not self:GetOwner():KeyDown( IN_RELOAD ) then
             local stab = {}
             stab.start = pos
             stab.endpos = pos + (ang * 24)
@@ -239,25 +239,12 @@ function SWEP:IronSight()
 
 
     if self:GetOwner():KeyPressed( IN_RELOAD ) then
-        if not self:GetOwner():KeyDown( IN_ATTACK ) and not self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+        if not self:GetOwner():KeyDown( IN_ATTACK ) and not self:GetOwner():KeyDown( IN_ATTACK2 ) then
             self:ThrowKnife()
             self:NextThink( CurTime() + 1 )
             return true
         end
     end
-
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
-        self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end
-
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end -- Shoulder the gun
 end
 
 function SWEP:Reload()

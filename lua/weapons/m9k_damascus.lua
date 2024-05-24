@@ -77,7 +77,6 @@ function SWEP:PrimaryAttack()
     local pain = self.Primary.Damage * damagedice
 
     self:SendWeaponAnim( ACT_VM_IDLE )
-    if owner:KeyDown( IN_SPEED ) then return end
     if owner:KeyDown( IN_RELOAD ) then return end
     if owner:KeyDown( IN_ATTACK2 ) then return end
 
@@ -124,33 +123,6 @@ function SWEP:PrimaryAttack()
     self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
 end
 
---[[ function GuardUp(victim, info)
-
-    if !IsValid(victim) then return end
-    if not IsValid(info) then return end
-    if not IsValid(info:GetInflictor()) then return end
-
-    if info:GetInflictor():GetClass() ~= nil then
-        if info:GetInflictor():GetClass() == "m9k_damascus" then
-            if victim:IsPlayer() and victim:Alive() then
-                if victim:GetNWBool("GuardIsUp", false) then
-                    victim:SetHealth(victim:Health() + info:GetDamage())
-                    victim:EmitSound(Sound("weapons/blades/clash.mp3"))
-                else
-                    victim:EmitSound(Sound("weapons/blades/swordchop.mp3"))
-                end
-            else
-                victim:EmitSound(Sound("weapons/blades/swordchop.mp3"))
-            end
-        end
-    end
-
-end
-hook.Add("EntityTakeDamage", "GuardUp", GuardUp ) ]]
-
---I'm moving this to the autorun file, where the server will pick it up and run it... automatically.
---it shouldnt change anything.
-
 function SWEP:Holster()
     if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
         local vm = self:GetOwner():GetViewModel()
@@ -174,26 +146,6 @@ function SWEP:IronSight()
         end
     end
 
-    --copy this...
-
-    if self:GetOwner():KeyPressed( IN_SPEED ) then
-        self:GetOwner():SetNWBool( "GuardIsUp", false )
-    end
-
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
-        self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end
-
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end -- Shoulder the gun
-
-    --down to this
     if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the key E (Use Key) is not pressed, then
 
@@ -210,7 +162,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) then
         -- If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = true
@@ -222,7 +174,7 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

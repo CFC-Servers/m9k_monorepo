@@ -78,20 +78,18 @@ function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
-            if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
-                vm:SetSequence( vm:LookupSequence( "stab" ) )
-                timer.Create( "hack-n-slash", .23, 1, function()
-                    if not IsValid( self ) then return end
-                    if IsValid( self:GetOwner() ) and
-                        IsValid( self ) then
-                        if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                            self:HackNSlash()
-                        end
+            vm:SetSequence( vm:LookupSequence( "stab" ) )
+            timer.Create( "hack-n-slash", .23, 1, function()
+                if not IsValid( self ) then return end
+                if IsValid( self:GetOwner() ) and
+                    IsValid( self ) then
+                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+                        self:HackNSlash()
                     end
-                end )
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-            end
+                end
+            end )
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
         end
     end
 end
@@ -156,40 +154,4 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:IronSight()
-    if not self:GetOwner():IsNPC() then
-        if self.ResetSights and CurTime() >= self.ResetSights then
-            self.ResetSights = nil
-
-            if self.Silenced then
-                self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
-            else
-                self:SendWeaponAnim( ACT_VM_IDLE )
-            end
-        end
-    end
-
-    if self.CanBeSilenced and self.NextSilence < CurTime() then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) then
-            self:Silencer()
-        end
-    end
-
-    if self.SelectiveFire and self.NextFireSelect < CurTime() then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
-            self:SelectFireMode()
-        end
-    end
-
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
-        self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end
-
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
-        self:GetOwner():SetFOV( 0, 0.3 )
-    end -- Shoulder the gun
 end
