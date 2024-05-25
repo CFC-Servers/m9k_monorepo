@@ -29,7 +29,7 @@ SWEP.FiresUnderwater        = false
 SWEP.ShowWorldModel         = true
 
 SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
-SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
+SWEP.Primary.RPM            = 40 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1 -- Size of a clip
 SWEP.Primary.DefaultClip    = 2 -- Bullets you start with
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
@@ -129,7 +129,6 @@ function SWEP:Reload()
         return
     end
 
-    if self:GetOwner():KeyDown( IN_USE ) then return end
     self:DefaultReload( ACT_VM_DRAW )
 
     if not self:GetOwner():IsNPC() then

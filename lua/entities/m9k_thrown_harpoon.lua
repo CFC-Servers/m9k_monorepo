@@ -8,7 +8,7 @@ ENT.ExtraPenDepth = 25
 
 if SERVER then
     function ENT:DamageFunction( target, damager, physData )
-        local damage = physData.Speed / 4
+        local damage = physData.Speed / 10
         target:TakeDamage( damage, damager, self )
     end
 end
