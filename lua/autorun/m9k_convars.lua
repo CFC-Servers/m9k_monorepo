@@ -10,7 +10,7 @@ CreateConVar( "M9K_Davy_Crockett_Timer", "3", { FCVAR_REPLICATED, FCVAR_NOTIFY, 
 CreateConVar( "DavyCrockettAllowed", "1", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Allow people to shoot the Davy Crockett?" )
 CreateConVar( "DavyCrocketAdminOnly", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Make the Davy Crockett an Admin Only weapon?" )
 CreateConVar( "OrbitalStrikeAdminOnly", "0", { FCVAR_REPLICATED, FCVAR_NOTIFY, FCVAR_ARCHIVE }, "Make the Orbital Cannon an Admin Only weapon?" )
-CreateConVar( "M9K_CFC", "1", { FCVAR_USERINFO }, "M9K Version" )
+CreateConVar( "M9K_CFC", "1", { FCVAR_NOTIFY }, "M9K Version" )
 
 CreateConVar( "nuke_yield", 200, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
 CreateConVar( "nuke_.mp3eresolution", 0.2, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
