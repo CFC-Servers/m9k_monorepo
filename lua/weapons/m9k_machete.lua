@@ -71,7 +71,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    vm = self:GetOwner():GetViewModel()
+    local vm = self:GetOwner():GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
     self:GetOwner():ViewPunch( Angle( -10, 0, 0 ) )
 
@@ -81,11 +81,9 @@ function SWEP:PrimaryAttack()
             vm:SetSequence( vm:LookupSequence( "stab" ) )
             timer.Create( "hack-n-slash", .23, 1, function()
                 if not IsValid( self ) then return end
-                if IsValid( self:GetOwner() ) and
-                    IsValid( self ) then
-                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                        self:HackNSlash()
-                    end
+                if not IsValid( self:GetOwner() ) then return end
+                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+                    self:HackNSlash()
                 end
             end )
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
@@ -140,7 +138,7 @@ function SWEP:SecondaryAttack()
     if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
         self:EmitSound( "Weapon_Knife.Slash" )
 
-        if (SERVER) then
+        if SERVER then
             local knife = ents.Create( "m9k_thrown_knife" )
             knife:SetAngles( self:GetOwner():EyeAngles() )
             knife:SetPos( self:GetOwner():GetShootPos() )

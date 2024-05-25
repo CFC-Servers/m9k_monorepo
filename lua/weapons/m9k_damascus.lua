@@ -150,20 +150,16 @@ function SWEP:IronSight()
         end
     end
 
-    if not self:GetOwner():KeyDown( IN_USE ) then
-        -- If the key E (Use Key) is not pressed, then
+    if not self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
+        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+        self.IronSightsPos = self.SightsPos -- Bring it up
+        self.IronSightsAng = self.SightsAng -- Bring it up
+        self:SetIronsights( true, self:GetOwner() )
+        self.DrawCrosshair = false
+        self:GetOwner():SetNWBool( "GuardIsUp", true )
+        -- Set the ironsight true
 
-        if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
-            self.IronSightsPos = self.SightsPos -- Bring it up
-            self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true, self:GetOwner() )
-            self.DrawCrosshair = false
-            self:GetOwner():SetNWBool( "GuardIsUp", true )
-            -- Set the ironsight true
-
-            if CLIENT then return end
-        end
+        if CLIENT then return end
     end
 
     if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) then

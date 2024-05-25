@@ -76,7 +76,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    vm = self:GetOwner():GetViewModel()
+    local vm = self:GetOwner():GetViewModel()
     if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
         if not self:GetOwner():KeyDown( IN_RELOAD ) then
@@ -91,11 +91,7 @@ function SWEP:PrimaryAttack()
             if CLIENT then return end
             timer.Create( "cssslash", .15, 1, function()
                 if not IsValid( self ) then return end
-                if IsValid( self:GetOwner() )
-
-                    and IsValid( self )
-
-                then
+                if IsValid( self:GetOwner() ) and IsValid( self ) then
                     self:PrimarySlash()
                 end
             end )
