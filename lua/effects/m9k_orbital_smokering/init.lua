@@ -2,7 +2,7 @@ function EFFECT:Init( data )
     local pos = data:GetOrigin()
     self.Emitter = ParticleEmitter( pos )
     if data:GetScale() == 1 then
-        self:RingBlast()
+        self:RingBlast( pos )
     else
         local particle = self.Emitter:Add( "pincher.vmt", pos )
         if (particle) then
@@ -46,7 +46,7 @@ function EFFECT:Render()
 
 end
 
-function EFFECT:RingBlast()
+function EFFECT:RingBlast( pos )
     for i = 1, 300 do
         local particle = self.Emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos )
         if (particle) then
