@@ -147,6 +147,8 @@ function SWEP:SecondaryAttack()
                 local owner = self:GetOwner()
                 if not IsValid( owner ) then return end
                 if not owner:Alive() then return end
+                if owner:GetActiveWeapon() ~= self then return end
+
                 self:RightJab()
             end )
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
