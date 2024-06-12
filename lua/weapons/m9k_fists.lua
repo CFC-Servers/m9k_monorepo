@@ -144,15 +144,14 @@ function SWEP:SecondaryAttack()
 
             timer.Create( "RightJab", .1, 1, function()
                 if not IsValid( self ) then return end
-                if IsValid( self:GetOwner() ) and IsValid( self ) then
-                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                        self:RightJab()
-                    end
-                end
+                local owner = self:GetOwner()
+                if not IsValid( owner ) then return end
+                if not owner:Alive() then return end
+                self:RightJab()
             end )
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:SetNextSecondaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-            self:SetNextPrimaryFire( (CurTime() + 1 / (self.Primary.RPM / 60)) )
+            self:SetNextSecondaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+            self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
         end
     end
 end
