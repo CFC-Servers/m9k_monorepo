@@ -252,23 +252,24 @@ function SWEP:Reload()
 end
 
 function SWEP:ThrowKnife()
+    if self:GetNextPrimaryFire() > CurTime() then return end
+
     if IsFirstTimePredicted() then
         self:EmitSound( self.Primary.Sound )
-        if (SERVER) then
+        if SERVER then
             local knife = ents.Create( "m9k_thrown_spec_knife" )
-            if IsValid( knife ) then
-                knife:SetAngles( self:GetOwner():EyeAngles() )
-                knife:SetPos( self:GetOwner():GetShootPos() )
-                knife:SetOwner( self:GetOwner() )
-                knife:SetPhysicsAttacker( self:GetOwner() )
-                knife:Spawn()
-                knife:Activate()
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                local phys = knife:GetPhysicsObject()
-                phys:SetVelocity( self:GetOwner():GetAimVector() * 1500 )
-                phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
-                self:GetOwner():StripWeapon( self.Gun )
-            end
+            knife:SetAngles( self:GetOwner():EyeAngles() )
+            knife:SetPos( self:GetOwner():GetShootPos() )
+            knife:SetOwner( self:GetOwner() )
+            knife:SetPhysicsAttacker( self:GetOwner() )
+            knife:Spawn()
+            knife:Activate()
+            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+
+            local phys = knife:GetPhysicsObject()
+            phys:SetVelocity( self:GetOwner():GetAimVector() * 1500 )
+            phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
+            self:GetOwner():StripWeapon( self.Gun )
         end
     end
 end

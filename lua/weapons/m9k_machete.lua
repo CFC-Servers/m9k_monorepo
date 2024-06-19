@@ -135,6 +135,8 @@ function SWEP:HackNSlash()
 end
 
 function SWEP:SecondaryAttack()
+    if self:GetNextPrimaryFire() > CurTime() then return end
+
     if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
         self:EmitSound( "Weapon_Knife.Slash" )
 

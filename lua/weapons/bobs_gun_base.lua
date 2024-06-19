@@ -164,6 +164,7 @@ function SWEP:Deploy()
         self:SendWeaponAnim( ACT_VM_DRAW )
     end
 
+    self:SetNextPrimaryFire( CurTime() + 1 )
     self:SetNWBool( "Reloading", false )
 
     if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil then

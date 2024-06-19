@@ -92,9 +92,9 @@ function SWEP:Deploy()
 
     self:SendWeaponAnim( ACT_VM_DRAW )
 
-    self:SetNextPrimaryFire( CurTime() + .25 )
-    self:SetNextSecondaryFire( CurTime() + .25 )
-    self.ActionDelay = (CurTime() + .25)
+    self:SetNextPrimaryFire( CurTime() + 1 )
+    self:SetNextSecondaryFire( CurTime() + 1 )
+    self.ActionDelay = (CurTime() + 1)
 
     if (SERVER) then
         self:SetIronsights( false )

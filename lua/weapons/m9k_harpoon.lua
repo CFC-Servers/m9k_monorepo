@@ -68,6 +68,13 @@ SWEP.ViewModelBoneMods = {
     },
 }
 
+function SWEP:Deploy()
+    self:SetHoldType( self.HoldType )
+    self:SendWeaponAnim( ACT_VM_DRAW )
+    self:SetNextPrimaryFire( CurTime() + 0.8 )
+    return true
+end
+
 if SERVER then
     function SWEP:FireRocket()
         local pos = self:GetOwner():GetShootPos()
@@ -90,6 +97,7 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    if self:GetNextPrimaryFire() > CurTime() then return end
 
     local shootPos = self:GetOwner():GetShootPos()
     local tracedata = {
