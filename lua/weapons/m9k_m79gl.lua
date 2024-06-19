@@ -61,31 +61,25 @@ SWEP.SightsAng              = Vector( 1.294, 0.15, 0 )
 SWEP.RunSightsPos           = Vector( 3.279, -5.574, 0 )
 SWEP.RunSightsAng           = Vector( -1.721, 49.917, 0 )
 
--- SWEP.WElements = {
--- ["launcher"] = { type = "Model", model = "models/weapons/w_m79_grenadelauncher.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(44.681, 1.463, -11), angle = Angle(-180, -91.008, 16.164), size = Vector(1.378, 1.378, 1.378), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
--- }
-
-
 function SWEP:Deploy()
     if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
     self:SetHoldType( self.HoldType )
+    self:SetNextPrimaryFire( CurTime() + 1 )
 
     local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-    if (timer.Exists( timerName )) then
-        timer.Destroy( timerName )
+    if timer.Exists( timerName ) then
+        timer.Remove( timerName )
     end
 
     self:SendWeaponAnim( ACT_VM_DRAW )
 
-    self:SetNextPrimaryFire( CurTime() + .25 )
-    self:SetNextSecondaryFire( CurTime() + .25 )
-    self.ActionDelay = (CurTime() + .25)
-    -----------------------------------------self.NextFireTime = (CurTime() + .25)
+    self:SetNextSecondaryFire( CurTime() + 1 )
+    self.ActionDelay = CurTime() + .25
 
-    if (SERVER) then
+    if SERVER then
         self:SetIronsights( false )
     end
 
@@ -95,17 +89,16 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then ------------------------------------- and self.NextFireTime <= CurTime() then
+    if self:GetNextPrimaryFire() > CurTime() then return end
+    if self:CanPrimaryAttack() then
         if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:FireRocket()
             self:EmitSound( self.Primary.Sound )
             self:TakePrimaryAmmo( 1 )
             self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            local fx = EffectData()
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:GetOwner():MuzzleFlash()
             self:SetNextPrimaryFire( CurTime() + 1.75 )
-            ----------------------------------------------------self.NextFireTime = (CurTime() + 2)
         else
             self:Reload()
         end
