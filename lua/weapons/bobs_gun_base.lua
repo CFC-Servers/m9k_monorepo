@@ -595,11 +595,9 @@ end
 function SWEP:Silencer()
     if self.NextSilence > CurTime() then return end
 
-    if self ~= nil then
-        self:GetOwner():SetFOV( 0, 0.3 )
-        self:SetIronsights( false )
-        self:SetReloading( true ) -- i know we're not reloading but it works
-    end
+    self:GetOwner():SetFOV( 0, 0.3 )
+    self:SetIronsights( false )
+    self:SetReloading( true ) -- i know we're not reloading but it works
 
     if self.Silenced then
         self:SendWeaponAnim( ACT_VM_DETACH_SILENCER )
