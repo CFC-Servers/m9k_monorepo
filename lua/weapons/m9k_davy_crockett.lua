@@ -166,9 +166,10 @@ end
 function SWEP:SecondaryAttack()
 end
 
+local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
     if SERVER and self ~= nil then
-        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar( "M9KWeaponStrip" ):GetBool()) then
+        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and weaponStrip:GetBool() then
             timer.Simple( .1, function()
                 if SERVER then
                     if not IsValid( self ) then return end

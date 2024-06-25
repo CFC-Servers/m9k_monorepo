@@ -62,32 +62,13 @@ SWEP.RunSightsAng           = Vector( 0.574, 51.638, 5.737 )
 
 SWEP.Secondary.Sound        = "dbarrel_dblast"
 
-local PainMulti             = 1
+local dmgMultCvar = GetConVar( "M9KDamageMultiplier" )
+local damageMultiplier = dmgMultCvar:GetFloat()
 
-if GetConVar( "M9KDamageMultiplier" ) == nil then
-    PainMulti = 1
-    print( "M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1." )
-else
-    PainMulti = GetConVar( "M9KDamageMultiplier" ):GetFloat()
-    if PainMulti < 0 then
-        PainMulti = PainMulti * -1
-        print( "Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now " .. PainMulti )
-    end
+local function dmgMultCallback( _, _, new )
+    damageMultiplier = tonumber( new )
 end
-
-local function NewM9KDamageMultiplierDB()
-    print( "multiplier has been changed " )
-    if GetConVar( "M9KDamageMultiplier" ) == nil then
-        PainMulti = 1
-        print( "M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1, you will notice no changes." )
-    else
-        PainMulti = GetConVar( "M9KDamageMultiplier" ):GetFloat()
-        if PainMulti < 0 then
-            PainMulti = PainMulti * -1
-        end
-    end
-end
-cvars.AddChangeCallback( "M9KDamageMultiplier", NewM9KDamageMultiplierDB )
+cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "dbarrel" )
 
 function SWEP:SecondaryAttack()
     if not self:CanPrimaryAttack() then return end
@@ -176,7 +157,7 @@ function SWEP:ShootBulletInformation2()
     local basedamage
     local damagedice = math.Rand( 0.95, 1.05 )
 
-    basedamage = PainMulti * self.Primary.Damage
+    basedamage = damageMultiplier * self.Primary.Damage
     CurrentDamage = basedamage * damagedice
     CurrentRecoil = self.Primary.Recoil
 

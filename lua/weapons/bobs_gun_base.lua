@@ -58,33 +58,13 @@ local SERVER                = SERVER
 local MASK_SHOT             = MASK_SHOT
 local IN_USE                = IN_USE
 
-local PainMulti             = 1
+local dmgMultCvar = GetConVar( "M9KDamageMultiplier" )
+local damageMultiplier = dmgMultCvar:GetFloat()
 
-if GetConVar( "M9KDamageMultiplier" ) == nil then
-    PainMulti = 1
-    print( "M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1." )
-else
-    PainMulti = GetConVar( "M9KDamageMultiplier" ):GetFloat()
-    if PainMulti < 0 then
-        PainMulti = PainMulti * -1
-        print( "Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now " .. PainMulti )
-    end
+local function dmgMultCallback( _, _, new )
+    damageMultiplier = tonumber( new )
 end
-
-local function NewM9KDamageMultiplier( cvar, previous, new )
-    print( "multiplier has been changed " )
-    if GetConVar( "M9KDamageMultiplier" ) == nil then
-        PainMulti = 1
-        print( "M9KDamageMultiplier is missing! You may have hit the lua limit! Reverting multiplier to 1, you will notice no changes." )
-    else
-        PainMulti = GetConVar( "M9KDamageMultiplier" ):GetFloat()
-        if PainMulti < 0 then
-            PainMulti = PainMulti * -1
-            print( "Your damage multiplier was in the negatives. It has been reverted to a positive number. Your damage multiplier is now " .. PainMulti )
-        end
-    end
-end
-cvars.AddChangeCallback( "M9KDamageMultiplier", NewM9KDamageMultiplier )
+cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "gunbase" )
 
 SWEP.IronSightsPos = Vector( 2.4537, 1.0923, 0.2696 )
 SWEP.IronSightsAng = Vector( 0.0186, -0.0547, 0 )
@@ -258,7 +238,7 @@ function SWEP:ShootBulletInformation()
 
     local damagedice = math.Rand( 0.95, 1.05 )
 
-    local basedamage = PainMulti * self.Primary.Damage
+    local basedamage = damageMultiplier * self.Primary.Damage
     local currentDamage = basedamage * damagedice
     local currentRecoil = self.Primary.Recoil
 

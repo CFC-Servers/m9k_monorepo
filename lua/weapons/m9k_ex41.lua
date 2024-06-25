@@ -97,8 +97,9 @@ function SWEP:FireRocket()
     end
 end
 
+local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self ~= nil and (GetConVar( "M9KWeaponStrip" ):GetBool()) then
+    if SERVER and self ~= nil and weaponStrip:GetBool() then
         if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
             timer.Simple( .5, function()
                 if SERVER then

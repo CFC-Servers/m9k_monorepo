@@ -145,6 +145,7 @@ function SWEP:PrimaryAttack()
 end
 
 if SERVER then
+    local weaponStrip = GetConVar( "M9KWeaponStrip" )
     function SWEP:SecondaryAttack()
         local foundBomb = false
         for _, v in pairs( ents.FindByClass( "m9k_improvised_explosive" ) ) do
@@ -161,7 +162,7 @@ if SERVER then
         timer.Simple( 0.01, function()
             if not IsValid( self ) then return end
             if not IsValid( self:GetOwner() ) then return end
-            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and GetConVar( "M9KWeaponStrip" ):GetBool() then
+            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and weaponStrip:GetBool() then
                 self:GetOwner():StripWeapon( self.Gun )
             end
         end )
