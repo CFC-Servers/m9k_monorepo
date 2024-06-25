@@ -71,58 +71,58 @@ SWEP.RunSightsAng             = Vector( -11, 31, 0 )
 
 function SWEP:PrimaryAttack()
     if self:GetOwner():IsNPC() then return end
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
-        self:ShootBulletInformation()
-        self:EmitSound( self.Primary.Sound )
-        self:TakePrimaryAmmo( 1 )
-        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        local fx = EffectData()
-        fx:SetEntity( self )
-        fx:SetOrigin( self:GetOwner():GetShootPos() )
-        fx:SetNormal( self:GetOwner():GetAimVector() )
-        fx:SetAttachment( self.MuzzleAttachment )
-        util.Effect( "rg_muzzle_rifle", fx )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
-        self:SetNextPrimaryFire( CurTime() + 10 )
-        self.RicochetCoin = (math.random( 1, 4 ))
-        self:UseBolt()
-    end
+    if not self:CanPrimaryAttack() then return end
+    if self:GetOwner():KeyDown( IN_SPEED ) then return end
+
+    self.RicochetCoin = math.random( 1, 4 )
+    self:ShootBulletInformation()
+    self:EmitSound( self.Primary.Sound )
+    self:TakePrimaryAmmo( 1 )
+    self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+
+    local fx = EffectData()
+    fx:SetEntity( self )
+    fx:SetOrigin( self:GetOwner():GetShootPos() )
+    fx:SetNormal( self:GetOwner():GetAimVector() )
+    fx:SetAttachment( self.MuzzleAttachment )
+    util.Effect( "rg_muzzle_rifle", fx )
+
+    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+    self:GetOwner():MuzzleFlash()
+    self:SetNextPrimaryFire( CurTime() + 10 )
+
+    self:UseBolt()
 end
 
 function SWEP:UseBolt()
+    if CLIENT then return end
+
     if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
-        if CLIENT then return end
-        timer.Simple( 0.25, function()
+        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+        self:SetReloading( true )
+
+        self:GetOwner():SetFOV( 0, 0.3 )
+        self:SetIronsights( false )
+        self:GetOwner():DrawViewModel( true )
+
+        local boltactiontime = self:GetOwner():GetViewModel():SequenceDuration()
+        timer.Simple( boltactiontime, function()
             if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-            self:SetReloading( true )
-
-            if self.BoltAction then
-                self:GetOwner():SetFOV( 0, 0.3 )
-                self:SetIronsights( false )
-                self:GetOwner():DrawViewModel( true )
-
-                local boltactiontime = self:GetOwner():GetViewModel():SequenceDuration()
-                timer.Simple( boltactiontime, function()
-                    if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-                    self:SetReloading( false )
-                    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-                        self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
-                        self.IronSightsPos = self.SightsPos -- Bring it up
-                        self.IronSightsAng = self.SightsAng -- Bring it up
-                        self.DrawCrosshair = false
-                        self:SetIronsights( true )
-                        self:GetOwner():DrawViewModel( false )
-                        self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
-                        self:SetClip1( self:Clip1() + 1 ) --  into the fire
-                        self:SetNextPrimaryFire( CurTime() + .1 )
-                        --well, hope this works
-                    elseif not self:GetOwner():KeyDown( IN_ATTACK2 ) then
-                        self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
-                        self:SetClip1( self:Clip1() + 1 ) --  into the fire
-                        self:SetNextPrimaryFire( CurTime() + .1 )
-                    end
-                end )
+            self:SetReloading( false )
+            if self:GetOwner():KeyDown( IN_ATTACK2 ) then
+                self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
+                self.IronSightsPos = self.SightsPos -- Bring it up
+                self.IronSightsAng = self.SightsAng -- Bring it up
+                self.DrawCrosshair = false
+                self:SetIronsights( true )
+                self:GetOwner():DrawViewModel( false )
+                self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+                self:SetClip1( self:Clip1() + 1 ) --  into the fire
+                self:SetNextPrimaryFire( CurTime() + .1 )
+            elseif not self:GetOwner():KeyDown( IN_ATTACK2 ) then
+                self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+                self:SetClip1( self:Clip1() + 1 ) --  into the fire
+                self:SetNextPrimaryFire( CurTime() + .1 )
             end
         end )
     else
