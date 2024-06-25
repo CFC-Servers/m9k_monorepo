@@ -159,7 +159,7 @@ function SWEP:Reload()
             end
         end
 
-        if SERVER and self ~= nil then
+        if SERVER then
             if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
                 -- --When the current clip < full clip and the rest of your ammo > 0, then
                 self:GetOwner():SetFOV( 0, 0.3 )

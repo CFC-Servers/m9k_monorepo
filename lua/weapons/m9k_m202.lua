@@ -102,7 +102,7 @@ function SWEP:Reload()
     if not self:GetOwner():IsNPC() then
         self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
-    if SERVER and self ~= nil then
+    if SERVER then
         if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
             self:GetOwner():SetFOV( 0, 0.3 )
             self:SetIronsights( false )
