@@ -50,7 +50,6 @@ if SERVER then
         end
 
         self:SetNotSolid( true )
-        util.PrecacheModel( "models/player/charple.mdl" )
 
         self.Yield = (GetConVarNumber( "nuke_yield" ) or 100) / 100
         self.YieldSlow = self.Yield ^ 0.75

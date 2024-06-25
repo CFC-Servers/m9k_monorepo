@@ -196,11 +196,6 @@ function SWEP:GetCapabilities()
     return CAP_WEAPON_RANGE_ATTACK1, CAP_INNATE_RANGE_ATTACK1
 end
 
-function SWEP:Precache()
-    util.PrecacheModel( self.ViewModel )
-    util.PrecacheModel( self.WorldModel )
-end
-
 function SWEP:PrimaryAttack()
     if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
