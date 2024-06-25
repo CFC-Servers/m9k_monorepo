@@ -86,11 +86,3 @@ SWEP.VElements                = {
         0.024 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "models/wystan/attachments/aimpoint/lense", skin = 0, bodygroup = {} }
 }
 
-
-if GetConVar( "M9KDefaultClip" ) == nil then
-    print( "M9KDefaultClip is missing! You may have hit the lua limit!" )
-else
-    if GetConVar( "M9KDefaultClip" ):GetInt() ~= -1 then
-        SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar( "M9KDefaultClip" ):GetInt()
-    end
-end

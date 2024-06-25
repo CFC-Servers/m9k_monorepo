@@ -86,26 +86,13 @@ local function NewM9KDamageMultiplier( cvar, previous, new )
 end
 cvars.AddChangeCallback( "M9KDamageMultiplier", NewM9KDamageMultiplier )
 
-local function NewDefClips( cvar, previous, new )
-    print( "Default clip multiplier has changed. A server restart will be required for these changes to take effect." )
-end
-cvars.AddChangeCallback( "M9KDefaultClip", NewDefClips )
-
-if GetConVar( "M9KDefaultClip" ) == nil then
-    print( "M9KDefaultClip is missing! You may have hit the lua limit!" )
-else
-    if GetConVar( "M9KDefaultClip" ):GetInt() >= 0 then
-        print( "M9K Weapons will now spawn with " .. GetConVar( "M9KDefaultClip" ):GetFloat() .. " clips." )
-    else
-        print( "Default clips will be not be modified" )
-    end
-end
-
 SWEP.IronSightsPos = Vector( 2.4537, 1.0923, 0.2696 )
 SWEP.IronSightsAng = Vector( 0.0186, -0.0547, 0 )
 
 SWEP.VElements = {}
 SWEP.WElements = {}
+
+local defaultClipMult = GetConVar( "M9KDefaultClip" )
 
 function SWEP:Initialize()
     self.Reloadaftershoot = 0 -- Can't reload when firing
@@ -116,6 +103,11 @@ function SWEP:Initialize()
         self:SetNPCMaxBurst( 10 ) -- None of this really matters but you need it here anyway
         self:SetNPCFireRate( 1 / (self.Primary.RPM / 60) )
         -- --self:SetCurrentWeaponProficiency( WEAPON_PROFICIENCY_VERY_GOOD )
+    end
+
+    local clipMult = defaultClipMult:GetInt()
+    if clipMult ~= -1 then
+        self.Primary.DefaultClip = self.Primary.ClipSize * clipMult
     end
 
     if CLIENT then

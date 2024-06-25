@@ -59,11 +59,3 @@ SWEP.SightsPos              = Vector( -2.7031, -1.0539, 1.6562 )
 SWEP.SightsAng              = Vector( 0, 0, 0 )
 SWEP.RunSightsPos           = Vector( 0.9642, -0.6371, 0.4936 )
 SWEP.RunSightsAng           = Vector( -11.0116, 47.5223, -15.3199 )
-
-if GetConVar( "M9KDefaultClip" ) == nil then
-    print( "M9KDefaultClip is missing! You may have hit the lua limit!" )
-else
-    if GetConVar( "M9KDefaultClip" ):GetInt() ~= -1 then
-        SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar( "M9KDefaultClip" ):GetInt()
-    end
-end
