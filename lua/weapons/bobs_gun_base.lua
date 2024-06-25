@@ -207,17 +207,24 @@ function SWEP:PrimaryAttack()
         self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
         self:GetOwner():MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        self.RicochetCoin = (math.random( 1, 4 ))
+        self.RicochetCoin = math.random( 1, 4 )
     end
 end
 
 local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
     if not SERVER then return end
-    if not weaponStrip:GetBool() then return end
-    if self:Clip1() ~= 0 or self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) ~= 0 then return end
 
-    timer.Simple( .1, function()
+    if self:Clip1() ~= 0 then return end
+
+    local hasAmmo = self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0
+    if hasAmmo then
+        self:Reload()
+        return
+    end
+
+    if not weaponStrip:GetBool() then return end
+    timer.Simple( 0.1, function()
         if not IsValid( self ) and not IsValid( self:GetOwner() ) then return end
         if self:GetOwner() == nil then return end
         self:GetOwner():StripWeapon( self.Gun )

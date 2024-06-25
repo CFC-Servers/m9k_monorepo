@@ -152,22 +152,6 @@ function SWEP:PrimaryAttack()
     end
 end
 
-function SWEP:CheckWeaponsAndAmmo()
-    if SERVER and self ~= nil then
-        if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and (GetConVar( "M9KWeaponStrip" ):GetBool()) then
-            timer.Simple( .1, function()
-                if SERVER then
-                    if not IsValid( self ) then return end
-                    if not IsValid( self:GetOwner() ) then return end
-                    self:GetOwner():StripWeapon( self.Gun )
-                end
-            end )
-        else
-            self:Reload()
-        end
-    end
-end
-
 if GetConVar( "OrbitalStrikeAdminOnly" ) == nil then
     print( "OrbitalStrikeAdminOnly is missing! You may have hit the lua limit!" )
 else

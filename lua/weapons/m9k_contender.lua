@@ -126,15 +126,11 @@ function SWEP:UseBolt()
             end
         end )
     else
-        timer.Simple( .1, function()
-            self:CheckWeaponsAndAmmo()
-        end )
+        self:CheckWeaponsAndAmmo()
     end
 end
 
 function SWEP:Reload()
-    --    self:DefaultReload(ACT_VM_RELOAD)
-
     if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not IsValid( self ) then return end
@@ -171,8 +167,8 @@ function SWEP:Reload()
                 self:SetIronsights( false )
                 self:SetReloading( true )
             end
-            local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
-            timer.Simple( waitdammit + .1, function()
+            local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
+            timer.Simple( waitdammit, function()
                 if not IsValid( self ) then return end
                 self:SetReloading( false )
 
