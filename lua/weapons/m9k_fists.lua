@@ -245,7 +245,7 @@ function SWEP:IronSight()
         self:GetOwner():SetNWBool( "DukesAreUp", false )
     end
 
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
+    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you are running
         self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down

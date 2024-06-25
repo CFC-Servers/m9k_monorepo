@@ -150,7 +150,7 @@ function SWEP:IronSight()
         end
     end
 
-    if not self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
+    if not self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
         self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up

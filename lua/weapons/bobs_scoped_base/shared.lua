@@ -61,7 +61,7 @@ SWEP.IronSightsPos            = Vector( 2.4537, 1.0923, 0.2696 )
 SWEP.IronSightsAng            = Vector( 0.0186, -0.0547, 0 )
 
 function SWEP:Initialize()
-    self:SetNWBool( "Reloading", false )
+    self:SetReloading( false )
 
     if CLIENT then
         -- We need to get these so we can scale everything to the player's current resolution.
@@ -170,7 +170,7 @@ function SWEP:BoltBack()
         timer.Simple( .25, function()
             if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
-            self:SetNWBool( "Reloading", true )
+            self:SetReloading( true )
             if self:GetClass() ~= self.Gun then return end
             if (self:GetIronsights() == true) then
                 self:GetOwner():SetFOV( 0, 0.3 )
@@ -181,7 +181,7 @@ function SWEP:BoltBack()
             local boltactiontime = (self:GetOwner():GetViewModel():SequenceDuration())
             timer.Simple( boltactiontime + .1, function()
                 if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-                self:SetNWBool( "Reloading", false )
+                self:SetReloading( false )
                 if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                     self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                     self.IronSightsPos = self.SightsPos -- Bring it up
@@ -210,7 +210,7 @@ function SWEP:Reload()
         -- Zoom = 0
 
         self:SetIronsights( false )
-        self:SetNWBool( "Reloading", true )
+        self:SetReloading( true )
         if CLIENT then return end
         self:GetOwner():DrawViewModel( true )
     end
@@ -224,7 +224,7 @@ function SWEP:Reload()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
-        self:SetNWBool( "Reloading", false )
+        self:SetReloading( false )
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
@@ -246,7 +246,7 @@ function SWEP:Reload()
 end
 
 function SWEP:PostReloadScopeCheck()
-    self:SetNWBool( "Reloading", false )
+    self:SetReloading( false )
     if self:GetOwner():KeyDown( IN_ATTACK2 ) then
         if CLIENT then return end
         self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
@@ -273,7 +273,7 @@ function SWEP:IronSight()
     if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
-    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetNWBool( "Reloading" )) then
+    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetReloading()) then
         if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
             self:SelectFireMode()
         end
@@ -281,7 +281,7 @@ function SWEP:IronSight()
 
     if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) then return end
 
-    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you hold E and you can shoot then
+    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetReloading()) then -- If you hold E and you can shoot then
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
@@ -291,7 +291,7 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you hold E or run then
+    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you hold E or run then
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end -- Lower the gun
@@ -310,7 +310,7 @@ function SWEP:IronSight()
         self:GetOwner():DrawViewModel( true )
     end
 
-    if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then
+    if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then
         self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
@@ -318,7 +318,7 @@ function SWEP:IronSight()
         self:SetIronsights( true )
         if CLIENT then return end
         self:GetOwner():DrawViewModel( false )
-    elseif self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) and self:GetOwner():KeyDown( IN_SPEED ) then
+    elseif self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) and self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end

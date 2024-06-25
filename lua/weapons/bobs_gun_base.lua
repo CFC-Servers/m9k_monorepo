@@ -170,7 +170,7 @@ function SWEP:Deploy()
     end
 
     self:SetNextPrimaryFire( CurTime() + 1 )
-    self:SetNWBool( "Reloading", false )
+    self:SetReloading( false )
 
     if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil then
         if self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
@@ -564,7 +564,7 @@ function SWEP:Reload()
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights( false )
-        self:SetNWBool( "Reloading", true )
+        self:SetReloading( true )
     end
 
     local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
@@ -576,7 +576,7 @@ function SWEP:Reload()
             self.DrawCrosshair = true
         end
 
-        self:SetNWBool( "Reloading", false )
+        self:SetReloading( false )
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
@@ -603,7 +603,7 @@ function SWEP:Reload()
 end
 
 function SWEP:PostReloadScopeCheck()
-    self:SetNWBool( "Reloading", false )
+    self:SetReloading( false )
 
     if self:GetOwner():KeyDown( IN_ATTACK2 ) then
         if CLIENT then return end
@@ -631,7 +631,7 @@ function SWEP:Silencer()
     if self ~= nil then
         self:GetOwner():SetFOV( 0, 0.3 )
         self:SetIronsights( false )
-        self:SetNWBool( "Reloading", true ) -- i know we're not reloading but it works
+        self:SetReloading( true ) -- i know we're not reloading but it works
     end
 
     if self.Silenced then
@@ -650,7 +650,7 @@ function SWEP:Silencer()
 
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
-        self:SetNWBool( "Reloading", false )
+        self:SetReloading( false )
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
@@ -720,12 +720,12 @@ function SWEP:IronSight()
         self:Silencer()
     end
 
-    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not self:GetNWBool( "Reloading" ) and pressingE and owner:KeyPressed( IN_RELOAD ) then
+    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not self:GetReloading() and pressingE and owner:KeyPressed( IN_RELOAD ) then
         self:SelectFireMode()
     end
 
     -- --copy this...
-    if owner:KeyPressed( IN_SPEED ) and not self:GetNWBool( "Reloading" ) then -- If you are running
+    if owner:KeyPressed( IN_SPEED ) and not self:GetReloading() then -- If you are running
         if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
@@ -743,7 +743,7 @@ function SWEP:IronSight()
     end -- Shoulder the gun
 
     -- --down to this
-    if not pressingE and not owner:KeyDown( IN_SPEED ) and owner:KeyPressed( IN_ATTACK2 ) and not self:GetNWBool( "Reloading" ) then
+    if not pressingE and not owner:KeyDown( IN_SPEED ) and owner:KeyPressed( IN_ATTACK2 ) and not self:GetReloading() then
         -- --If the key E (Use Key) is not pressed, then
         owner:SetFOV( selfTbl.Secondary.IronFOV, 0.3 )
         selfTbl.IronSightsPos = selfTbl.SightsPos -- Bring it up

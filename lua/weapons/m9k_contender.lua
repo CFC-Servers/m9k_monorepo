@@ -95,7 +95,7 @@ function SWEP:UseBolt()
         if CLIENT then return end
         timer.Simple( 0.25, function()
             if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-            self:SetNWBool( "Reloading", true )
+            self:SetReloading( true )
 
             if self.BoltAction then
                 self:GetOwner():SetFOV( 0, 0.3 )
@@ -105,7 +105,7 @@ function SWEP:UseBolt()
                 local boltactiontime = self:GetOwner():GetViewModel():SequenceDuration()
                 timer.Simple( boltactiontime, function()
                     if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-                    self:SetNWBool( "Reloading", false )
+                    self:SetReloading( false )
                     if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                         self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                         self.IronSightsPos = self.SightsPos -- Bring it up
@@ -169,12 +169,12 @@ function SWEP:Reload()
                 self:GetOwner():SetFOV( 0, 0.3 )
                 -- --Zoom = 0
                 self:SetIronsights( false )
-                self:SetNWBool( "Reloading", true )
+                self:SetReloading( true )
             end
             local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
             timer.Simple( waitdammit + .1, function()
                 if not IsValid( self ) then return end
-                self:SetNWBool( "Reloading", false )
+                self:SetReloading( false )
 
                 if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                     if CLIENT then return end

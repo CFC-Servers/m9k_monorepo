@@ -69,9 +69,9 @@ SWEP.WElements = {
 
 function SWEP:Reload()
 
-    if ( self:Clip1() < self.Primary.ClipSize ) and (self:GetOwner():GetAmmoCount("buckshot") > 0 ) and not (self:GetNWBool("Reloading")) then
+    if ( self:Clip1() < self.Primary.ClipSize ) and (self:GetOwner():GetAmmoCount("buckshot") > 0 ) and not self:GetReloading() then
         self:SendWeaponAnim(ACT_SHOTGUN_RELOAD_START)
-        self:SetNWBool("Reloading", true)
+        self:SetReloading( true )
         if SERVER and !self:GetOwner():IsNPC() then
             self.ResetSights = CurTime() + 1.65
             self:GetOwner():SetFOV( 0, 0.3 )
@@ -107,7 +107,7 @@ if not IsValid(self) then return end
         timer.Simple(waitdammit + .1,
         function() if not IsValid(self) then return end if not IsValid(self:GetOwner()) then return end if not IsValid(self) then return end
         if self == nil then return end
-        self:SetNWBool("Reloading", false)
+        self:SetReloading( false)
         if self:GetOwner():KeyDown(IN_ATTACK2) then
             if CLIENT then return end
             if self.Scoped == false then

@@ -66,7 +66,7 @@ function SWEP:Reload()
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights( false )
-        self:SetNWBool( "Reloading", true )
+        self:SetReloading( true )
     end
     local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
     self:MiniGunIdle( waitdammit )
@@ -75,7 +75,7 @@ end
 function SWEP:MiniGunIdle( wait )
     timer.Simple( wait + .05, function()
         if not IsValid( self ) then return end
-        self:SetNWBool( "Reloading", false )
+        self:SetReloading( false )
         if SERVER then
             self:SendWeaponAnim( ACT_VM_IDLE )
         else
@@ -85,7 +85,7 @@ function SWEP:MiniGunIdle( wait )
 end
 
 function SWEP:IronSight()
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you run then
+    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you run then
         self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down

@@ -106,14 +106,14 @@ function SWEP:Reload()
         if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
             self:GetOwner():SetFOV( 0, 0.3 )
             self:SetIronsights( false )
-            self:SetNWBool( "Reloading", true )
+            self:SetReloading( true )
         end
         local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
         timer.Simple( waitdammit + .1,
             function()
                 if IsValid( self ) and IsValid( self:GetOwner() ) then
                     if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                        self:SetNWBool( "Reloading", false )
+                        self:SetReloading( false )
                         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
                             if CLIENT then return end
                             if self.Scoped == false then

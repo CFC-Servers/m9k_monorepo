@@ -104,7 +104,7 @@ function SWEP:Deploy()
     end
 
     self:SetHoldType( self.HoldType )
-    self:SetNWBool( "Reloading", false )
+    self:SetReloading( false )
     return true
 end
 
@@ -238,14 +238,14 @@ function SWEP:IronSight()
         end
     end
 
-    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetNWBool( "Reloading" )) then
+    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetReloading()) then
         if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
             self:SelectFireMode()
         end
     end
 
     -- --copy this...
-    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetNWBool( "Reloading" )) then -- If you are running
+    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetReloading()) then -- If you are running
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
@@ -266,7 +266,7 @@ function SWEP:IronSight()
     if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- --If the key E (Use Key) is not pressed, then
 
-        if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) then
+        if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
             self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
