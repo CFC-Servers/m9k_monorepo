@@ -154,10 +154,9 @@ function SWEP:IronSight()
         self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
-        self:SetIronsights( true, self:GetOwner() )
+        self:SetIronsights( true )
         self.DrawCrosshair = false
         self:GetOwner():SetNWBool( "GuardIsUp", true )
-        -- Set the ironsight true
 
         if CLIENT then return end
     end
@@ -166,9 +165,7 @@ function SWEP:IronSight()
         -- If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = true
-        self:SetIronsights( false, self:GetOwner() )
-        -- Set the ironsight false
-
+        self:SetIronsights( false )
         self:GetOwner():SetNWBool( "GuardIsUp", false )
 
         if CLIENT then return end

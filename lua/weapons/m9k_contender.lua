@@ -111,7 +111,7 @@ function SWEP:UseBolt()
                         self.IronSightsPos = self.SightsPos -- Bring it up
                         self.IronSightsAng = self.SightsAng -- Bring it up
                         self.DrawCrosshair = false
-                        self:SetIronsights( true, self:GetOwner() )
+                        self:SetIronsights( true )
                         self:GetOwner():DrawViewModel( false )
                         self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
                         self:SetClip1( self:Clip1() + 1 ) --  into the fire
@@ -169,7 +169,6 @@ function SWEP:Reload()
                 self:GetOwner():SetFOV( 0, 0.3 )
                 -- --Zoom = 0
                 self:SetIronsights( false )
-                -- --Set the ironsight to false
                 self:SetNWBool( "Reloading", true )
             end
             local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
@@ -183,7 +182,7 @@ function SWEP:Reload()
                         self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
                         self.IronSightsPos = self.SightsPos -- Bring it up
                         self.IronSightsAng = self.SightsAng -- Bring it up
-                        self:SetIronsights( true, self:GetOwner() )
+                        self:SetIronsights( true )
                         self.DrawCrosshair = false
                     end
                 elseif self:GetOwner():KeyDown( IN_SPEED ) then
@@ -192,7 +191,7 @@ function SWEP:Reload()
                     end
                     self.IronSightsPos = self.RunSightsPos -- Hold it down
                     self.IronSightsAng = self.RunSightsAng -- Hold it down
-                    self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+                    self:SetIronsights( true )
                     self:GetOwner():SetFOV( 0, 0.3 )
                 end
             end )

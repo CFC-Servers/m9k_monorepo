@@ -75,7 +75,7 @@ function SWEP:Deploy()
     if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then
         timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
     end
-    self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight false
+    self:SetIronsights( false )
     self:SendWeaponAnim( ACT_VM_DRAW )
 
     if GetConVar( "DavyCrockettAllowed" ):GetBool() then
@@ -251,13 +251,13 @@ function SWEP:IronSight()
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = false
     end
 
     if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( false )
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
     end -- Shoulder the gun
@@ -272,7 +272,6 @@ function SWEP:IronSight()
             self.IronSightsAng = self.SightsAng -- Bring it up
             self:SetIronsights( true, self:GetOwner() )
             self.DrawCrosshair = false
-            -- --Set the ironsight true
 
             if CLIENT then return end
         end
@@ -282,8 +281,7 @@ function SWEP:IronSight()
         -- --If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
-        self:SetIronsights( false, self:GetOwner() )
-        -- --Set the ironsight false
+        self:SetIronsights( false )
 
         if CLIENT then return end
     end

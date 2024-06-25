@@ -249,12 +249,12 @@ function SWEP:IronSight()
         self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.3 )
     end
 
     if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( false )
         self:GetOwner():SetFOV( 0, 0.3 )
     end -- Shoulder the gun
 
@@ -265,10 +265,8 @@ function SWEP:IronSight()
             self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true, self:GetOwner() )
+            self:SetIronsights( true )
             self:GetOwner():SetNWBool( "DukesAreUp", true )
-            -- Set the ironsight true
-
             if CLIENT then return end
         end
     end
@@ -276,9 +274,8 @@ function SWEP:IronSight()
     if self:GetOwner():KeyReleased( IN_RELOAD ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         -- If the right click is released, then
         self:GetOwner():SetFOV( 0, 0.3 )
-        self:SetIronsights( false, self:GetOwner() )
+        self:SetIronsights( false )
         self:GetOwner():SetNWBool( "DukesAreUp", false )
-        -- Set the ironsight false
 
         if CLIENT then return end
     end

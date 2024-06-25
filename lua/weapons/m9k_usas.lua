@@ -121,7 +121,7 @@ if not IsValid(self) then return end
             self:SetNextPrimaryFire(CurTime()+0.3)            -- Make it so you can't shoot for another quarter second
             self.IronSightsPos = self.RunSightsPos                    -- Hold it down
             self.IronSightsAng = self.RunSightsAng                    -- Hold it down
-            self:SetIronsights(true, self:GetOwner())                    -- Set the ironsight true
+            self:SetIronsights(true )
             self:GetOwner():SetFOV( 0, 0.3 )
         else return end
         end)

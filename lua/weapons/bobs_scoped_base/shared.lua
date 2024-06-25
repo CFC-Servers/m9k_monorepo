@@ -187,7 +187,7 @@ function SWEP:BoltBack()
                     self.IronSightsPos = self.SightsPos -- Bring it up
                     self.IronSightsAng = self.SightsAng -- Bring it up
                     self.DrawCrosshair = false
-                    self:SetIronsights( true, self:GetOwner() )
+                    self:SetIronsights( true )
                     self:GetOwner():DrawViewModel( false )
                 end
             end )
@@ -210,7 +210,6 @@ function SWEP:Reload()
         -- Zoom = 0
 
         self:SetIronsights( false )
-        -- Set the ironsight to false
         self:SetNWBool( "Reloading", true )
         if CLIENT then return end
         self:GetOwner():DrawViewModel( true )
@@ -232,7 +231,7 @@ function SWEP:Reload()
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
             self.DrawCrosshair = false
-            self:SetIronsights( true, self:GetOwner() )
+            self:SetIronsights( true )
             self:GetOwner():DrawViewModel( false )
         elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
@@ -240,7 +239,7 @@ function SWEP:Reload()
             end
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
-            self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+            self:SetIronsights( true )
             self:GetOwner():SetFOV( 0, 0.2 )
         end
     end )
@@ -254,7 +253,7 @@ function SWEP:PostReloadScopeCheck()
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
         self.DrawCrosshair = false
-        self:SetIronsights( true, self:GetOwner() )
+        self:SetIronsights( true )
         self:GetOwner():DrawViewModel( false )
     elseif self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
@@ -262,7 +261,7 @@ function SWEP:PostReloadScopeCheck()
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 end
@@ -288,7 +287,7 @@ function SWEP:IronSight()
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 
@@ -299,7 +298,7 @@ function SWEP:IronSight()
     end
 
     if self:GetOwner():KeyReleased( IN_USE ) or self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release E then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( false )
         self.DrawCrosshair = self.XHair
     end
 
@@ -316,7 +315,7 @@ function SWEP:IronSight()
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
         self.DrawCrosshair = false
-        self:SetIronsights( true, self:GetOwner() )
+        self:SetIronsights( true )
         if CLIENT then return end
         self:GetOwner():DrawViewModel( false )
     elseif self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetNWBool( "Reloading" )) and self:GetOwner():KeyDown( IN_SPEED ) then
@@ -325,15 +324,14 @@ function SWEP:IronSight()
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.2 )
     end
 
     if (self:GetOwner():KeyReleased( IN_ATTACK2 ) or self:GetOwner():KeyDown( IN_SPEED )) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:GetOwner():SetFOV( 0, 0.2 )
-        self:SetIronsights( false, self:GetOwner() )
+        self:SetIronsights( false )
         self.DrawCrosshair = self.XHair
-        -- Set the ironsight false
         if CLIENT then return end
         self:GetOwner():DrawViewModel( true )
     end

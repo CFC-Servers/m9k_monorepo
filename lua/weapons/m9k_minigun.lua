@@ -66,7 +66,6 @@ function SWEP:Reload()
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights( false )
-        -- Set the ironsight to false
         self:SetNWBool( "Reloading", true )
     end
     local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
@@ -90,12 +89,12 @@ function SWEP:IronSight()
         self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.3 ) -- Reset FOV
     end
 
     if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you stop running then
-        self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( false )
         self:GetOwner():SetFOV( 0, 0.3 ) -- Reset FOV
     end
 end

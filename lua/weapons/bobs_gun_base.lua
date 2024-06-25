@@ -150,12 +150,17 @@ function SWEP:Initialize()
     end
 end
 
+function SWEP:SetupDataTables()
+    self:NetworkVar( "Bool", 0, "Ironsights" )
+    self:NetworkVar( "Bool", 1, "Reloading" )
+end
+
 function SWEP:Equip()
     self:SetHoldType( self.HoldType )
 end
 
 function SWEP:Deploy()
-    self:SetIronsights( false, self:GetOwner() ) -- Set the ironsight false
+    self:SetIronsights( false )
     self:SetHoldType( self.HoldType )
 
     if self.Silenced then
@@ -559,7 +564,6 @@ function SWEP:Reload()
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights( false )
-        -- Set the ironsight to false
         self:SetNWBool( "Reloading", true )
     end
 
@@ -579,18 +583,18 @@ function SWEP:Reload()
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
-                self:SetIronsights( true, self:GetOwner() )
+                self:SetIronsights( true )
                 self.DrawCrosshair = false
             else
                 return
             end
         elseif self:GetOwner():KeyDown( IN_SPEED ) then
-            if self:GetNextPrimaryFire() <= (CurTime() + .03) then
+            if self:GetNextPrimaryFire() <= CurTime() + .03 then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
             end
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
-            self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+            self:SetIronsights( true )
             self:GetOwner():SetFOV( 0, 0.3 )
         else
             self.DrawCrosshair = true
@@ -607,7 +611,7 @@ function SWEP:PostReloadScopeCheck()
             self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true, self:GetOwner() )
+            self:SetIronsights( true )
             self.DrawCrosshair = false
         end
     elseif self:GetOwner():KeyDown( IN_SPEED ) then
@@ -616,7 +620,7 @@ function SWEP:PostReloadScopeCheck()
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+        self:SetIronsights( true )
         self:GetOwner():SetFOV( 0, 0.3 )
     end
 end
@@ -653,7 +657,7 @@ function SWEP:Silencer()
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
-                self:SetIronsights( true, self:GetOwner() )
+                self:SetIronsights( true )
                 self.DrawCrosshair = false
             else
                 return
@@ -665,7 +669,7 @@ function SWEP:Silencer()
 
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
-            self:SetIronsights( true, self:GetOwner() ) -- Set the ironsight true
+            self:SetIronsights( true )
             self:GetOwner():SetFOV( 0, 0.3 )
         else
             return
@@ -727,13 +731,13 @@ function SWEP:IronSight()
         end
         selfTbl.IronSightsPos = selfTbl.RunSightsPos -- Hold it down
         selfTbl.IronSightsAng = selfTbl.RunSightsAng -- Hold it down
-        self:SetIronsights( true, owner ) -- Set the ironsight true
+        self:SetIronsights( true )
         owner:SetFOV( 0, 0.3 )
         selfTbl.DrawCrosshair = false
     end
 
     if owner:KeyReleased( IN_SPEED ) then -- If you release run then
-        self:SetIronsights( false, owner ) -- Set the ironsight true
+        self:SetIronsights( false )
         owner:SetFOV( 0, 0.3 )
         selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
     end -- Shoulder the gun
@@ -744,10 +748,8 @@ function SWEP:IronSight()
         owner:SetFOV( selfTbl.Secondary.IronFOV, 0.3 )
         selfTbl.IronSightsPos = selfTbl.SightsPos -- Bring it up
         selfTbl.IronSightsAng = selfTbl.SightsAng -- Bring it up
-        self:SetIronsights( true, owner )
+        self:SetIronsights( true )
         selfTbl.DrawCrosshair = false
-        -- --Set the ironsight true
-
         if CLIENT then return end
     end
 
@@ -755,9 +757,7 @@ function SWEP:IronSight()
         -- --If the right click is released, then
         owner:SetFOV( 0, 0.3 )
         selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
-        self:SetIronsights( false, owner )
-        -- --Set the ironsight false
-
+        self:SetIronsights( false )
         if CLIENT then return end
     end
 
@@ -824,17 +824,6 @@ function SWEP:GetViewModelPosition( pos, ang )
     pos           = pos + Offset.z * Up * Mul
 
     return pos, ang
-end
-
---[[---------------------------------------------------------
-SetIronsights
--------------------------------------------------------]]
-function SWEP:SetIronsights( b )
-    self:SetNW2Bool( "M9K_Ironsights", b )
-end
-
-function SWEP:GetIronsights()
-    return self:GetNW2Bool( "M9K_Ironsights" )
 end
 
 if CLIENT then
