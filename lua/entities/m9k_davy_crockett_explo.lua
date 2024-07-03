@@ -177,16 +177,7 @@ if SERVER then
                 end
             end
 
-            --earthquake
-            local shake = ents.Create( "env_shake" )
-            shake:SetKeyValue( "amplitude", "16" )
-            shake:SetKeyValue( "duration", 6 * self.YieldSlow )
-            shake:SetKeyValue( "radius", 16384 )
-            shake:SetKeyValue( "frequency", 230 )
-            shake:SetPos( self.SplodePos )
-            shake:Spawn()
-            shake:Fire( "StartShake", "", "0.6" )
-            shake:Fire( "kill", "", "8" )
+            util.ScreenShake( self.SplodePos, 16, 230, 6 * self.YieldSlow, 16384, false )
 
             --shatter glass
             for k, v in pairs( ents.FindByClass( "func_breakable_surf" ) ) do
