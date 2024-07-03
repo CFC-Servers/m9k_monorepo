@@ -246,58 +246,83 @@ if SERVER then
             self.Sploding = false
         end
 
-        for key, found in pairs( ents.FindInSphere( self.SplodePos, self.SplodeDist ) ) do
-            local EntSpecs = self:GetSpecs( found )
-            if EntSpecs.valid then
-                local entpos = EntSpecs.ent:LocalToWorld( EntSpecs.ent:OBBCenter() ) --more accurate than getpos
+        -- for key, found in pairs( ents.FindInSphere( self.SplodePos, self.SplodeDist ) ) do
+        --     local EntSpecs = self:GetSpecs( found )
+        --     if EntSpecs.valid then
+        --         local entpos = EntSpecs.ent:LocalToWorld( EntSpecs.ent:OBBCenter() ) --more accurate than getpos
 
-                if self:LOS( EntSpecs.ent, entpos ) then --we have line-of-sight!
-                    local vecang = entpos - self.SplodePos
-                    if vecang.z < 0 then vecang.z = 0 end
-                    vecang:Normalize()
-                    local DamagePerSecond = self.BaseDamage / (4 * math.pi * self.SplodeDist ^ 2) --physics, bitch
-                    local Damage = DamagePerSecond * FTime
+        --         if self:LOS( EntSpecs.ent, entpos ) then --we have line-of-sight!
+        --             local vecang = entpos - self.SplodePos
+        --             if vecang.z < 0 then vecang.z = 0 end
+        --             vecang:Normalize()
+        --             local DamagePerSecond = self.BaseDamage / (4 * math.pi * self.SplodeDist ^ 2) --physics, bitch
+        --             local Damage = DamagePerSecond * FTime
 
-                    if DamagePerSecond >= 250 then
-                        if EntSpecs.humanoid then --if we've hit a human
-                            local effectdata = EffectData()
-                            effectdata:SetOrigin( entpos )
-                            effectdata:SetNormal( vecang )
-                            util.Effect( "m9k_nuke_disintegrate", effectdata )
+        --             if DamagePerSecond >= 250 then
+        --                 if EntSpecs.humanoid then --if we've hit a human
+        --                     local effectdata = EffectData()
+        --                     effectdata:SetOrigin( entpos )
+        --                     effectdata:SetNormal( vecang )
+        --                     util.Effect( "m9k_nuke_disintegrate", effectdata )
 
-                            EntSpecs.ent:SetModel( "models/player/charple.mdl" ) --burn it
-                            EntSpecs.ent:SetHealth( 1 )
-                        elseif EntSpecs.type == "npc_strider" then --if we've hit a strider...
-                            EntSpecs.ent:Fire( "break", "", "0.3" ) --asplode it
-                        end
-                    end
+        --                     EntSpecs.ent:SetModel( "models/player/charple.mdl" ) --burn it
+        --                     EntSpecs.ent:SetHealth( 1 )
+        --                 elseif EntSpecs.type == "npc_strider" then --if we've hit a strider...
+        --                     EntSpecs.ent:Fire( "break", "", "0.3" ) --asplode it
+        --                 end
+        --             end
 
-                    if self.BreakConstraints and string.find( EntSpecs.type, "prop" ) ~= nil then
-                        EntSpecs.ent:Fire( "enablemotion", "", 0 ) --bye bye fort that took you 4 hours to make
-                        constraint.RemoveAll( EntSpecs.ent )
-                    end
+        --             if self.BreakConstraints and string.find( EntSpecs.type, "prop" ) ~= nil then
+        --                 EntSpecs.ent:Fire( "enablemotion", "", 0 ) --bye bye fort that took you 4 hours to make
+        --                 constraint.RemoveAll( EntSpecs.ent )
+        --             end
 
-                    local physobj = EntSpecs.ent:GetPhysicsObject()
+        --             local physobj = EntSpecs.ent:GetPhysicsObject()
 
-                    if EntSpecs.movetype ~= 6 or not physobj:IsValid() then --if it's not a physics object...
-                        EntSpecs.ent:SetVelocity( vecang * (100 * Damage) ) --push it away
-                    elseif EntSpecs.ragdoll then --if it's a ragdoll...
-                        physobj:ApplyForceCenter( vecang * (8e4 * Damage) ) --push it away anyway :D
-                    else -- if it is a physics object...
-                        physobj:ApplyForceOffset( vecang * (8e4 * Damage), entpos + Vector( math.random( -20, 20 ), math.random( -20, 20 ), math.random( 20, 40 ) ) ) --still push it away
-                    end
+        --             if EntSpecs.movetype ~= 6 or not physobj:IsValid() then --if it's not a physics object...
+        --                 EntSpecs.ent:SetVelocity( vecang * (100 * Damage) ) --push it away
+        --             elseif EntSpecs.ragdoll then --if it's a ragdoll...
+        --                 physobj:ApplyForceCenter( vecang * (8e4 * Damage) ) --push it away anyway :D
+        --             else -- if it is a physics object...
+        --                 physobj:ApplyForceOffset( vecang * (8e4 * Damage), entpos + Vector( math.random( -20, 20 ), math.random( -20, 20 ), math.random( 20, 40 ) ) ) --still push it away
+        --             end
 
-                    util.BlastDamage( self, (self:OwnerCheck()), entpos - vecang * 64, 384, Damage ) --splode it
-                end
+        --             util.BlastDamage( self, (self:OwnerCheck()), entpos - vecang * 64, 384, Damage ) --splode it
+        --         end
+        --     end
+        -- end
+
+        -- New damage logic
+        local DamagePerSecond = self.BaseDamage / ( 4 * math.pi * self.SplodeDist ^ 2 ) --physics, bitch
+        local Damage = DamagePerSecond * FTime
+        for _, ent in pairs( ents.FindInSphere( self.SplodePos, self.SplodeDist ) ) do
+            if DamagePerSecond >= 250 and ent:IsPlayer() then
+                local pos = ent:GetPos()
+                local effectdata = EffectData()
+                effectdata:SetOrigin( pos )
+                effectdata:SetNormal( pos - self.SplodePos )
+                util.Effect( "m9k_nuke_disintegrate", effectdata )
+
+                ent:SetModel( "models/player/charple.mdl" )
+                ent:SetHealth( 1 )
             end
         end
+
+        local dmg = DamageInfo()
+        dmg:SetDamage( Damage * 3 )
+        dmg:SetDamageForce( Vector( 1000, 1000, 1000 ) )
+        dmg:SetAttacker( self:OwnerCheck() )
+        dmg:SetInflictor( self )
+        dmg:SetDamageType( DMG_BLAST )
+        util.BlastDamageInfo( dmg, self.SplodePos, self.SplodeDist )
     end
 
     function ENT:OwnerCheck()
-        if IsValid( self.Owner ) then
-            return (self.Owner)
+        local owner = self:GetOwner()
+        if IsValid( owner ) then
+            return owner
         else
-            return (self)
+            return self
         end
     end
 
@@ -310,7 +335,7 @@ if SERVER then
         enttable.ragdoll = false
         enttable.type = ""
 
-        if (not entity:IsValid()) then
+        if not entity:IsValid() then
             enttable.valid = false
             enttable.movetype = 0
             return enttable
@@ -353,12 +378,12 @@ if SERVER then
         trace.endpos = entpos
         local traceRes = util.TraceLine( trace )
 
-        if (traceRes.Entity ~= ent) and math.abs( self.SplodePos.z - entpos.z ) < 800 * self.Yield then
+        if traceRes.Entity ~= ent and math.abs( self.SplodePos.z - entpos.z ) < 800 * self.Yield then
             trace.start = Vector( self.SplodePos.x, self.SplodePos.y, entpos.z )
             traceRes = util.TraceLine( trace )
         end
 
-        return (traceRes.Entity == ent)
+        return traceRes.Entity == ent
     end
 end
 
@@ -445,4 +470,3 @@ if CLIENT then
 
     end
 end
-
