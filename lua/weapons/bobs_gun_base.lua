@@ -571,7 +571,7 @@ function SWEP:Reload()
             self:SetIronsights( true )
             self:GetOwner():SetFOV( 0, 0.3 )
         else
-            self.DrawCrosshair = true
+            self.DrawCrosshair = self.OrigCrossHair
         end
     end )
 end
