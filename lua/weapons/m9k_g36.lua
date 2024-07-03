@@ -31,6 +31,7 @@ SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
 SWEP.Primary.Sound          = "G36.single" -- Script that calls the primary fire sound
+SWEP.Primary.SilencedSound  = "hk416weapon.SilencedSingle" -- Sound if the weapon is silenced
 SWEP.Primary.RPM            = 750 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 30 -- Size of a clip
 SWEP.Primary.DefaultClip    = 60 -- Bullets you start with
@@ -47,6 +48,8 @@ SWEP.Secondary.IronFOV      = 55 -- How much you 'zoom' in. Less is more!
 
 SWEP.data                   = {} --The starting firemode
 SWEP.data.ironsights        = 1
+
+SWEP.CanBeSilenced          = true
 
 SWEP.Primary.NumShots       = 1 -- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage         = 28 -- Base damage per bullet
