@@ -547,7 +547,7 @@ function SWEP:Reload()
         if not IsValid( self:GetOwner() ) then return end
 
         if CLIENT and not self:GetOwner():KeyDown( IN_ATTACK2 ) then
-            self.DrawCrosshair = true
+            self.DrawCrosshair = selfTbl.OrigCrossHair
         end
 
         self:SetReloading( false )
