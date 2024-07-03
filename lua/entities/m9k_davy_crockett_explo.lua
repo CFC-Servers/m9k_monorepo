@@ -19,12 +19,27 @@ if GetConVarString( "nuke_yield" ) == "" then --if one of them doesn't exists, t
     CreateConVar( "nuke_disintegration", 1, false )
     CreateConVar( "nuke_damage", 100, false )
     CreateConVar( "nuke_epic_blastwave", 1, false )
-    CreateConVar( "nuke_radiation_duration", 0, false )
-    CreateConVar( "nuke_radiation_damage", 0, false )
 end
 
 if SERVER then
     AddCSLuaFile()
+
+    local HumanModels = {
+        ["[Ss]oldier"] = true,
+        ["models/zombie"] = true,
+        ["models/player/"] = true,
+        ["models/Humans/"] = true,
+        ["[Pp]olice.mdl"] = true,
+        ["[Aa]lyx.mdl"] = true,
+        ["[Bb]arney.mdl"] = true,
+        ["[Bb]reen.mdl"] = true,
+        ["[Ee]li.mdl"] = true,
+        ["[Mm]onk.mdl"] = true,
+        ["[Kk]leiner.mdl"] = true,
+        ["[Mm]ossman.mdl"] = true,
+        ["[Oo]dessa.mdl"] = true,
+        ["[Gg]man"] = true
+    }
 
     function ENT:Initialize()
         self.CanTool = false
@@ -32,10 +47,10 @@ if SERVER then
 
         --performance variables
         self.WaveResolution = GetConVarNumber( "nuke_waveresolution" ) or 0.2
-        self.IgnoreRagdoll = util.tobool( GetConVarNumber( "nuke_ignoreragdoll" ) or 1 )
-        self.BreakConstraints = util.tobool( GetConVarNumber( "nuke_breakconstraints" ) or 1 )
-        self.DoDisintegration = util.tobool( GetConVarNumber( "nuke_disintegration" ) or 1 )
-        self.EpicBlastWave = util.tobool( GetConVarNumber( "nuke_epic_blastwave" ) or 1 )
+        self.IgnoreRagdoll = tobool( GetConVarNumber( "nuke_ignoreragdoll" ) or 1 )
+        self.BreakConstraints = tobool( GetConVarNumber( "nuke_breakconstraints" ) or 1 )
+        self.DoDisintegration = tobool( GetConVarNumber( "nuke_disintegration" ) or 1 )
+        self.EpicBlastWave = tobool( GetConVarNumber( "nuke_epic_blastwave" ) or 1 )
 
         --We need to init physics properties even though this entity isn't physically simulated
         self:SetMoveType( MOVETYPE_NONE )
@@ -51,7 +66,7 @@ if SERVER then
 
         self:SetNotSolid( true )
 
-        self.Yield = (GetConVarNumber( "nuke_yield" ) or 100) / 100
+        self.Yield = ( GetConVarNumber( "nuke_yield" ) or 100 ) / 100
         self.YieldSlow = self.Yield ^ 0.75
         self.YieldSlowest = self.Yield ^ 0.5
         self.SplodePos = self:GetPos() + Vector( 0, 0, 4 )
@@ -124,49 +139,43 @@ if SERVER then
 
             for key, found in pairs( ents.FindInSphere( self.SplodePos, blastradius ) ) do
                 local foundspecs = self:GetSpecs( found )
-                if foundspecs.valid then
-                    if foundspecs.npc then
-                        if self.DoDisintegration then
-                            local effectdata = EffectData()
-                            effectdata:SetEntity( found )
-                            util.Effect( "m9k_nuke_vaporize", effectdata )
+                if not foundspecs.valid then
+                    continue
+                end
 
-                            found:Fire( "kill", "", "0.1" )
-                            --self.Owner:AddFrags(1)
-                        else
-                            local entpos = found:GetPos()
+                if foundspecs.npc then
+                    if self.DoDisintegration then
+                        local effectdata = EffectData()
+                        effectdata:SetEntity( found )
+                        util.Effect( "m9k_nuke_vaporize", effectdata )
 
-                            if foundspecs.humanoid then
-                                local effectdata = EffectData()
-                                effectdata:SetOrigin( entpos )
-                                effectdata:SetNormal( Vector( 0, 0, 1 ) )
-                                util.Effect( "m9k_nuke_disintegrate", effectdata )
-
-                                found:SetModel( "models/player/charple.mdl" )
-                            end
-                            util.BlastDamage( self, self.Owner, entpos, 256, 512 )
-                        end
-                    elseif foundspecs.player then
+                        found:Fire( "kill", "", "0.1" )
+                        --self.Owner:AddFrags(1)
+                    else
                         local entpos = found:GetPos()
 
-                        local effectdata = EffectData()
-                        effectdata:SetOrigin( entpos )
-                        effectdata:SetNormal( Vector( 0, 0, 1 ) )
-                        util.Effect( "m9k_nuke_disintegrate", effectdata )
+                        if foundspecs.humanoid then
+                            local effectdata = EffectData()
+                            effectdata:SetOrigin( entpos )
+                            effectdata:SetNormal( Vector( 0, 0, 1 ) )
+                            util.Effect( "m9k_nuke_disintegrate", effectdata )
 
-                        found:SetModel( "models/player/charple.mdl" )
+                            found:SetModel( "models/player/charple.mdl" )
+                        end
                         util.BlastDamage( self, self.Owner, entpos, 256, 512 )
                     end
+                elseif foundspecs.player then
+                    local entpos = found:GetPos()
+
+                    local effectdata = EffectData()
+                    effectdata:SetOrigin( entpos )
+                    effectdata:SetNormal( Vector( 0, 0, 1 ) )
+                    util.Effect( "m9k_nuke_disintegrate", effectdata )
+
+                    found:SetModel( "models/player/charple.mdl" )
+                    util.BlastDamage( self, self.Owner, entpos, 256, 512 )
                 end
             end
-
-            --radiation
-            local radiation = ents.Create( "m9k_sent_nuke_radiation" )
-            radiation:SetOwner( self.Owner )
-            radiation.Owner = self.Owner
-            radiation:SetVar( "owner", self.Owner )
-            radiation:SetPos( self.SplodePos )
-            radiation:Spawn()
 
             --earthquake
             local shake = ents.Create( "env_shake" )
@@ -301,26 +310,6 @@ if SERVER then
         end
     end
 
-    local HumanModels = {
-
-        "[Ss]oldier",
-        "models/zombie",
-        "models/player/",
-        "models/Humans/",
-        "[Pp]olice.mdl",
-        "[Aa]lyx.mdl",
-        "[Bb]arney.mdl",
-        "[Bb]reen.mdl",
-        "[Ee]li.mdl",
-        "[Mm]onk.mdl",
-        "[Kk]leiner.mdl",
-        "[Mm]ossman.mdl",
-        "[Oo]dessa.mdl",
-        "[Gg]man"
-
-    }
-
-
     function ENT:GetSpecs( entity )
         local enttable = {}
         enttable.ent = entity
@@ -358,13 +347,8 @@ if SERVER then
         enttable.npc = entity:IsNPC()
         if enttable.npc then
             local entmodel = entity:GetModel()
-            if entmodel then
-                for k, model in pairs( HumanModels ) do
-                    if string.find( entmodel, model ) ~= nil then
-                        enttable.humanoid = true
-                        break
-                    end
-                end
+            if HumanModels[entmodel] then
+                enttable.humanoid = true
             end
         end
 

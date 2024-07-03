@@ -19,5 +19,3 @@ CreateConVar( "nuke_breakconstraints", 1, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "
 CreateConVar( "nuke_disintegration", 1, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
 CreateConVar( "nuke_damage", 100, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
 CreateConVar( "nuke_epic_blast.mp3e", 1, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
-CreateConVar( "nuke_radiation_duration", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )
-CreateConVar( "nuke_radiation_damage", 0, { FCVAR_REPLICATED, FCVAR_ARCHIVE }, "nuke variables" )

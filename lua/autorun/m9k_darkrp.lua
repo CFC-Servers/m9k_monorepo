@@ -18,7 +18,6 @@ local pocketBlacklist = {
     ["m9k_poison_parent"] = true,
     ["m9k_proxy"] = true,
     ["m9k_released_poison"] = true,
-    ["m9k_sent_nuke_radiation"] = true,
     ["m9k_thrown_harpoon"] = true,
     ["m9k_thrown_knife"] = true,
     ["m9k_thrown_m61"] = true,
