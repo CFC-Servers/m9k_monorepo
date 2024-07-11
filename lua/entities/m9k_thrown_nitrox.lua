@@ -53,6 +53,9 @@ PhysicsCollide
     end
 
     function ENT:QueueExplosion()
+        if self.Exploded then return end
+        self.Exploded = true
+
         local owner = self._m9kOwner
 
         if not IsValid( owner ) then
