@@ -74,6 +74,9 @@ SWEP.WElements = {}
 
 local defaultClipMult = GetConVar( "M9KDefaultClip" )
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetTable = entMeta.GetTable
+
 function SWEP:Initialize()
     self.Reloadaftershoot = 0 -- Can't reload when firing
     self:SetHoldType( self.HoldType )
@@ -674,7 +677,7 @@ function SWEP:IronSight()
     local owner = self:GetOwner()
     if not IsValid( owner ) then return end
 
-    local selfTbl = self:GetTable()
+    local selfTbl = entity_GetTable( self )
     if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
 
@@ -756,16 +759,17 @@ local IRONSIGHT_TIME = 0.3
 -- --Time to enter in the ironsight mod
 
 function SWEP:GetViewModelPosition( pos, ang )
-    if not self.IronSightsPos then return pos, ang end
+    local selfTable = entity_GetTable( self )
+    if not selfTable.IronSightsPos then return pos, ang end
 
     local bIron = self:GetIronsights()
 
-    if bIron ~= self.bLastIron then
-        self.bLastIron = bIron
-        self.fIronTime = CurTime()
+    if bIron ~= selfTable.bLastIron then
+        selfTable.bLastIron = bIron
+        selfTable.fIronTime = CurTime()
     end
 
-    local fIronTime = self.fIronTime or 0
+    local fIronTime = selfTable.fIronTime or 0
 
     if not bIron and fIronTime < CurTime() - IRONSIGHT_TIME then
         return pos, ang
@@ -778,27 +782,35 @@ function SWEP:GetViewModelPosition( pos, ang )
         if not bIron then Mul = 1 - Mul end
     end
 
-    local Offset = self.IronSightsPos
+    local Offset = selfTable.IronSightsPos
 
-    if self.IronSightsAng then
+    if selfTable.IronSightsAng then
         ang = ang * 1
-        ang:RotateAroundAxis( ang:Right(), self.IronSightsAng.x * Mul )
-        ang:RotateAroundAxis( ang:Up(), self.IronSightsAng.y * Mul )
-        ang:RotateAroundAxis( ang:Forward(), self.IronSightsAng.z * Mul )
+        ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * Mul )
+        ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * Mul )
+        ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * Mul )
     end
 
-    local Right   = ang:Right()
-    local Up      = ang:Up()
+    local Right = ang:Right()
+    local Up = ang:Up()
     local Forward = ang:Forward()
 
-    pos           = pos + Offset.x * Right * Mul
-    pos           = pos + Offset.y * Forward * Mul
-    pos           = pos + Offset.z * Up * Mul
+    pos = pos + Offset.x * Right * Mul
+    pos = pos + Offset.y * Forward * Mul
+    pos = pos + Offset.z * Up * Mul
 
     return pos, ang
 end
 
 if CLIENT then
+    local entity_ManipulateBoneScale = entMeta.ManipulateBoneScale
+    local entity_ManipulateBoneAngles = entMeta.ManipulateBoneAngles
+    local entity_ManipulateBonePosition = entMeta.ManipulateBonePosition
+
+    local zeroVector = Vector( 0, 0, 0 )
+    local zeroAngle = Angle( 0, 0, 0 )
+    local oneVector = Vector( 1, 1, 1 )
+
     function SWEP:SetupWepSelectIcon()
         if self:GetOwner() ~= LocalPlayer() then return end
 
@@ -832,32 +844,31 @@ if CLIENT then
 
     SWEP.vRenderOrder = nil
     function SWEP:ViewModelDrawn()
-        if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
         local vm = self:GetOwner():GetViewModel()
         if not IsValid( vm ) then return end
 
-        if not self.VElements then return end
+        local selfTable = entity_GetTable( self )
+        if not selfTable.VElements then return end
 
         self:UpdateBonePositions( vm )
 
-        if not self.vRenderOrder then
+        if not selfTable.vRenderOrder then
             -- -- we build a render order because sprites need to be drawn after models
-            self.vRenderOrder = {}
+            selfTable.vRenderOrder = {}
 
-            for k, v in pairs( self.VElements ) do
+            for k, v in pairs( selfTable.VElements ) do
                 if v.type == "Model" then
-                    table.insert( self.vRenderOrder, 1, k )
+                    table.insert( selfTable.vRenderOrder, 1, k )
                 elseif v.type == "Sprite" or v.type == "Quad" then
-                    table.insert( self.vRenderOrder, k )
+                    table.insert( selfTable.vRenderOrder, k )
                 end
             end
         end
 
-        for _, name in ipairs( self.vRenderOrder ) do
-            local v = self.VElements[name]
+        for _, name in ipairs( selfTable.vRenderOrder ) do
+            local v = selfTable.VElements[name]
             if not v then
-                self.vRenderOrder = nil
+                selfTable.vRenderOrder = nil
                 break
             end
             if v.hide then continue end
@@ -867,7 +878,7 @@ if CLIENT then
 
             if not v.bone then continue end
 
-            local pos, ang = self:GetBoneOrientation( self.VElements, v, vm )
+            local pos, ang = self:GetBoneOrientation( selfTable.VElements, v, vm )
 
             if not pos then continue end
 
@@ -933,7 +944,7 @@ if CLIENT then
 
     SWEP.wRenderOrder = nil
     function SWEP:DrawWorldModel()
-        local selfTbl = self:GetTable()
+        local selfTbl = entity_GetTable( self )
         if selfTbl.ShowWorldModel == nil or selfTbl.ShowWorldModel then
             self:DrawModel()
         end
@@ -1177,11 +1188,12 @@ if CLIENT then
     end
 
     function SWEP:ResetBonePositions( vm )
-        if (not vm:GetBoneCount()) then return end
-        for i = 0, vm:GetBoneCount() do
-            vm:ManipulateBoneScale( i, Vector( 1, 1, 1 ) )
-            vm:ManipulateBoneAngles( i, Angle( 0, 0, 0 ) )
-            vm:ManipulateBonePosition( i, Vector( 0, 0, 0 ) )
+        local vmBones = vm:GetBoneCount()
+        if not vmBones then return end
+        for i = 0, vmBones do
+            entity_ManipulateBoneScale( vm, i, oneVector )
+            entity_ManipulateBoneAngles( vm, i, zeroAngle )
+            entity_ManipulateBonePosition( vm, i, zeroVector )
         end
     end
 
