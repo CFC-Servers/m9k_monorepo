@@ -20,7 +20,7 @@ if SERVER then
         self:DrawShadow( false )
 
         local phys = self:GetPhysicsObject()
-        if (phys:IsValid()) then
+        if phys:IsValid() then
             phys:Wake()
         end
 
@@ -90,21 +90,14 @@ if SERVER then
     end
 
     function ENT:Explosion()
-        if not IsValid( self ) then return end
+        if self.Exploded then return end
+        self.Exploded = true
 
         local owner = self._m9kOwner
-
         if not IsValid( owner ) then
             self:Remove()
             return
         end
-
-        local trace      = {}
-        trace.start      = self:GetPos() + Vector( 0, 0, 32 )
-        trace.endpos     = self:GetPos() - Vector( 0, 0, 128 )
-        trace.Entity     = self
-        trace.mask       = 16395
-        local Normal     = util.TraceLine( trace ).HitNormal
 
         self.Scale       = 1.5
         self.EffectScale = self.Scale ^ 0.65
@@ -114,11 +107,15 @@ if SERVER then
         util.Effect( "ThumperDust", effectdata )
         util.Effect( "Explosion", effectdata )
 
-        util.BlastDamage( self, owner, self:GetPos(), 220, 220 )
+        local blastPos = self:WorldSpaceCenter()
+        local parent = self:GetParent()
+        if IsValid( parent ) and parent:IsPlayer() then
+            blastPos = parent:WorldSpaceCenter()
+        end
+        util.BlastDamage( self, owner, blastPos, 220, 220 )
         util.ScreenShake( self:GetPos(), 1000, 255, 2.5, 1200 )
 
         self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
-
         self:Remove()
     end
 end
@@ -128,4 +125,3 @@ if CLIENT then
         self:DrawModel()
     end
 end
-
