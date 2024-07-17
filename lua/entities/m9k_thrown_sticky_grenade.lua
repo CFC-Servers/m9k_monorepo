@@ -32,8 +32,15 @@ if SERVER then
     function ENT:Think()
         if not IsValid( self ) then return end
 
+        local parent = self:GetParent()
+        if IsValid( parent ) and parent:IsPlayer() and not parent:Alive() then
+            self:Explosion()
+            return
+        end
+
         if self.timeleft < CurTime() then
             self:Explosion()
+            return
         end
 
         self:NextThink( CurTime() )
