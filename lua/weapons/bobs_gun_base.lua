@@ -228,7 +228,7 @@ function SWEP:CheckWeaponsAndAmmo()
 
     if not weaponStrip:GetBool() then return end
     timer.Simple( 0.1, function()
-        if not IsValid( self ) and not IsValid( self:GetOwner() ) then return end
+        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
         if self:GetOwner() == nil then return end
         self:GetOwner():StripWeapon( self.Gun )
     end )
