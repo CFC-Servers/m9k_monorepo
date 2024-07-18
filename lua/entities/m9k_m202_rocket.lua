@@ -68,7 +68,7 @@ if SERVER then
             effectdata:SetRadius( tr.MatType ) -- What texture it hits
             effectdata:SetMagnitude( 18 ) -- Length of explosion trails
             util.Effect( "m9k_gdcw_tpaboom", effectdata )
-            util.BlastDamage( self, self:OwnerGet(), tr.HitPos, 600, 170 )
+            util.BlastDamage( self, self:OwnerGet(), tr.HitPos, 600, 250 )
             util.Decal( "Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal )
             self:SetNWBool( "smoke", false )
 
