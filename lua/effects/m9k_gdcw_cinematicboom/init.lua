@@ -40,7 +40,6 @@ function EFFECT:Init( data )
     if self.Scale < 1.2 then
         sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
     else
-        sound.Play( "Explosion.Boom", self.Pos )
         sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
     end
 
