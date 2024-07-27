@@ -29,6 +29,7 @@ SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
+SWEP.DeployDelay = 1
 SWEP.Primary.Sound          = "BlackVulcan.Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 3500 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 100 -- Size of a clip

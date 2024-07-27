@@ -86,17 +86,17 @@ function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
 
     local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-    if (timer.Exists( timerName )) then
-        timer.Destroy( timerName )
+    if timer.Exists( timerName ) then
+        timer.Remove( timerName )
     end
 
     self:SendWeaponAnim( ACT_VM_DRAW )
 
-    self:SetNextPrimaryFire( CurTime() + 1 )
-    self:SetNextSecondaryFire( CurTime() + 1 )
-    self.ActionDelay = (CurTime() + 1)
+    self:SetNextPrimaryFire( CurTime() + 0.5 )
+    self:SetNextSecondaryFire( CurTime() + 0.5 )
+    self.ActionDelay = CurTime() + 0.5
 
-    if (SERVER) then
+    if SERVER then
         self:SetIronsights( false )
     end
 

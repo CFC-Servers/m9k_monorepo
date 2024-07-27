@@ -144,13 +144,13 @@ function SWEP:Deploy()
         self:SendWeaponAnim( ACT_VM_DRAW )
     end
 
-    self:SetNextPrimaryFire( CurTime() + 1 )
+    if self.DeployDelay then
+        self:SetNextPrimaryFire( CurTime() + self.DeployDelay )
+    end
     self:SetReloading( false )
 
-    if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil then
-        if self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
-            self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
-        end
+    if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil and self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
+        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
     end
     return true
 end

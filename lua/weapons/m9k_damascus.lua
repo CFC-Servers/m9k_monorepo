@@ -1,11 +1,11 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_damascus") -- must be the name of your swep but NO CAPITALS!
+SWEP.Gun = "m9k_damascus" -- must be the name of your swep but NO CAPITALS!
 
 SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
 SWEP.Contact                = ""
 SWEP.Purpose                = ""
-SWEP.Instructions           = ("Left click to slash" .. "\n" .. "Hold right mouse to put up guard.")
+SWEP.Instructions           = "Left click to slash" .. "\n" .. "Hold right mouse to put up guard."
 SWEP.PrintName              = "Damascus Sword" -- Weapon name (Shown on HUD)
 SWEP.Slot                   = 0 -- Slot in the weapon selection menu
 SWEP.SlotPos                = 21 -- Position in the slot

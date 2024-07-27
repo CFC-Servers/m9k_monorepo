@@ -30,6 +30,7 @@ SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
+SWEP.DeployDelay = 1
 SWEP.Primary.Sound          = "pkm.Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 750 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 100 -- Size of a clip
