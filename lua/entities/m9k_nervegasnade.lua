@@ -54,6 +54,9 @@ PhysicsCollide
     end
 
     function ENT:BreakVial()
+        if self.Broken then return end
+        self.Broken = true
+
         local owner = self._m9kOwner
 
         if not IsValid( owner ) then
@@ -75,29 +78,9 @@ PhysicsCollide
             local painParent = ents.Create( "m9k_poison_parent" )
             painParent:SetPos( pos )
             painParent:SetOwner( owner )
-            painParent.Owner = owner
-            painParent:Spawn()
+            painParent.Lifetime = CurTime() + 20
             painParent.Big = false
-
-            local hurt1 = ents.Create( "POINT_HURT" )
-            hurt1:SetPos( pos )
-            hurt1:SetKeyValue( "DamageRadius", 100 )
-            hurt1:SetKeyValue( "DamageType", 262144 )
-            hurt1:SetKeyValue( "Damage", 14 )
-            hurt1:Fire( "TurnOn", "", 0 )
-            hurt1:Fire( "Kill", "", 17 )
-            hurt1:SetParent( painParent )
-            hurt1:Spawn()
-
-            local hurt2 = ents.Create( "POINT_HURT" )
-            hurt2:SetPos( pos )
-            hurt2:SetKeyValue( "DamageRadius", 150 )
-            hurt2:SetKeyValue( "DamageType", 262144 )
-            hurt2:SetKeyValue( "Damage", 1 )
-            hurt2:Fire( "TurnOn", "", 0 )
-            hurt2:Fire( "Kill", "", 19 )
-            hurt2:SetParent( painParent )
-            hurt2:Spawn()
+            painParent:Spawn()
         end
 
         local gas = EffectData()

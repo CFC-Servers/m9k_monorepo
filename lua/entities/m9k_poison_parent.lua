@@ -9,12 +9,14 @@ ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
+ENT.Big = false
+ENT.TimeLeft = 0
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self:SetModel( "models/maxofs2d/hover_classic.mdl" )
-        self:PhysicsInit( SOLID_VPHYSICS )
         self:SetMoveType( MOVETYPE_VPHYSICS ) --the way it was
         self:SetSolid( SOLID_VPHYSICS )
         self:DrawShadow( false )
@@ -23,23 +25,44 @@ if SERVER then
         self:SetColor( Color( 0, 0, 0, 0 ) ) --fix this later
 
         if self.Big then
-            self.timeleft = CurTime() + 28
+            self.TimeLeft = CurTime() + 28
         else
-            self.timeleft = CurTime() + 18
+            self.TimeLeft = CurTime() + 18
         end
         self.CanTool = false
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
-        if not IsValid( self.Owner ) then
+        if not IsValid( self:GetOwner() ) then
             self:Remove()
             return
         end
 
-        if self.timeleft < CurTime() then
+        if self.TimeLeft < CurTime() then
             self:Remove()
         end
+
+        local nearby = ents.FindInSphere( self:GetPos(), self.Big and 600 or 150 )
+        for _, ent in pairs( nearby ) do
+            if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+                local trace = util.TraceLine( {
+                    start = self:GetPos(),
+                    endpos = ent:WorldSpaceCenter(),
+                    filter = { self, ent }
+                } )
+
+                if not trace.Hit then
+                    local dmg = DamageInfo()
+                    dmg:SetDamage( math.random( 20, 30 ) )
+                    dmg:SetDamageType( DMG_POISON )
+                    dmg:SetInflictor( self )
+                    dmg:SetAttacker( self:GetOwner() )
+                    dmg:SetDamagePosition( self:WorldSpaceCenter() )
+                    ent:TakeDamageInfo( dmg )
+                end
+            end
+        end
+
+        self:NextThink( CurTime() )
     end
 end

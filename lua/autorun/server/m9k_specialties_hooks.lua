@@ -24,23 +24,3 @@ local function melee( victim, info )
     end
 end
 hook.Add( "EntityTakeDamage", "M9k_Melee", melee )
-
-function PoisonChildChecker( victim, info )
-    if not IsValid( victim ) then return end
-    if not IsValid( info:GetAttacker() ) then return end
-
-    local dealer = info:GetInflictor()
-    if not IsValid( dealer ) then return end
-
-    if dealer:GetClass() ~= "POINT_HURT" then return end
-    if not IsValid( dealer:GetParent() ) then return end
-
-    local dealerParent = dealer:GetParent()
-    if dealerParent:GetClass() ~= "m9k_poison_parent" then return end
-    if not IsValid( dealerParent:GetOwner() ) then return end
-
-    info:SetAttacker( dealerParent:GetOwner() )
-    info:SetInflictor( dealerParent )
-end
-
-hook.Add( "EntityTakeDamage", "m9k_Poison_PoisonChildChecker", PoisonChildChecker )
