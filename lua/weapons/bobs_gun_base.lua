@@ -136,6 +136,7 @@ end
 
 function SWEP:Deploy()
     self:SetIronsights( false )
+    self.DrawCrosshair = self.OrigCrossHair
     self:SetHoldType( self.HoldType )
 
     if self.Silenced then
