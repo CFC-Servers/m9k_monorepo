@@ -92,8 +92,15 @@ if SERVER then
         tr.Entity:EmitSound( "physics/flesh/flesh_squishy_impact_hard" .. math.random( 1, 4 ) .. ".wav", 500, 100 )
         util.Effect( "m9k_cinematic_blood_cloud", effectdata )
 
-        self:SetMoveType( MOVETYPE_VPHYSICS )
-        self:SetPos( tr.HitPos )
+        if tr.Entity:Alive() then
+            self:SetParent( tr.Entity )
+            self:SetMoveType( MOVETYPE_NONE )
+            self:SetPos( tr.HitPos )
+            self:SetCollisionGroup( COLLISION_GROUP_IN_VEHICLE )
+        else
+            self:SetMoveType( MOVETYPE_VPHYSICS )
+            self:SetPos( tr.HitPos )
+        end
 
         local phys = self:GetPhysicsObject()
         phys:Wake()
