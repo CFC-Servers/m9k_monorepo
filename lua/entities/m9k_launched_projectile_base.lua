@@ -92,7 +92,7 @@ if SERVER then
         tr.Entity:EmitSound( "physics/flesh/flesh_squishy_impact_hard" .. math.random( 1, 4 ) .. ".wav", 500, 100 )
         util.Effect( "m9k_cinematic_blood_cloud", effectdata )
 
-        if tr.Entity:Alive() then
+        if ( tr.Entity:IsPlayer() and tr.Entity:Alive() ) or tr.Entity:IsNPC() and tr.Entity:Health() > 0 then
             self:SetParent( tr.Entity )
             self:SetMoveType( MOVETYPE_NONE )
             self:SetPos( tr.HitPos )
@@ -116,6 +116,9 @@ if SERVER then
             self:Remove()
             return
         end
+
+        if self.Exploded then return end
+        self.Exploded = true
 
         pos = pos or self:GetPos()
         normal = normal or Vector( 0, 0, 1 )
