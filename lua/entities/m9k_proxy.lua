@@ -33,11 +33,14 @@ end
 
 function ENT:Think()
     if self.TimeLeft < CurTime() then
-        for _, v in pairs( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
-            if v:IsPlayer() or v:IsNPC() then
+        for _, ent in pairs( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
+            if ent:IsPlayer() or ent:IsNPC() then
+                local canTrigger = hook.Run( "M9k_ProxyMineCanTrigger", self, ent )
+                if canTrigger == false then continue end
+
                 local trace = {
                     start = self:WorldSpaceCenter(),
-                    endpos = v:WorldSpaceCenter(),
+                    endpos = ent:WorldSpaceCenter(),
                     filter = self
                 }
                 local tr = util.TraceLine( trace )
