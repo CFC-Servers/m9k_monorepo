@@ -79,10 +79,9 @@ end
    Desc: Whip it out.
 -----------------------------------------------------------]]
 function SWEP:Deploy()
-    if not IsValid( self ) then return end
-    if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
+    self.DrawCrosshair = self.OrigCrossHair
     self:SetHoldType( self.HoldType )
 
     local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
