@@ -111,7 +111,7 @@ end
 function SWEP:DeployCountDownFunc( count )
     if not IsValid( self:GetOwner() ) then return end
     if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
-        timer.Destroy( "davy_crocket_" .. self:GetOwner():UniqueID() )
+        timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
         return
     end
     if count == 0 then
@@ -171,7 +171,7 @@ function SWEP:Holster()
             self:ResetBonePositions( vm )
         end
     end
-    if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then timer.Destroy( "davy_crocket_" .. self:GetOwner():UniqueID() ) end
+    if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() ) end
     return true
 end
 

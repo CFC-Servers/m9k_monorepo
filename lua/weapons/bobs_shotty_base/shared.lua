@@ -58,7 +58,7 @@ function SWEP:Think()
     --if the owner presses shoot while the timer is in effect, then...
     if (self:GetOwner():KeyPressed( IN_ATTACK )) and (self:GetNextPrimaryFire() <= CurTime()) and (timer.Exists( timerName )) and not (self:GetOwner():KeyDown( IN_SPEED )) then
         if self:CanPrimaryAttack() then --well first, if we actually can attack, then...
-            timer.Destroy( timerName ) -- kill the timer, and
+            timer.Remove( timerName ) -- kill the timer, and
             self:PrimaryAttack() -- ATTAAAAACK!
         end
     end
@@ -155,14 +155,14 @@ function SWEP:InsertShell()
     if self:GetOwner():Alive() then
         local curwep = self:GetOwner():GetActiveWeapon()
         if curwep:GetClass() ~= self.Gun then
-            timer.Destroy( timerName )
+            timer.Remove( timerName )
             return
         end
 
         if (self:Clip1() >= self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0) then
             -- if clip is full or ammo is out, then...
             self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_FINISH ) -- send the pump anim
-            timer.Destroy( timerName ) -- kill the timer
+            timer.Remove( timerName ) -- kill the timer
         elseif (self:Clip1() <= self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) >= 0) then
             self.InsertingShell = true --well, I tried!
             self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
@@ -174,7 +174,7 @@ function SWEP:InsertShell()
             end )
         end
     else
-        timer.Destroy( timerName ) -- kill the timer
+        timer.Remove( timerName ) -- kill the timer
     end
 end
 
