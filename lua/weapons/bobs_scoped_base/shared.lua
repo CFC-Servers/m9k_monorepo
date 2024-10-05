@@ -19,7 +19,6 @@ SWEP.Primary.Sound            = "" -- Sound of the gun
 SWEP.Primary.Round            = ("") -- What kind of bullet?
 SWEP.Primary.RPM              = 0 -- This is in Rounds Per Minute
 SWEP.Primary.Cone             = 0.15 -- Accuracy of NPCs
-SWEP.Primary.Recoil           = 10
 SWEP.Primary.Damage           = 10
 SWEP.Primary.SpreadHip           = .01 --define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.NumShots         = 1

@@ -16,7 +16,6 @@ SWEP.AdminSpawnable         = false
 SWEP.Primary.Sound          = "" -- Sound of the gun
 SWEP.Primary.Round          = "" -- What kind of bullet?
 SWEP.Primary.Cone           = 0.2 -- Accuracy of NPCs
-SWEP.Primary.Recoil         = 10
 SWEP.Primary.Damage         = 10
 SWEP.Primary.SpreadHip         = .01 --define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.NumShots       = 1
@@ -251,13 +250,8 @@ function SWEP:ShootBulletInformation()
 
     local basedamage = damageMultiplier * self.Primary.Damage
     local currentDamage = basedamage * damagedice
-    local currentRecoil = self.Primary.Recoil
 
-    if self:GetIronsights() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
-        self:ShootBullet( currentDamage, currentRecoil / 6, self.Primary.NumShots, currentCone )
-    else
-        self:ShootBullet( currentDamage, currentRecoil, self.Primary.NumShots, currentCone )
-    end
+    self:ShootBullet( currentDamage, self.Primary.NumShots, currentCone )
 end
 
 --[[---------------------------------------------------------
@@ -451,7 +445,7 @@ end
 -------------------------------------------------------]]
 local TracerName = "Tracer"
 
-function SWEP:ShootBullet( damage, recoil, num_bullets, aimcone )
+function SWEP:ShootBullet( damage, num_bullets, aimcone )
     num_bullets = num_bullets or 1
     aimcone = aimcone or 0
 

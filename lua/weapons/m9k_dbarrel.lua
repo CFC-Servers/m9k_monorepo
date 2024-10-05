@@ -153,15 +153,13 @@ end
 
 function SWEP:ShootBulletInformation2()
     local CurrentDamage
-    local CurrentRecoil
     local basedamage
     local damagedice = math.Rand( 0.95, 1.05 )
 
     basedamage = damageMultiplier * self.Primary.Damage
     CurrentDamage = basedamage * damagedice
-    CurrentRecoil = self.Primary.Recoil
 
-    self:ShootBullet( CurrentDamage, CurrentRecoil, 31, .06 )
+    self:ShootBullet( CurrentDamage, 31, .06 )
 end
 
 --[[---------------------------------------------------------
