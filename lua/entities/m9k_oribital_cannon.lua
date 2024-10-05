@@ -651,9 +651,9 @@ if SERVER then
 
     function ENT:OwnerCheck()
         if IsValid( self.Owner ) then
-            return (self.Owner)
+            return self.Owner
         else
-            return (self)
+            return self
         end
     end
 
@@ -661,8 +661,6 @@ if SERVER then
    Name: ENT:Think()
 -----------------------------------------------------------]]
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         if not IsValid( self.Owner ) then
             self:Remove()
             return

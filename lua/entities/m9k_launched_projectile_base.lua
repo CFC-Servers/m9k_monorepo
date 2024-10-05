@@ -31,8 +31,6 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         local trace = {
             start = self:GetPos(),
             endpos = self:GetPos() + self.Flightvector,

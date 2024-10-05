@@ -74,11 +74,10 @@ if SERVER then
     end
 
     function ENT:OwnerCheck( attacker )
-        if not IsValid( self ) then return end
         if IsValid( attacker ) then
-            return (attacker)
+            return attacker
         else
-            return (self)
+            return self
         end
     end
 

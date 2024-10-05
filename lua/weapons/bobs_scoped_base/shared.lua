@@ -269,7 +269,6 @@ end
 IronSight
 -----------------------------------------------------------]]
 function SWEP:IronSight()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
     if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetReloading()) then

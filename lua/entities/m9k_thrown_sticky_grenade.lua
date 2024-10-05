@@ -30,8 +30,6 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         local parent = self:GetParent()
         if IsValid( parent ) and parent:IsPlayer() and not parent:Alive() then
             self:Explosion()

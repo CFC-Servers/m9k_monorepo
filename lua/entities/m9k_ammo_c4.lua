@@ -84,7 +84,6 @@ if SERVER then
    Name: ENT:Explosion()
 -----------------------------------------------------------]]
     function ENT:Explosion( attacker )
-        if not IsValid( self ) then return end
         local effectdata = EffectData()
         effectdata:SetOrigin( self:GetPos() )
         effectdata:SetRadius( 1000 )
@@ -139,7 +138,6 @@ if SERVER then
     end
 
     function ENT:OwnerCheck( attacker )
-        if not IsValid( self ) then return end
         if IsValid( attacker ) then
             return (attacker)
         else

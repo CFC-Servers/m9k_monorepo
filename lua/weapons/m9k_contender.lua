@@ -131,9 +131,7 @@ function SWEP:UseBolt()
 end
 
 function SWEP:Reload()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
-    if not IsValid( self ) then return end
 
     if self:GetNextPrimaryFire() > (CurTime() + 1) then
         return

@@ -51,7 +51,6 @@ SWEP.NextReload             = 0
    Desc: Called every frame.
 -----------------------------------------------------------]]
 function SWEP:Think()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
     if self:GetOwner().NextReload == nil then self:GetOwner().NextReload = CurTime() + 1 end
@@ -109,7 +108,6 @@ end
    Desc: Reload is being pressed.
 -----------------------------------------------------------]]
 function SWEP:Reload()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
@@ -135,17 +133,14 @@ function SWEP:Reload()
 
         if SERVER and self:GetOwner():Alive() then
             local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-            timer.Create( timerName,
-                (self.ShellTime + .05),
-                shellz,
-                function()
-                    if not IsValid( self ) then return end
-                    if IsValid( self:GetOwner() ) and IsValid( self ) then
-                        if self:GetOwner():Alive() then
-                            self:InsertShell()
-                        end
+            timer.Create( timerName, self.ShellTime + .05, shellz, function()
+                if not IsValid( self ) then return end
+                if IsValid( self:GetOwner() ) and IsValid( self ) then
+                    if self:GetOwner():Alive() then
+                        self:InsertShell()
                     end
-                end )
+                end
+            end )
         end
     elseif self:GetOwner():IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
@@ -153,7 +148,6 @@ function SWEP:Reload()
 end
 
 function SWEP:InsertShell()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 

@@ -507,7 +507,6 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Reload()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
     if self:GetOwner():IsNPC() then

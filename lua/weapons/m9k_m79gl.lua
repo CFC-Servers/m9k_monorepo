@@ -62,7 +62,6 @@ SWEP.RunSightsPos           = Vector( 3.279, -5.574, 0 )
 SWEP.RunSightsAng           = Vector( -1.721, 49.917, 0 )
 
 function SWEP:Deploy()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
@@ -124,7 +123,6 @@ function SWEP:FireRocket()
 end
 
 function SWEP:Reload()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
@@ -148,17 +146,14 @@ function SWEP:Reload()
 
         if SERVER and self:GetOwner():Alive() then
             local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-            timer.Create( timerName,
-                (self.ShellTime + .05),
-                shellz,
-                function()
-                    if not IsValid( self ) then return end
-                    if IsValid( self:GetOwner() ) and IsValid( self ) then
-                        if self:GetOwner():Alive() then
-                            self:InsertShell()
-                        end
+            timer.Create( timerName, self.ShellTime + .05, shellz, function()
+                if not IsValid( self ) then return end
+                if IsValid( self:GetOwner() ) and IsValid( self ) then
+                    if self:GetOwner():Alive() then
+                        self:InsertShell()
                     end
-                end )
+                end
+            end )
         end
     elseif self:GetOwner():IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
@@ -166,7 +161,6 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 

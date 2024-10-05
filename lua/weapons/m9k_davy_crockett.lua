@@ -109,9 +109,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:DeployCountDownFunc( count )
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
-    if not IsValid( self ) then return end
     if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
         timer.Destroy( "davy_crocket_" .. self:GetOwner():UniqueID() )
         return
@@ -199,7 +197,6 @@ end
 IronSight
 -------------------------------------------------------]]
 function SWEP:IronSight()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
 
     if not self:GetOwner():IsNPC() then

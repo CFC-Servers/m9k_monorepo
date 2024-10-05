@@ -167,7 +167,6 @@ end
    Desc: Reload is being pressed.
 -----------------------------------------------------------]]
 function SWEP:Reload()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 
@@ -206,7 +205,6 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
     if self:GetOwner().NextReload == nil then self:GetOwner().NextReload = CurTime() + 1 end
@@ -220,7 +218,6 @@ function SWEP:Think()
 end
 
 function SWEP:InsertShell()
-    if not IsValid( self ) then return end
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
 

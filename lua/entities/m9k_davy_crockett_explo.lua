@@ -215,7 +215,6 @@ if SERVER then
         end
         timer.Simple( 0.2, function()
             if not IsValid( self ) then return end
-            if not IsValid( self ) then return end
             if not IsValid( self.Owner ) then return end
             util.BlastDamage( self, self.Owner, self.SplodePos, blastradius, 4096 * self.Yield )
         end )
@@ -228,8 +227,6 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         if not self.Sploding then return end
 
         local CurrentTime = CurTime()

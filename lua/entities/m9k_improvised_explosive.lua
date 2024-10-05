@@ -35,8 +35,6 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         if self.Boom then
             self:Explosion()
         end
@@ -46,7 +44,6 @@ if SERVER then
     end
 
     function ENT:Explosion()
-        if not IsValid( self ) then return end
         if not IsValid( self.BombOwner ) then
             self:Remove()
             return
@@ -80,7 +77,6 @@ if SERVER then
     end
 
     function ENT:TinyExplo()
-        if not IsValid( self ) then return end
         if not IsValid( self.BombOwner ) then
             self:Remove()
             return

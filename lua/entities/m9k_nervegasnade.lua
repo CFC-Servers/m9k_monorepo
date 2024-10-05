@@ -34,8 +34,6 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self ) then return end
-
         self:NextThink( CurTime() )
         return true
     end
