@@ -193,6 +193,7 @@ local shellEffects = {
 }
 
 function SWEP:FireAnimation()
+    -- Sounds
     local silenced = self.Silenced
     if silenced then
         self:EmitSound( self.Primary.SilencedSound )
@@ -200,6 +201,7 @@ function SWEP:FireAnimation()
         self:EmitSound( self.Primary.Sound )
     end
 
+    -- If we're not iron-sighting, just fire normally and return
     if self.Scoped or ( not self:GetIronsights() or not self.IronsightsBlowback ) then
         if silenced then
             self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
@@ -210,16 +212,20 @@ function SWEP:FireAnimation()
         return
     end
 
+    -- Ironsights logic
     self.RecoilAmount = self.RecoilBack
-
     if silenced then
         self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
     else
         self:SendWeaponAnim( ACT_VM_IDLE )
     end
 
+    -- Effects only clientside, for the owner and if we're in first person
+    if not CLIENT then return end
+    if self:GetOwner() ~= LocalPlayer() then return end
+    if EyePos() ~= self:GetOwner():EyePos() then return end
+
     local vm = self:GetOwner():GetViewModel()
-    -- Muzzle flash
     if not self.NoMuzzleFlash then
         local muzzleAtt = vm:GetAttachment( 1 )
         if muzzleAtt then
@@ -234,7 +240,6 @@ function SWEP:FireAnimation()
         end
     end
 
-    -- Shell ejection
     local shell = shellEffects[self.Primary.Ammo]
     if shell then
         local att = vm:GetAttachment( 2 )
