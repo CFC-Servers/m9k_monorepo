@@ -49,10 +49,7 @@ SWEP.data                     = {} --The starting firemode
 SWEP.data.ironsights          = 1
 SWEP.ScopeScale               = 1
 
--- enter iron sight info and bone mod info below
 
-SWEP.IronSightsPos            = Vector( -3.589, -8.867, -4.124 )
-SWEP.IronSightsAng            = Vector( 50.353, 17.884, -19.428 )
 SWEP.SightsPos                = Vector( -3.589, -8.867, -4.124 )
 SWEP.SightsAng                = Vector( 50.353, 17.884, -19.428 )
 SWEP.RunSightsPos             = Vector( 0, 0, 0 )

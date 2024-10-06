@@ -70,8 +70,8 @@ local function dmgMultCallback( _, _, new )
 end
 cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "gunbase" )
 
-SWEP.IronSightsPos = Vector( 2.4537, 1.0923, 0.2696 )
-SWEP.IronSightsAng = Vector( 0.0186, -0.0547, 0 )
+SWEP.IronSightsPos = Vector( 0, 0, 0 )
+SWEP.IronSightsAng = Vector( 0, 0, 0 )
 
 SWEP.VElements = {}
 SWEP.WElements = {}

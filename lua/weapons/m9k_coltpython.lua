@@ -50,9 +50,6 @@ SWEP.Primary.Damage         = 29 --base damage, scaled by game
 SWEP.Primary.SpreadHip         = .02 --define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.SpreadIronSights   = .01 -- has to be the same as Primary.SpreadHip
 
--- Enter iron sight info and bone mod info below
-SWEP.IronSightsPos          = Vector( -2.743, -1.676, 1.796 )
-SWEP.IronSightsAng          = Vector( 0.611, 0.185, 0 )
 SWEP.SightsPos              = Vector( -2.7, -1.676, 1.796 )
 SWEP.SightsAng              = Vector( 0.611, 0.185, 0 )
 SWEP.RunSightsPos           = Vector( 2.124, -9.365, -3.987 )

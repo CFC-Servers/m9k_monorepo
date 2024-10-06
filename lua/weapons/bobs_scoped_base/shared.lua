@@ -56,8 +56,6 @@ SWEP.data                     = {} -- The starting firemode
 SWEP.data.ironsights          = 1
 SWEP.ScopeScale               = 0.5
 SWEP.ReticleScale             = 0.5
-SWEP.IronSightsPos            = Vector( 2.4537, 1.0923, 0.2696 )
-SWEP.IronSightsAng            = Vector( 0.0186, -0.0547, 0 )
 
 function SWEP:Initialize()
     self:SetReloading( false )
