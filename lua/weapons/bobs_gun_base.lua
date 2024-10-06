@@ -212,18 +212,20 @@ function SWEP:FireAnimation()
     self.RecoilAmount = self.RecoilBack
     self:SendWeaponAnim( ACT_VM_IDLE )
 
-    -- Muzzle flash
     local vm = self:GetOwner():GetViewModel()
-    local muzzleAtt = vm:GetAttachment( 1 )
-    if muzzleAtt then
-        local flash = EffectData()
-        flash:SetOrigin( muzzleAtt.Pos )
-        flash:SetAngles( muzzleAtt.Ang )
-        flash:SetScale( 1 )
-        flash:SetEntity( vm )
-        flash:SetMagnitude( 1 )
-        flash:SetAttachment( 1 )
-        util.Effect( "CS_MuzzleFlash", flash )
+    -- Muzzle flash
+    if not self.NoMuzzleFlash then
+        local muzzleAtt = vm:GetAttachment( 1 )
+        if muzzleAtt then
+            local flash = EffectData()
+            flash:SetOrigin( muzzleAtt.Pos )
+            flash:SetAngles( muzzleAtt.Ang )
+            flash:SetScale( 1 )
+            flash:SetEntity( vm )
+            flash:SetMagnitude( 1 )
+            flash:SetAttachment( 1 )
+            util.Effect( "CS_MuzzleFlash", flash )
+        end
     end
 
     -- Shell ejection
