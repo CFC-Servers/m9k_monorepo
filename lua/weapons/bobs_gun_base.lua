@@ -210,7 +210,12 @@ function SWEP:FireAnimation()
     end
 
     self.RecoilAmount = self.RecoilBack
-    self:SendWeaponAnim( ACT_VM_IDLE )
+
+    if silenced then
+        self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
+    else
+        self:SendWeaponAnim( ACT_VM_IDLE )
+    end
 
     local vm = self:GetOwner():GetViewModel()
     -- Muzzle flash
