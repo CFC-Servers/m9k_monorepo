@@ -62,11 +62,9 @@ SWEP.VElements              = {
         1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
--- SWEP.WElements = {
--- ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(-5.834, 2.341, 7.204), angle = Angle(-164.762, -180, 0), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} },
--- ["milkor"] = { type = "Model", model = "models/weapons/w_milkor_mgl1.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(-0.232, 1.49, 0), angle = Angle(-169.639, -180, 0), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
--- }
---and now to the nasty parts of this swep...
+SWEP.WElements = {
+    ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(0, 0.75, 7.204), angle = Angle(-164.762, -180, 0), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} },
+}
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
