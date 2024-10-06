@@ -69,7 +69,3 @@ SWEP.VElements              = {
     ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "DrawCall_0", rel = "", pos = Vector( -0.281, 10.85, -6.398 ), angle = Angle( 0, 90, 0 ), size = Vector(
         1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
-
-SWEP.ViewModelBoneMods      = {
-    ["DrawCall_0009"] = { scale = Vector( 32, 1, 1 ), pos = Vector( -0.154, 0, 0 ), angle = Angle( 0, 0, 0 ) }
-}
