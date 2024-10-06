@@ -58,4 +58,4 @@ SWEP.SightsPos              = Vector( 2.16, -1.429, 0.6 )
 SWEP.SightsAng              = Vector( 3, 0, 0 )
 SWEP.RunSightsPos           = Vector( -3.116, -3.935, 0.492 )
 SWEP.RunSightsAng           = Vector( -19.894, -47.624, 10.902 )
-
+SWEP.IronsightsBlowback = false

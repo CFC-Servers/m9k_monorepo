@@ -56,10 +56,9 @@ SWEP.VElements     = {
         Vector( 0.009, 0.009, 0.009 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
-SWEP.IronSightsPos = Vector( 3.5, -2.21, 2.115 )
+SWEP.IronSightsPos = Vector( 3.5, -1, 2.115 )
 SWEP.IronSightsAng = Vector( -3.701, 0, 0 )
-SWEP.SightsPos     = Vector( 3.5, -2.21, 2.115 )
+SWEP.SightsPos     = Vector( 3.5, -1, 2.115 )
 SWEP.SightsAng     = Vector( -3.701, 0, 0 )
 SWEP.RunSightsPos  = Vector( -5.198, -9.164, 0 )
 SWEP.RunSightsAng  = Vector( -8.825, -70, 0 )
-

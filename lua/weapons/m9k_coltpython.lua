@@ -53,7 +53,7 @@ SWEP.Primary.SpreadIronSights   = .01 -- has to be the same as Primary.SpreadHip
 -- Enter iron sight info and bone mod info below
 SWEP.IronSightsPos          = Vector( -2.743, -1.676, 1.796 )
 SWEP.IronSightsAng          = Vector( 0.611, 0.185, 0 )
-SWEP.SightsPos              = Vector( -2.743, -1.676, 1.796 )
+SWEP.SightsPos              = Vector( -2.7, -1.676, 1.796 )
 SWEP.SightsAng              = Vector( 0.611, 0.185, 0 )
 SWEP.RunSightsPos           = Vector( 2.124, -9.365, -3.987 )
 SWEP.RunSightsAng           = Vector( 48.262, -8.214, 0 )

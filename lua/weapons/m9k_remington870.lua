@@ -59,4 +59,3 @@ SWEP.SightsPos              = Vector( -2.014, 0.1, 1.2 )
 SWEP.SightsAng              = Vector( 0.551, 0.028, 0 )
 SWEP.RunSightsPos           = Vector( 6.534, -4.646, 1.654 )
 SWEP.RunSightsAng           = Vector( -19.567, 68.622, 0 )
-

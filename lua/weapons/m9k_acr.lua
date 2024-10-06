@@ -53,9 +53,9 @@ SWEP.Primary.SpreadHip         = .025 -- Define from-the-hip accuracy 1 is terri
 SWEP.Primary.SpreadIronSights   = .015 -- Ironsight accuracy, should be the same for shotguns
 
 -- Enter iron sight info and bone mod info below
-SWEP.IronSightsPos          = Vector( 2.668, 0, 0.675 )
+SWEP.IronSightsPos          = Vector( 2.668, 3, 0.675 )
 SWEP.IronSightsAng          = Vector( 0, 0, 0 )
-SWEP.SightsPos              = Vector( 2.668, 0, 0.675 )
+SWEP.SightsPos              = Vector( 2.668, 3, 0.675 )
 SWEP.SightsAng              = Vector( 0, 0, 0 )
 SWEP.RunSightsPos           = Vector( -3.0328, 0, 1.888 )
 SWEP.RunSightsAng           = Vector( -24.2146, -36.522, 10 )

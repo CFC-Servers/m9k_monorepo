@@ -60,6 +60,7 @@ SWEP.GSightsPos = Vector (0, 0, 0)
 SWEP.GSightsAng = Vector (0, 0, 0)
 SWEP.RunSightsPos = Vector (-2.3095, -3.0514, 2.3965)
 SWEP.RunSightsAng = Vector (-19.8471, -33.9181, 10)
+SWEP.IronsightsBlowback = false
 
 SWEP.ViewModelBoneMods = {
     ["shell"] = { scale = Vector(0.009, 0.009, 0.009), pos = Vector(0, 0, 0), angle = Angle(0, 0, 0) }

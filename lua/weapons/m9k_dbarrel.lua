@@ -118,13 +118,8 @@ function SWEP:PrimaryAttack()
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( 1 )
 
-            if self.Silenced then
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
-                self:EmitSound( self.Primary.SilencedSound )
-            else
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                self:EmitSound( self.Primary.Sound )
-            end
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+            self:EmitSound( self.Primary.Sound )
 
             local fx = EffectData()
             fx:SetEntity( self )

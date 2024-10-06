@@ -38,6 +38,11 @@ SWEP.Secondary.Ammo         = ""
 
 -- SWEP.Secondary.IronFOV                  = 0                                     -- How much you 'zoom' in. Less is more!
 
+SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blowback system instead?
+SWEP.RecoilBack = 3 -- How much the gun kicks back in iron sights
+SWEP.RecoilRecoverySpeed = 2 -- How fast does the gun return to the center
+SWEP.RecoilAmount = 0 -- Internal, do not touch
+
 SWEP.Penetration            = true
 SWEP.Ricochet               = true
 SWEP.RicochetCoin           = 1
@@ -179,6 +184,60 @@ function SWEP:GetCapabilities()
     return CAP_WEAPON_RANGE_ATTACK1, CAP_INNATE_RANGE_ATTACK1
 end
 
+local shellEffects = {
+    pistol = "ShellEject",
+    smg = "RifleShellEject",
+    ar2 = "RifleShellEject",
+    shotgun = "ShotgunShellEject"
+}
+
+function SWEP:FireAnimation()
+    local silenced = self.Silenced
+    if silenced then
+        self:EmitSound( self.Primary.SilencedSound )
+    else
+        self:EmitSound( self.Primary.Sound )
+    end
+
+    if self.Scoped or ( not self:GetIronsights() or not self.IronsightsBlowback ) then
+        if silenced then
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
+        else
+            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        end
+
+        return
+    end
+
+    self.RecoilAmount = self.RecoilBack
+    self:SendWeaponAnim( ACT_VM_IDLE )
+
+    -- Muzzle flash
+    local vm = self:GetOwner():GetViewModel()
+    local muzzleAtt = vm:GetAttachment( 1 )
+    if muzzleAtt then
+        local flash = EffectData()
+        flash:SetOrigin( muzzleAtt.Pos )
+        flash:SetAngles( muzzleAtt.Ang )
+        flash:SetScale( 1 )
+        flash:SetEntity( vm )
+        flash:SetMagnitude( 1 )
+        flash:SetAttachment( 1 )
+        util.Effect( "CS_MuzzleFlash", flash )
+    end
+
+    -- Shell ejection
+    local shell = shellEffects[self.Primary.Ammo]
+    if shell then
+        local att = vm:GetAttachment( 2 )
+        local shellEffect = EffectData()
+        shellEffect:SetOrigin( att.Pos )
+        shellEffect:SetAngles( att.Ang )
+        shellEffect:SetEntity( vm )
+        util.Effect( shell, shellEffect )
+    end
+end
+
 function SWEP:PrimaryAttack()
     if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
@@ -187,13 +246,7 @@ function SWEP:PrimaryAttack()
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( 1 )
 
-            if self.Silenced then
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
-                self:EmitSound( self.Primary.SilencedSound )
-            else
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                self:EmitSound( self.Primary.Sound )
-            end
+            self:FireAnimation()
 
             self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
             self:GetOwner():MuzzleFlash()
@@ -205,7 +258,6 @@ function SWEP:PrimaryAttack()
     elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
         self:ShootBulletInformation()
         self:TakePrimaryAmmo( 1 )
-        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self:EmitSound( self.Primary.Sound )
         self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
         self:GetOwner():MuzzleFlash()
@@ -530,7 +582,7 @@ function SWEP:Reload()
         end
     end
 
-    if SERVER and (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
+    if SERVER and ( self:Clip1() < self.Primary.ClipSize ) and not self:GetOwner():IsNPC() then
         -- When the current clip < full clip and the rest of your ammo > 0, then
         self:GetOwner():SetFOV( 0, 0.3 )
         -- Zoom = 0
@@ -538,7 +590,7 @@ function SWEP:Reload()
         self:SetReloading( true )
     end
 
-    local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
+    local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) then return end
         if not IsValid( self:GetOwner() ) then return end
@@ -792,6 +844,17 @@ function SWEP:GetViewModelPosition( pos, ang )
     pos = pos + Offset.x * Right * Mul
     pos = pos + Offset.y * Forward * Mul
     pos = pos + Offset.z * Up * Mul
+
+    if self.RecoilAmount > 0 then
+        local forward = ang:Forward()   -- Get the forward vector (in player's view direction)
+        local recoilOffset = forward * -self.RecoilAmount  -- Move gun backwards along the forward vector
+        pos = pos + recoilOffset
+    end
+
+    -- Gradually recover recoil
+    if self.RecoilAmount > 0 then
+        self.RecoilAmount = Lerp( FrameTime() * self.RecoilRecoverySpeed, self.RecoilAmount, 0 )
+    end
 
     return pos, ang
 end

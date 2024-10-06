@@ -53,7 +53,7 @@ SWEP.Primary.SpreadIronSights = .01 -- Ironsight accuracy, should be the same fo
 -- Enter iron sight info and bone mod info below
 SWEP.IronSightsPos = Vector (-2.5944, 0, 1.1433)
 SWEP.IronSightsAng = Vector (0, 0, 0)
-SWEP.SightsPos = Vector (-2.5944, 0, 1.1433)
+SWEP.SightsPos = Vector (-2.5944, 20, 1.1433)
 SWEP.SightsAng = Vector (0, 0, 0)
 SWEP.RunSightsPos = Vector(3.444, -7.823, -6.27)
 SWEP.RunSightsAng = Vector(60.695, 0, 0)

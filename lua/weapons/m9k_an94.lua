@@ -54,9 +54,9 @@ SWEP.Primary.SpreadHip         = .015 -- Define from-the-hip accuracy 1 is terri
 SWEP.Primary.SpreadIronSights   = .005 -- Ironsight accuracy, should be the same for shotguns
 
 -- Enter iron sight info and bone mod info below
-SWEP.IronSightsPos          = Vector( 4.552, 0, 3.062 )
+SWEP.IronSightsPos          = Vector( 4.552, 0, 2.95 )
 SWEP.IronSightsAng          = Vector( 0.93, -0.5, 0 )
-SWEP.SightsPos              = Vector( 4.552, 0, 3.062 )
+SWEP.SightsPos              = Vector( 4.552, 0, 2.95 )
 SWEP.SightsAng              = Vector( 0.93, -0.5, 0 )
 SWEP.RunSightsPos           = Vector( -5.277, -8.584, 2.598 )
 SWEP.RunSightsAng           = Vector( -12.954, -52.088, 0 )
@@ -110,13 +110,7 @@ function SWEP:PrimaryAttack()
         if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( self.ShootThese )
-            if self.Silenced then
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
-                self:EmitSound( self.Primary.SilencedSound )
-            else
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                self:EmitSound( self.Primary.Sound )
-            end
+            self:FireAnimation()
 
             local fx = EffectData()
             fx:SetEntity( self )
@@ -134,7 +128,6 @@ function SWEP:PrimaryAttack()
     elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
         self:ShootBulletInformation()
         self:TakePrimaryAmmo( self.ShootThese )
-        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self:EmitSound( self.Primary.Sound )
         self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
         self:GetOwner():MuzzleFlash()
