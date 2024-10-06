@@ -42,6 +42,7 @@ SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blow
 SWEP.RecoilBack = 3 -- How much the gun kicks back in iron sights
 SWEP.RecoilRecoverySpeed = 2 -- How fast does the gun return to the center
 SWEP.RecoilAmount = 0 -- Internal, do not touch
+SWEP.IronSightTime = 0.15
 
 SWEP.Penetration            = true
 SWEP.Ricochet               = true
@@ -586,7 +587,7 @@ function SWEP:Reload()
         self.DrawCrosshair = false
     end
 
-    self:GetOwner():SetFOV( 0, 0.3 )
+    self:GetOwner():SetFOV( 0, self.IronSightTime )
     self:SetIronsights( false )
     self:SetReloading( true )
 
@@ -603,7 +604,7 @@ function SWEP:Reload()
 
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if self.Scoped == false then
-                self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
                 self:SetIronsights( true )
@@ -611,12 +612,12 @@ function SWEP:Reload()
             end
         elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
-                self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+                self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
             self:SetIronsights( true )
-            self:GetOwner():SetFOV( 0, 0.3 )
+            self:GetOwner():SetFOV( 0, self.IronSightTime )
         else
             self.DrawCrosshair = self.OrigCrossHair
         end
@@ -629,7 +630,7 @@ function SWEP:PostReloadScopeCheck()
     if self:GetOwner():KeyDown( IN_ATTACK2 ) then
         if CLIENT then return end
         if self.Scoped == false then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+            self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
             self:SetIronsights( true )
@@ -637,19 +638,19 @@ function SWEP:PostReloadScopeCheck()
         end
     elseif self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetNextPrimaryFire() <= CurTime() + 0.03 then
-            self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+            self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
         self:SetIronsights( true )
-        self:GetOwner():SetFOV( 0, 0.3 )
+        self:GetOwner():SetFOV( 0, self.IronSightTime )
     end
 end
 
 function SWEP:Silencer()
     if self.NextSilence > CurTime() then return end
 
-    self:GetOwner():SetFOV( 0, 0.3 )
+    self:GetOwner():SetFOV( 0, self.IronSightTime )
     self:SetIronsights( false )
     self:SetReloading( true ) -- i know we're not reloading but it works
 
@@ -673,7 +674,7 @@ function SWEP:Silencer()
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
-                self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
                 self:SetIronsights( true )
@@ -682,14 +683,14 @@ function SWEP:Silencer()
                 return
             end
         elseif self:GetOwner():KeyDown( IN_SPEED ) then
-            if self:GetNextPrimaryFire() <= CurTime() + 0.3 then
-                self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+            if self:GetNextPrimaryFire() <= CurTime() + self.IronSightTime then
+                self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
 
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
             self:SetIronsights( true )
-            self:GetOwner():SetFOV( 0, 0.3 )
+            self:GetOwner():SetFOV( 0, self.IronSightTime )
         else
             return
         end
@@ -745,26 +746,26 @@ function SWEP:IronSight()
 
     -- --copy this...
     if owner:KeyPressed( IN_SPEED ) and not self:GetReloading() then -- If you are running
-        if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
-            self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+        if self:GetNextPrimaryFire() <= ( CurTime() + self.IronSightTime ) then
+            self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
         end
         selfTbl.IronSightsPos = selfTbl.RunSightsPos -- Hold it down
         selfTbl.IronSightsAng = selfTbl.RunSightsAng -- Hold it down
         self:SetIronsights( true )
-        owner:SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = false
     end
 
     if owner:KeyReleased( IN_SPEED ) then -- If you release run then
         self:SetIronsights( false )
-        owner:SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
     end -- Shoulder the gun
 
     -- --down to this
     if not pressingE and not owner:KeyDown( IN_SPEED ) and owner:KeyPressed( IN_ATTACK2 ) and not self:GetReloading() then
         -- --If the key E (Use Key) is not pressed, then
-        owner:SetFOV( selfTbl.Secondary.IronFOV, 0.3 )
+        owner:SetFOV( selfTbl.Secondary.IronFOV, self.IronSightTime )
         selfTbl.IronSightsPos = selfTbl.SightsPos -- Bring it up
         selfTbl.IronSightsAng = selfTbl.SightsAng -- Bring it up
         self:SetIronsights( true )
@@ -774,7 +775,7 @@ function SWEP:IronSight()
 
     if owner:KeyReleased( IN_ATTACK2 ) and not pressingE and not owner:KeyDown( IN_SPEED ) then
         -- --If the right click is released, then
-        owner:SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
         self:SetIronsights( false )
         if CLIENT then return end
@@ -799,9 +800,6 @@ end
 --[[---------------------------------------------------------
 GetViewModelPosition
 -------------------------------------------------------]]
-local IRONSIGHT_TIME = 0.3
--- --Time to enter in the ironsight mod
-
 function SWEP:GetViewModelPosition( pos, ang )
     local selfTable = entity_GetTable( self )
     if not selfTable.IronSightsPos then return pos, ang end
@@ -815,13 +813,13 @@ function SWEP:GetViewModelPosition( pos, ang )
 
     local fIronTime = selfTable.fIronTime or 0
 
-    if not bIron and fIronTime < CurTime() - IRONSIGHT_TIME then
+    if not bIron and fIronTime < CurTime() - self.IronSightTime then
         return pos, ang
     end
 
     local Mul = 1.0
-    if fIronTime > CurTime() - IRONSIGHT_TIME then
-        Mul = math.Clamp( ( CurTime() - fIronTime ) / IRONSIGHT_TIME, 0, 1 )
+    if fIronTime > CurTime() - self.IronSightTime then
+        Mul = math.Clamp( ( CurTime() - fIronTime ) / self.IronSightTime, 0, 1 )
 
         if not bIron then Mul = 1 - Mul end
     end
