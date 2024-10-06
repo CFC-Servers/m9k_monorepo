@@ -855,7 +855,7 @@ function SWEP:GetViewModelPosition( pos, ang )
 
     -- Gradually recover recoil
     if self.RecoilAmount > 0 then
-        self.RecoilAmount = Lerp( FrameTime() * self.RecoilRecoverySpeed, self.RecoilAmount, 0 )
+        self.RecoilAmount = Lerp( math.ease.OutCubic( FrameTime() * self.RecoilRecoverySpeed ), self.RecoilAmount, 0 )
     end
 
     return pos, ang
