@@ -561,14 +561,15 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Reload()
-    if not IsValid( self:GetOwner() ) then return end
+    if self:GetReloading() then return end
+    if self:Clip1() >= self.Primary.ClipSize then return end
 
     if self:GetOwner():IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
         return
     end
 
-    if self:GetOwner():KeyDown( IN_USE ) then return end
+    if self:GetOwner():KeyDown( IN_USE ) then return end -- Mode switch
 
     if self.Silenced then
         self:DefaultReload( ACT_VM_RELOAD_SILENCED )
@@ -576,24 +577,16 @@ function SWEP:Reload()
         self:DefaultReload( ACT_VM_RELOAD )
     end
 
-    if not self:GetOwner():IsNPC() then
-        if self:GetOwner():GetViewModel() == nil then
-            self.ResetSights = CurTime() + 3
-        else
-            self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
-        end
+    if CLIENT then
+        self.DrawCrosshair = false
     end
 
-    if SERVER and ( self:Clip1() < self.Primary.ClipSize ) and not self:GetOwner():IsNPC() then
-        -- When the current clip < full clip and the rest of your ammo > 0, then
-        self:GetOwner():SetFOV( 0, 0.3 )
-        -- Zoom = 0
-        self:SetIronsights( false )
-        self:SetReloading( true )
-    end
+    self:GetOwner():SetFOV( 0, 0.3 )
+    self:SetIronsights( false )
+    self:SetReloading( true )
 
     local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
-    timer.Simple( waitdammit + .1, function()
+    timer.Simple( waitdammit, function()
         if not IsValid( self ) then return end
         if not IsValid( self:GetOwner() ) then return end
 
@@ -602,16 +595,14 @@ function SWEP:Reload()
         end
 
         self:SetReloading( false )
+
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-            if CLIENT then return end
             if self.Scoped == false then
                 self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
                 self:SetIronsights( true )
                 self.DrawCrosshair = false
-            else
-                return
             end
         elseif self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
@@ -848,12 +839,11 @@ function SWEP:GetViewModelPosition( pos, ang )
     pos = pos + Offset.z * Up * Mul
 
     if self.RecoilAmount > 0 then
-        local forward = ang:Forward()   -- Get the forward vector (in player's view direction)
-        local recoilOffset = forward * -self.RecoilAmount  -- Move gun backwards along the forward vector
+        local forward = ang:Forward()
+        local recoilOffset = forward * -self.RecoilAmount
         pos = pos + recoilOffset
     end
 
-    -- Gradually recover recoil
     if self.RecoilAmount > 0 then
         self.RecoilAmount = Lerp( math.ease.OutCubic( FrameTime() * self.RecoilRecoverySpeed ), self.RecoilAmount, 0 )
     end
