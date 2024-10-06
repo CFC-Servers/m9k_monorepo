@@ -242,27 +242,6 @@ function SWEP:Reload()
     end )
 end
 
-function SWEP:PostReloadScopeCheck()
-    self:SetReloading( false )
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-        if CLIENT then return end
-        self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
-        self.IronSightsPos = self.SightsPos -- Bring it up
-        self.IronSightsAng = self.SightsAng -- Bring it up
-        self.DrawCrosshair = false
-        self:SetIronsights( true )
-        self:GetOwner():DrawViewModel( false )
-    elseif self:GetOwner():KeyDown( IN_SPEED ) then
-        if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
-            self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-        end
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true )
-        self:GetOwner():SetFOV( 0, 0.2 )
-    end
-end
-
 --[[---------------------------------------------------------
 IronSight
 -----------------------------------------------------------]]

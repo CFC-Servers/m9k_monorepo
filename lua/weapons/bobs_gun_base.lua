@@ -276,8 +276,6 @@ end
 
 local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
-    if not SERVER then return end
-
     if self:Clip1() ~= 0 then return end
 
     local hasAmmo = self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0
@@ -286,12 +284,13 @@ function SWEP:CheckWeaponsAndAmmo()
         return
     end
 
-    if not weaponStrip:GetBool() then return end
-    timer.Simple( 0.1, function()
-        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-        if self:GetOwner() == nil then return end
-        self:GetOwner():StripWeapon( self.Gun )
-    end )
+    if SERVER and weaponStrip:GetBool() then
+        timer.Simple( 0.1, function()
+            if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+            if self:GetOwner() == nil then return end
+            self:GetOwner():StripWeapon( self.Gun )
+        end )
+    end
 end
 
 --[[---------------------------------------------------------
@@ -596,21 +595,21 @@ function SWEP:Reload()
         if not IsValid( self ) then return end
         if not IsValid( self:GetOwner() ) then return end
 
-        if CLIENT and not self:GetOwner():KeyDown( IN_ATTACK2 ) then
-            self.DrawCrosshair = self.OrigCrossHair
-        end
-
         self:SetReloading( false )
 
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-            if self.Scoped == false then
-                self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
-                self.IronSightsPos = self.SightsPos -- Bring it up
-                self.IronSightsAng = self.SightsAng -- Bring it up
-                self:SetIronsights( true )
+        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+            self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
+            self.IronSightsPos = self.SightsPos -- Bring it up
+            self.IronSightsAng = self.SightsAng -- Bring it up
+            self:SetIronsights( true )
+            if CLIENT then
                 self.DrawCrosshair = false
             end
-        elseif self:GetOwner():KeyDown( IN_SPEED ) then
+
+            return
+        end
+
+        if self:GetOwner():KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
@@ -618,33 +617,13 @@ function SWEP:Reload()
             self.IronSightsAng = self.RunSightsAng -- Hold it down
             self:SetIronsights( true )
             self:GetOwner():SetFOV( 0, self.IronSightTime )
-        else
+            return
+        end
+
+        if CLIENT then
             self.DrawCrosshair = self.OrigCrossHair
         end
     end )
-end
-
-function SWEP:PostReloadScopeCheck()
-    self:SetReloading( false )
-
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-        if CLIENT then return end
-        if self.Scoped == false then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
-            self.IronSightsPos = self.SightsPos -- Bring it up
-            self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true )
-            self.DrawCrosshair = false
-        end
-    elseif self:GetOwner():KeyDown( IN_SPEED ) then
-        if self:GetNextPrimaryFire() <= CurTime() + 0.03 then
-            self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
-        end
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true )
-        self:GetOwner():SetFOV( 0, self.IronSightTime )
-    end
 end
 
 function SWEP:Silencer()
