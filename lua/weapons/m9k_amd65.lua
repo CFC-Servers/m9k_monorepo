@@ -50,12 +50,6 @@ SWEP.Primary.SpreadIronSights   = .011 -- Ironsight accuracy, should be the same
 
 SWEP.SelectiveFire = true
 
---just cleaning up an empty spot that bugs me
-SWEP.VElements     = {
-    ["element"] = { type = "Model", model = "models/Mechanics/wheels/wheel_speed_72.mdl", bone = "Havana Daydreamin", rel = "", pos = Vector( -0.15, -5.336, 1.608 ), angle = Angle( 0, 0, 90 ), size =
-        Vector( 0.009, 0.009, 0.009 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
-
 SWEP.SightsPos     = Vector( 3.5, -1, 2.115 )
 SWEP.SightsAng     = Vector( -3.701, 0, 0 )
 SWEP.RunSightsPos  = Vector( -5.198, -9.164, 0 )

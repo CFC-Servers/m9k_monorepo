@@ -71,5 +71,5 @@ SWEP.VElements              = {
 }
 
 SWEP.ViewModelBoneMods      = {
-    ["DrawCall_0009"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -0.154, 0, 0 ), angle = Angle( 0, 0, 0 ) }
+    ["DrawCall_0009"] = { scale = Vector( 32, 1, 1 ), pos = Vector( -0.154, 0, 0 ), angle = Angle( 0, 0, 0 ) }
 }
