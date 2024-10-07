@@ -222,6 +222,7 @@ function SWEP:FireAnimation()
 
     -- Effects only clientside, for the owner and if we're in first person
     if not CLIENT then return end
+    if not IsFirstTimePredicted() then return end
     if self:GetOwner() ~= LocalPlayer() then return end
     if EyePos() ~= self:GetOwner():EyePos() then return end
 
