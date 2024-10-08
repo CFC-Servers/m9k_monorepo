@@ -131,8 +131,18 @@ function SWEP:Initialize()
 end
 
 function SWEP:SetupDataTables()
-    self:NetworkVar( "Bool", 0, "Ironsights" )
-    self:NetworkVar( "Bool", 1, "Reloading" )
+    self:NetworkVar( "Bool", "IronsightsActive" )
+    self:NetworkVar( "Bool", "Reloading" )
+    self:NetworkVar( "Float", "IronsightsTime" )
+end
+
+function SWEP:SetIronsights( b )
+    self:SetIronsightsActive( b )
+    self:SetIronsightsTime( CurTime() )
+end
+
+function SWEP:GetIronsights()
+    return self:GetIronsightsActive()
 end
 
 function SWEP:Equip()
@@ -202,7 +212,7 @@ function SWEP:FireAnimation()
     end
 
     -- If we're not iron-sighting, just fire normally and return
-    if self.Scoped or ( not self:GetIronsights() or not self.IronsightsBlowback ) then
+    if self.Scoped or ( not self:GetIronsightsActive() or not self.IronsightsBlowback ) then
         if silenced then
             self:SendWeaponAnim( ACT_VM_PRIMARYATTACK_SILENCED )
         else
@@ -305,7 +315,7 @@ end
 -------------------------------------------------------]]
 function SWEP:ShootBulletInformation()
     local currentCone
-    if self:GetIronsights() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
+    if self:GetIronsightsActive() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
         currentCone = self.Primary.SpreadIronSights
     else
         currentCone = self.Primary.SpreadHip
@@ -575,6 +585,11 @@ function SWEP:Reload()
     if self:GetReloading() then return end
     if self:Clip1() >= self.Primary.ClipSize then return end
 
+    if self:GetIronsights() then
+        self:SetIronsights( false )
+        return
+    end
+
     if self:GetOwner():IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
         return
@@ -770,6 +785,12 @@ function SWEP:IronSight()
         selfTbl.SwayScale = 1.0
         selfTbl.BobScale  = 1.0
     end
+
+    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not game.SinglePlayer() ) then return end
+    self.bIron = self:GetIronsightsActive()
+    self.fIronTime = self:GetIronsightsTime()
+    self.CurrentTime = CurTime()
+    self.CurrentSysTime = SysTime()
 end
 
 --[[---------------------------------------------------------
@@ -782,54 +803,50 @@ end
 --[[---------------------------------------------------------
 GetViewModelPosition
 -------------------------------------------------------]]
+local host_timescale = GetConVar( "host_timescale" )
 function SWEP:GetViewModelPosition( pos, ang )
     local selfTable = entity_GetTable( self )
-    if not selfTable.IronSightsPos then return pos, ang end
 
-    local bIron = self:GetIronsights()
+    local bIron = selfTable.bIron
+    if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
+    if selfTable.Scoped then return pos, ang end
 
-    if bIron ~= selfTable.bLastIron then
-        selfTable.bLastIron = bIron
-        selfTable.fIronTime = CurTime()
+    local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
+    local fIronTime = selfTable.fIronTime
+    local ironSightsTime = selfTable.IronSightTime
+
+    if ( not bIron ) and fIronTime < time - ironSightsTime then
+       return pos, ang
     end
 
-    local fIronTime = selfTable.fIronTime or 0
+    local mul = 1.0
+    if fIronTime > time - ironSightsTime then
+       mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
 
-    if not bIron and fIronTime < CurTime() - self.IronSightTime then
-        return pos, ang
-    end
-
-    local Mul = 1.0
-    if fIronTime > CurTime() - self.IronSightTime then
-        Mul = math.Clamp( ( CurTime() - fIronTime ) / self.IronSightTime, 0, 1 )
-
-        if not bIron then Mul = 1 - Mul end
+       if not bIron then mul = 1 - mul end
     end
 
     local Offset = selfTable.IronSightsPos
 
     if selfTable.IronSightsAng then
         ang = ang * 1
-        ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * Mul )
-        ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * Mul )
-        ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * Mul )
+        ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * mul )
+        ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * mul )
+        ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * mul )
     end
 
     local Right = ang:Right()
     local Up = ang:Up()
     local Forward = ang:Forward()
 
-    pos = pos + Offset.x * Right * Mul
-    pos = pos + Offset.y * Forward * Mul
-    pos = pos + Offset.z * Up * Mul
+    pos = pos + Offset.x * Right * mul
+    pos = pos + Offset.y * Forward * mul
+    pos = pos + Offset.z * Up * mul
 
     if self.RecoilAmount > 0 then
         local forward = ang:Forward()
         local recoilOffset = forward * -self.RecoilAmount
         pos = pos + recoilOffset
-    end
-
-    if self.RecoilAmount > 0 then
         self.RecoilAmount = Lerp( math.ease.OutCubic( FrameTime() * self.RecoilRecoverySpeed ), self.RecoilAmount, 0 )
     end
 
