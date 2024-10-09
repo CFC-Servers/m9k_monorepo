@@ -67,19 +67,3 @@ SWEP.SightsAng                = Vector( 0.039, 0, 0 )
 SWEP.RunSightsPos             = Vector( 4.094, -2.454, -0.618 )
 SWEP.RunSightsAng             = Vector( -8.957, 53.188, -9.195 )
 
-SWEP.WElements                = {
-    ["lense"] = { type = "Model", model = "models/XQM/panel360.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( 4.671, 0.832, -8.141 ), angle = Angle( 0, 0, 0 ), size = Vector( 0.039,
-        0.039, 0.039 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "models/wystan/attachments/aimpoint/lense", skin = 0, bodygroup = {} },
-    ["scope"] = { type = "Model", model = "models/wystan/attachments/aimpoint.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( -2.543, 0.463, 1.733 ), angle = Angle( -180, 90, 0 ), size =
-        Vector( 1.45, 1.45, 1.45 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} },
-    ["lense+"] = { type = "Model", model = "models/XQM/panel360.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( 10.041, 0.832, -8.1 ), angle = Angle( 0, 0, 0 ), size = Vector( 0.039,
-        0.039, 0.039 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "models/wystan/attachments/aimpoint/lense", skin = 0, bodygroup = {} }
-}
-
-SWEP.VElements                = {
-    ["aimpoint"] = { type = "Model", model = "models/wystan/attachments/aimpoint.mdl", bone = "Gun", rel = "", pos = Vector( 0.228, 7.487, -4.416 ), angle = Angle( 0, 180, 0 ), size = Vector( 1, 1, 1 ), color =
-        Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} },
-    ["lense"] = { type = "Model", model = "models/XQM/panel360.mdl", bone = "Gun", rel = "aimpoint", pos = Vector( 0.298, 4.546, 6.756 ), angle = Angle( 0, 90, 38.293 ), size = Vector( 0.024, 0.024,
-        0.024 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "models/wystan/attachments/aimpoint/lense", skin = 0, bodygroup = {} }
-}
-

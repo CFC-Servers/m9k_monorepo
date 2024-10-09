@@ -38,10 +38,14 @@ SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "40mmGrenade"
+
+SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blowback system instead?
+SWEP.RecoilBack = 2.75 -- How much the gun kicks back in iron sights
+SWEP.RecoilRecoverySpeed = 1 -- How fast does the gun return to the center
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
 
-SWEP.Primary.Round          = ("m9k_milkor_nade") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_milkor_nade" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 50 -- How much you 'zoom' in. Less is more!
 SWEP.ShellTime              = .5
@@ -52,40 +56,29 @@ SWEP.Primary.SpreadHip         = 0 -- Define from-the-hip accuracy (1 is terribl
 SWEP.Primary.SpreadIronSights   = 0 -- Ironsight accuracy, should be the same for shotguns
 --none of this matters for IEDs and other ent-tossing sweps
 
-SWEP.SightsPos              = Vector( 2.631, -0.03, 1.654 )
-SWEP.SightsAng              = Vector( 1.432, 2.44, 0 )
+SWEP.SightsPos              = Vector( 2.722, -0.03, 1.79 )
+SWEP.SightsAng              = Vector( 0, 3.1, 0 )
 SWEP.RunSightsPos           = Vector( -3.444, -3.77, -0.329 )
 SWEP.RunSightsAng           = Vector( -5.738, -37.869, 0 )
 
-SWEP.VElements              = {
-    ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "body", rel = "", pos = Vector( 13.578, -8.568, -0.717 ), angle = Angle( 180, 0, 90 ), size = Vector( 1,
-        1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
-
-SWEP.WElements = {
-    ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(0, 0.75, 7.204), angle = Angle(-164.762, -180, 0), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} },
-}
 
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
-            self:FireRocket()
-            self:EmitSound( self.Primary.Sound )
-            self:TakePrimaryAmmo( 1 )
-            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:GetOwner():MuzzleFlash()
-            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        end
+        self:FireRocket()
+        self:EmitSound( self.Primary.Sound )
+        self:TakePrimaryAmmo( 1 )
+        self:FireAnimation()
+        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        self:GetOwner():MuzzleFlash()
+        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
     self:CheckWeaponsAndAmmo()
 end
-
 function SWEP:FireRocket()
     local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():GetShootPos() + side * 4.5 + up * -6
+    local pos = self:GetOwner():GetShootPos() + side * 2 + up * -6
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )

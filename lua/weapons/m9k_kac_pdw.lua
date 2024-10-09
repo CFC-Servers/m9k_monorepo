@@ -55,17 +55,7 @@ SWEP.Primary.Damage         = 15 -- Base damage per bullet
 SWEP.Primary.SpreadHip         = .025 -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.SpreadIronSights   = .015 -- Ironsight accuracy, should be the same for shotguns
 
-SWEP.SightsPos              = Vector( 3.342, 0, 0.759 )
+SWEP.SightsPos              = Vector( 3.342, 0, 0.514 )
 SWEP.SightsAng              = Vector( 2.46, -0.025, 0 )
 SWEP.RunSightsPos           = Vector( -4.646, -4.173, 0 )
 SWEP.RunSightsAng           = Vector( -10.197, -53.189, 0 )
-
-SWEP.WElements              = {
-    ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( -7.539, 1.485, 10.295 ), angle = Angle( -172.297,
-        180, 0 ), size = Vector( 1.378, 1.378, 1.378 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
-
-SWEP.VElements              = {
-    ["eotech"] = { type = "Model", model = "models/wystan/attachments/eotech557sight.mdl", bone = "DrawCall_0", rel = "", pos = Vector( -0.281, 10.85, -6.398 ), angle = Angle( 0, 90, 0 ), size = Vector(
-        1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
