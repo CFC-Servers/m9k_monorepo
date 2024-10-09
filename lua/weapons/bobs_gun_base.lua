@@ -809,7 +809,6 @@ function SWEP:GetViewModelPosition( pos, ang )
 
     local bIron = selfTable.bIron
     if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
-    if selfTable.Scoped then return pos, ang end
 
     local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
     local fIronTime = selfTable.fIronTime

@@ -318,6 +318,12 @@ function SWEP:IronSight()
         self.SwayScale = 1.0
         self.BobScale  = 1.0
     end
+
+    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not game.SinglePlayer() ) then return end
+    self.bIron = self:GetIronsightsActive()
+    self.fIronTime = self:GetIronsightsTime()
+    self.CurrentTime = CurTime()
+    self.CurrentSysTime = SysTime()
 end
 
 function SWEP:DrawHUD()
