@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-    "$baseTexture" "models\weapons\v_models\pdw\sights"
-    "$no_draw" "1"
-}

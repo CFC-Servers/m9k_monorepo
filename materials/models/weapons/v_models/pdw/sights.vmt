@@ -1,7 +1,6 @@
 VertexLitGeneric
 {
     "$baseTexture" "models\weapons\v_models\pdw\sights"
-        "$nocull"    "1"
 
     "$normalmapalphaenvmapmask"     "1"
     "$phong"             "1"
@@ -12,5 +11,4 @@ VertexLitGeneric
     "$rimlight"               "1"
     "$rimlightexponent"       "12"
     "$rimlightboost"          ".2"
-    "$no_draw" 1
 }

@@ -1,7 +1,6 @@
-"VertexLitGeneric"
+VertexLitGeneric
 {
-    "$baseTexture" "models\weapons\v_models\inf_a35\shell"
-    "$bumpmap" "models\weapons\v_models\inf_a35\shell_normal"
+    "$basetexture"    "models\weapons\v_models\m79\shell"
 
 
 }

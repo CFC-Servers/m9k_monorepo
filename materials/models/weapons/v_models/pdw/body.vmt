@@ -2,7 +2,6 @@
 {
     "$baseTexture" "models\weapons\v_models\pdw\body"
     "$bumpmap"    "models\weapons\v_models\pdw\body_normal"
-    "$nocull"    "1"
 
     "$normalmapalphaenvmapmask"     "1"
     "$phong"             "1"
@@ -15,5 +14,4 @@
     "$rimlight"               "1"
     "$rimlightexponent"       "12"
     "$rimlightboost"          ".2"
-    "$no_draw" 1
 }
