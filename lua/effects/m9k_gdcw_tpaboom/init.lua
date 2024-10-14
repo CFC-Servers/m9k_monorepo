@@ -892,7 +892,7 @@ function EFFECT:Glass()
 end
 
 function EFFECT:Blood()
-    -- If you recieve over 50,000 joules of energy, you become red mist.
+    -- If you receive over 50,000 joules of energy, you become red mist.
     for i = 0, 30 * self.Scale do
         local Smoke = self.Emitter:Add( "particle/particle_composite", self.Pos )
         if Smoke then
@@ -984,7 +984,7 @@ function EFFECT:Blood()
 end
 
 function EFFECT:YellowBlood()
-    -- If you recieve over 50,000 joules of energy, you become red mist.
+    -- If you receive over 50,000 joules of energy, you become red mist.
     for i = 0, 30 * self.Scale do
         local Smoke = self.Emitter:Add( "particle/particle_composite", self.Pos )
         if Smoke then

@@ -24,7 +24,7 @@ function EFFECT:Init( data )
 end
 
 function EFFECT:Blood()
-    for i = 0, 30 * self.Scale do -- If you recieve over 50,000 joules of energy, you become red mist.
+    for i = 0, 30 * self.Scale do -- If you receive over 50,000 joules of energy, you become red mist.
         local Smoke = self.Emitter:Add( "particle/particle_composite", self.Pos )
         if (Smoke) then
             Smoke:SetVelocity( VectorRand():GetNormalized() * math.random( 100, 600 ) * self.Scale )

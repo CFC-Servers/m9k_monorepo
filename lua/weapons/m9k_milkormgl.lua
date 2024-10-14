@@ -13,7 +13,7 @@ SWEP.Slot                   = 4 -- Slot in the weapon selection menu
 SWEP.SlotPos                = 30 -- Position in the slot
 SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawCrosshair          = true -- set false if you want no crosshair
-SWEP.Weight                 = 30 -- rank relative ot other weapons. bigger is better
+SWEP.Weight                 = 30 -- rank relative to other weapons. bigger is better
 SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
 SWEP.HoldType               = "shotgun" -- how others view you carrying the weapon
@@ -43,7 +43,7 @@ SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blow
 SWEP.RecoilBack = 2.75 -- How much the gun kicks back in iron sights
 SWEP.RecoilRecoverySpeed = 1 -- How fast does the gun return to the center
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
--- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal peircing shotgun slug
+-- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
 SWEP.Primary.Round          = "m9k_milkor_nade" --NAME OF ENTITY GOES HERE
 

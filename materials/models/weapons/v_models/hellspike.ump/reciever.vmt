@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-    "$baseTexture" "models\weapons\v_models\hellspike.ump/reciever"
-    "$bumpmap" "models\weapons\v_models\hellspike.ump/reciever norm"
+    "$baseTexture" "models\weapons\v_models\hellspike.ump/receiver"
+    "$bumpmap" "models\weapons\v_models\hellspike.ump/receiver norm"
 }

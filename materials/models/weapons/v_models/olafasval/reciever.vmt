@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-"$basetexture" "models\Weapons\v_Models\OLAFASVAL\reciever"
+"$basetexture" "models\Weapons\v_Models\OLAFASVAL\receiver"
 "$bumpmap"     "models\Weapons\v_Models\OLAFASVAL\rec_normal"
 "$halflambert"     "1"
 "$phong"         "1"
