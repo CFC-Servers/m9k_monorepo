@@ -254,11 +254,13 @@ function SWEP:FireAnimation()
     local shell = shellEffects[self.Primary.Ammo]
     if shell then
         local att = vm:GetAttachment( 2 )
-        local shellEffect = EffectData()
-        shellEffect:SetOrigin( att.Pos )
-        shellEffect:SetAngles( att.Ang )
-        shellEffect:SetEntity( vm )
-        util.Effect( shell, shellEffect )
+        if att then
+            local shellEffect = EffectData()
+            shellEffect:SetOrigin( att.Pos )
+            shellEffect:SetAngles( att.Ang )
+            shellEffect:SetEntity( vm )
+            util.Effect( shell, shellEffect )
+        end
     end
 end
 
