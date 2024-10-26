@@ -617,7 +617,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         anglo1 = anglo1 * 0.5
     end
 
-    --owner:ViewPunch( anglo1 )
+    owner:ViewPunch( anglo1 )
 
     if SERVER and game.SinglePlayer() and not owner:IsNPC() then
         local offlineeyes = owner:EyeAngles()
