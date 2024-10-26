@@ -609,8 +609,8 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         owner:FireBullets( bullet )
     end
 
-    local x = util.SharedRandom( "m9k_recoil", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
-    local y = util.SharedRandom( "m9k_recoil", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
+    local x = util.SharedRandom( "m9k_viewpunch", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
+    local y = util.SharedRandom( "m9k_viewpunch", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
     local anglo1 = Angle( x, y, 0 )
 
     if self:GetIronsightsActive() and not self.Scoped then
