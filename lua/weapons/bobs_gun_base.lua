@@ -557,6 +557,11 @@ function SWEP:ShootBullet( damage, num_bullets, aimcone )
     local x = util.SharedRandom( "m9k_recoil", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
     local y = util.SharedRandom( "m9k_recoil", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
     local anglo1 = Angle( x, y, 0 )
+
+    if self:GetIronsightsActive() and not self.Scoped then
+        anglo1 = anglo1 * 0.5
+    end
+
     owner:ViewPunch( anglo1 )
 
     if SERVER and game.SinglePlayer() and not owner:IsNPC() then
