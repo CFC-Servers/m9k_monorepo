@@ -50,7 +50,6 @@ SWEP.RicochetCoin           = 1
 SWEP.BoltAction             = false
 SWEP.Scoped                 = false
 SWEP.ShellTime              = .35
-SWEP.Tracer                 = 0
 SWEP.CanBeSilenced          = false
 SWEP.Silenced               = false
 SWEP.NextSilence            = 0
@@ -559,17 +558,9 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
     bulletCount = bulletCount or 1
     aimcone = aimcone or 0
 
-    local TracerName = "Tracer"
-    if self.Tracer == 1 then
-        TracerName = "Ar2Tracer"
-    elseif self.Tracer == 2 then
-        TracerName = "AirboatGunHeavyTracer"
-    else
-        TracerName = "Tracer"
-    end
-
     local owner = self:GetOwner()
     local bulletDir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward()
+    local tracer = self.Tracer or "Tracer"
 
     local bullet
     if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
@@ -579,7 +570,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             Dir = bulletDir,
             Spread = Vector( aimcone, aimcone, 0 ),
             Tracer = 3,
-            TracerName = TracerName,
+            TracerName = tracer,
             Force = damage * 0.25,
             Damage = damage,
             Callback = function( attacker, tracedata, dmginfo )
@@ -595,7 +586,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             Dir = spreadDir,
             Spread = Vector( 0, 0, 0 ),
             Tracer = 3,
-            TracerName = TracerName,
+            TracerName = tracer,
             Force = damage * 0.25,
             Damage = damage,
             Callback = function( attacker, tracedata, dmginfo )

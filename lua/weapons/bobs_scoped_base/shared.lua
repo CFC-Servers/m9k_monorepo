@@ -50,8 +50,6 @@ SWEP.BoltAction               = false
 SWEP.Penetration              = true
 SWEP.Ricochet                 = true
 
-SWEP.Tracer                   = 0
-
 SWEP.data                     = {} -- The starting firemode
 SWEP.data.ironsights          = 1
 SWEP.ScopeScale               = 0.5
