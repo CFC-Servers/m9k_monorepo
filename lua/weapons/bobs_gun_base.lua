@@ -919,7 +919,7 @@ if CLIENT then
 
         local stored = weapons.GetStored( self:GetClass() )
         if not stored.WepSelectIconMaterial then
-            local path = "vgui/hud/" .. self:GetClass()
+            local path = self.WeaponIconPath and self.WeaponIconPath or "vgui/entities/" .. self:GetClass()
             stored.WepSelectIconMaterial = Material( path )
         end
 
