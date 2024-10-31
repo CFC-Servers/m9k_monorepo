@@ -27,7 +27,7 @@ SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
-SWEP.Primary.RPM            = 250 -- This is in Rounds Per Minute
+SWEP.Primary.RPM            = 150 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 30 -- Size of a clip
 SWEP.Primary.DefaultClip    = 60 -- Bullets you start with
 SWEP.Primary.KickUp         = 0.4 -- Maximum up recoil (rise)
