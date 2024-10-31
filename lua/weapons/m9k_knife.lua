@@ -157,14 +157,16 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire( CurTime() + 0.35 )
 
+    if IsFirstTimePredicted() then
+        self.Slash = self.Slash == 1 and 2 or 1
+    end
+
     local vm = self:GetOwner():GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
     if self.Slash == 1 then
         vm:SetSequence( vm:LookupSequence( "midslash1" ) )
-        self.Slash = 2
     else
         vm:SetSequence( vm:LookupSequence( "midslash2" ) )
-        self.Slash = 1
     end
 
     self:EmitSound( self.Primary.Sound )
