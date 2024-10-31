@@ -109,6 +109,7 @@ function SWEP:PrimarySlash()
     local pain = self.Primary.Damage * damagedice
 
     self:GetOwner():LagCompensation( true )
+    self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     if IsValid( self:GetOwner() ) and IsValid( self ) then
         if self:GetOwner():Alive() then
             if self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
