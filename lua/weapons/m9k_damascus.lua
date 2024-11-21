@@ -126,13 +126,16 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Holster()
-    if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
-        local vm = self:GetOwner():GetViewModel()
+    local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
+
+    if CLIENT then
+        local vm = owner:GetViewModel()
         if IsValid( vm ) then
             self:ResetBonePositions( vm )
         end
     end
-    self:GetOwner():SetNWBool( "GuardIsUp", false )
+    owner:SetNWBool( "GuardIsUp", false )
     return true
 end
 
