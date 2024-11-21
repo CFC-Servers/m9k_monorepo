@@ -87,6 +87,7 @@ function SWEP:Deploy()
     end
 
     self:SendWeaponAnim( ACT_VM_DRAW )
+    self:SetReloading( false )
 
     self:SetNextPrimaryFire( CurTime() + 0.5 )
     self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -115,6 +116,7 @@ function SWEP:Reload()
 
     if (timer.Exists( "ShotgunReload_" .. self:GetOwner():UniqueID() )) or self:GetOwner().NextReload > CurTime() or maxcap == spaceavail then return end
 
+    self:SetReloading( true )
     if self:GetOwner():IsPlayer() then
         if self:GetNextPrimaryFire() <= (CurTime() + 2) then
             self:SetNextPrimaryFire( CurTime() + 2 ) -- wait TWO seconds before you can shoot again
@@ -161,6 +163,7 @@ function SWEP:InsertShell()
             -- if clip is full or ammo is out, then...
             self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_FINISH ) -- send the pump anim
             timer.Remove( timerName ) -- kill the timer
+            self:SetReloading( false )
         elseif (self:Clip1() <= self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) >= 0) then
             self.InsertingShell = true --well, I tried!
             self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
