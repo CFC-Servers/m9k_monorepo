@@ -724,12 +724,14 @@ function SWEP:Silencer()
 
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
+
+        local owner = self:GetOwner()
+        if not IsValid( owner ) then return end
         self:SetReloading( false )
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
+        if owner:KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
-                self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
+                owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
                 self:SetIronsights( true )
@@ -737,7 +739,7 @@ function SWEP:Silencer()
             else
                 return
             end
-        elseif self:GetOwner():KeyDown( IN_SPEED ) then
+        elseif owner:KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + self.IronSightTime then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
@@ -745,7 +747,7 @@ function SWEP:Silencer()
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
             self:SetIronsights( true )
-            self:GetOwner():SetFOV( 0, self.IronSightTime )
+            owner:SetFOV( 0, self.IronSightTime )
         else
             return
         end
