@@ -325,92 +325,99 @@ function SWEP:IronSight()
 end
 
 function SWEP:DrawHUD()
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and (self:GetIronsights() == true) and (not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_USE )) then
-        if self.Secondary.UseACOG then
+    local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
+
+    local selfTable = self:GetTable()
+    if not owner:KeyDown( IN_ATTACK2 ) then return end
+    if self:GetIronsights() == true and ( not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_USE ) ) then
+        if selfTable.Secondary.UseACOG then
             -- Draw the FAKE SCOPE THANG
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
 
             -- Draw the CHEVRON
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_acogchevron" ) )
-            surface.DrawTexturedRect( self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h )
+            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
 
             -- Draw the ACOG REFERENCE LINES
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_acogcross" ) )
-            surface.DrawTexturedRect( self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h )
+            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
         end
 
-        if self.Secondary.UseMilDot then
+        if selfTable.Secondary.UseMilDot then
             -- Draw the MIL DOT SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_scopesight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseSVD then
+        if selfTable.Secondary.UseSVD then
             -- Draw the SVD SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_svdsight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseParabolic then
+        if selfTable.Secondary.UseParabolic then
             -- Draw the PARABOLIC SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_parabolicsight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseElcan then
+        if selfTable.Secondary.UseElcan then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_elcanreticle" ) )
-            surface.DrawTexturedRect( self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h )
+            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
 
             -- Draw the ELCAN SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_elcansight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseGreenDuplex then
+        if selfTable.Secondary.UseGreenDuplex then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_nvgilluminatedduplex" ) )
-            surface.DrawTexturedRect( self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h )
+            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
 
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseAimpoint then
+        if selfTable.Secondary.UseAimpoint then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/aimpoint" ) )
-            surface.DrawTexturedRect( self.ReticleTable.x, self.ReticleTable.y, self.ReticleTable.w, self.ReticleTable.h )
+            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
 
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( self.LensTable.x, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
 
-        if self.Secondary.UseMatador then
+        if selfTable.Secondary.UseMatador then
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/rocketscope" ) )
-            surface.DrawTexturedRect( self.LensTable.x - 1, self.LensTable.y, self.LensTable.w, self.LensTable.h )
+            surface.DrawTexturedRect( selfTable.LensTable.x - 1, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
         end
     end
 end
 
 function SWEP:AdjustMouseSensitivity()
     local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
+
     if owner:KeyDown( IN_SPEED ) then return end
     if not self:GetIronsights() then return end
 

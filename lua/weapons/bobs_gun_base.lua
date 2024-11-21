@@ -536,7 +536,7 @@ local function getSpread( dir, vec )
     local s = 0
     local function getRnd()
         s = s + 1
-        return util.SharedRandom( "m9k_recoil_" .. CurTime(), -1, 1, s )
+        return util.SharedRandom( "m9k_spread_" .. CurTime(), -1, 1, s )
     end
 
     for _ = 1, 1000 do -- Not infinite, just in case
@@ -949,7 +949,9 @@ if CLIENT then
 
     SWEP.vRenderOrder = nil
     function SWEP:ViewModelDrawn()
-        local vm = self:GetOwner():GetViewModel()
+        local owner = self:GetOwner()
+        if not IsValid( owner ) then return end
+        local vm = owner:GetViewModel()
         if not IsValid( vm ) then return end
 
         local selfTable = entity_GetTable( self )
