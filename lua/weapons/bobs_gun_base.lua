@@ -441,6 +441,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     }
 
     timer.Simple( 0, function()
+        if not IsValid( attacker ) then return end
         attacker:FireBullets( bullet )
     end )
 
@@ -723,6 +724,7 @@ function SWEP:Silencer()
 
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
+        if not IsValid( self:GetOwner() ) then return end
         self:SetReloading( false )
         if self:GetOwner():KeyDown( IN_ATTACK2 ) then
             if CLIENT then return end
