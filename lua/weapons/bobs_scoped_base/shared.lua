@@ -179,7 +179,7 @@ function SWEP:BoltBack()
             timer.Simple( boltactiontime - 0.2, function()
                 if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
                 self:SetBoltback( false )
-                if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then
+                if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetReloading() then
                     self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                     self.IronSightsPos = self.SightsPos -- Bring it up
                     self.IronSightsAng = self.SightsAng -- Bring it up
@@ -194,7 +194,7 @@ end
 
 function SWEP:Reload()
     if self:GetOwner():KeyDown( IN_USE ) then return end
-    if (self:GetBoltback()) then return end
+    if self:GetBoltback() then return end
 
     self:DefaultReload( ACT_VM_RELOAD )
     if not self:GetOwner():IsNPC() then
