@@ -173,8 +173,8 @@ function SWEP:BoltBack()
                 self:GetOwner():DrawViewModel( true )
             end
 
-            local boltactiontime = (self:GetOwner():GetViewModel():SequenceDuration())
-            timer.Simple( boltactiontime + .1, function()
+            local boltactiontime = (1 / (self.Primary.RPM / 60))
+            timer.Simple( boltactiontime - 0.2, function()
                 if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
                 self:SetReloading( false )
                 if self:GetOwner():KeyDown( IN_ATTACK2 ) then
