@@ -133,6 +133,7 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Bool", "IronsightsActive" )
     self:NetworkVar( "Bool", "Reloading" )
     self:NetworkVar( "Float", "IronsightsTime" )
+    self:NetworkVar( "Bool", "Boltback" )
 end
 
 function SWEP:SetIronsights( b )
