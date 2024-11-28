@@ -124,7 +124,7 @@ function SWEP:DeployCountDownFunc( count )
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self:GetOwner():KeyPressed( IN_SPEED ) then
+    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self:GetOwner():KeyDown( IN_SPEED ) then
         if self:GetOwner():IsPlayer() then
             if GetConVar( "DavyCrockettAllowed" ) == nil or (GetConVar( "DavyCrockettAllowed" ):GetBool()) then
                 self:FireRocket()

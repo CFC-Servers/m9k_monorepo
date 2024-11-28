@@ -65,7 +65,7 @@ SWEP.WElements              = {
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyPressed( IN_SPEED ) then
+    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "M202F.single" )
         self:TakePrimaryAmmo( 1 )

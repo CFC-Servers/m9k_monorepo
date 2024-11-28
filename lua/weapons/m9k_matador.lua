@@ -64,7 +64,7 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then
+    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "MATADORF.single" )
         self:TakePrimaryAmmo( 1 )
