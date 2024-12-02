@@ -64,13 +64,14 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
+    local owner = self:GetOwner()
+    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "MATADORF.single" )
         self:TakePrimaryAmmo( 1 )
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
     self:CheckWeaponsAndAmmo()
