@@ -96,6 +96,7 @@ function EFFECT:Dust()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -113,6 +114,7 @@ function EFFECT:Dust()
             Dust:SetAirResistance( 150 )
             Dust:SetGravity( Vector( 0, 0, math.Rand( -100, -400 ) ) )
             Dust:SetColor( 80, 80, 80 )
+            Dust:SetCollide( true )
         end
     end
 
@@ -130,6 +132,7 @@ function EFFECT:Dust()
             Dust:SetAirResistance( 250 )
             Dust:SetGravity( Vector( math.Rand( -200, 200 ), math.Rand( -200, 200 ), math.Rand( 10, 100 ) ) )
             Dust:SetColor( 90, 85, 75 )
+            Dust:SetCollide( true )
         end
     end
 
@@ -146,6 +149,7 @@ function EFFECT:Dust()
             Debris:SetAirResistance( 40 )
             Debris:SetColor( 60, 60, 60 )
             Debris:SetGravity( Vector( 0, 0, -600 ) )
+            Debris:SetCollide( true )
         end
     end
 
@@ -169,6 +173,7 @@ function EFFECT:Dust()
             particle1:SetRoll( math.random( -500, 500 ) / 100 )
             particle1:SetRollDelta( math.random( -0.5, 0.5 ) )
             particle1:SetColor( 90 + Rcolor, 87 + Rcolor, 80 + Rcolor )
+            particle1:SetCollide( true )
         end
     end
 end
@@ -187,6 +192,7 @@ function EFFECT:Dirt()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -204,6 +210,7 @@ function EFFECT:Dirt()
             Dust:SetAirResistance( 150 )
             Dust:SetGravity( Vector( 0, 0, math.Rand( -100, -400 ) ) )
             Dust:SetColor( 90, 83, 68 )
+            Dust:SetCollide( true )
         end
     end
 
@@ -221,6 +228,7 @@ function EFFECT:Dirt()
             Dust:SetAirResistance( 250 )
             Dust:SetGravity( Vector( math.Rand( -200, 200 ), math.Rand( -200, 200 ), math.Rand( 10, 100 ) ) )
             Dust:SetColor( 90, 83, 68 )
+            Dust:SetCollide( true )
         end
     end
 
@@ -237,6 +245,7 @@ function EFFECT:Dirt()
             Debris:SetAirResistance( 40 )
             Debris:SetColor( 50, 53, 45 )
             Debris:SetGravity( Vector( 0, 0, -600 ) )
+            Debris:SetCollide( true )
         end
     end
 
@@ -260,6 +269,7 @@ function EFFECT:Dirt()
             particle1:SetRoll( math.random( -500, 500 ) / 100 )
             particle1:SetRollDelta( math.random( -0.5, 0.5 ) )
             particle1:SetColor( 90 + Rcolor, 83 + Rcolor, 68 + Rcolor )
+            particle1:SetCollide( true )
         end
     end
 end
@@ -280,6 +290,7 @@ function EFFECT:Sand()
             Smoke:SetAirResistance( 200 )
             Smoke:SetGravity( Vector( 0, 0, math.Rand( -100, -400 ) ) )
             Smoke:SetColor( 90, 83, 68 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -298,6 +309,7 @@ function EFFECT:Sand()
             Dust:SetAirResistance( 200 )
             Dust:SetGravity( Vector( 0, 0, math.Rand( -100, -400 ) ) )
             Dust:SetColor( 90, 83, 68 )
+            Dust:SetCollide( true )
         end
     end
 
@@ -315,6 +327,7 @@ function EFFECT:Sand()
             Debris:SetAirResistance( 40 )
             Debris:SetColor( 53, 50, 45 )
             Debris:SetGravity( Vector( 0, 0, -600 ) )
+            Debris:SetCollide( true )
         end
     end
 
@@ -351,6 +364,7 @@ function EFFECT:Sand()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -368,6 +382,7 @@ function EFFECT:Sand()
             Smoke:SetAirResistance( 100 )
             Smoke:SetGravity( Vector( math.random( -20, 20 ) * self.Scale, math.random( -20, 20 ) * self.Scale, 250 ) )
             Smoke:SetColor( 90, 83, 68 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -385,6 +400,7 @@ function EFFECT:Sand()
             Whisp:SetAirResistance( 300 )
             Whisp:SetGravity( Vector( math.random( -40, 40 ) * self.Scale, math.random( -40, 40 ) * self.Scale, 0 ) )
             Whisp:SetColor( 150, 150, 150 )
+            Whisp:SetCollide( true )
         end
     end
 
@@ -406,6 +422,7 @@ function EFFECT:Sand()
             Smoke:SetAirResistance( 200 )
             Smoke:SetGravity( Vector( math.Rand( -200, 200 ), math.Rand( -200, 200 ), math.Rand( 10, 100 ) ) )
             Smoke:SetColor( 90, 83, 68 )
+            Smoke:SetCollide( true )
         end
     end
 end
@@ -425,6 +442,7 @@ function EFFECT:Metal()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -442,6 +460,7 @@ function EFFECT:Metal()
             Whisp:SetAirResistance( 300 )
             Whisp:SetGravity( Vector( math.random( -40, 40 ) * self.Scale, math.random( -40, 40 ) * self.Scale, 0 ) )
             Whisp:SetColor( 120, 120, 120 )
+            Whisp:SetCollide( true )
         end
     end
 
@@ -457,6 +476,7 @@ function EFFECT:Metal()
             Sparks:SetRollDelta( math.Rand( -5, 5 ) )
             Sparks:SetAirResistance( 20 )
             Sparks:SetGravity( Vector( 0, 0, -600 ) )
+            Sparks:SetCollide( true )
         end
     end
 
@@ -472,6 +492,7 @@ function EFFECT:Metal()
             Sparks:SetRollDelta( math.Rand( -5, 5 ) )
             Sparks:SetAirResistance( 100 )
             Sparks:SetGravity( Vector( 0, 0, -60 ) )
+            Sparks:SetCollide( true )
         end
     end
 end
@@ -491,6 +512,7 @@ function EFFECT:Smoke()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -508,6 +530,7 @@ function EFFECT:Smoke()
             Whisp:SetAirResistance( 300 )
             Whisp:SetGravity( Vector( math.random( -40, 40 ) * self.Scale, math.random( -40, 40 ) * self.Scale, 0 ) )
             Whisp:SetColor( 120, 120, 120 )
+            Whisp:SetCollide( true )
         end
     end
 
@@ -524,6 +547,7 @@ function EFFECT:Smoke()
             Debris:SetAirResistance( 40 )
             Debris:SetColor( 70, 70, 70 )
             Debris:SetGravity( Vector( 0, 0, -600 ) )
+            Debris:SetCollide( true )
         end
     end
 
@@ -547,6 +571,7 @@ function EFFECT:Smoke()
             particle1:SetRoll( math.random( -500, 500 ) / 100 )
             particle1:SetRollDelta( math.random( -0.5, 0.5 ) )
             particle1:SetColor( 90 + Rcolor, 85 + Rcolor, 75 + Rcolor )
+            particle1:SetCollide( true )
         end
     end
 end
@@ -565,6 +590,7 @@ function EFFECT:Wood()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -582,6 +608,7 @@ function EFFECT:Wood()
             Whisp:SetAirResistance( 300 )
             Whisp:SetGravity( Vector( math.random( -40, 40 ) * self.Scale, math.random( -40, 40 ) * self.Scale, 0 ) )
             Whisp:SetColor( 90, 85, 75 )
+            Whisp:SetCollide( true )
         end
     end
 
@@ -598,6 +625,7 @@ function EFFECT:Wood()
             Debris:SetAirResistance( 70 )
             Debris:SetColor( 90, 85, 75 )
             Debris:SetGravity( Vector( 0, 0, -600 ) )
+            Debris:SetCollide( true )
         end
     end
 end
@@ -617,6 +645,7 @@ function EFFECT:Glass()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -635,6 +664,7 @@ function EFFECT:Glass()
             Debris:SetGravity( Vector( 0, 0, -600 ) )
             Debris:SetCollide( true )
             Debris:SetBounce( 0.5 )
+            Debris:SetCollide( true )
         end
     end
 
@@ -652,6 +682,7 @@ function EFFECT:Glass()
             Whisp:SetAirResistance( 300 )
             Whisp:SetGravity( Vector( math.random( -40, 40 ) * self.Scale, math.random( -40, 40 ) * self.Scale, 0 ) )
             Whisp:SetColor( 150, 150, 150 )
+            Whisp:SetCollide( true )
         end
     end
 end
@@ -672,6 +703,7 @@ function EFFECT:Blood()
             Smoke:SetAirResistance( 400 )
             Smoke:SetGravity( Vector( math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, 50 ) * self.Scale, math.Rand( 0, -200 ) ) )
             Smoke:SetColor( 70, 35, 35 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -690,6 +722,7 @@ function EFFECT:Blood()
             Smoke:SetAirResistance( 400 )
             Smoke:SetGravity( Vector( math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, -300 ) ) )
             Smoke:SetColor( 70, 35, 35 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -707,6 +740,7 @@ function EFFECT:Blood()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
@@ -747,6 +781,7 @@ function EFFECT:YellowBlood()
             Smoke:SetAirResistance( 400 )
             Smoke:SetGravity( Vector( math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, 50 ) * self.Scale, math.Rand( 0, -200 ) ) )
             Smoke:SetColor( 120, 120, 0 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -765,6 +800,7 @@ function EFFECT:YellowBlood()
             Smoke:SetAirResistance( 400 )
             Smoke:SetGravity( Vector( math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, 50 ) * self.Scale, math.Rand( -50, -300 ) ) )
             Smoke:SetColor( 120, 120, 0 )
+            Smoke:SetCollide( true )
         end
     end
 
@@ -782,6 +818,7 @@ function EFFECT:YellowBlood()
             Flash:SetRoll( math.Rand( 180, 480 ) )
             Flash:SetRollDelta( math.Rand( -1, 1 ) )
             Flash:SetColor( 255, 255, 255 )
+            Flash:SetCollide( true )
         end
     end
 
