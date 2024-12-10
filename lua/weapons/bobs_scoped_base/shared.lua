@@ -194,6 +194,8 @@ end
 
 function SWEP:Reload()
     local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
+
     if owner:KeyDown( IN_USE ) then return end
     if self:GetBoltback() then return end
 
