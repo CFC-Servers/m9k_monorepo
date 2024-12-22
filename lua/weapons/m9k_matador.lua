@@ -37,11 +37,11 @@ SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo           = "RPG_Round"
+SWEP.Primary.Ammo           = "matador_rocket"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = ("m9k_gdcwa_matador_90mm") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_gdcwa_matador_90mm" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
 SWEP.Secondary.UseMatador   = true
@@ -64,13 +64,14 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then
+    local owner = self:GetOwner()
+    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "MATADORF.single" )
         self:TakePrimaryAmmo( 1 )
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
     self:CheckWeaponsAndAmmo()

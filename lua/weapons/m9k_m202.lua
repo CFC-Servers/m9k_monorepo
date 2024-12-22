@@ -38,11 +38,11 @@ SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = true -- Automatic = true; Semi Auto = false
-SWEP.Primary.Ammo           = "RPG_Round"
+SWEP.Primary.Ammo           = "m202_rocket"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = ("m9k_m202_rocket") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_m202_rocket" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 40 -- How much you 'zoom' in. Less is more!
 
@@ -65,7 +65,7 @@ SWEP.WElements              = {
 --and now to the nasty parts of this swep...
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyPressed( IN_SPEED ) then
+    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "M202F.single" )
         self:TakePrimaryAmmo( 1 )
