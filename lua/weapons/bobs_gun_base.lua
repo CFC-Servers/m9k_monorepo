@@ -524,7 +524,7 @@ end
 local shotBiasMin  = GetConVar( "ai_shot_bias_min" ):GetFloat()
 local shotBiasMax  = GetConVar( "ai_shot_bias_max" ):GetFloat()
 
-local function getSpread( dir, vec )
+local function getSpread( gun, dir, vec )
     local right = dir:Angle():Right()
     local up = dir:Angle():Up()
 
@@ -534,10 +534,11 @@ local function getSpread( dir, vec )
     local shotBias = ( ( shotBiasMax - shotBiasMin ) * bias ) + shotBiasMin
     local flatness = math.abs( bias ) * 0.5
 
+    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetModel() .. gun:GetOwner():GetUserGroup() )
     local s = 0
     local function getRnd()
         s = s + 1
-        return util.SharedRandom( "m9k_spread_" .. CurTime(), -1, 1, s )
+        return util.SharedRandom( "m9k_spread_" .. seed, -1, 1, s )
     end
 
     for _ = 1, 1000 do -- Not infinite, just in case
@@ -561,45 +562,48 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
     aimcone = aimcone or 0
 
     local owner = self:GetOwner()
-    local bulletDir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward()
-    local tracer = self.Tracer or "Tracer"
 
-    local bullet
-    if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
-        bullet = {
-            Num = bulletCount,
-            Src = owner:GetShootPos(),
-            Dir = bulletDir,
-            Spread = Vector( aimcone, aimcone, 0 ),
-            Tracer = 3,
-            TracerName = tracer,
-            Force = damage * 0.25,
-            Damage = damage,
-            Callback = function( attacker, tracedata, dmginfo )
-                if not IsValid( self ) then return end
-                self:BulletCallback( 0, attacker, tracedata, dmginfo )
-            end
-        }
-    else
-        local spreadDir = getSpread( bulletDir, Vector( aimcone, aimcone, 0 ) )
-        bullet = {
-            Num = bulletCount,
-            Src = owner:GetShootPos(),
-            Dir = spreadDir,
-            Spread = Vector( 0, 0, 0 ),
-            Tracer = 3,
-            TracerName = tracer,
-            Force = damage * 0.25,
-            Damage = damage,
-            Callback = function( attacker, tracedata, dmginfo )
-                if not IsValid( self ) then return end
-                self:BulletCallback( 0, attacker, tracedata, dmginfo )
-            end
-        }
-    end
+    if IsFirstTimePredicted() then
+        local bulletDir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward()
+        local tracer = self.Tracer or "Tracer"
 
-    if IsValid( owner ) then
-        owner:FireBullets( bullet )
+        local bullet
+        if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
+            bullet = {
+                Num = bulletCount,
+                Src = owner:GetShootPos(),
+                Dir = bulletDir,
+                Spread = Vector( aimcone, aimcone, 0 ),
+                Tracer = 3,
+                TracerName = tracer,
+                Force = damage * 0.25,
+                Damage = damage,
+                Callback = function( attacker, tracedata, dmginfo )
+                    if not IsValid( self ) then return end
+                    self:BulletCallback( 0, attacker, tracedata, dmginfo )
+                end
+            }
+        else
+            local spreadDir = getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
+            bullet = {
+                Num = bulletCount,
+                Src = owner:GetShootPos(),
+                Dir = spreadDir,
+                Spread = Vector( 0, 0, 0 ),
+                Tracer = 3,
+                TracerName = tracer,
+                Force = damage * 0.25,
+                Damage = damage,
+                Callback = function( attacker, tracedata, dmginfo )
+                    if not IsValid( self ) then return end
+                    self:BulletCallback( 0, attacker, tracedata, dmginfo )
+                end
+            }
+        end
+
+        if IsValid( owner ) then
+            owner:FireBullets( bullet )
+        end
     end
 
     local x = util.SharedRandom( "m9k_viewpunch", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
