@@ -162,7 +162,6 @@ function SWEP:Initialize()
 end
 
 function SWEP:BoltBack()
-    if not SERVER then return end
     if self:Clip1() > 0 or self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
         self:SetBoltback( true )
         timer.Simple( .25, function()
@@ -172,7 +171,7 @@ function SWEP:BoltBack()
             if (self:GetIronsights() == true) then
                 self:GetOwner():SetFOV( 0, 0.3 )
                 self:SetIronsights( false )
-                self:GetOwner():DrawViewModel( true )
+                self:SetDrawViewmodel(true)
             end
 
             local boltactiontime = (1 / (self.Primary.RPM / 60))
@@ -185,7 +184,7 @@ function SWEP:BoltBack()
                     self.IronSightsAng = self.SightsAng -- Bring it up
                     self.DrawCrosshair = false
                     self:SetIronsights( true )
-                    self:GetOwner():DrawViewModel( false )
+                    self:SetDrawViewmodel(false)
                 end
             end )
         end )
@@ -212,8 +211,7 @@ function SWEP:Reload()
 
         self:SetIronsights( false )
         self:SetReloading( true )
-        if CLIENT then return end
-        owner:DrawViewModel( true )
+        self:SetDrawViewmodel(true)
     end
 
     local waitdammit
@@ -227,13 +225,12 @@ function SWEP:Reload()
 
         self:SetReloading( false )
         if owner:KeyDown( IN_ATTACK2 ) then
-            if CLIENT then return end
             owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
             self.DrawCrosshair = false
             self:SetIronsights( true )
-            owner:DrawViewModel( false )
+            self:SetDrawViewmodel(false)
         elseif owner:KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
@@ -253,7 +250,6 @@ IronSight
 function SWEP:IronSight()
     local owner = self:GetOwner()
     if not IsValid( owner ) then return end
-
     local selfTbl = entity_GetTable( self )
     if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
@@ -288,8 +284,7 @@ function SWEP:IronSight()
         self:SetIronsights( true )
         owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = false
-        if CLIENT then return end
-        self:GetOwner():DrawViewModel( true )
+        self:SetDrawViewmodel(true)
     end
 
     -- Unset run effect
@@ -306,9 +301,7 @@ function SWEP:IronSight()
         selfTbl.IronSightsAng = selfTbl.SightsAng
         selfTbl.DrawCrosshair = false
         self:SetIronsights( true )
-        if CLIENT then return end
-        self:GetOwner():DrawViewModel( false )
-
+        self:SetDrawViewmodel(false)
     end
 
     -- Unset iron sights
@@ -316,8 +309,7 @@ function SWEP:IronSight()
         owner:SetFOV( 0, self.IronSightTime )
         self.DrawCrosshair = self.XHair
         self:SetIronsights( false )
-        if CLIENT then return end
-        self:GetOwner():DrawViewModel( true )
+        self:SetDrawViewmodel(true)
     end
 
     if pressingM2 and not pressingE and not owner:KeyDown( IN_SPEED ) then
@@ -333,6 +325,12 @@ function SWEP:IronSight()
     self.fIronTime = self:GetIronsightsTime()
     self.CurrentTime = CurTime()
     self.CurrentSysTime = SysTime()
+end
+
+function SWEP:SetDrawViewmodel(bool)
+    if SERVER then return end
+    local owner = self:GetOwner()
+    owner:DrawViewModel( bool )
 end
 
 function SWEP:DrawHUD()
