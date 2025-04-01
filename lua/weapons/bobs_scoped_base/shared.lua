@@ -16,7 +16,7 @@ SWEP.Spawnable                = false
 SWEP.AdminSpawnable           = false
 
 SWEP.Primary.Sound            = "" -- Sound of the gun
-SWEP.Primary.Round            = ("") -- What kind of bullet?
+SWEP.Primary.Round            = "" -- What kind of bullet?
 SWEP.Primary.RPM              = 0 -- This is in Rounds Per Minute
 SWEP.Primary.Cone             = 0.15 -- Accuracy of NPCs
 SWEP.Primary.Damage           = 10
@@ -168,13 +168,13 @@ function SWEP:BoltBack()
             if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
 
             if self:GetClass() ~= self.Gun then return end
-            if (self:GetIronsights() == true) then
+            if self:GetIronsights() then
                 self:GetOwner():SetFOV( 0, 0.3 )
                 self:SetIronsights( false )
-                self:SetDrawViewmodel(true)
+                self:SetDrawViewmodel( true )
             end
 
-            local boltactiontime = (1 / (self.Primary.RPM / 60))
+            local boltactiontime = ( 1 / ( self.Primary.RPM / 60 ) )
             timer.Simple( boltactiontime - 0.2, function()
                 if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
                 self:SetBoltback( false )
@@ -184,7 +184,7 @@ function SWEP:BoltBack()
                     self.IronSightsAng = self.SightsAng -- Bring it up
                     self.DrawCrosshair = false
                     self:SetIronsights( true )
-                    self:SetDrawViewmodel(false)
+                    self:SetDrawViewmodel( false )
                 end
             end )
         end )
@@ -211,7 +211,7 @@ function SWEP:Reload()
 
         self:SetIronsights( false )
         self:SetReloading( true )
-        self:SetDrawViewmodel(true)
+        self:SetDrawViewmodel( true )
     end
 
     local waitdammit
@@ -230,7 +230,7 @@ function SWEP:Reload()
             self.IronSightsAng = self.SightsAng -- Bring it up
             self.DrawCrosshair = false
             self:SetIronsights( true )
-            self:SetDrawViewmodel(false)
+            self:SetDrawViewmodel( false )
         elseif owner:KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
@@ -284,7 +284,7 @@ function SWEP:IronSight()
         self:SetIronsights( true )
         owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = false
-        self:SetDrawViewmodel(true)
+        self:SetDrawViewmodel( true )
     end
 
     -- Unset run effect
@@ -301,7 +301,7 @@ function SWEP:IronSight()
         selfTbl.IronSightsAng = selfTbl.SightsAng
         selfTbl.DrawCrosshair = false
         self:SetIronsights( true )
-        self:SetDrawViewmodel(false)
+        self:SetDrawViewmodel( false )
     end
 
     -- Unset iron sights
@@ -309,7 +309,7 @@ function SWEP:IronSight()
         owner:SetFOV( 0, self.IronSightTime )
         self.DrawCrosshair = self.XHair
         self:SetIronsights( false )
-        self:SetDrawViewmodel(true)
+        self:SetDrawViewmodel( true )
     end
 
     if pressingM2 and not pressingE and not owner:KeyDown( IN_SPEED ) then
@@ -327,7 +327,7 @@ function SWEP:IronSight()
     self.CurrentSysTime = SysTime()
 end
 
-function SWEP:SetDrawViewmodel(bool)
+function SWEP:SetDrawViewmodel( bool )
     if SERVER then return end
     local owner = self:GetOwner()
     owner:DrawViewModel( bool )
