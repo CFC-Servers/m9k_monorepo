@@ -433,6 +433,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
 
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
     local bullet = {
+        Attacker = attacker,
         Num = 1,
         Src = penTrace.HitPos,
         Dir = direction,
@@ -449,8 +450,8 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     }
 
     timer.Simple( 0, function()
-        if not IsValid( attacker ) then return end
-        attacker:FireBullets( bullet )
+        if not IsValid( self ) then return end
+        self:FireBullets( bullet )
     end )
 
     return true
@@ -501,6 +502,7 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
 
     local dotProduct = bulletTrace.HitNormal:Dot( direction * -1 )
     local bullet = {
+        Attacker = attacker,
         Num = 1,
         Src = bulletTrace.HitPos + bulletTrace.HitNormal,
         Dir = ( ( 2 * bulletTrace.HitNormal * dotProduct ) + direction ) + ( VectorRand() * 0.05 ),
@@ -518,7 +520,7 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
     --debugoverlay.Line( bulletTrace.HitPos, bulletTrace.HitPos + bullet.Dir * 100, 10, SERVER and Color( 255, 0, 0 ) or Color( 0, 255, 0 ), true )
 
     timer.Simple( 0, function()
-        attacker:FireBullets( bullet )
+        self:FireBullets( bullet )
     end )
 
     return true
@@ -577,6 +579,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         local bullet
         if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
             bullet = {
+                Attacker = owner,
                 Num = bulletCount,
                 Src = owner:GetShootPos(),
                 Dir = bulletDir,
@@ -593,6 +596,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         else
             local spreadDir = getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
             bullet = {
+                Attacker = owner,
                 Num = bulletCount,
                 Src = owner:GetShootPos(),
                 Dir = spreadDir,
@@ -608,9 +612,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             }
         end
 
-        if IsValid( owner ) then
-            owner:FireBullets( bullet )
-        end
+        self:FireBullets( bullet )
     end
 
     local x = util.SharedRandom( "m9k_viewpunch", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
