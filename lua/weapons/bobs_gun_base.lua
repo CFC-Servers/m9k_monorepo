@@ -911,10 +911,10 @@ function SWEP:GetViewModelPosition( pos, ang )
         local recoilOffset = forward * -self.RecoilAmount
         pos = pos + recoilOffset
 
-        local easer = math.ease.OutCubic(self.RecoilRecoverySpeed * (CurTime() - self.PrevThinkBlowback))
+        local easer = math.ease.OutCubic( self.RecoilRecoverySpeed * ( CurTime() - self.PrevThinkBlowback ) )
 
         if easer ~= self.RecoilAmount then
-            self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 2) --truncated so the value actually returns to zero
+            self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 2 ) --truncated so the value actually returns to zero
         end
     end
 
