@@ -42,8 +42,11 @@ SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blow
 SWEP.RecoilBack = 3 -- How much the gun kicks back in iron sights
 SWEP.RecoilRecoverySpeed = 2 -- How fast does the gun return to the center
 SWEP.RecoilAmount = 0 -- Internal, do not touch
-SWEP.PrevThinkBlowback = 0 --internal
 SWEP.IronSightTime = 0.15
+
+if CLIENT then
+    SWEP.PrevThinkBlowback = 0 --internal
+end
 
 SWEP.Penetration            = true
 SWEP.Ricochet               = true
@@ -225,7 +228,9 @@ function SWEP:FireAnimation()
 
     -- Ironsights logic
     self.RecoilAmount = self.RecoilBack
-    self.PrevThinkBlowback = CurTime()
+    if CLIENT then
+        self.PrevThinkBlowback = CurTime()
+    end
     if silenced then
         self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
     else
@@ -864,64 +869,61 @@ function SWEP:Think()
     self:IronSight()
 end
 
---[[---------------------------------------------------------
-GetViewModelPosition
--------------------------------------------------------]]
-local host_timescale = GetConVar( "host_timescale" )
-function SWEP:GetViewModelPosition( pos, ang )
-    local selfTable = entity_GetTable( self )
-
-    local bIron = selfTable.bIron
-    if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
-
-    local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
-    local fIronTime = selfTable.fIronTime
-    local ironSightsTime = selfTable.IronSightTime
-
-    if ( not bIron ) and fIronTime < time - ironSightsTime then
-       return pos, ang
-    end
-
-    local mul = 1.0
-    if fIronTime > time - ironSightsTime then
-       mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
-
-       if not bIron then mul = 1 - mul end
-    end
-
-    local Offset = selfTable.IronSightsPos
-
-    if selfTable.IronSightsAng then
-        ang = ang * 1
-        ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * mul )
-        ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * mul )
-        ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * mul )
-    end
-
-    local Right = ang:Right()
-    local Up = ang:Up()
-    local Forward = ang:Forward()
-
-    pos = pos + Offset.x * Right * mul
-    pos = pos + Offset.y * Forward * mul
-    pos = pos + Offset.z * Up * mul
-
-    if self.RecoilAmount > 0 and self:GetIronsightsActive() then
-        local forward = ang:Forward()
-        local recoilOffset = forward * -self.RecoilAmount
-        pos = pos + recoilOffset
-
-        local easer = math.ease.OutCubic( self.RecoilRecoverySpeed * ( CurTime() - self.PrevThinkBlowback ) )
-
-        if easer ~= self.RecoilAmount then
-            self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 2 ) --truncated so the value actually returns to zero
-        end
-    end
-
-    return pos, ang
-end
-
 if CLIENT then
+    local host_timescale = GetConVar( "host_timescale" )
+    function SWEP:GetViewModelPosition( pos, ang )
+        local selfTable = entity_GetTable( self )
+
+        local bIron = selfTable.bIron
+        if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
+
+        local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
+        local fIronTime = selfTable.fIronTime
+        local ironSightsTime = selfTable.IronSightTime
+
+        if ( not bIron ) and fIronTime < time - ironSightsTime then
+        return pos, ang
+        end
+
+        local mul = 1.0
+        if fIronTime > time - ironSightsTime then
+        mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
+
+        if not bIron then mul = 1 - mul end
+        end
+
+        local Offset = selfTable.IronSightsPos
+
+        if selfTable.IronSightsAng then
+            ang = ang * 1
+            ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * mul )
+            ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * mul )
+            ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * mul )
+        end
+
+        local Right = ang:Right()
+        local Up = ang:Up()
+        local Forward = ang:Forward()
+
+        pos = pos + Offset.x * Right * mul
+        pos = pos + Offset.y * Forward * mul
+        pos = pos + Offset.z * Up * mul
+
+        if self.RecoilAmount > 0 and self:GetIronsightsActive() then
+            local forward = ang:Forward()
+            local recoilOffset = forward * -self.RecoilAmount
+            pos = pos + recoilOffset
+
+            local easer = math.ease.OutCubic( self.RecoilRecoverySpeed * ( CurTime() - self.PrevThinkBlowback ) )
+
+            if easer ~= self.RecoilAmount then
+                self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 2 ) --truncated so the value actually returns to zero
+            end
+        end
+
+        return pos, ang
+    end
+
     local entity_ManipulateBoneScale = entMeta.ManipulateBoneScale
     local entity_ManipulateBoneAngles = entMeta.ManipulateBoneAngles
     local entity_ManipulateBonePosition = entMeta.ManipulateBonePosition
