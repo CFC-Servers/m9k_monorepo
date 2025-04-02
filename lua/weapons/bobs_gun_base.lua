@@ -42,6 +42,7 @@ SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blow
 SWEP.RecoilBack = 3 -- How much the gun kicks back in iron sights
 SWEP.RecoilRecoverySpeed = 2 -- How fast does the gun return to the center
 SWEP.RecoilAmount = 0 -- Internal, do not touch
+SWEP.PrevThinkBlowback = 0 --internal
 SWEP.IronSightTime = 0.15
 
 SWEP.Penetration            = true
@@ -201,7 +202,7 @@ local shellEffects = {
     ar2 = "RifleShellEject",
     shotgun = "ShotgunShellEject"
 }
-local prevThinkBlowback
+
 function SWEP:FireAnimation()
     -- Sounds
     local silenced = self.Silenced
@@ -224,7 +225,7 @@ function SWEP:FireAnimation()
 
     -- Ironsights logic
     self.RecoilAmount = self.RecoilBack
-    prevThinkBlowback = CurTime()
+    self.PrevThinkBlowback = CurTime()
     if silenced then
         self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
     else
@@ -424,12 +425,6 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
 
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
-    local IgnoredEnt
-    if hitEnt:IsPlayer() then
-        IgnoredEnt = hitEnt
-    else
-        IgnoredEnt = nil
-    end
 
     local bullet = {
 
@@ -440,7 +435,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         Tracer = 1,
         TracerName = "m9k_effect_mad_penetration_trace",
         Force = 5,
-        IgnoreEntity = IgnoredEnt,
+        IgnoreEntity = hitEnt:IsPlayer() and hitEnt or nil,
         Damage = dmginfo:GetDamage() * damageMult,
         Callback = function( a, b, c )
             if not IsValid( self ) then return end
@@ -916,7 +911,7 @@ function SWEP:GetViewModelPosition( pos, ang )
         local recoilOffset = forward * -self.RecoilAmount
         pos = pos + recoilOffset
 
-        local easer = math.ease.OutCubic(self.RecoilRecoverySpeed * (CurTime() - prevThinkBlowback))
+        local easer = math.ease.OutCubic(self.RecoilRecoverySpeed * (CurTime() - self.PrevThinkBlowback))
 
         if easer ~= self.RecoilAmount then
             self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 2) --truncated so the value actually returns to zero
