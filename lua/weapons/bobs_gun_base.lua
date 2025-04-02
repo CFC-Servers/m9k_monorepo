@@ -410,6 +410,8 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         penDirection = direction * penDepth * 2
     end
 
+    if not util.IsInWorld( bulletTrace.HitPos + penDirection ) then return false end
+
     local hitEnt = bulletTrace.Entity
     local penTrace = util.TraceLine( {
         endpos = bulletTrace.HitPos,
@@ -425,9 +427,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
 
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
-
     local bullet = {
-
         Num = 1,
         Src = penTrace.HitPos,
         Dir = direction,
