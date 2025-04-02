@@ -224,6 +224,7 @@ function SWEP:FireAnimation()
 
     -- Ironsights logic
     self.RecoilAmount = self.RecoilBack
+    prevThinkBlowback = CurTime()
     if silenced then
         self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
     else
@@ -417,12 +418,19 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
             return ent == hitEnt
         end
     } )
-
-    --debugoverlay.Line( bulletTrace.HitPos + penDirection, penTrace.HitPos, 10, Color( 255, 0, 0 ), true )
+    --print("ent" .. ent)
+   -- debugoverlay.Line( bulletTrace.HitPos + penDirection, penTrace.HitPos, 10, Color( 255, 0, 0 ), true )
 
     if penTrace.AllSolid and penTrace.HitWorld then return false end
     if not penTrace.Hit then return false end
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
+
+   -- debugoverlay.Text( penTrace.HitPos, "" .. tostring( bulletTrace.Entity ), 10 )
+    if hitEnt:IsPlayer() then
+        IgnoredEnt = hitEnt
+    else
+        IgnoredEnt = nil
+    end
 
     --debugoverlay.Text( penTrace.HitPos, "Pen:" .. tostring( iteration ), 10 )
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
@@ -434,6 +442,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
         Tracer = 1,
         TracerName = "m9k_effect_mad_penetration_trace",
         Force = 5,
+        IgnoreEntity = IgnoredEnt,
         Damage = dmginfo:GetDamage() * damageMult,
         Callback = function( a, b, c )
             if not IsValid( self ) then return end
@@ -904,11 +913,16 @@ function SWEP:GetViewModelPosition( pos, ang )
     pos = pos + Offset.y * Forward * mul
     pos = pos + Offset.z * Up * mul
 
-    if self.RecoilAmount > 0 then
+    if self.RecoilAmount > 0 and self:GetIronsightsActive() then
         local forward = ang:Forward()
         local recoilOffset = forward * -self.RecoilAmount
         pos = pos + recoilOffset
-        self.RecoilAmount = Lerp( math.ease.OutCubic( FrameTime() * self.RecoilRecoverySpeed ), self.RecoilAmount, 0 )
+
+        local easer = math.ease.OutCubic(self.RecoilRecoverySpeed * (CurTime() - prevThinkBlowback))
+
+        if easer ~= self.RecoilAmount then
+            self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ) ,2) --truncated so the value actually returns to zero
+        end
     end
 
     return pos, ang
