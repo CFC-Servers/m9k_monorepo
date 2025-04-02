@@ -201,7 +201,7 @@ local shellEffects = {
     ar2 = "RifleShellEject",
     shotgun = "ShotgunShellEject"
 }
-
+local prevThinkBlowback
 function SWEP:FireAnimation()
     -- Sounds
     local silenced = self.Silenced
@@ -418,23 +418,21 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
             return ent == hitEnt
         end
     } )
-    --print("ent" .. ent)
-   -- debugoverlay.Line( bulletTrace.HitPos + penDirection, penTrace.HitPos, 10, Color( 255, 0, 0 ), true )
 
     if penTrace.AllSolid and penTrace.HitWorld then return false end
     if not penTrace.Hit then return false end
     if penTrace.Fraction >= 0.99 or penTrace.Fraction <= 0.01 then return false end
 
-   -- debugoverlay.Text( penTrace.HitPos, "" .. tostring( bulletTrace.Entity ), 10 )
+    local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
+    local IgnoredEnt
     if hitEnt:IsPlayer() then
         IgnoredEnt = hitEnt
     else
         IgnoredEnt = nil
     end
 
-    --debugoverlay.Text( penTrace.HitPos, "Pen:" .. tostring( iteration ), 10 )
-    local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
     local bullet = {
+
         Num = 1,
         Src = penTrace.HitPos,
         Dir = direction,
