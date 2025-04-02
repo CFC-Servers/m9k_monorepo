@@ -650,6 +650,7 @@ end
 function SWEP:Reload()
     if self:GetReloading() then return end
     if self:Clip1() >= self.Primary.ClipSize then return end
+    if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
 
     if self:GetIronsights() then
         self:SetIronsights( false )
