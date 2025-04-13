@@ -433,6 +433,7 @@ function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direct
 
     local damageMult = penetrationDamageMult[penTrace.MatType] or 0.5
     local bullet = {
+        Inflictor = self,
         Num = 1,
         Src = penTrace.HitPos,
         Dir = direction,
@@ -501,6 +502,7 @@ function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, directi
 
     local dotProduct = bulletTrace.HitNormal:Dot( direction * -1 )
     local bullet = {
+        Inflictor = self,
         Num = 1,
         Src = bulletTrace.HitPos + bulletTrace.HitNormal,
         Dir = ( ( 2 * bulletTrace.HitNormal * dotProduct ) + direction ) + ( VectorRand() * 0.05 ),
@@ -577,6 +579,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         local bullet
         if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
             bullet = {
+                Inflictor = self,
                 Num = bulletCount,
                 Src = owner:GetShootPos(),
                 Dir = bulletDir,
@@ -593,6 +596,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         else
             local spreadDir = getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
             bullet = {
+                Inflictor = self,
                 Num = bulletCount,
                 Src = owner:GetShootPos(),
                 Dir = spreadDir,
