@@ -90,6 +90,10 @@ function SWEP:PrimaryAttack()
         local owner = self:GetOwner()
         if not IsValid( owner ) then return end
 
+        local activeWeapon = owner:GetActiveWeapon()
+        if not IsValid( activeWeapon ) then return end
+        if activeWeapon ~= self then return end
+
         if self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0  then
             if SERVER then
                 owner:StripWeapon( self.Gun )
@@ -103,11 +107,16 @@ function SWEP:PrimaryAttack()
     if CLIENT then return end
 
     timer.Simple( self:GetOwner():GetViewModel():SequenceDuration(), function()
-        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-        if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then return end
+        if not IsValid( self ) then return end
+        local owner = self:GetOwner()
+        if not IsValid( owner ) then return end
+
+        local activeWeapon = owner:GetActiveWeapon()
+        if not IsValid( activeWeapon ) then return end
+        if activeWeapon ~= self then return end
 
         if self.Timer == 0 and self:CanPrimaryAttack() then
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:TakePrimaryAmmo( 1 )
             self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
             self:Suicide()
@@ -118,14 +127,14 @@ function SWEP:PrimaryAttack()
         if self.Timer >= 5 and self:CanPrimaryAttack() then
             self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
             self:SetNextSecondaryFire( CurTime() + 0.3 )
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
             self:TakePrimaryAmmo( 1 )
 
             local tr = {
-                start = self:GetOwner():GetShootPos(),
-                endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector(),
-                filter = { self:GetOwner() }
+                start = owner:GetShootPos(),
+                endpos = owner:GetShootPos() + 100 * owner:GetAimVector(),
+                filter = { owner }
             }
             local trace = util.TraceLine( tr )
 
@@ -133,7 +142,7 @@ function SWEP:PrimaryAttack()
             C4:SetPos( trace.HitPos + trace.HitNormal )
             trace.HitNormal.z = -trace.HitNormal.z
             C4:SetAngles( trace.HitNormal:Angle() - Angle( 90, 180, 0 ) )
-            C4.BombOwner = self:GetOwner()
+            C4.BombOwner = owner
             C4.Timer = self.Timer
             C4:Spawn()
 
