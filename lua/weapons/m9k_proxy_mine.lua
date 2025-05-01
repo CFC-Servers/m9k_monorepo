@@ -69,68 +69,69 @@ function SWEP:PrimaryAttack()
         local plant = self:GetOwner():GetViewModel():SequenceDuration()
         timer.Simple( plant, function()
             if not IsValid( self ) then return end
-            if IsValid( self:GetOwner() ) and IsValid( self ) then
-                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-                    self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
-                    local tr = {}
-                    tr.start = self:GetOwner():GetShootPos()
-                    tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
-                    tr.filter = { self:GetOwner() }
-                    local trace = util.TraceLine( tr )
-                    self:TakePrimaryAmmo( 1 )
-                    if (CLIENT) then return end
-                    proxy = ents.Create( "m9k_proxy" )
-                    proxy:SetPos( trace.HitPos + trace.HitNormal )
-                    trace.HitNormal.z = -trace.HitNormal.z
-                    proxy:SetAngles( trace.HitNormal:Angle() - Angle( 90, 180, 0 ) )
-                    proxy.ProxyBombOwner = self:GetOwner()
-                    proxy:Spawn()
+            if not IsValid( self:GetOwner() ) then return end
 
-                    local boxes
-                    parentme = {}
-                    parentme[1] = "m9k_ammo_40mm"
-                    parentme[2] = "m9k_ammo_c4"
-                    parentme[3] = "m9k_ammo_frags"
-                    parentme[4] = "m9k_ammo_ieds"
-                    parentme[5] = "m9k_ammo_nervegas"
-                    parentme[6] = "m9k_ammo_nuke"
-                    parentme[7] = "m9k_ammo_proxmines"
-                    parentme[8] = "m9k_ammo_rockets"
-                    parentme[9] = "m9k_ammo_stickynades"
-                    parentme[10] = "m9k_ammo_357"
-                    parentme[11] = "m9k_ammo_ar2"
-                    parentme[12] = "m9k_ammo_buckshot"
-                    parentme[13] = "m9k_ammo_pistol"
-                    parentme[14] = "m9k_ammo_smg"
-                    parentme[15] = "m9k_ammo_sniper_rounds"
-                    parentme[16] = "m9k_ammo_winchester"
+            local activeWeapon = self:GetOwner():GetActiveWeapon()
+            if activeWeapon ~= self then return end
 
-                    if trace.Entity ~= nil and trace.Entity:IsValid() then
-                        for k, v in pairs( parentme ) do
-                            if trace.Entity:GetClass() == v then
-                                boxes = trace.Entity
-                            end
-                        end
-                    end
+            self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+            local tr = {}
+            tr.start = self:GetOwner():GetShootPos()
+            tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
+            tr.filter = { self:GetOwner() }
+            local trace = util.TraceLine( tr )
+            self:TakePrimaryAmmo( 1 )
+            if (CLIENT) then return end
+            local proxy = ents.Create( "m9k_proxy" )
+            proxy:SetPos( trace.HitPos + trace.HitNormal )
+            trace.HitNormal.z = -trace.HitNormal.z
+            proxy:SetAngles( trace.HitNormal:Angle() - Angle( 90, 180, 0 ) )
+            proxy.ProxyBombOwner = self:GetOwner()
+            proxy:Spawn()
 
-                    if trace.Entity and trace.Entity:IsValid() then
-                        if trace.Entity and trace.Entity:IsValid() then
-                            if boxes and trace.Entity:GetPhysicsObject():IsValid() then
-                                proxy:SetParent( trace.Entity )
-                                trace.Entity.Planted = true
-                            elseif not trace.Entity:IsNPC() and not trace.Entity:IsPlayer() and trace.Entity:GetPhysicsObject():IsValid() then
-                                constraint.Weld( proxy, trace.Entity )
-                            end
-                        end
-                    else
-                        proxy:SetMoveType( MOVETYPE_NONE )
-                    end
-                    if not trace.Hit then
-                        proxy:SetMoveType( MOVETYPE_VPHYSICS )
+            local boxes
+            parentme = {}
+            parentme[1] = "m9k_ammo_40mm"
+            parentme[2] = "m9k_ammo_c4"
+            parentme[3] = "m9k_ammo_frags"
+            parentme[4] = "m9k_ammo_ieds"
+            parentme[5] = "m9k_ammo_nervegas"
+            parentme[6] = "m9k_ammo_nuke"
+            parentme[7] = "m9k_ammo_proxmines"
+            parentme[8] = "m9k_ammo_rockets"
+            parentme[9] = "m9k_ammo_stickynades"
+            parentme[10] = "m9k_ammo_357"
+            parentme[11] = "m9k_ammo_ar2"
+            parentme[12] = "m9k_ammo_buckshot"
+            parentme[13] = "m9k_ammo_pistol"
+            parentme[14] = "m9k_ammo_smg"
+            parentme[15] = "m9k_ammo_sniper_rounds"
+            parentme[16] = "m9k_ammo_winchester"
+
+            if trace.Entity ~= nil and trace.Entity:IsValid() then
+                for k, v in pairs( parentme ) do
+                    if trace.Entity:GetClass() == v then
+                        boxes = trace.Entity
                     end
                 end
-                self:CheckWeaponsAndAmmo()
             end
+
+            if trace.Entity and trace.Entity:IsValid() then
+                if trace.Entity and trace.Entity:IsValid() then
+                    if boxes and trace.Entity:GetPhysicsObject():IsValid() then
+                        proxy:SetParent( trace.Entity )
+                        trace.Entity.Planted = true
+                    elseif not trace.Entity:IsNPC() and not trace.Entity:IsPlayer() and trace.Entity:GetPhysicsObject():IsValid() then
+                        constraint.Weld( proxy, trace.Entity )
+                    end
+                end
+            else
+                proxy:SetMoveType( MOVETYPE_NONE )
+            end
+            if not trace.Hit then
+                proxy:SetMoveType( MOVETYPE_VPHYSICS )
+            end
+            self:CheckWeaponsAndAmmo()
         end )
     end
 end
