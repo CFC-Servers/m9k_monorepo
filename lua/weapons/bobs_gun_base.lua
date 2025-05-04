@@ -203,22 +203,17 @@ if CLIENT then
         local ent = net.ReadEntity()
         if not IsValid( ent ) then return end
 
-        if ent.MuzzleFlashLight then
+        if ent.MuzzleFlashLight and IsValid( ent:GetOwner() ) then
             ent:MuzzleFlashLight()
         end
     end )
 
     function SWEP:MuzzleFlashLight()
         local dLight = DynamicLight( self:EntIndex() )
-        local muzzleAtt
-        if self:GetOwner() == LocalPlayer() then
-            muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
-        else
-            muzzleAtt = self:GetAttachment( 1 )
-        end
+        local pos = self:GetOwner():GetEyeTrace().StartPos + self:GetOwner():GetAimVector() * 50
 
-        if dLight and muzzleAtt then
-            dLight.Pos = muzzleAtt.Pos
+        if dLight then
+            dLight.Pos = pos
             dLight.r = 244
             dLight.g = 209
             dLight.b = 66
