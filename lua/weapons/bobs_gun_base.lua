@@ -209,11 +209,19 @@ if CLIENT then
     end )
 
     function SWEP:MuzzleFlashLight()
-        local dLight = DynamicLight( self:EntIndex() )
-        local pos = self:GetOwner():GetEyeTrace().StartPos + self:GetOwner():GetAimVector() * 50
+        if self.Silenced then return end
+        local owner = self:GetOwner()
 
-        if dLight then
-            dLight.Pos = pos
+        local muzzleAtt
+        if owner == LocalPlayer() and not owner:ShouldDrawLocalPlayer() then
+            muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
+        else
+            muzzleAtt = self:GetAttachment( 1 )
+        end
+
+        local dLight = DynamicLight( self:EntIndex() )
+        if dLight and muzzleAtt then
+            dLight.Pos = muzzleAtt.Pos
             dLight.r = 252
             dLight.g = 194
             dLight.b = 66
