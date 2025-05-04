@@ -65,6 +65,10 @@ local SERVER                = SERVER
 local MASK_SHOT             = MASK_SHOT
 local IN_USE                = IN_USE
 
+if SERVER then
+    util.AddNetworkString( "m9k_muzzleflash" )
+end
+
 local dmgMultCvar = GetConVar( "M9KDamageMultiplier" )
 local damageMultiplier = dmgMultCvar:GetFloat()
 
@@ -194,8 +198,36 @@ function SWEP:OnRemove()
     end
 end
 
-function SWEP:GetCapabilities()
-    return CAP_WEAPON_RANGE_ATTACK1, CAP_INNATE_RANGE_ATTACK1
+if CLIENT then
+    net.Receive( "m9k_muzzleflash", function()
+        local ent = net.ReadEntity()
+        if not IsValid( ent ) then return end
+
+        if ent.MuzzleFlashLight then
+            ent:MuzzleFlashLight()
+        end
+    end )
+
+    function SWEP:MuzzleFlashLight()
+        local dLight = DynamicLight( self:EntIndex() )
+        local muzzleAtt
+        if self:GetOwner() == LocalPlayer() then
+            muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
+        else
+            muzzleAtt = self:GetAttachment( 1 )
+        end
+
+        if dLight and muzzleAtt then
+            dLight.Pos = muzzleAtt.Pos
+            dLight.r = 244
+            dLight.g = 209
+            dLight.b = 66
+            dLight.Brightness = 2
+            dLight.Decay = 2500
+            dLight.Size = self:GetOwner() == LocalPlayer() and 256 or 128
+            dLight.DieTime = CurTime() + 0.1
+        end
+    end
 end
 
 local shellEffects = {
@@ -206,6 +238,20 @@ local shellEffects = {
 }
 
 function SWEP:FireAnimation()
+    -- Muzzle flash light
+    if SERVER then
+        local rf = RecipientFilter()
+        rf:AddPVS( self:GetPos() )
+        rf:RemovePlayer( self:GetOwner() )
+
+        net.Start( "m9k_muzzleflash" )
+        net.WriteEntity( self )
+        net.Send( rf )
+    end
+    if CLIENT then
+        self:MuzzleFlashLight()
+    end
+
     -- Sounds
     local silenced = self.Silenced
     if silenced then
@@ -294,7 +340,6 @@ function SWEP:PrimaryAttack()
     self:FireAnimation()
 
     self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-    self:GetOwner():MuzzleFlash()
     self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     self:CheckWeaponsAndAmmo()
 
