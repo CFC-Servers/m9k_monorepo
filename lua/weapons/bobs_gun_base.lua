@@ -214,8 +214,8 @@ if CLIENT then
 
         if dLight then
             dLight.Pos = pos
-            dLight.r = 244
-            dLight.g = 209
+            dLight.r = 252
+            dLight.g = 194
             dLight.b = 66
             dLight.Brightness = 2
             dLight.Decay = 2500
