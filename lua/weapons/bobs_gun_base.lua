@@ -50,7 +50,6 @@ end
 
 SWEP.Penetration            = true
 SWEP.Ricochet               = true
-SWEP.RicochetCoin           = 1
 SWEP.BoltAction             = false
 SWEP.Scoped                 = false
 SWEP.ShellTime              = .35
@@ -237,7 +236,7 @@ function SWEP:FireAnimation()
         self:SendWeaponAnim( ACT_VM_IDLE )
     end
 
-    -- Effects only clientside, for the owner and if we're in first person
+    -- Effects only clientside, for the owner and if we're in first person aiming down sights, we do this because we aren't using the "real" fire animation
     if not CLIENT then return end
     if not IsFirstTimePredicted() then return end
     if self:GetOwner() ~= LocalPlayer() then return end
@@ -271,31 +270,36 @@ function SWEP:FireAnimation()
     end
 end
 
+function SWEP:CanPrimaryAttack()
+    if self:Clip1() <= 0 then
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:Reload()
+        return false
+    end
+
+    if self:GetOwner():KeyDown( IN_SPEED ) then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        return false
+    end
+
+    return true
+end
+
 function SWEP:PrimaryAttack()
-    if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+    if not self:CanPrimaryAttack() then return end
+    self:ShootBulletInformation()
+    self:TakePrimaryAmmo( 1 )
 
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
-            self:ShootBulletInformation()
-            self:TakePrimaryAmmo( 1 )
+    self:FireAnimation()
 
-            self:FireAnimation()
+    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+    self:GetOwner():MuzzleFlash()
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+    self:CheckWeaponsAndAmmo()
 
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:GetOwner():MuzzleFlash()
-            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-            self:CheckWeaponsAndAmmo()
-            self.RicochetCoin = (math.random( 1, 4 ))
-            if self.BoltAction then self:BoltBack() end
-        end
-    elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
-        self:ShootBulletInformation()
-        self:TakePrimaryAmmo( 1 )
-        self:EmitSound( self.Primary.Sound )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
-        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        self.RicochetCoin = math.random( 1, 4 )
+    if self.BoltAction then
+        self:BoltBack()
     end
 end
 
@@ -477,7 +481,7 @@ local ricochetAmmoTable = {
 
 function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
     local shouldRicochet = ricochetAmmoTable[self.Primary.Ammo] or false
-    if not shouldRicochet and self.RicochetCoin ~= 1 then return false end
+    if not shouldRicochet and math.random( 1, 4 ) ~= 1 then return false end
 
     if bulletTrace.MatType ~= MAT_METAL then
         local missSound = bulletMissSounds[math.random( #bulletMissSounds )]
