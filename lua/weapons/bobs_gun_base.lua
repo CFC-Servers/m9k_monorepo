@@ -215,7 +215,8 @@ if CLIENT then
         pistol = "EjectBrass_9mm",
         smg = "EjectBrass_556",
         ar2 = "EjectBrass_762Nato",
-        shotgun = "EjectBrass_12Gauge"
+        shotgun = "EjectBrass_12Gauge",
+        AirboatGun = "EjectBrass_338Mag"
     }
 
     net.Receive( "m9k_muzzleflash", function()
