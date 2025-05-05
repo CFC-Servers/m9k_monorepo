@@ -199,6 +199,13 @@ function SWEP:OnRemove()
 end
 
 if CLIENT then
+    local thirdPersonShellType = {
+        pistol = "EjectBrass_9mm",
+        smg = "EjectBrass_556",
+        ar2 = "EjectBrass_762Nato",
+        shotgun = "EjectBrass_12Gauge"
+    }
+
     net.Receive( "m9k_muzzleflash", function()
         local ent = net.ReadEntity()
         if not IsValid( ent ) then return end
@@ -219,16 +226,39 @@ if CLIENT then
             muzzleAtt = self:GetAttachment( 1 )
         end
 
-        local dLight = DynamicLight( self:EntIndex() )
-        if dLight and muzzleAtt then
-            dLight.Pos = muzzleAtt.Pos
-            dLight.r = 252
-            dLight.g = 194
-            dLight.b = 66
-            dLight.Brightness = 2
-            dLight.Decay = 2500
-            dLight.Size = self:GetOwner() == LocalPlayer() and 256 or 128
-            dLight.DieTime = CurTime() + 0.1
+        if muzzleAtt then
+            local dLight = DynamicLight( self:EntIndex() )
+            if dLight then
+                dLight.Pos = muzzleAtt.Pos
+                dLight.r = 252
+                dLight.g = 194
+                dLight.b = 66
+                dLight.Brightness = 2
+                dLight.Decay = 2500
+                dLight.Size = self:GetOwner() == LocalPlayer() and 256 or 128
+                dLight.DieTime = CurTime() + 0.1
+            end
+
+            -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
+            -- local flash = EffectData()
+            -- flash:SetOrigin( muzzleAtt.Pos )
+            -- flash:SetAngles( muzzleAtt.Ang )
+            -- flash:SetScale( 1 )
+            -- flash:SetEntity( self )
+            -- flash:SetMagnitude( 1 )
+            -- flash:SetAttachment( 1 )
+            -- util.Effect( "CS_MuzzleFlash", flash )
+        end
+
+        local shellAtt = self:GetAttachment( 2 )
+        if shellAtt then
+            local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
+            local shellEffect = EffectData()
+            shellEffect:SetOrigin( shellAtt.Pos )
+            shellEffect:SetAngles( shellAtt.Ang )
+            shellEffect:SetEntity( self )
+            shellEffect:SetFlags( 100 )
+            util.Effect( shellEffectType, shellEffect )
         end
     end
 end
