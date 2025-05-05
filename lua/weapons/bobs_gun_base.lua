@@ -136,6 +136,11 @@ function SWEP:Initialize()
     end
 end
 
+-- We have to do this to prevent weapon_base setting it back to pistol https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/base/entities/weapons/weapon_base/sh_anim.lua#L64
+function SWEP:OnReloaded()
+    self:SetWeaponHoldType( self:GetHoldType() )
+end
+
 function SWEP:SetupDataTables()
     self:NetworkVar( "Bool", "IronsightsActive" )
     self:NetworkVar( "Bool", "Reloading" )
