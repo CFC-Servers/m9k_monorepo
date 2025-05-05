@@ -1,5 +1,5 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_ied_detonator") -- must be the name of your swep but NO CAPITALS!
+SWEP.Gun = "m9k_ied_detonator" -- must be the name of your swep but NO CAPITALS!
 
 SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
@@ -41,7 +41,7 @@ SWEP.Primary.Ammo           = "Improvised_Explosive"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = ("m9k_improvised_explosive") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_improvised_explosive" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
 SWEP.Secondary.ClipSize     = 1 -- Size of a clip

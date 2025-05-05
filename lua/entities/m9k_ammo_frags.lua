@@ -31,7 +31,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        local model = ("models/items/ammocrates/cratefrags.mdl")
+        local model = "models/items/ammocrates/cratefrags.mdl"
 
         self:SetModel( model )
 

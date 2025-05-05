@@ -1,5 +1,5 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_m61_frag") -- must be the name of your swep but NO CAPITALS!
+SWEP.Gun = "m9k_m61_frag" -- must be the name of your swep but NO CAPITALS!
 
 SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
@@ -42,7 +42,7 @@ SWEP.Primary.Ammo           = "Grenade"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = ("m9k_thrown_m61") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = "m9k_thrown_m61" --NAME OF ENTITY GOES HERE
 
 --  none of this matters for IEDs and other ent-tossing sweps, but here it is anyway
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!

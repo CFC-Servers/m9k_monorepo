@@ -29,7 +29,7 @@ if SERVER then
    Name: Initialize
 -----------------------------------------------------------]]
     function ENT:Initialize()
-        local model = ("models/Items/BoxBuckshot.mdl")
+        local model = "models/Items/BoxBuckshot.mdl"
 
         self:SetModel( model )
 

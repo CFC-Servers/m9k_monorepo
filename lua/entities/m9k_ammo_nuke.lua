@@ -36,7 +36,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        local model = ("models/failure/mk6/mk6.mdl")
+        local model = "models/failure/mk6/mk6.mdl"
 
         self:SetModel( model )
 

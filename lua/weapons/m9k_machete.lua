@@ -1,5 +1,5 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_machete") -- must be the name of your swep but NO CAPITALS!
+SWEP.Gun = "m9k_machete" -- must be the name of your swep but NO CAPITALS!
 
 SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
@@ -53,9 +53,9 @@ SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 
 -- SWEP.Primary.Sound    = "Weapon_Knife.Slash" --woosh
--- SWEP.KnifeShink = ("Weapon_Knife.HitWall")
--- SWEP.KnifeSlash = ("Weapon_Knife.Hit")
--- SWEP.KnifeStab = ("Weapon_Knife.Stab")
+-- SWEP.KnifeShink = "Weapon_Knife.HitWall"
+-- SWEP.KnifeSlash = "Weapon_Knife.Hit"
+-- SWEP.KnifeStab = "Weapon_Knife.Stab"
 
 SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
 SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"

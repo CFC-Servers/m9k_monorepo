@@ -1,5 +1,5 @@
 -- Variables that are used on both client and server
-SWEP.Gun = ("m9k_orbital_strike") -- must be the name of your swep
+SWEP.Gun = "m9k_orbital_strike" -- must be the name of your swep
 
 SWEP.Category                 = "M9K Specialties"
 SWEP.Author                   = ""
