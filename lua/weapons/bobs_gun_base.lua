@@ -223,9 +223,11 @@ if CLIENT then
     function SWEP:MuzzleFlashLight()
         if self.Silenced then return end
         local owner = self:GetOwner()
+        local isLocalPlayer = owner == LocalPlayer()
+        local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
 
         local muzzleAtt
-        if owner == LocalPlayer() and not owner:ShouldDrawLocalPlayer() then
+        if isFirstPerson then
             muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
         else
             muzzleAtt = self:GetAttachment( 1 )
@@ -255,15 +257,17 @@ if CLIENT then
             -- util.Effect( "CS_MuzzleFlash", flash )
         end
 
-        local shellAtt = self:GetAttachment( 2 )
-        if shellAtt then
-            local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
-            local shellEffect = EffectData()
-            shellEffect:SetOrigin( shellAtt.Pos )
-            shellEffect:SetAngles( shellAtt.Ang )
-            shellEffect:SetEntity( self )
-            shellEffect:SetFlags( 100 )
-            util.Effect( shellEffectType, shellEffect )
+        if not isFirstPerson then
+            local shellAtt = self:GetAttachment( 2 )
+            if shellAtt then
+                local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
+                local shellEffect = EffectData()
+                shellEffect:SetOrigin( shellAtt.Pos )
+                shellEffect:SetAngles( shellAtt.Ang )
+                shellEffect:SetEntity( self )
+                shellEffect:SetFlags( 100 )
+                util.Effect( shellEffectType, shellEffect )
+            end
         end
     end
 end
