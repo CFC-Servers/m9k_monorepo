@@ -300,7 +300,7 @@ function SWEP:FireAnimation()
         net.WriteEntity( self )
         net.Send( rf )
     end
-    if CLIENT then
+    if CLIENT and IsFirstTimePredicted() then
         self:MuzzleFlashLight()
     end
 
