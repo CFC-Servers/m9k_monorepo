@@ -759,6 +759,11 @@ function SWEP:Reload()
 
     if self:GetIronsights() then
         self:SetIronsights( false )
+        self:GetOwner():SetFOV( 0, self.IronSightTime )
+        timer.Simple( self.IronSightTime, function()
+            if not IsValid( self ) then return end
+            self:Reload()
+        end )
         return
     end
 
