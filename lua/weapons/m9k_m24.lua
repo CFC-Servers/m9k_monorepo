@@ -30,7 +30,7 @@ SWEP.Base                 = "bobs_scoped_base"
 SWEP.Spawnable                = true
 SWEP.AdminSpawnable            = true
 
-SWEP.Primary.Sound            = Sound("Dmgfok_M24SN.Single")        -- script that calls the primary fire sound
+SWEP.Primary.Sound            = "Dmgfok_M24SN.Single"        -- script that calls the primary fire sound
 SWEP.Primary.RPM                = 40        -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize            = 5        -- Size of a clip
 SWEP.Primary.DefaultClip            = 60    -- Bullets you start with

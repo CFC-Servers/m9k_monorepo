@@ -25,7 +25,7 @@ SWEP.WorldModel = "models/weapons/w_usas_12.mdl" -- Weapon world model
 SWEP.Base = "bobs_gun_base"
 SWEP.Spawnable = true
 SWEP.AdminSpawnable = true
-SWEP.Primary.Sound = Sound( "Weapon_usas.Single" ) -- Script that calls the primary fire sound
+SWEP.Primary.Sound = "Weapon_usas.Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM = 260 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize = 20 -- Size of a clip
 SWEP.Primary.DefaultClip = 60 -- Bullets you start with
@@ -95,7 +95,7 @@ function SWEP:Reload()
         timer.Simple( .65, function()
             if not IsValid( self ) then return end
             if not IsValid( self:GetOwner() ) then return end
-            self:EmitSound( Sound( "Weapon_usas.draw" ) )
+            self:EmitSound( "Weapon_usas.draw" )
         end )
 
         timer.Simple( .8, function()

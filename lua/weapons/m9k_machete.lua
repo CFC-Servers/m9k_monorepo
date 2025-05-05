@@ -52,7 +52,7 @@ SWEP.Primary.Damage         = 150 -- Base damage per bullet
 SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 
--- SWEP.Primary.Sound    = Sound("Weapon_Knife.Slash") --woosh
+-- SWEP.Primary.Sound    = "Weapon_Knife.Slash" --woosh
 -- SWEP.KnifeShink = ("Weapon_Knife.HitWall")
 -- SWEP.KnifeSlash = ("Weapon_Knife.Hit")
 -- SWEP.KnifeStab = ("Weapon_Knife.Stab")
