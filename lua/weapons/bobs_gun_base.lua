@@ -204,6 +204,13 @@ function SWEP:OnRemove()
 end
 
 if CLIENT then
+    function SWEP:IsFirstPerson()
+        local owner = self:GetOwner()
+        local isLocalPlayer = owner == LocalPlayer()
+        local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
+
+        return isFirstPerson
+    end
     local thirdPersonShellType = {
         pistol = "EjectBrass_9mm",
         smg = "EjectBrass_556",
@@ -222,9 +229,7 @@ if CLIENT then
 
     function SWEP:MuzzleFlashLight()
         if self.Silenced then return end
-        local owner = self:GetOwner()
-        local isLocalPlayer = owner == LocalPlayer()
-        local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
+        local isFirstPerson = self:IsFirstPerson()
 
         local muzzleAtt
         if isFirstPerson then
@@ -270,6 +275,11 @@ if CLIENT then
             end
         end
     end
+end
+
+function SWEP:FireAnimationEvent( _pos, _ang, event, _options )
+    local isCssMuzzleFlash = ( event == 5001 or event == 5011 or event == 5021 or event == 5031 )
+    if isCssMuzzleFlash and not self:IsFirstPerson() then return true end
 end
 
 local shellEffects = {
