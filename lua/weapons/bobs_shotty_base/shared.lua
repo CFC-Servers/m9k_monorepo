@@ -109,6 +109,8 @@ end
 function SWEP:Reload()
     if not IsValid( self:GetOwner() ) then return end
     if not self:GetOwner():IsPlayer() then return end
+    if self:Clip1() >= self.Primary.ClipSize then return end
+    if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
 
     local maxcap = self.Primary.ClipSize
     local spaceavail = self:Clip1()
