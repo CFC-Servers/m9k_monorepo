@@ -252,14 +252,16 @@ if CLIENT then
             end
 
             -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
-            -- local flash = EffectData()
-            -- flash:SetOrigin( muzzleAtt.Pos )
-            -- flash:SetAngles( muzzleAtt.Ang )
-            -- flash:SetScale( 1 )
-            -- flash:SetEntity( self )
-            -- flash:SetMagnitude( 1 )
-            -- flash:SetAttachment( 1 )
-            -- util.Effect( "CS_MuzzleFlash", flash )
+            if not game.IsDedicated() then
+                local flash = EffectData()
+                flash:SetOrigin( muzzleAtt.Pos )
+                flash:SetAngles( muzzleAtt.Ang )
+                flash:SetScale( 1 )
+                flash:SetEntity( self )
+                flash:SetMagnitude( 1 )
+                flash:SetAttachment( 1 )
+                util.Effect( "CS_MuzzleFlash", flash )
+            end
         end
 
         if not isFirstPerson then
