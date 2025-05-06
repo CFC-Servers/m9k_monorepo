@@ -1,0 +1,5 @@
+sound.Add( { name = "r_ak74.single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/fokku_tc_ak47/ak47-1.wav" } )
+sound.Add( { name = "r_ak74.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_ak47/ak47_clipout.mp3" } )
+sound.Add( { name = "r_ak74.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_ak47/ak47_clipin.mp3" } )
+sound.Add( { name = "r_ak74.BoltPull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/amd65/boltpull.mp3" } )
+sound.Add( { name = "r_ak74.BoltRel", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/amd65/boltrelease.mp3" } )
