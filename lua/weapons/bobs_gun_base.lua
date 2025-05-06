@@ -270,7 +270,7 @@ if CLIENT then
                 local flash = EffectData()
                 flash:SetOrigin( muzzleAtt.Pos )
                 flash:SetAngles( muzzleAtt.Ang )
-                flash:SetScale( 1 )
+                flash:SetScale( 1.3 )
                 flash:SetEntity( self )
                 flash:SetMagnitude( 1 )
                 flash:SetAttachment( 1 )
