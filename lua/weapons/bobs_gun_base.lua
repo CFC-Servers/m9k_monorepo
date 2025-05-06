@@ -223,15 +223,28 @@ if CLIENT then
         local ent = net.ReadEntity()
         if not IsValid( ent ) then return end
 
-        if ent.MuzzleFlashLight and IsValid( ent:GetOwner() ) then
-            ent:MuzzleFlashLight()
+        if ent.FireEffects and IsValid( ent:GetOwner() ) then
+            ent:FireEffects()
         end
     end )
 
-    function SWEP:MuzzleFlashLight()
-        if self.Silenced then return end
+    function SWEP:FireEffects()
         local isFirstPerson = self:IsFirstPerson()
 
+        if not isFirstPerson then
+            local shellAtt = self:GetAttachment( 2 )
+            if shellAtt then
+                local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
+                local shellEffect = EffectData()
+                shellEffect:SetOrigin( shellAtt.Pos )
+                shellEffect:SetAngles( shellAtt.Ang )
+                shellEffect:SetEntity( self )
+                shellEffect:SetFlags( 100 )
+                util.Effect( shellEffectType, shellEffect )
+            end
+        end
+
+        if self.Silenced then return end
         local muzzleAtt
         if isFirstPerson then
             muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
@@ -253,7 +266,7 @@ if CLIENT then
             end
 
             -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
-            if not game.IsDedicated() then
+            if not game.IsDedicated() and not isFirstPerson then
                 local flash = EffectData()
                 flash:SetOrigin( muzzleAtt.Pos )
                 flash:SetAngles( muzzleAtt.Ang )
@@ -262,19 +275,6 @@ if CLIENT then
                 flash:SetMagnitude( 1 )
                 flash:SetAttachment( 1 )
                 util.Effect( "CS_MuzzleFlash", flash )
-            end
-        end
-
-        if not isFirstPerson then
-            local shellAtt = self:GetAttachment( 2 )
-            if shellAtt then
-                local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
-                local shellEffect = EffectData()
-                shellEffect:SetOrigin( shellAtt.Pos )
-                shellEffect:SetAngles( shellAtt.Ang )
-                shellEffect:SetEntity( self )
-                shellEffect:SetFlags( 100 )
-                util.Effect( shellEffectType, shellEffect )
             end
         end
     end
@@ -304,7 +304,7 @@ function SWEP:FireAnimation()
         net.Send( rf )
     end
     if CLIENT and IsFirstTimePredicted() then
-        self:MuzzleFlashLight()
+        self:FireEffects()
     end
 
     -- Sounds
