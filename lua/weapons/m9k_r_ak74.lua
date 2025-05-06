@@ -54,15 +54,10 @@ SWEP.Primary.Damage        = 31    -- Base damage per bullet
 SWEP.Primary.SpreadHip        = .02    -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
 SWEP.Primary.SpreadIronSights = .01 -- Ironsight accuracy, should be the same for shotguns
 
-SWEP.SightsPos = Vector (-2.287, -0.24, 0.372)
-SWEP.SightsAng = Vector (0.208, 0, 0)
+SWEP.SightsPos = Vector (-3.201, 0, 0.959)
+SWEP.SightsAng = Vector (0, 0, 0)
 SWEP.RunSightsPos = Vector (1.159, 0, -0.12)
 SWEP.RunSightsAng = Vector (-22.469, 21.461, -33.895)
 
 
 
-function SWEP:CalcView( ply, pos, ang, fov )
-	local attachment = self:GetOwner():GetViewModel():GetAttachment( self:GetOwner():GetViewModel():LookupAttachment( "camera" ) )
-	ang = ang + Angle( self:GetOwner():GetViewModel():WorldToLocalAngles( attachment.Ang ).x, self:GetOwner():GetViewModel():WorldToLocalAngles( attachment.Ang ).y, self:GetOwner():GetViewModel():WorldToLocalAngles( attachment.Ang ).z )
-	return pos, ang
-end

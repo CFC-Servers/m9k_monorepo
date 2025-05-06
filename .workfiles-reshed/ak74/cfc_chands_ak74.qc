@@ -96,9 +96,9 @@ $sequence "reload" {
 	"anims\reload.dmx"
 	activity "ACT_VM_RELOAD" 1
 	{ event 5004 4 "r_ak74.Clipout" }
-	{ event 5004 42 "r_ak74.Clipin" }
-	{ event 5004 68 "r_ak74.BoltPull" }
-	{ event 5004 71 "r_ak74.BoltRel" }
+	{ event 5004 44 "r_ak74.Clipin" }
+	{ event 5004 70 "r_ak74.BoltPull" }
+	{ event 5004 74 "r_ak74.BoltRel" }
 	snap
 	node "reload"
 	fps 30
