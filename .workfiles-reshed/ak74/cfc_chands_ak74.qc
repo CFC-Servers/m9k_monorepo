@@ -76,7 +76,7 @@ $sequence "fire" {
 
 $sequence "fire_iron" {
 	"anims\fire_iron.dmx"
-	activity "ACT_VM_PRIMARYATTACK" 1
+	activity "ACT_VM_PRIMARYATTACK_IRON" 1
 	{ event 5001 0 "1" }
 	{ event AE_CLIENT_EFFECT_ATTACH 0 "EjectBrass_762Nato 2 152" }
 	snap
