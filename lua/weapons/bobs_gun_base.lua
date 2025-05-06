@@ -230,6 +230,7 @@ if CLIENT then
 
     function SWEP:FireEffects()
         local isFirstPerson = self:IsFirstPerson()
+        local isSilenced = self.SilencerAttached or self.HasBuiltInSilencer
 
         if not isFirstPerson then
             local shellAtt = self:GetAttachment( 2 )
@@ -243,8 +244,6 @@ if CLIENT then
                 util.Effect( shellEffectType, shellEffect )
             end
         end
-
-        if self.SilencerAttached or self.HasBuiltInSilencer then return end
 
         local muzzleAtt
         if isFirstPerson then
@@ -262,12 +261,12 @@ if CLIENT then
                 dLight.b = 66
                 dLight.Brightness = 2
                 dLight.Decay = 2500
-                dLight.Size = self:GetOwner() == LocalPlayer() and 256 or 128
-                dLight.DieTime = CurTime() + 0.1
+                dLight.Size = isSilenced and 128 or 256
+                dLight.DieTime = CurTime() + FrameTime() * 2
             end
 
             -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
-            if not game.IsDedicated() and not isFirstPerson then
+            if not game.IsDedicated() and not isFirstPerson and not isSilenced then
                 local flash = EffectData()
                 flash:SetOrigin( muzzleAtt.Pos )
                 flash:SetAngles( muzzleAtt.Ang )
@@ -283,6 +282,7 @@ end
 
 function SWEP:FireAnimationEvent( _pos, _ang, event, _options )
     local isCssMuzzleFlash = ( event == 5001 or event == 5011 or event == 5021 or event == 5031 )
+    if isCssMuzzleFlash and ( self.SilencerAttached or self.HasBuiltInSilencer ) then return true end
     if isCssMuzzleFlash and not self:IsFirstPerson() then return true end
 end
 
