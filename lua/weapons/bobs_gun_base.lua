@@ -283,6 +283,17 @@ function SWEP:FireAnimationEvent( _pos, _ang, event, _options )
     local isCssMuzzleFlash = ( event == 5001 or event == 5011 or event == 5021 or event == 5031 )
     if isCssMuzzleFlash and ( self.SilencerAttached or self.HasBuiltInSilencer ) then return true end
     if isCssMuzzleFlash and not self:IsFirstPerson() then return true end
+
+    if isCssMuzzleFlash and self.CSMuzzleFlashes then
+        local data = EffectData()
+        data:SetFlags( 0 )
+        data:SetEntity( self:GetOwner():GetViewModel() )
+        data:SetAttachment( math.floor( ( event - 4991 ) / 10 ) )
+        data:SetScale( 1 )
+        util.Effect( "CS_MuzzleFlash", data )
+
+        return true
+    end
 end
 
 local shellEffects = {
