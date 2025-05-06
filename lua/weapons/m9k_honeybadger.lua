@@ -67,3 +67,4 @@ SWEP.SightsAng                = Vector( 0.039, 0, 0 )
 SWEP.RunSightsPos             = Vector( 4.094, -2.454, -0.618 )
 SWEP.RunSightsAng             = Vector( -8.957, 53.188, -9.195 )
 
+SWEP.HasBuiltInSilencer = true

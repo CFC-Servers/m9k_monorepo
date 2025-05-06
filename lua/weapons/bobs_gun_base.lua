@@ -244,7 +244,8 @@ if CLIENT then
             end
         end
 
-        if self.Silenced then return end
+        if self.Silenced or self.HasBuiltInSilencer then return end
+
         local muzzleAtt
         if isFirstPerson then
             muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
