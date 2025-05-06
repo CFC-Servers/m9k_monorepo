@@ -140,7 +140,7 @@ function SWEP:Reload()
 
         if self:GetOwner():KeyDown( IN_USE ) then return end
 
-        if self.Silenced then
+        if self.SilencerAttached then
             self:DefaultReload( ACT_VM_RELOAD_SILENCED )
         else
             self:DefaultReload( ACT_VM_RELOAD )

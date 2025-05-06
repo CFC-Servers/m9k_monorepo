@@ -254,7 +254,7 @@ function SWEP:IronSight()
     if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
 
-        if selfTbl.Silenced then
+        if selfTbl.SilencerAttached then
             self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
         else
             self:SendWeaponAnim( ACT_VM_IDLE )

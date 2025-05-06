@@ -54,7 +54,7 @@ SWEP.BoltAction             = false
 SWEP.Scoped                 = false
 SWEP.ShellTime              = .35
 SWEP.CanBeSilenced          = false
-SWEP.Silenced               = false
+SWEP.SilencerAttached               = false
 SWEP.NextSilence            = 0
 SWEP.SelectiveFire          = false
 SWEP.NextFireSelect         = 0
@@ -166,7 +166,7 @@ function SWEP:Deploy()
     self.DrawCrosshair = self.OrigCrossHair
     self:SetHoldType( self.HoldType )
 
-    if self.Silenced then
+    if self.SilencerAttached then
         self:SendWeaponAnim( ACT_VM_DRAW_SILENCED )
     else
         self:SendWeaponAnim( ACT_VM_DRAW )
@@ -244,7 +244,7 @@ if CLIENT then
             end
         end
 
-        if self.Silenced or self.HasBuiltInSilencer then return end
+        if self.SilencerAttached or self.HasBuiltInSilencer then return end
 
         local muzzleAtt
         if isFirstPerson then
@@ -309,7 +309,7 @@ function SWEP:FireAnimation()
     end
 
     -- Sounds
-    local silenced = self.Silenced
+    local silenced = self.SilencerAttached
     if silenced then
         self:EmitSound( self.Primary.SilencedSound )
     else
@@ -778,7 +778,7 @@ function SWEP:Reload()
 
     if self:GetOwner():KeyDown( IN_USE ) then return end -- Mode switch
 
-    if self.Silenced then
+    if self.SilencerAttached then
         self:DefaultReload( ACT_VM_RELOAD_SILENCED )
     else
         self:DefaultReload( ACT_VM_RELOAD )
@@ -835,12 +835,12 @@ function SWEP:Silencer()
     self:SetIronsights( false )
     self:SetReloading( true ) -- i know we're not reloading but it works
 
-    if self.Silenced then
+    if self.SilencerAttached then
         self:SendWeaponAnim( ACT_VM_DETACH_SILENCER )
-        self.Silenced = false
-    elseif not self.Silenced then
+        self.SilencerAttached = false
+    elseif not self.SilencerAttached then
         self:SendWeaponAnim( ACT_VM_ATTACH_SILENCER )
-        self.Silenced = true
+        self.SilencerAttached = true
     end
 
     local siltimer = CurTime() + self:GetOwner():GetViewModel():SequenceDuration() + 0.1
@@ -907,7 +907,7 @@ function SWEP:IronSight()
     if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
 
-        if selfTbl.Silenced then
+        if selfTbl.SilencerAttached then
             self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
         else
             self:SendWeaponAnim( ACT_VM_IDLE )
