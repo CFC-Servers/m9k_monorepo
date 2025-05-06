@@ -270,9 +270,8 @@ if CLIENT then
                 local flash = EffectData()
                 flash:SetOrigin( muzzleAtt.Pos )
                 flash:SetAngles( muzzleAtt.Ang )
-                flash:SetScale( 1.3 )
+                flash:SetScale( math.random( 0.8, 1.2 ) )
                 flash:SetEntity( self )
-                flash:SetMagnitude( 1 )
                 flash:SetAttachment( 1 )
                 util.Effect( "CS_MuzzleFlash", flash )
             end
