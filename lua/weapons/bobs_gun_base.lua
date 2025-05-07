@@ -382,24 +382,13 @@ function SWEP:FireAnimation()
     end
 end
 
-function SWEP:CanPrimaryAttack()
-    if self:Clip1() <= 0 then
-        self:EmitSound( "Weapon_Pistol.Empty" )
-        self:SetNextPrimaryFire( CurTime() + 0.2 )
-        self:Reload()
-        return false
-    end
-
+function SWEP:PrimaryAttack()
+    if not self:CanPrimaryAttack() then return end
     if self:GetOwner():KeyDown( IN_SPEED ) then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         return false
     end
 
-    return true
-end
-
-function SWEP:PrimaryAttack()
-    if not self:CanPrimaryAttack() then return end
     self:ShootBulletInformation()
     self:TakePrimaryAmmo( 1 )
 
