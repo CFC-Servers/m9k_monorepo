@@ -255,14 +255,15 @@ if CLIENT then
         if muzzleAtt then
             local dLight = DynamicLight( self:EntIndex() )
             if dLight then
+                local lightTime = 1000 / 0.4
                 dLight.Pos = muzzleAtt.Pos
                 dLight.r = 252
                 dLight.g = 194
                 dLight.b = 66
                 dLight.Brightness = 2
-                dLight.Decay = 2500
+                dLight.Decay = lightTime
                 dLight.Size = isSilenced and 128 or 256
-                dLight.DieTime = CurTime() + FrameTime() * 2
+                dLight.DieTime = CurTime() + lightTime
                 dLight.NoModel = true
             end
 
