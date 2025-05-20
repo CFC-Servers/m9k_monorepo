@@ -263,6 +263,7 @@ if CLIENT then
                 dLight.Decay = 2500
                 dLight.Size = isSilenced and 128 or 256
                 dLight.DieTime = CurTime() + FrameTime() * 2
+                dLight.NoModel = true
             end
 
             -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
