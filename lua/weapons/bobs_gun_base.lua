@@ -74,6 +74,7 @@ local defaultClipMult = GetConVar( "M9KDefaultClip" )
 local dmgMultCvar = GetConVar( "M9KDamageMultiplier" )
 local dynamicrecoilCvar = GetConVar( "M9KDynamicRecoil" )
 local damageMultiplier = dmgMultCvar:GetFloat()
+local IS_SINGLEPLAYER = game.SinglePlayer()
 
 local function dmgMultCallback( _, _, new )
     damageMultiplier = tonumber( new )
@@ -740,7 +741,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
 
     owner:ViewPunch( anglo1 )
 
-    if SERVER and game.SinglePlayer() and not owner:IsNPC() then
+    if SERVER and IS_SINGLEPLAYER and not owner:IsNPC() then
         local offlineeyes = owner:EyeAngles()
         offlineeyes.pitch = offlineeyes.pitch + anglo1.pitch
         offlineeyes.yaw = offlineeyes.yaw + anglo1.yaw
@@ -749,7 +750,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         end
     end
 
-    if CLIENT and not game.SinglePlayer() and not owner:IsNPC() then
+    if CLIENT and not IS_SINGLEPLAYER and not owner:IsNPC() then
         -- case 1 old random
         local eyes = owner:EyeAngles()
         eyes.pitch = eyes.pitch + ( anglo1.pitch / 3 )
@@ -982,7 +983,7 @@ function SWEP:IronSight()
         selfTbl.BobScale  = 1.0
     end
 
-    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not game.SinglePlayer() ) then return end
+    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not IS_SINGLEPLAYER ) then return end
     self.bIron = self:GetIronsightsActive()
     self.fIronTime = self:GetIronsightsTime()
     self.CurrentTime = CurTime()
