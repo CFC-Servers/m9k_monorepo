@@ -70,7 +70,9 @@ if SERVER then
     util.AddNetworkString( "m9k_muzzleflash" )
 end
 
+local defaultClipMult = GetConVar( "M9KDefaultClip" )
 local dmgMultCvar = GetConVar( "M9KDamageMultiplier" )
+local dynamicrecoilCvar = GetConVar( "M9KDynamicRecoil" )
 local damageMultiplier = dmgMultCvar:GetFloat()
 
 local function dmgMultCallback( _, _, new )
@@ -83,8 +85,6 @@ SWEP.IronSightsAng = Vector( 0, 0, 0 )
 
 SWEP.VElements = {}
 SWEP.WElements = {}
-
-local defaultClipMult = GetConVar( "M9KDefaultClip" )
 
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetTable = entMeta.GetTable
@@ -744,7 +744,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         local offlineeyes = owner:EyeAngles()
         offlineeyes.pitch = offlineeyes.pitch + anglo1.pitch
         offlineeyes.yaw = offlineeyes.yaw + anglo1.yaw
-        if GetConVar( "M9KDynamicRecoil" ):GetBool() then
+        if dynamicrecoilCvar:GetBool() then
             owner:SetEyeAngles( offlineeyes )
         end
     end
@@ -754,7 +754,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         local eyes = owner:EyeAngles()
         eyes.pitch = eyes.pitch + ( anglo1.pitch / 3 )
         eyes.yaw = eyes.yaw + ( anglo1.yaw / 3 )
-        if IsFirstTimePredicted() and GetConVar( "M9KDynamicRecoil" ):GetBool() then
+        if IsFirstTimePredicted() and dynamicrecoilCvar:GetBool() then
             owner:SetEyeAngles( eyes )
         end
     end
