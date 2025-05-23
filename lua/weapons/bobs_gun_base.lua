@@ -729,6 +729,8 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         if IsValid( owner ) then
             owner:FireBullets( bullet )
         end
+
+        hook.Run( "M9K_BulletFired", self, owner )
     end
 
     local x = util.SharedRandom( "m9k_viewpunch", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
