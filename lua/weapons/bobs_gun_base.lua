@@ -59,7 +59,6 @@ SWEP.NextSilence            = 0
 SWEP.SelectiveFire          = false
 SWEP.NextFireSelect         = 0
 SWEP.OrigCrossHair          = true
-SWEP.TotalShotsFired        = 0 -- Useful for stat tracking
 
 local CLIENT                = CLIENT
 local SERVER                = SERVER
@@ -651,10 +650,7 @@ local function getSpread( gun, dir, vec )
     local shotBias = ( ( shotBiasMax - shotBiasMin ) * bias ) + shotBiasMin
     local flatness = math.abs( bias ) * 0.5
 
-    local shotsFired = gun.TotalShotsFired + 1
-    gun.TotalShotsFired = shotsFired
-
-    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetModel() .. gun:GetOwner():GetUserGroup() .. shotsFired )
+    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetModel() .. gun:GetOwner():GetUserGroup() )
     local s = 0
     local function getRnd()
         s = s + 1
@@ -689,9 +685,6 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
 
         local bullet
         if bulletCount > 1 then -- Shotguns, otherwise we'd have to fire each bullet individually
-            local bulletsFired = self.TotalShotsFired + 1
-            self.TotalShotsFired = bulletsFired
-
             bullet = {
                 Inflictor = self,
                 Num = bulletCount,
@@ -765,10 +758,6 @@ end
 
 function SWEP:SecondaryAttack()
     return false
-end
-
-function SWEP:OwnerChanged()
-    self.TotalShotsFired = 0
 end
 
 function SWEP:Reload()
