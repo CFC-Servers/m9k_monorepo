@@ -76,7 +76,7 @@ function SWEP:SlashTrace()
     local owner = self:GetOwner()
     local eyeAngles = owner:EyeAngles()
     local forward = eyeAngles:Forward()
-    local shootPos = owner:GetShootPos()
+    local shootPos = owner:M9K_GetShootPos()
     local trace = {
         start = shootPos,
         endpos = shootPos + forward * self.AttackRange,
@@ -203,7 +203,7 @@ function SWEP:ThrowKnife()
         if SERVER then
             local knife = ents.Create( "m9k_thrown_spec_knife" )
             knife:SetAngles( self:GetOwner():EyeAngles() )
-            knife:SetPos( self:GetOwner():GetShootPos() )
+            knife:SetPos( self:GetOwner():M9K_GetShootPos() )
             knife:SetOwner( self:GetOwner() )
             knife:SetPhysicsAttacker( self:GetOwner() )
             knife:Spawn()

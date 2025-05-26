@@ -132,8 +132,8 @@ function SWEP:PrimaryAttack()
             self:TakePrimaryAmmo( 1 )
 
             local tr = {
-                start = owner:GetShootPos(),
-                endpos = owner:GetShootPos() + 100 * owner:GetAimVector(),
+                start = owner:M9K_GetShootPos(),
+                endpos = owner:M9K_GetShootPos() + 100 * owner:GetAimVector(),
                 filter = { owner }
             }
             local trace = util.TraceLine( tr )

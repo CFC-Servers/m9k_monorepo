@@ -83,7 +83,7 @@ function SWEP:SecondaryAttack()
 
                 local fx = EffectData()
                 fx:SetEntity( self )
-                fx:SetOrigin( self:GetOwner():GetShootPos() )
+                fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
                 fx:SetNormal( self:GetOwner():GetAimVector() )
                 fx:SetAttachment( self.MuzzleAttachment )
 
@@ -119,7 +119,7 @@ function SWEP:PrimaryAttack()
 
             local fx = EffectData()
             fx:SetEntity( self )
-            fx:SetOrigin( self:GetOwner():GetShootPos() )
+            fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
             fx:SetNormal( self:GetOwner():GetAimVector() )
             fx:SetAttachment( self.MuzzleAttachment )
 

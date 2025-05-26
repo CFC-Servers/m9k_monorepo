@@ -68,7 +68,7 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
     local owner = self:GetOwner()
-    local pos = owner:GetShootPos()
+    local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local vm = owner:GetViewModel()
     local damagedice = math.Rand( 0.95, 1.05 )

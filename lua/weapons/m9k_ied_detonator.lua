@@ -119,7 +119,7 @@ function SWEP:PrimaryAttack()
     local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():GetShootPos() + side * -5 + up * -10
+    local pos = self:GetOwner():M9K_GetShootPos() + side * -5 + up * -10
 
     local rocket = ents.Create( self.Primary.Round )
     if not rocket:IsValid() then return false end

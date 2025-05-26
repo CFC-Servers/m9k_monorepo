@@ -106,7 +106,7 @@ function SWEP:FireRocket()
     local aim = self:GetOwner():GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():GetShootPos() + side * 6 + up * -5
+    local pos = self:GetOwner():M9K_GetShootPos() + side * 6 + up * -5
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )

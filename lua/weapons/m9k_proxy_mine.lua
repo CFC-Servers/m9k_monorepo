@@ -76,8 +76,8 @@ function SWEP:PrimaryAttack()
 
             self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
             local tr = {}
-            tr.start = self:GetOwner():GetShootPos()
-            tr.endpos = self:GetOwner():GetShootPos() + 100 * self:GetOwner():GetAimVector()
+            tr.start = self:GetOwner():M9K_GetShootPos()
+            tr.endpos = self:GetOwner():M9K_GetShootPos() + 100 * self:GetOwner():GetAimVector()
             tr.filter = { self:GetOwner() }
             local trace = util.TraceLine( tr )
             self:TakePrimaryAmmo( 1 )

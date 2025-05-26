@@ -94,7 +94,7 @@ end
 
 function SWEP:HackNSlash()
     local owner = self:GetOwner()
-    local pos = owner:GetShootPos()
+    local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
@@ -143,7 +143,7 @@ function SWEP:SecondaryAttack()
         if SERVER then
             local knife = ents.Create( "m9k_thrown_knife" )
             knife:SetAngles( self:GetOwner():EyeAngles() )
-            knife:SetPos( self:GetOwner():GetShootPos() )
+            knife:SetPos( self:GetOwner():M9K_GetShootPos() )
             knife:SetOwner( self:GetOwner() )
             knife:SetPhysicsAttacker( self:GetOwner() )
             knife:Spawn()

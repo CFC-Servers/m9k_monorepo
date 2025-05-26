@@ -77,7 +77,7 @@ end
 
 if SERVER then
     function SWEP:FireRocket()
-        local pos = self:GetOwner():GetShootPos()
+        local pos = self:GetOwner():M9K_GetShootPos()
         local rocket = ents.Create( self.Primary.Round )
         rocket:SetAngles( self:GetOwner():GetAimVector():Angle() )
         rocket:SetPos( pos )
@@ -99,7 +99,7 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     if self:GetNextPrimaryFire() > CurTime() then return end
 
-    local shootPos = self:GetOwner():GetShootPos()
+    local shootPos = self:GetOwner():M9K_GetShootPos()
     local tracedata = {
         start = shootPos,
         endpos = shootPos + self:GetForward() * 40,

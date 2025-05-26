@@ -84,7 +84,7 @@ function SWEP:Throw()
         local aim = self:GetOwner():GetAimVector()
         local side = aim:Cross( Vector( 0, 0, 1 ) )
         local up = side:Cross( aim )
-        local pos = self:GetOwner():GetShootPos() + side * 5 + up * -1
+        local pos = self:GetOwner():M9K_GetShootPos() + side * 5 + up * -1
 
         local grenade = ents.Create( self.Primary.Round )
         if not grenade:IsValid() then return end

@@ -144,7 +144,7 @@ end
 
 function SWEP:FireRocket()
     local aim = self:GetOwner():GetAimVector()
-    local pos = self:GetOwner():GetShootPos()
+    local pos = self:GetOwner():M9K_GetShootPos()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )

@@ -688,7 +688,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             bullet = {
                 Inflictor = self,
                 Num = bulletCount,
-                Src = owner:GetShootPos(),
+                Src = owner:M9K_GetShootPos(),
                 Dir = bulletDir,
                 Spread = Vector( aimcone, aimcone, 0 ),
                 Tracer = 3,
@@ -705,7 +705,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             bullet = {
                 Inflictor = self,
                 Num = bulletCount,
-                Src = owner:GetShootPos(),
+                Src = owner:M9K_GetShootPos(),
                 Dir = spreadDir,
                 Spread = Vector( 0, 0, 0 ),
                 Tracer = 3,
