@@ -80,7 +80,7 @@ local function dmgMultCallback( _, _, new )
 end
 cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "gunbase" )
 
-local m9k_simplespread = CreateConVar( "m9k_simplespread", "0", { FCVAR_ARCHIVE, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Use simple spread for M9K weapons, not recommended" )
+local m9k_enginespread = CreateConVar( "m9k_enginespread", "0", { FCVAR_ARCHIVE, FCVAR_REPLICATED, FCVAR_NOTIFY }, "Use engine spread for M9K weapons, not recommended" )
 
 SWEP.IronSightsPos = Vector( 0, 0, 0 )
 SWEP.IronSightsAng = Vector( 0, 0, 0 )
@@ -703,7 +703,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
                 end
             }
         else
-            local simpleSpread = m9k_simplespread:GetBool()
+            local simpleSpread = m9k_enginespread:GetBool()
             local spreadDir = simpleSpread and aimcone or Vector( 0, 0, 0 )
             local dir = simpleSpread and bulletDir or getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
             bullet = {
