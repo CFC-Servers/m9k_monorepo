@@ -652,7 +652,8 @@ local function getSpread( gun, dir, vec )
     local shotBias = ( ( shotBiasMax - shotBiasMin ) * bias ) + shotBiasMin
     local flatness = math.abs( bias ) * 0.5
 
-    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetOwner():GetUserGroup() .. engine.TickCount() )
+    local cmd = gun:GetOwner():GetCurrentCommand()
+    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetOwner():GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
     local s = 0
     local function getRnd()
         s = s + 1
