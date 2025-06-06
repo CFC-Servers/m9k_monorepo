@@ -12,7 +12,7 @@ entMeta._SetOwner = entMeta._SetOwner or entMeta.SetOwner
 local setOwner = entMeta._SetOwner
 
 function entMeta:SetOwner( ply )
-    if self:IsWeapon() and not IsValid( ply ) then
+    if self:IsWeapon() and ply and not IsValid( ply ) then
         ErrorNoHaltWithStack( "M9K: SetOwner called with invalid player entity. " .. tostring( self ) .. "\n" )
     end
 
