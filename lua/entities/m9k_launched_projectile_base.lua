@@ -14,6 +14,9 @@ ENT.ExplosionEffectScale = 2 -- Size of the explosion
 ENT.ExplosionRadius = 150
 ENT.ExplosionDamage = 350
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 if SERVER then
     AddCSLuaFile()
 
@@ -31,10 +34,12 @@ if SERVER then
     end
 
     function ENT:Think()
+        local owner = entity_GetOwner(self)
+
         local trace = {
             start = self:GetPos(),
             endpos = self:GetPos() + self.Flightvector,
-            filter = { self:GetOwner(), self }
+            filter = { owner, self }
         }
         local tr = util.TraceLine( trace )
 
@@ -44,7 +49,7 @@ if SERVER then
         end
 
         if tr.Hit and self.InFlight then
-            if not IsValid( self:GetOwner() ) then
+            if not IsValid( owner ) then
                 self:Remove()
                 return
             end
@@ -76,7 +81,7 @@ if SERVER then
 
     function ENT:DirectHit( tr )
         if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() ) then
-            tr.Entity:TakeDamage( 150, self:GetOwner(), self )
+            tr.Entity:TakeDamage( 150, entity_GetOwner(self), self )
         end
 
         local effectdata = EffectData()
@@ -110,7 +115,9 @@ if SERVER then
     end
 
     function ENT:Explosion( pos, normal, mattype )
-        if not IsValid( self:GetOwner() ) then
+        local owner = entity_GetOwner(self)
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -122,7 +129,7 @@ if SERVER then
         normal = normal or Vector( 0, 0, 1 )
         mattype = mattype or 67
 
-        util.BlastDamage( self, self:GetOwner(), pos, self.ExplosionRadius, self.ExplosionDamage )
+        util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
         local effectdata = EffectData()
         effectdata:SetOrigin( pos )
         effectdata:SetNormal( normal )

@@ -62,12 +62,16 @@ SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 SWEP.SwordChop              = "weapons/blades/swordchop.mp3"
 SWEP.SwordClash             = "weapons/blades/clash.mp3"
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
 
 function SWEP:PrimaryAttack()
-    if not self:GetOwner():IsPlayer() then return end
+    local owner = entity_GetOwner(self)
+
+    if not owner:IsPlayer() then return end
     if not self:CanPrimaryAttack() then return end
 
-    local owner = self:GetOwner()
+    local owner = owner
     local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local vm = owner:GetViewModel()
@@ -96,9 +100,9 @@ function SWEP:PrimaryAttack()
             mins = Vector( -15, -5, 0 ),
             maxs = Vector( 15, 5, 5 )
         }
-        self:GetOwner():LagCompensation( true )
+        owner:LagCompensation( true )
         local slashtrace = util.TraceHull( slash )
-        self:GetOwner():LagCompensation( false )
+        owner:LagCompensation( false )
 
         if slashtrace.Hit then
             targ = slashtrace.Entity
@@ -126,7 +130,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Holster()
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
     if CLIENT then
@@ -140,9 +144,11 @@ function SWEP:Holster()
 end
 
 function SWEP:IronSight()
-    if not self:GetOwner():IsNPC() then
-        if self:GetOwner():GetNWBool( "GuardIsUp" ) == nil then
-            self:GetOwner():SetNWBool( "GuardIsUp", false )
+    local owner = entity_GetOwner(self)
+
+    if not owner:IsNPC() then
+        if owner:GetNWBool( "GuardIsUp" ) == nil then
+            owner:SetNWBool( "GuardIsUp", false )
         end
 
         if self.ResetSights and CurTime() >= self.ResetSights then
@@ -151,28 +157,28 @@ function SWEP:IronSight()
         end
     end
 
-    if not self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
-        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+    if not owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
+        owner:SetFOV( self.Secondary.IronFOV, 0.3 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
         self:SetIronsights( true )
         self.DrawCrosshair = false
-        self:GetOwner():SetNWBool( "GuardIsUp", true )
+        owner:SetNWBool( "GuardIsUp", true )
 
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) then
+    if owner:KeyReleased( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) then
         -- If the right click is released, then
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = true
         self:SetIronsights( false )
-        self:GetOwner():SetNWBool( "GuardIsUp", false )
+        owner:SetNWBool( "GuardIsUp", false )
 
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) then
+    if owner:KeyDown( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

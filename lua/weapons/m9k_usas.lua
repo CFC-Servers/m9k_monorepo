@@ -80,62 +80,69 @@ SWEP.WElements = {
     }
 }
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:Reload()
-    if self:Clip1() < self.Primary.ClipSize and self:GetOwner():GetAmmoCount( "buckshot" ) > 0 and not self:GetReloading() then
+    local owner = entity_GetOwner(self)
+
+    if self:Clip1() < self.Primary.ClipSize and owner:GetAmmoCount( "buckshot" ) > 0 and not self:GetReloading() then
         self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_START )
         self:SetReloading( true )
-        self:SetNextPrimaryFire( CurTime() + self:GetOwner():GetViewModel():SequenceDuration() )
+        self:SetNextPrimaryFire( CurTime() + owner:GetViewModel():SequenceDuration() )
 
-        if SERVER and not self:GetOwner():IsNPC() then
+        if SERVER and not owner:IsNPC() then
             self.ResetSights = CurTime() + 1.65
-            self:GetOwner():SetFOV( 0, 0.3 )
+            owner:SetFOV( 0, 0.3 )
             self:SetIronsights( false )
         end
 
         timer.Simple( .65, function()
             if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
+            if not IsValid( owner ) then return end
             self:EmitSound( "Weapon_usas.draw" )
         end )
 
         timer.Simple( .8, function()
             if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
+            if not IsValid( owner ) then return end
             self:ReloadFinish()
         end )
     end
 end
 
 function SWEP:ReloadFinish()
+    local owner = entity_GetOwner(self)
+
     self:DefaultReload( ACT_SHOTGUN_RELOAD_FINISH )
-    if not self:GetOwner():IsNPC() then
-        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+    if not owner:IsNPC() then
+        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
 
     if not SERVER then return end
 
-    if self:Clip1() < self.Primary.ClipSize and not self:GetOwner():IsNPC() then
-        self:GetOwner():SetFOV( 0, 0.3 )
+    if self:Clip1() < self.Primary.ClipSize and not owner:IsNPC() then
+        owner:SetFOV( 0, 0.3 )
         self:SetIronsights( false )
     end
 
-    local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
+    local waitdammit = owner:GetViewModel():SequenceDuration()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
+        if not IsValid( owner ) then return end
         self:SetReloading( false )
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self.Scoped == false then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+        if owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+            owner:SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos
             self.IronSightsAng = self.SightsAng
-            self:SetIronsights( true, self:GetOwner() )
+            self:SetIronsights( true, owner )
             self.DrawCrosshair = false
-        elseif self:GetOwner():KeyDown( IN_SPEED ) then
+        elseif owner:KeyDown( IN_SPEED ) then
             self:SetNextPrimaryFire( CurTime() + 0.3 )
             self.IronSightsPos = self.RunSightsPos
             self.IronSightsAng = self.RunSightsAng
             self:SetIronsights( true )
-            self:GetOwner():SetFOV( 0, 0.3 )
+            owner:SetFOV( 0, 0.3 )
         end
     end )
 end

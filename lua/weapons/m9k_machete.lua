@@ -62,6 +62,9 @@ SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
 SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
 SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
@@ -71,29 +74,31 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    local vm = self:GetOwner():GetViewModel()
-    self:SendWeaponAnim( ACT_VM_IDLE )
-    self:GetOwner():ViewPunch( Angle( -10, 0, 0 ) )
+    local owner = entity_GetOwner(self)
 
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
+    local vm = owner:GetViewModel()
+    self:SendWeaponAnim( ACT_VM_IDLE )
+    owner:ViewPunch( Angle( -10, 0, 0 ) )
+
+    if self:CanPrimaryAttack() and owner:IsPlayer() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
             vm:SetSequence( vm:LookupSequence( "stab" ) )
             timer.Create( "hack-n-slash", .23, 1, function()
                 if not IsValid( self ) then return end
-                if not IsValid( self:GetOwner() ) then return end
-                if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+                if not IsValid( owner ) then return end
+                if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
                     self:HackNSlash()
                 end
             end )
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
         end
     end
 end
 
 function SWEP:HackNSlash()
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
     local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local damagedice = math.Rand( 0.95, 1.05 )
@@ -137,22 +142,24 @@ end
 function SWEP:SecondaryAttack()
     if self:GetNextPrimaryFire() > CurTime() then return end
 
-    if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+    local owner = entity_GetOwner(self)
+
+    if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
         self:EmitSound( "Weapon_Knife.Slash" )
 
         if SERVER then
             local knife = ents.Create( "m9k_thrown_knife" )
-            knife:SetAngles( self:GetOwner():EyeAngles() )
-            knife:SetPos( self:GetOwner():M9K_GetShootPos() )
-            knife:SetOwner( self:GetOwner() )
-            knife:SetPhysicsAttacker( self:GetOwner() )
+            knife:SetAngles( owner:EyeAngles() )
+            knife:SetPos( owner:M9K_GetShootPos() )
+            knife:SetOwner( owner )
+            knife:SetPhysicsAttacker( owner )
             knife:Spawn()
             knife:Activate()
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             local phys = knife:GetPhysicsObject()
-            phys:SetVelocity( self:GetOwner():GetAimVector() * 1500 )
+            phys:SetVelocity( owner:GetAimVector() * 1500 )
             phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
-            self:GetOwner():StripWeapon( self.Gun )
+            owner:StripWeapon( self.Gun )
         end
     end
 end

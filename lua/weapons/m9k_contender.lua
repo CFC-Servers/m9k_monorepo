@@ -66,10 +66,15 @@ SWEP.SightsAng                = Vector( 0, 0, 0 )
 SWEP.RunSightsPos             = Vector( 3.714, -1.429, 0 )
 SWEP.RunSightsAng             = Vector( -11, 31, 0 )
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
-    if self:GetOwner():IsNPC() then return end
+    local owner = entity_GetOwner(self)
+
+    if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
-    if self:GetOwner():KeyDown( IN_SPEED ) then return end
+    if owner:KeyDown( IN_SPEED ) then return end
 
     self.RicochetCoin = math.random( 1, 4 )
     self:ShootBulletInformation()
@@ -79,13 +84,13 @@ function SWEP:PrimaryAttack()
 
     local fx = EffectData()
     fx:SetEntity( self )
-    fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
-    fx:SetNormal( self:GetOwner():GetAimVector() )
+    fx:SetOrigin( owner:M9K_GetShootPos() )
+    fx:SetNormal( owner:GetAimVector() )
     fx:SetAttachment( self.MuzzleAttachment )
     util.Effect( "rg_muzzle_rifle", fx )
 
-    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-    self:GetOwner():MuzzleFlash()
+    owner:SetAnimation( PLAYER_ATTACK1 )
+    owner:MuzzleFlash()
     self:SetNextPrimaryFire( CurTime() + 10 )
 
     self:UseBolt()
@@ -94,30 +99,32 @@ end
 function SWEP:UseBolt()
     if CLIENT then return end
 
-    if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
-        if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+    local owner = entity_GetOwner(self)
+
+    if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
+        if not IsValid( self ) or not IsValid( owner ) then return end
         self:SetReloading( true )
 
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self:SetIronsights( false )
-        self:GetOwner():DrawViewModel( true )
+        owner:DrawViewModel( true )
 
-        local boltactiontime = self:GetOwner():GetViewModel():SequenceDuration()
+        local boltactiontime = owner:GetViewModel():SequenceDuration()
         timer.Simple( boltactiontime, function()
-            if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
+            if not IsValid( self ) or not IsValid( owner ) then return end
             self:SetReloading( false )
-            if self:GetOwner():KeyDown( IN_ATTACK2 ) then
-                self:GetOwner():SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
+            if owner:KeyDown( IN_ATTACK2 ) then
+                owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                 self.IronSightsPos = self.SightsPos -- Bring it up
                 self.IronSightsAng = self.SightsAng -- Bring it up
                 self.DrawCrosshair = false
                 self:SetIronsights( true )
-                self:GetOwner():DrawViewModel( false )
-                self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+                owner:DrawViewModel( false )
+                owner:RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
                 self:SetClip1( self:Clip1() + 1 ) --  into the fire
                 self:SetNextPrimaryFire( CurTime() + .1 )
-            elseif not self:GetOwner():KeyDown( IN_ATTACK2 ) then
-                self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+            elseif not owner:KeyDown( IN_ATTACK2 ) then
+                owner:RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
                 self:SetClip1( self:Clip1() + 1 ) --  into the fire
                 self:SetNextPrimaryFire( CurTime() + .1 )
             end
@@ -128,17 +135,19 @@ function SWEP:UseBolt()
 end
 
 function SWEP:Reload()
-    if not IsValid( self:GetOwner() ) then return end
+    local owner = entity_GetOwner(self)
+
+    if not IsValid( owner ) then return end
 
     if self:GetNextPrimaryFire() > (CurTime() + 1) then
         return
     else
-        if self:GetOwner():IsNPC() then
+        if owner:IsNPC() then
             self:DefaultReload( ACT_VM_RELOAD )
             return
         end
 
-        if self:GetOwner():KeyDown( IN_USE ) then return end
+        if owner:KeyDown( IN_USE ) then return end
 
         if self.SilencerAttached then
             self:DefaultReload( ACT_VM_RELOAD_SILENCED )
@@ -146,44 +155,44 @@ function SWEP:Reload()
             self:DefaultReload( ACT_VM_RELOAD )
         end
 
-        if not self:GetOwner():IsNPC() then
-            if self:GetOwner():GetViewModel() == nil then
+        if not owner:IsNPC() then
+            if owner:GetViewModel() == nil then
                 self.ResetSights = CurTime() + 3
             else
-                self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+                self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
             end
         end
 
         if SERVER then
-            if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
+            if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
                 -- --When the current clip < full clip and the rest of your ammo > 0, then
-                self:GetOwner():SetFOV( 0, 0.3 )
+                owner:SetFOV( 0, 0.3 )
                 -- --Zoom = 0
                 self:SetIronsights( false )
                 self:SetReloading( true )
             end
-            local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
+            local waitdammit = owner:GetViewModel():SequenceDuration()
             timer.Simple( waitdammit, function()
                 if not IsValid( self ) then return end
                 self:SetReloading( false )
 
-                if self:GetOwner():KeyDown( IN_ATTACK2 ) then
+                if owner:KeyDown( IN_ATTACK2 ) then
                     if CLIENT then return end
                     if self.Scoped == false then
-                        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                        owner:SetFOV( self.Secondary.IronFOV, 0.3 )
                         self.IronSightsPos = self.SightsPos -- Bring it up
                         self.IronSightsAng = self.SightsAng -- Bring it up
                         self:SetIronsights( true )
                         self.DrawCrosshair = false
                     end
-                elseif self:GetOwner():KeyDown( IN_SPEED ) then
+                elseif owner:KeyDown( IN_SPEED ) then
                     if self:GetNextPrimaryFire() <= (CurTime() + .03) then
                         self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                     end
                     self.IronSightsPos = self.RunSightsPos -- Hold it down
                     self.IronSightsAng = self.RunSightsAng -- Hold it down
                     self:SetIronsights( true )
-                    self:GetOwner():SetFOV( 0, 0.3 )
+                    owner:SetFOV( 0, 0.3 )
                 end
             end )
         end

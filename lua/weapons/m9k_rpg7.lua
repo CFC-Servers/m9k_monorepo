@@ -58,31 +58,38 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 
 --and now to the nasty parts of this swep...
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
+    local owner = entity_GetOwner(self)
+
+    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "RPGF.single" )
         self:TakePrimaryAmmo( 1 )
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
     self:CheckWeaponsAndAmmo()
 end
 
 function SWEP:FireRocket()
-    local aim = self:GetOwner():GetAimVector()
+    local owner = entity_GetOwner(self)
+
+    local aim = owner:GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():M9K_GetShootPos() + side * 6 + up * -5
+    local pos = owner:M9K_GetShootPos() + side * 6 + up * -5
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 0, 0, 0 ) )
         rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
+        rocket:SetOwner( owner )
         rocket:Spawn()
         rocket:Activate()
     end

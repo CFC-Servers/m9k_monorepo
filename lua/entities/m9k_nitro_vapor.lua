@@ -57,7 +57,7 @@ if SERVER then
         local scorchend = self:GetPos() + ((Vector( 0, 0, -1 )) * 5)
         util.Decal( "Scorch", scorchstart, scorchend )
 
-        for k, v in pairs( ents.FindInSphere( pos, 300 ) ) do
+        for k, v in ipairs( ents.FindInSphere( pos, 300 ) ) do
             if IsValid( v ) then
                 if IsValid( v:GetPhysicsObject() ) then
                     local pushy = {}

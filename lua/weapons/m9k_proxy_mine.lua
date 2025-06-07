@@ -62,23 +62,28 @@ SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
 --and now to the nasty parts of this swep...
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
+        local owner = entity_GetOwner(self)
+
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        local plant = self:GetOwner():GetViewModel():SequenceDuration()
+        local plant = owner:GetViewModel():SequenceDuration()
         timer.Simple( plant, function()
             if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
+            if not IsValid( owner ) then return end
 
-            local activeWeapon = self:GetOwner():GetActiveWeapon()
+            local activeWeapon = owner:GetActiveWeapon()
             if activeWeapon ~= self then return end
 
             self:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
             local tr = {}
-            tr.start = self:GetOwner():M9K_GetShootPos()
-            tr.endpos = self:GetOwner():M9K_GetShootPos() + 100 * self:GetOwner():GetAimVector()
-            tr.filter = { self:GetOwner() }
+            tr.start = owner:M9K_GetShootPos()
+            tr.endpos = owner:M9K_GetShootPos() + 100 * owner:GetAimVector()
+            tr.filter = { owner }
             local trace = util.TraceLine( tr )
             self:TakePrimaryAmmo( 1 )
             if (CLIENT) then return end
@@ -86,7 +91,7 @@ function SWEP:PrimaryAttack()
             proxy:SetPos( trace.HitPos + trace.HitNormal )
             trace.HitNormal.z = -trace.HitNormal.z
             proxy:SetAngles( trace.HitNormal:Angle() - Angle( 90, 180, 0 ) )
-            proxy.ProxyBombOwner = self:GetOwner()
+            proxy.ProxyBombOwner = owner
             proxy:Spawn()
 
             local boxes
@@ -109,7 +114,7 @@ function SWEP:PrimaryAttack()
             parentme[16] = "m9k_ammo_winchester"
 
             if trace.Entity ~= nil and trace.Entity:IsValid() then
-                for k, v in pairs( parentme ) do
+                for k, v in ipairs( parentme ) do
                     if trace.Entity:GetClass() == v then
                         boxes = trace.Entity
                     end

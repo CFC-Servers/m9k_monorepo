@@ -76,18 +76,23 @@ local ammoBoxes = {
     ["m9k_ammo_winchester"] = true
 }
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then
         return
     end
 
+    local owner = entity_GetOwner(self)
+
     self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-    local wait = self:GetOwner():GetViewModel():SequenceDuration() + .75
+    local wait = owner:GetViewModel():SequenceDuration() + .75
     self:SetNextPrimaryFire( CurTime() + wait )
 
     timer.Simple( wait, function()
         if not IsValid( self ) then return end
-        local owner = self:GetOwner()
+        local owner = owner
         if not IsValid( owner ) then return end
 
         local activeWeapon = owner:GetActiveWeapon()
@@ -106,9 +111,9 @@ function SWEP:PrimaryAttack()
 
     if CLIENT then return end
 
-    timer.Simple( self:GetOwner():GetViewModel():SequenceDuration(), function()
+    timer.Simple( owner:GetViewModel():SequenceDuration(), function()
         if not IsValid( self ) then return end
-        local owner = self:GetOwner()
+        local owner = owner
         if not IsValid( owner ) then return end
 
         local activeWeapon = owner:GetActiveWeapon()
@@ -170,7 +175,9 @@ function SWEP:Suicide()
     if self.SuicideExploded then return end
     self.SuicideExploded = true
 
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
+
+    local owner = owner
     local effectdata = EffectData()
     effectdata:SetOrigin( owner:GetPos() )
     util.Effect( "ThumperDust", effectdata )
@@ -186,7 +193,7 @@ function SWEP:Suicide()
     util.Effect( "m9k_gdcw_cinematicboom", boomEffect )
 
     util.ScreenShake( owner:GetPos(), 2000, 255, 2.5, 1250 )
-    util.BlastDamage( self, self:GetOwner(), owner:GetPos(), 500, 500 )
+    util.BlastDamage( self, owner, owner:GetPos(), 500, 500 )
 
     owner:EmitSound( "C4.Explode", 70 )
 end
@@ -208,19 +215,22 @@ function SWEP:SecondaryAttack()
     elseif self.Timer == 0 then
         self.Timer = 5
     end
-    self:GetOwner():EmitSound( "C4.PlantSound" )
+
+    local owner = entity_GetOwner(self)
+
+    owner:EmitSound( "C4.PlantSound" )
 
     if CLIENT then
         if self.Timer == 0 then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
+            owner:PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
         else
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, string.format( "Timer set to %s Seconds.", self.Timer ) )
+            owner:PrintMessage( HUD_PRINTCENTER, string.format( "Timer set to %s Seconds.", self.Timer ) )
         end
     end
 end
 
 function SWEP:Think()
     if self.BetterBeDead then
-        self:GetOwner():Kill()
+        entity_GetOwner(self):Kill()
     end
 end

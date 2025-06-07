@@ -22,11 +22,13 @@ SWEP.HoldType               = "shotgun" -- how others view you carrying the weap
 
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = false
-SWEP.ViewModel              = "models/weapons/v_doublebarrl.mdl" -- Weapon view model
+SWEP.ViewModel              = "models/weapons/chands_doublebarrl.mdl" -- Weapon view model
 SWEP.WorldModel             = "models/weapons/w_double_barrel_shotgun.mdl" -- Weapon world model
 SWEP.Base                   = "bobs_shotty_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
+
+SWEP.UseHands               = true
 
 SWEP.Primary.Sound          = "Double_Barrel.Single" -- script that calls the primary fire sound
 SWEP.Primary.RPM            = 180 -- This is in Rounds Per Minute
@@ -66,29 +68,34 @@ local function dmgMultCallback( _, _, new )
 end
 cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "dbarrel" )
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:SecondaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
+    local owner = entity_GetOwner(self)
+
+    local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
 
-    if self:GetOwner():IsPlayer() then
+    if owner:IsPlayer() then
         if self:Clip1() == 2 then
-            if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+            if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
                 self:ShootBulletInformation2()
                 self:TakePrimaryAmmo( 2 )
                 self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
                 self:EmitSound( self.Secondary.Sound )
-                --self:GetOwner():ViewPunch(Angle(-15, math.Rand(-20,-25), 0))
+                --owner:ViewPunch(Angle(-15, math.Rand(-20,-25), 0))
 
                 local fx = EffectData()
                 fx:SetEntity( self )
-                fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
-                fx:SetNormal( self:GetOwner():GetAimVector() )
+                fx:SetOrigin( owner:M9K_GetShootPos() )
+                fx:SetNormal( owner:GetAimVector() )
                 fx:SetAttachment( self.MuzzleAttachment )
 
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                self:GetOwner():MuzzleFlash()
+                owner:SetAnimation( PLAYER_ATTACK1 )
+                owner:MuzzleFlash()
                 self:SetNextSecondaryFire( CurTime() + 1 / ((self.Primary.RPM / 2) / 60) )
                 self:CheckWeaponsAndAmmo()
                 self.RicochetCoin = (math.random( 1, 8 ))
@@ -106,11 +113,13 @@ end
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
+    local owner = entity_GetOwner(self)
+
+    local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
 
-    if self:GetOwner():IsPlayer() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+    if owner:IsPlayer() then
+        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( 1 )
 
@@ -119,24 +128,24 @@ function SWEP:PrimaryAttack()
 
             local fx = EffectData()
             fx:SetEntity( self )
-            fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
-            fx:SetNormal( self:GetOwner():GetAimVector() )
+            fx:SetOrigin( owner:M9K_GetShootPos() )
+            fx:SetNormal( owner:GetAimVector() )
             fx:SetAttachment( self.MuzzleAttachment )
 
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:GetOwner():MuzzleFlash()
+            owner:SetAnimation( PLAYER_ATTACK1 )
+            owner:MuzzleFlash()
             self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             self:CheckWeaponsAndAmmo()
             self.RicochetCoin = (math.random( 1, 4 ))
             if self.BoltAction then self:BoltBack() end
         end
-    elseif self:GetOwner():IsNPC() then
+    elseif owner:IsNPC() then
         self:ShootBulletInformation()
         self:TakePrimaryAmmo( 1 )
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self:EmitSound( self.Primary.Sound )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
         self.RicochetCoin = math.random( 1, 4 )
     end
@@ -158,50 +167,54 @@ end
    Desc: Reload is being pressed.
 -----------------------------------------------------------]]
 function SWEP:Reload()
-    if not IsValid( self:GetOwner() ) then return end
-    if not self:GetOwner():IsPlayer() then return end
+    local owner = entity_GetOwner(self)
+
+    if not IsValid( owner ) then return end
+    if not owner:IsPlayer() then return end
 
     local maxcap = self.Primary.ClipSize
     local spaceavail = self:Clip1()
     local shellz = maxcap - spaceavail + 1
 
-    if timer.Exists( "ShotgunReload" ) or self:GetOwner().NextReload > CurTime() or maxcap == spaceavail then return end
+    if timer.Exists( "ShotgunReload" ) or owner.NextReload > CurTime() or maxcap == spaceavail then return end
 
-    if self:GetOwner():IsPlayer() then
+    if owner:IsPlayer() then
         self:SetNextPrimaryFire( CurTime() + 3 )
         self:SetNextSecondaryFire( CurTime() + 3 )
 
         self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_START )
-        self:GetOwner():SetAnimation( PLAYER_RELOAD )
+        owner:SetAnimation( PLAYER_RELOAD )
 
-        self:GetOwner().NextReload = CurTime() + 1
+        owner.NextReload = CurTime() + 1
 
         if SERVER then
-            self:GetOwner():SetFOV( 0, 0.15 )
+            owner:SetFOV( 0, 0.15 )
             self:SetIronsights( false )
         end
 
-        if SERVER and self:GetOwner():Alive() then
-            local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
+        if SERVER and owner:Alive() then
+            local timerName = "ShotgunReload_" .. owner:UniqueID()
             timer.Create( timerName, self.ShellTime + .05, shellz, function()
-                if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-                if self:GetOwner():Alive() then
+                if not IsValid( self ) or not IsValid( owner ) then return end
+                if owner:Alive() then
                     self:InsertShell()
                 end
             end )
         end
-    elseif self:GetOwner():IsNPC() then
+    elseif owner:IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
     end
 end
 
 function SWEP:Think()
-    if not IsValid( self:GetOwner() ) then return end
-    if not self:GetOwner():IsPlayer() then return end
-    if self:GetOwner().NextReload == nil then self:GetOwner().NextReload = CurTime() + 1 end
+    local owner = entity_GetOwner(self)
 
-    if self.InsertingShell == true and self:GetOwner():Alive() then
-        vm = self:GetOwner():GetViewModel() -- its a messy way to do it, but holy shit, it works!
+    if not IsValid( owner ) then return end
+    if not owner:IsPlayer() then return end
+    if owner.NextReload == nil then owner.NextReload = CurTime() + 1 end
+
+    if self.InsertingShell == true and owner:Alive() then
+        vm = owner:GetViewModel() -- its a messy way to do it, but holy shit, it works!
         vm:ResetSequence( vm:LookupSequence( "after_reload" ) ) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
         vm:SetPlaybackRate( .01 ) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
         self.InsertingShell = false -- You get paid for this, what's your excuse?
@@ -209,30 +222,32 @@ function SWEP:Think()
 end
 
 function SWEP:InsertShell()
-    if not IsValid( self:GetOwner() ) then return end
-    if not self:GetOwner():IsPlayer() then return end
+    local owner = entity_GetOwner(self)
 
-    local timerName = "ShotgunReload_" .. self:GetOwner():UniqueID()
-    if self:GetOwner():Alive() then
-        local curwep = self:GetOwner():GetActiveWeapon()
+    if not IsValid( owner ) then return end
+    if not owner:IsPlayer() then return end
+
+    local timerName = "ShotgunReload_" .. owner:UniqueID()
+    if owner:Alive() then
+        local curwep = owner:GetActiveWeapon()
         if not IsValid( curwep ) or curwep:GetClass() ~= self.Gun then
             timer.Remove( timerName )
             return
         end
 
-        if self:Clip1() >= self.Primary.ClipSize or self:GetOwner():GetAmmoCount( self.Primary.Ammo ) <= 0 then
+        if self:Clip1() >= self.Primary.ClipSize or owner:GetAmmoCount( self.Primary.Ammo ) <= 0 then
             -- if clip is full or ammo is out, then...
             self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_FINISH ) -- send the pump anim
             timer.Remove( timerName ) -- kill the timer
             self:SetNextPrimaryFire( CurTime() + .55 )
             self:SetNextSecondaryFire( CurTime() + .55 )
-        elseif (self:Clip1() <= self.Primary.ClipSize and self:GetOwner():GetAmmoCount( self.Primary.Ammo ) >= 0) then
+        elseif (self:Clip1() <= self.Primary.ClipSize and owner:GetAmmoCount( self.Primary.Ammo ) >= 0) then
             self.InsertingShell = true --well, I tried!
             timer.Simple( .05, function()
                 if not IsValid( self ) then return end
                 self:ShellAnimCaller()
             end )
-            self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
+            owner:RemoveAmmo( 1, self.Primary.Ammo, false ) -- out of the frying pan
             self:SetClip1( self:Clip1() + 1 ) --  into the fire
         end
     else

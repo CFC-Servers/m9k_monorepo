@@ -59,13 +59,17 @@ SWEP.Primary.Sound = "Weapon_Knife.Slash" --woosh
 local punchtable = { "punchies/1.mp3", "punchies/2.mp3", "punchies/3.mp3", "punchies/4.mp3", "punchies/5.mp3", }
 local woosh = { "punchies/miss1.mp3", "punchies/miss2.mp3" }
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
 
 function SWEP:PrimaryAttack()
-    local vm = self:GetOwner():GetViewModel()
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
+    local owner = entity_GetOwner(self)
+
+    local vm = owner:GetViewModel()
+    if self:CanPrimaryAttack() and owner:IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if not self:GetOwner():KeyDown( IN_RELOAD ) then
-            self:GetOwner():ViewPunch( Angle( math.random( -5, 5 ), -10, 5 ) )
+        if not owner:KeyDown( IN_RELOAD ) then
+            owner:ViewPunch( Angle( math.random( -5, 5 ), -10, 5 ) )
             vm:SetSequence( vm:LookupSequence( "punchmiss2" ) ) --left
             vm:SetPlaybackRate( 1.5 )
             self:EmitSound( Sound( table.Random( woosh ) ) ) --slash in the wind sound here
@@ -74,12 +78,12 @@ function SWEP:PrimaryAttack()
                 timer.Simple( 0.1, function()
                     if not IsValid( self ) then return end
 
-                    if IsValid( self:GetOwner() ) and self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+                    if IsValid( owner ) and owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
                         self:Jab()
                     end
                 end )
             end
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
             self:SetNextSecondaryFire( CurTime() + 1 / ( self.Primary.RPM / 20 ) )
         end
@@ -87,22 +91,24 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Jab()
-    local pos = self:GetOwner():M9K_GetShootPos()
-    local ang = self:GetOwner():GetAimVector()
+    local owner = entity_GetOwner(self)
+
+    local pos = owner:M9K_GetShootPos()
+    local ang = owner:GetAimVector()
     local damagedice = math.Rand( 0.95, 1.05 )
     local pain = self.Primary.Damage * damagedice
 
     local slash = {
         start = pos,
         endpos = pos + ( ang * 50 ),
-        filter = self:GetOwner(),
+        filter = owner,
         mins = Vector( -5, -3, 0 ),
         maxs = Vector( 3, 3, 3 )
     }
 
-    self:GetOwner():LagCompensation( true )
+    owner:LagCompensation( true )
     local slashtrace = util.TraceHull( slash )
-    self:GetOwner():LagCompensation( false )
+    owner:LagCompensation( false )
 
     if slashtrace.Hit then
         targ = slashtrace.Entity
@@ -110,7 +116,7 @@ function SWEP:Jab()
             self:EmitSound( Sound( table.Random( punchtable ) ) )
             local paininfo = DamageInfo()
             paininfo:SetDamage( pain )
-            paininfo:SetAttacker( self:GetOwner() )
+            paininfo:SetAttacker( owner )
             paininfo:SetInflictor( self )
             paininfo:SetDamageForce( slashtrace.Normal * 5000 )
 
@@ -130,11 +136,13 @@ function SWEP:Jab()
 end
 
 function SWEP:SecondaryAttack()
-    local vm = self:GetOwner():GetViewModel()
-    if self:CanSecondaryAttack() and self:GetOwner():IsPlayer() then
+    local owner = entity_GetOwner(self)
+
+    local vm = owner:GetViewModel()
+    if self:CanSecondaryAttack() and owner:IsPlayer() then
         self:SendWeaponAnim( ACT_VM_IDLE )
-        if not self:GetOwner():KeyDown( IN_RELOAD ) then
-            self:GetOwner():ViewPunch( Angle( math.random( -5, 5 ), 10, -5 ) )
+        if not owner:KeyDown( IN_RELOAD ) then
+            owner:ViewPunch( Angle( math.random( -5, 5 ), 10, -5 ) )
             vm:SetSequence( vm:LookupSequence( "punchmiss1" ) ) --right
             vm:SetPlaybackRate( 1.5 )
             self:EmitSound( Sound( table.Random( woosh ) ) ) --slash in the wind sound here
@@ -142,7 +150,7 @@ function SWEP:SecondaryAttack()
             if SERVER then
                 timer.Simple( 0.1, function()
                     if not IsValid( self ) then return end
-                    local owner = self:GetOwner()
+                    local owner = owner
                     if not IsValid( owner ) then return end
                     if not owner:Alive() then return end
                     if owner:GetActiveWeapon() ~= self then return end
@@ -151,7 +159,7 @@ function SWEP:SecondaryAttack()
                 end )
             end
 
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
             self:SetNextSecondaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
             self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 20 ) )
         end
@@ -162,20 +170,24 @@ function SWEP:Reload()
 end
 
 function SWEP:Holster()
-    if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
-        local vm = self:GetOwner():GetViewModel()
+    local owner = entity_GetOwner(self)
+
+    if CLIENT and IsValid( owner ) and not owner:IsNPC() then
+        local vm = owner:GetViewModel()
         if IsValid( vm ) then
             self:ResetBonePositions( vm )
         end
     end
-    self:GetOwner():SetNWBool( "DukesAreUp", false )
+    owner:SetNWBool( "DukesAreUp", false )
     return true
 end
 
 function SWEP:IronSight()
-    if not self:GetOwner():IsNPC() then
-        if self:GetOwner():GetNWBool( "DukesAreUp" ) == nil then
-            self:GetOwner():SetNWBool( "DukesAreUp", false )
+    local owner = entity_GetOwner(self)
+
+    if not owner:IsNPC() then
+        if owner:GetNWBool( "DukesAreUp" ) == nil then
+            owner:SetNWBool( "DukesAreUp", false )
         end
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
@@ -183,22 +195,22 @@ function SWEP:IronSight()
         end
     end
 
-    if self:GetOwner():KeyDown( IN_RELOAD ) then
-        self:GetOwner():SetNWBool( "DukesAreUp", false )
+    if owner:KeyDown( IN_RELOAD ) then
+        owner:SetNWBool( "DukesAreUp", false )
     end
 
-    if not self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
-        self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+    if not owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_RELOAD ) then
+        owner:SetFOV( self.Secondary.IronFOV, 0.3 )
         self.IronSightsPos = self.SightsPos -- Bring it up
         self.IronSightsAng = self.SightsAng -- Bring it up
         self:SetIronsights( true )
-        self:GetOwner():SetNWBool( "DukesAreUp", true )
+        owner:SetNWBool( "DukesAreUp", true )
     end
 
-    if self:GetOwner():KeyReleased( IN_RELOAD ) and not self:GetOwner():KeyDown( IN_USE ) then
+    if owner:KeyReleased( IN_RELOAD ) and not owner:KeyDown( IN_USE ) then
         -- If the right click is released, then
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self:SetIronsights( false )
-        self:GetOwner():SetNWBool( "DukesAreUp", false )
+        owner:SetNWBool( "DukesAreUp", false )
     end
 end

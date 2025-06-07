@@ -90,12 +90,16 @@ SWEP.WElements = {}
 
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetTable = entMeta.GetTable
+local entity_GetOwner = entMeta.GetOwner
 
 function SWEP:Initialize()
     self.Reloadaftershoot = 0 -- Can't reload when firing
     self:SetHoldType( self.HoldType )
     self.OrigCrossHair = self.DrawCrosshair
-    if SERVER and self:GetOwner():IsNPC() then
+
+    local owner = entity_GetOwner(self)
+
+    if SERVER and owner:IsNPC() then
         self:SetNPCMinBurst( 3 )
         self:SetNPCMaxBurst( 10 ) -- None of this really matters but you need it here anyway
         self:SetNPCFireRate( 1 / (self.Primary.RPM / 60) )
@@ -117,9 +121,9 @@ function SWEP:Initialize()
         self:CreateModels( self.WElements ) -- create worldmodels
 
         -- -- init view model bone build function
-        if IsValid( self:GetOwner() ) and self:GetOwner():IsPlayer() then
-            if self:GetOwner():Alive() then
-                local vm = self:GetOwner():GetViewModel()
+        if IsValid( owner ) and owner:IsPlayer() then
+            if owner:Alive() then
+                local vm = owner:GetViewModel()
                 if IsValid( vm ) then
                     self:ResetBonePositions( vm )
                     -- -- Init viewmodel visibility
@@ -180,15 +184,19 @@ function SWEP:Deploy()
     end
     self:SetReloading( false )
 
-    if not self:GetOwner():IsNPC() and self:GetOwner() ~= nil and self.ResetSights and self:GetOwner():GetViewModel() ~= nil then
-        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+    local owner = entity_GetOwner(self)
+
+    if not owner:IsNPC() and owner ~= nil and self.ResetSights and owner:GetViewModel() ~= nil then
+        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
     return true
 end
 
 function SWEP:Holster()
-    if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
-        local vm = self:GetOwner():GetViewModel()
+    local owner = entity_GetOwner(self)
+
+    if CLIENT and IsValid( owner ) and not owner:IsNPC() then
+        local vm = owner:GetViewModel()
         if IsValid( vm ) then
             self:ResetBonePositions( vm )
         end
@@ -198,8 +206,10 @@ function SWEP:Holster()
 end
 
 function SWEP:OnRemove()
-    if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
-        local vm = self:GetOwner():GetViewModel()
+    local owner = entity_GetOwner(self)
+
+    if CLIENT and IsValid( owner ) and not owner:IsNPC() then
+        local vm = owner:GetViewModel()
         if IsValid( vm ) then
             self:ResetBonePositions( vm )
         end
@@ -208,7 +218,7 @@ end
 
 if CLIENT then
     function SWEP:IsFirstPerson()
-        local owner = self:GetOwner()
+        local owner = entity_GetOwner(self)
         local isLocalPlayer = owner == LocalPlayer()
         local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
 
@@ -226,7 +236,7 @@ if CLIENT then
         local ent = net.ReadEntity()
         if not IsValid( ent ) then return end
 
-        if ent.FireEffects and IsValid( ent:GetOwner() ) then
+        if ent.FireEffects and IsValid( entity_GetOwner(ent) ) then
             ent:FireEffects()
         end
     end )
@@ -250,7 +260,7 @@ if CLIENT then
 
         local muzzleAtt
         if isFirstPerson then
-            muzzleAtt = self:GetOwner():GetViewModel():GetAttachment( 1 )
+            muzzleAtt = entity_GetOwner(self):GetViewModel():GetAttachment( 1 )
         else
             muzzleAtt = self:GetAttachment( 1 )
         end
@@ -292,7 +302,7 @@ function SWEP:FireAnimationEvent( _pos, _ang, event, _options )
     if isCssMuzzleFlash and self.CSMuzzleFlashes then
         local data = EffectData()
         data:SetFlags( 0 )
-        data:SetEntity( self:GetOwner():GetViewModel() )
+        data:SetEntity( entity_GetOwner(self):GetViewModel() )
         data:SetAttachment( math.floor( ( event - 4991 ) / 10 ) )
         data:SetScale( 1 )
         util.Effect( "CS_MuzzleFlash", data )
@@ -309,11 +319,13 @@ local shellEffects = {
 }
 
 function SWEP:FireAnimation()
+    local owner = entity_GetOwner(self)
+
     -- Muzzle flash light
     if SERVER then
         local rf = RecipientFilter()
         rf:AddPVS( self:GetPos() )
-        rf:RemovePlayer( self:GetOwner() )
+        rf:RemovePlayer( owner )
 
         net.Start( "m9k_muzzleflash" )
         net.WriteEntity( self )
@@ -356,10 +368,10 @@ function SWEP:FireAnimation()
     -- Effects only clientside, for the owner and if we're in first person aiming down sights, we do this because we aren't using the "real" fire animation
     if not CLIENT then return end
     if not IsFirstTimePredicted() then return end
-    if self:GetOwner() ~= LocalPlayer() then return end
-    if EyePos() ~= self:GetOwner():EyePos() then return end
+    if owner ~= LocalPlayer() then return end
+    if EyePos() ~= owner:EyePos() then return end
 
-    local vm = self:GetOwner():GetViewModel()
+    local vm = owner:GetViewModel()
     if not self.NoMuzzleFlash then
         local muzzleAtt = vm:GetAttachment( 1 )
         if muzzleAtt then
@@ -389,7 +401,10 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
-    if self:GetOwner():KeyDown( IN_SPEED ) then
+
+    local owner = entity_GetOwner(self)
+
+    if owner:KeyDown( IN_SPEED ) then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         return false
     end
@@ -399,7 +414,7 @@ function SWEP:PrimaryAttack()
 
     self:FireAnimation()
 
-    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+    owner:SetAnimation( PLAYER_ATTACK1 )
     self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     self:CheckWeaponsAndAmmo()
 
@@ -412,7 +427,9 @@ local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
     if self:Clip1() ~= 0 then return end
 
-    local hasAmmo = self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) > 0
+    local owner = entity_GetOwner(self)
+
+    local hasAmmo = owner:GetAmmoCount( self:GetPrimaryAmmoType() ) > 0
     if hasAmmo then
         self:Reload()
         return
@@ -420,9 +437,9 @@ function SWEP:CheckWeaponsAndAmmo()
 
     if SERVER and weaponStrip:GetBool() then
         timer.Simple( 0.1, function()
-            if not IsValid( self ) or not IsValid( self:GetOwner() ) then return end
-            if self:GetOwner() == nil then return end
-            self:GetOwner():StripWeapon( self.Gun )
+            if not IsValid( self ) or not IsValid( owner ) then return end
+            if owner == nil then return end
+            owner:StripWeapon( self.Gun )
         end )
     end
 end
@@ -433,7 +450,7 @@ end
 -------------------------------------------------------]]
 function SWEP:ShootBulletInformation()
     local currentCone
-    if self:GetIronsightsActive() == true and self:GetOwner():KeyDown( IN_ATTACK2 ) then
+    if self:GetIronsightsActive() == true and entity_GetOwner(self):KeyDown( IN_ATTACK2 ) then
         currentCone = self.Primary.SpreadIronSights
     else
         currentCone = self.Primary.SpreadHip
@@ -643,6 +660,8 @@ local shotBiasMin  = GetConVar( "ai_shot_bias_min" ):GetFloat()
 local shotBiasMax  = GetConVar( "ai_shot_bias_max" ):GetFloat()
 
 local function getSpread( gun, dir, vec )
+    local owner = entity_GetOwner(gun)
+
     local right = dir:Angle():Right()
     local up = dir:Angle():Up()
 
@@ -652,8 +671,8 @@ local function getSpread( gun, dir, vec )
     local shotBias = ( ( shotBiasMax - shotBiasMin ) * bias ) + shotBiasMin
     local flatness = math.abs( bias ) * 0.5
 
-    local cmd = gun:GetOwner():GetCurrentCommand()
-    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. gun:GetOwner():GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
+    local cmd = owner:GetCurrentCommand()
+    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. owner:GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
     local s = 0
     local function getRnd()
         s = s + 1
@@ -680,7 +699,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
     bulletCount = bulletCount or 1
     aimcone = aimcone or 0
 
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
 
     if IsFirstTimePredicted() then
         local bulletDir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward()
@@ -766,11 +785,14 @@ end
 function SWEP:Reload()
     if self:GetReloading() then return end
     if self:Clip1() >= self.Primary.ClipSize then return end
-    if self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
+
+    local owner = entity_GetOwner(self)
+
+    if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
 
     if self:GetIronsights() then
         self:SetIronsights( false )
-        self:GetOwner():SetFOV( 0, self.IronSightTime )
+        owner:SetFOV( 0, self.IronSightTime )
         timer.Simple( self.IronSightTime, function()
             if not IsValid( self ) then return end
             self:Reload()
@@ -778,12 +800,12 @@ function SWEP:Reload()
         return
     end
 
-    if self:GetOwner():IsNPC() then
+    if owner:IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
         return
     end
 
-    if self:GetOwner():KeyDown( IN_USE ) then return end -- Mode switch
+    if owner:KeyDown( IN_USE ) then return end -- Mode switch
 
     if self.SilencerAttached then
         self:DefaultReload( ACT_VM_RELOAD_SILENCED )
@@ -795,19 +817,19 @@ function SWEP:Reload()
         self.DrawCrosshair = false
     end
 
-    self:GetOwner():SetFOV( 0, self.IronSightTime )
+    owner:SetFOV( 0, self.IronSightTime )
     self:SetIronsights( false )
     self:SetReloading( true )
 
-    local waitdammit = self:GetOwner():GetViewModel():SequenceDuration()
+    local waitdammit = owner:GetViewModel():SequenceDuration()
     timer.Simple( waitdammit, function()
         if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
+        if not IsValid( owner ) then return end
 
         self:SetReloading( false )
 
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and self.Scoped == false then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, self.IronSightTime )
+        if owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+            owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
             self:SetIronsights( true )
@@ -818,14 +840,14 @@ function SWEP:Reload()
             return
         end
 
-        if self:GetOwner():KeyDown( IN_SPEED ) then
+        if owner:KeyDown( IN_SPEED ) then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
             self.IronSightsPos = self.RunSightsPos -- Hold it down
             self.IronSightsAng = self.RunSightsAng -- Hold it down
             self:SetIronsights( true )
-            self:GetOwner():SetFOV( 0, self.IronSightTime )
+            owner:SetFOV( 0, self.IronSightTime )
             return
         end
 
@@ -838,7 +860,9 @@ end
 function SWEP:Silencer()
     if self.NextSilence > CurTime() then return end
 
-    self:GetOwner():SetFOV( 0, self.IronSightTime )
+    local owner = entity_GetOwner(self)
+
+    owner:SetFOV( 0, self.IronSightTime )
     self:SetIronsights( false )
     self:SetReloading( true ) -- i know we're not reloading but it works
 
@@ -850,16 +874,16 @@ function SWEP:Silencer()
         self.SilencerAttached = true
     end
 
-    local siltimer = CurTime() + self:GetOwner():GetViewModel():SequenceDuration() + 0.1
+    local siltimer = CurTime() + owner:GetViewModel():SequenceDuration() + 0.1
     if self:GetNextPrimaryFire() <= siltimer then
         self:SetNextPrimaryFire( siltimer )
     end
     self.NextSilence = siltimer
 
-    timer.Simple( self:GetOwner():GetViewModel():SequenceDuration() + 0.1, function()
+    timer.Simple( owner:GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
 
-        local owner = self:GetOwner()
+        local owner = owner
         if not IsValid( owner ) then return end
         self:SetReloading( false )
         if owner:KeyDown( IN_ATTACK2 ) then
@@ -889,25 +913,27 @@ function SWEP:Silencer()
 end
 
 function SWEP:SelectFireMode()
+    local owner = entity_GetOwner(self)
+
     if self.Primary.Automatic then
         self.Primary.Automatic = false
         self.NextFireSelect = CurTime() + .5
         if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTTALK, "Semi-automatic selected." )
+            owner:PrintMessage( HUD_PRINTTALK, "Semi-automatic selected." )
         end
         self:EmitSound( "Weapon_AR2.Empty" )
     else
         self.Primary.Automatic = true
         self.NextFireSelect = CurTime() + .5
         if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTTALK, "Automatic selected." )
+            owner:PrintMessage( HUD_PRINTTALK, "Automatic selected." )
         end
         self:EmitSound( "Weapon_AR2.Empty" )
     end
 end
 
 function SWEP:IronSight()
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
     local selfTbl = entity_GetTable( self )
@@ -1055,7 +1081,7 @@ if CLIENT then
     local oneVector = Vector( 1, 1, 1 )
 
     function SWEP:SetupWepSelectIcon()
-        if self:GetOwner() ~= LocalPlayer() then return end
+        if entity_GetOwner(self) ~= LocalPlayer() then return end
 
         local stored = weapons.GetStored( self:GetClass() )
         if not stored.WepSelectIconMaterial then
@@ -1087,7 +1113,7 @@ if CLIENT then
 
     SWEP.vRenderOrder = nil
     function SWEP:ViewModelDrawn()
-        local owner = self:GetOwner()
+        local owner = entity_GetOwner(self)
         if not IsValid( owner ) then return end
         local vm = owner:GetViewModel()
         if not IsValid( vm ) then return end
@@ -1208,14 +1234,16 @@ if CLIENT then
             end
         end
 
-        if IsValid( self:GetOwner() ) then
-            bone_ent = self:GetOwner()
+        local owner = entity_GetOwner(self)
+
+        if IsValid( owner ) then
+            bone_ent = owner
         else
             -- -- when the weapon is dropped
             bone_ent = self
         end
 
-        for _, name in pairs( selfTbl.wRenderOrder ) do
+        for _, name in ipairs( selfTbl.wRenderOrder ) do
             local v = selfTbl.WElements[name]
             if not v then
                 selfTbl.wRenderOrder = nil
@@ -1323,7 +1351,9 @@ if CLIENT then
                 pos, ang = m:GetTranslation(), m:GetAngles()
             end
 
-            if IsValid( self:GetOwner() ) and self:GetOwner():IsPlayer() and ent == self:GetOwner():GetViewModel() and self.ViewModelFlip then
+            local owner = entity_GetOwner(self)
+
+            if IsValid( owner ) and owner:IsPlayer() and ent == owner:GetViewModel() and self.ViewModelFlip then
                 ang.r = -ang.r ---- Fixes mirrored models
             end
         end
@@ -1354,7 +1384,7 @@ if CLIENT then
                 local params = { ["$basetexture"] = v.sprite }
                 -- -- make sure we create a unique name based on the selected options
                 local tocheck = { "nocull", "additive", "vertexalpha", "vertexcolor", "ignorez" }
-                for i, j in pairs( tocheck ) do
+                for i, j in ipairs( tocheck ) do
                     if (v[j]) then
                         params["$" .. j] = 1
                         name = name .. "1"

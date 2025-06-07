@@ -15,6 +15,9 @@ ENT.ExtraPenDepth = 25
 local hitSounds = { "physics/metal/metal_grenade_impact_hard1.wav", "physics/metal/metal_grenade_impact_hard2.wav", "physics/metal/metal_grenade_impact_hard3.wav" };
 local fleshHitSounds = { "physics/flesh/flesh_impact_bullet1.wav", "physics/flesh/flesh_impact_bullet2.wav", "physics/flesh/flesh_impact_bullet3.wav" }
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 if SERVER then
     function ENT:DamageFunction( target, damager, physData )
         local damage = physData.Speed / 4
@@ -61,7 +64,7 @@ if SERVER then
         if not self.InFlight then return end
         self.InFlight = false
 
-        local damager = self:GetOwner()
+        local damager = entity_GetOwner(self)
         if not IsValid( damager ) then
             return
         end
