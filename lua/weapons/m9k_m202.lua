@@ -64,30 +64,37 @@ SWEP.WElements              = {
 
 --and now to the nasty parts of this swep...
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and not self:GetOwner():KeyDown( IN_SPEED ) then
+    local owner = entity_GetOwner(self)
+
+    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "M202F.single" )
         self:TakePrimaryAmmo( 1 )
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        owner:SetAnimation( PLAYER_ATTACK1 )
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
     self:CheckWeaponsAndAmmo()
 end
 
 function SWEP:FireRocket()
-    local aim = self:GetOwner():GetAimVector()
+    local owner = entity_GetOwner(self)
+
+    local aim = owner:GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():M9K_GetShootPos() + side * 5 + up * .5
+    local pos = owner:M9K_GetShootPos() + side * 5 + up * .5
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 0, 0, 0 ) )
         rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
+        rocket:SetOwner( owner )
         rocket:Spawn()
         rocket:Activate()
     end
@@ -96,25 +103,27 @@ end
 function SWEP:Reload()
     self:DefaultReload( ACT_VM_DRAW )
 
-    if not self:GetOwner():IsNPC() then
-        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+    local owner = entity_GetOwner(self)
+
+    if not owner:IsNPC() then
+        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
     if SERVER then
-        if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
-            self:GetOwner():SetFOV( 0, 0.3 )
+        if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
+            owner:SetFOV( 0, 0.3 )
             self:SetIronsights( false )
             self:SetReloading( true )
         end
-        local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
+        local waitdammit = (owner:GetViewModel():SequenceDuration())
         timer.Simple( waitdammit + .1,
             function()
-                if IsValid( self ) and IsValid( self:GetOwner() ) then
-                    if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
+                if IsValid( self ) and IsValid( owner ) then
+                    if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
                         self:SetReloading( false )
-                        if self:GetOwner():KeyDown( IN_ATTACK2 ) then
+                        if owner:KeyDown( IN_ATTACK2 ) then
                             if CLIENT then return end
                             if self.Scoped == false then
-                                self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+                                owner:SetFOV( self.Secondary.IronFOV, 0.3 )
                                 self.IronSightsPos = self.SightsPos -- Bring it up
                                 self.IronSightsAng = self.SightsAng -- Bring it up
                                 self:SetIronsights( true )
@@ -122,12 +131,12 @@ function SWEP:Reload()
                             else
                                 return
                             end
-                        elseif self:GetOwner():KeyDown( IN_SPEED ) then
+                        elseif owner:KeyDown( IN_SPEED ) then
                             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                             self.IronSightsPos = self.RunSightsPos -- Hold it down
                             self.IronSightsAng = self.RunSightsAng -- Hold it down
                             self:SetIronsights( true )
-                            self:GetOwner():SetFOV( 0, 0.3 )
+                            owner:SetFOV( 0, 0.3 )
                         else
                             return
                         end

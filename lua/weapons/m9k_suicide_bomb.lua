@@ -81,8 +81,10 @@ function SWEP:PrimaryAttack()
         return
     end
 
+    local owner = self:GetOwner()
+
     self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-    local wait = self:GetOwner():GetViewModel():SequenceDuration() + .75
+    local wait = owner:GetViewModel():SequenceDuration() + .75
     self:SetNextPrimaryFire( CurTime() + wait )
 
     timer.Simple( wait, function()
@@ -106,7 +108,7 @@ function SWEP:PrimaryAttack()
 
     if CLIENT then return end
 
-    timer.Simple( self:GetOwner():GetViewModel():SequenceDuration(), function()
+    timer.Simple( owner:GetViewModel():SequenceDuration(), function()
         if not IsValid( self ) then return end
         local owner = self:GetOwner()
         if not IsValid( owner ) then return end
@@ -186,7 +188,7 @@ function SWEP:Suicide()
     util.Effect( "m9k_gdcw_cinematicboom", boomEffect )
 
     util.ScreenShake( owner:GetPos(), 2000, 255, 2.5, 1250 )
-    util.BlastDamage( self, self:GetOwner(), owner:GetPos(), 500, 500 )
+    util.BlastDamage( self, owner, owner:GetPos(), 500, 500 )
 
     owner:EmitSound( "C4.Explode", 70 )
 end
@@ -208,13 +210,16 @@ function SWEP:SecondaryAttack()
     elseif self.Timer == 0 then
         self.Timer = 5
     end
-    self:GetOwner():EmitSound( "C4.PlantSound" )
+
+    local owner = self:GetOwner()
+
+    owner:EmitSound( "C4.PlantSound" )
 
     if CLIENT then
         if self.Timer == 0 then
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
+            owner:PrintMessage( HUD_PRINTCENTER, "WARNING! TIMER REDUCED TO ZERO!" )
         else
-            self:GetOwner():PrintMessage( HUD_PRINTCENTER, string.format( "Timer set to %s Seconds.", self.Timer ) )
+            owner:PrintMessage( HUD_PRINTCENTER, string.format( "Timer set to %s Seconds.", self.Timer ) )
         end
     end
 end

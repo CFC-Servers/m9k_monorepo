@@ -63,8 +63,12 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 
 --and now to the nasty parts of this swep...
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 function SWEP:PrimaryAttack()
-    local owner = self:GetOwner()
+    local owner = entity_GetOwner(self)
+
     if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
         self:EmitSound( "MATADORF.single" )
@@ -78,18 +82,20 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self:GetOwner():GetAimVector()
-    local pos = self:GetOwner():M9K_GetShootPos()
+    local owner = entity_GetOwner(self)
+
+    local aim = owner:GetAimVector()
+    local pos = owner:M9K_GetShootPos()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
+        rocket:SetOwner( owner )
         rocket:Spawn()
         rocket:Activate()
-        util.ScreenShake( self:GetOwner():M9K_GetShootPos(), 1000, 10, 0.3, 500 )
+        util.ScreenShake( owner:M9K_GetShootPos(), 1000, 10, 0.3, 500 )
     end
 end
 

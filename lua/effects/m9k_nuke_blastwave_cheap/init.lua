@@ -42,7 +42,7 @@ function EFFECT:Think()
     if self.TimeLeft > CurTime() then
         return true
     else
-        for __, particle in pairs( self.dustparticles ) do
+        for __, particle in ipairs( self.dustparticles ) do
             particle:SetStartAlpha( 100 )
             particle:SetEndAlpha( 0 )
         end

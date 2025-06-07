@@ -33,7 +33,9 @@ if SERVER then
     end
 
     function ENT:Think()
-        if not IsValid( self:GetOwner() ) then
+        local owner = self:GetOwner()
+
+        if not IsValid( owner ) then
             self:Remove()
             return
         end
@@ -43,7 +45,7 @@ if SERVER then
         end
 
         local nearby = ents.FindInSphere( self:GetPos(), self.Big and 600 or 150 )
-        for _, ent in pairs( nearby ) do
+        for _, ent in ipairs( nearby ) do
             if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
                 local trace = util.TraceLine( {
                     start = self:GetPos(),
@@ -56,7 +58,7 @@ if SERVER then
                     dmg:SetDamage( math.random( 20, 30 ) )
                     dmg:SetDamageType( DMG_POISON )
                     dmg:SetInflictor( self )
-                    dmg:SetAttacker( self:GetOwner() )
+                    dmg:SetAttacker( owner )
                     dmg:SetDamagePosition( self:WorldSpaceCenter() )
                     ent:TakeDamageInfo( dmg )
                 end

@@ -8,6 +8,9 @@ ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
+
 --Teta_Bonita, holy shit i wish I were half as good a coder as you.
 
 
@@ -137,7 +140,7 @@ if SERVER then
             --nuke 'em
             self.SplodePos.z = self.SplodePos.z + 384
 
-            for key, found in pairs( ents.FindInSphere( self.SplodePos, blastradius ) ) do
+            for key, found in ipairs( ents.FindInSphere( self.SplodePos, blastradius ) ) do
                 local foundspecs = self:GetSpecs( found )
                 if not foundspecs.valid then
                     continue
@@ -180,14 +183,14 @@ if SERVER then
             util.ScreenShake( self.SplodePos, 16, 230, 6 * self.YieldSlow, 16384, false )
 
             --shatter glass
-            for k, v in pairs( ents.FindByClass( "func_breakable_surf" ) ) do
+            for k, v in ipairs( ents.FindByClass( "func_breakable_surf" ) ) do
                 local dist = (v:GetPos() - self.SplodePos):Length()
                 if dist < 7 * blastradius then
                     v:Fire( "Shatter", "", dist / 17e3 )
                 end
             end
 
-            for k, v in pairs( ents.FindByClass( "func_breakable" ) ) do
+            for k, v in ipairs( ents.FindByClass( "func_breakable" ) ) do
                 local dist = (v:GetPos() - self.SplodePos):Length()
                 if dist < 7 * blastradius then
                     v:Fire( "break", "", dist / 17e3 )
@@ -292,7 +295,7 @@ if SERVER then
         -- New damage logic
         local DamagePerSecond = self.BaseDamage / ( 4 * math.pi * self.SplodeDist ^ 2 ) --physics, bitch
         local Damage = DamagePerSecond * FTime
-        for _, ent in pairs( ents.FindInSphere( self.SplodePos, self.SplodeDist ) ) do
+        for _, ent in ipairs( ents.FindInSphere( self.SplodePos, self.SplodeDist ) ) do
             if DamagePerSecond >= 250 and ent:IsPlayer() then
                 local pos = ent:GetPos()
                 local effectdata = EffectData()
@@ -315,7 +318,7 @@ if SERVER then
     end
 
     function ENT:OwnerCheck()
-        local owner = self:GetOwner()
+        local owner = entity_GetOwner(self)
         if IsValid( owner ) then
             return owner
         else

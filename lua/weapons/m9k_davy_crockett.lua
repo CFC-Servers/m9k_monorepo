@@ -67,10 +67,14 @@ end
 
 SWEP.FireDelay = SWEP.NextFireTime
 
+local entMeta = FindMetaTable( "Entity" )
+local entity_GetOwner = entMeta.GetOwner
 --and now to the nasty parts of this swep...
 function SWEP:Deploy()
-    if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then
-        timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
+    local owner = entity_GetOwner(self)
+
+    if timer.Exists( "davy_crocket_" .. owner:UniqueID() ) then
+        timer.Remove( "davy_crocket_" .. owner:UniqueID() )
     end
     self:SetIronsights( false )
     self:SendWeaponAnim( ACT_VM_DRAW )
@@ -78,26 +82,26 @@ function SWEP:Deploy()
     if GetConVar( "DavyCrockettAllowed" ):GetBool() then
         self.FireDelay = CurTime() + self.NextFireTime
         self:SetNextPrimaryFire( self.FireDelay )
-        self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in " .. self.Countdown .. " seconds." )
-        self:GetOwner().DCCount = self.Countdown - 1
-        timer.Create( "davy_crocket_" .. self:GetOwner():UniqueID(), 1, self.Countdown, function()
+        owner:PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in " .. self.Countdown .. " seconds." )
+        owner.DCCount = self.Countdown - 1
+        timer.Create( "davy_crocket_" .. owner:UniqueID(), 1, self.Countdown, function()
             if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
-            if not IsValid( self:GetOwner():GetActiveWeapon() ) then return end
-            if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
-                timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
+            if not IsValid( owner ) then return end
+            if not IsValid( owner:GetActiveWeapon() ) then return end
+            if owner:GetActiveWeapon():GetClass() ~= self.Gun then
+                timer.Remove( "davy_crocket_" .. owner:UniqueID() )
                 return
             end
 
-            self:DeployCountDownFunc( self:GetOwner().DCCount )
-            self:GetOwner().DCCount = self:GetOwner().DCCount - 1
+            self:DeployCountDownFunc( owner.DCCount )
+            owner.DCCount = owner.DCCount - 1
         end )
     else
-        self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
+        owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
     end
 
-    if not self:GetOwner():IsNPC() then
-        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+    if not owner:IsNPC() then
+        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
 
     self:SetHoldType( self.HoldType )
@@ -106,17 +110,19 @@ function SWEP:Deploy()
 end
 
 function SWEP:DeployCountDownFunc( count )
-    if not IsValid( self:GetOwner() ) then return end
-    if self:GetOwner():GetActiveWeapon():GetClass() ~= self.Gun then
-        timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() )
+    local owner = entity_GetOwner(self)
+
+    if not IsValid( owner ) then return end
+    if owner:GetActiveWeapon():GetClass() ~= self.Gun then
+        timer.Remove( "davy_crocket_" .. owner:UniqueID() )
         return
     end
     if count == 0 then
-        self:GetOwner():PrintMessage( HUD_PRINTTALK, "WARHEAD IS ARMED AND READY TO FIRE" )
+        owner:PrintMessage( HUD_PRINTTALK, "WARHEAD IS ARMED AND READY TO FIRE" )
     elseif count == 1 then
-        self:GetOwner():PrintMessage( HUD_PRINTTALK, count .. " second remaining!" )
+        owner:PrintMessage( HUD_PRINTTALK, count .. " second remaining!" )
     else
-        self:GetOwner():PrintMessage( HUD_PRINTTALK, count .. " seconds remaining" )
+        owner:PrintMessage( HUD_PRINTTALK, count .. " seconds remaining" )
     end
     if count <= 5 then
         self:EmitSound( "C4.PlantSound" )
@@ -124,18 +130,20 @@ function SWEP:DeployCountDownFunc( count )
 end
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self:GetOwner():KeyDown( IN_SPEED ) then
-        if self:GetOwner():IsPlayer() then
+    local owner = entity_GetOwner(self)
+
+    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not owner:KeyDown( IN_SPEED ) then
+        if owner:IsPlayer() then
             if GetConVar( "DavyCrockettAllowed" ) == nil or (GetConVar( "DavyCrockettAllowed" ):GetBool()) then
                 self:FireRocket()
                 self:EmitSound( "RPGF.single" )
                 self:TakePrimaryAmmo( 1 )
                 self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-                self:GetOwner():MuzzleFlash()
+                owner:SetAnimation( PLAYER_ATTACK1 )
+                owner:MuzzleFlash()
                 self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             else
-                self:GetOwner():PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
+                owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
             end
         end
         self:CheckWeaponsAndAmmo()
@@ -143,16 +151,18 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self:GetOwner():GetAimVector()
-    local pos = self:GetOwner():M9K_GetShootPos()
+    local owner = entity_GetOwner(self)
+
+    local aim = owner:GetAimVector()
+    local pos = owner:M9K_GetShootPos()
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
-        rocket.Owner = self:GetOwner()
+        rocket:SetOwner( owner )
+        rocket.Owner = owner
         rocket:Spawn()
         rocket:Activate()
     end
@@ -162,13 +172,15 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Holster()
-    if CLIENT and IsValid( self:GetOwner() ) and not self:GetOwner():IsNPC() then
-        local vm = self:GetOwner():GetViewModel()
+    local owner = entity_GetOwner(self)
+
+    if CLIENT and IsValid( owner ) and not owner:IsNPC() then
+        local vm = owner:GetViewModel()
         if IsValid( vm ) then
             self:ResetBonePositions( vm )
         end
     end
-    if timer.Exists( "davy_crocket_" .. self:GetOwner():UniqueID() ) then timer.Remove( "davy_crocket_" .. self:GetOwner():UniqueID() ) end
+    if timer.Exists( "davy_crocket_" .. owner:UniqueID() ) then timer.Remove( "davy_crocket_" .. owner:UniqueID() ) end
     return true
 end
 
@@ -194,69 +206,71 @@ end
 IronSight
 -------------------------------------------------------]]
 function SWEP:IronSight()
-    if not IsValid( self:GetOwner() ) then return end
+    local owner = entity_GetOwner(self)
 
-    if not self:GetOwner():IsNPC() then
+    if not IsValid( owner ) then return end
+
+    if not owner:IsNPC() then
         if self.ResetSights and CurTime() >= self.ResetSights then
             self.ResetSights = nil
         end
     end
 
     if self.CanBeSilenced and self.NextSilence < CurTime() then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_ATTACK2 ) then
+        if owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_ATTACK2 ) then
             self:Silencer()
         end
     end
 
     if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetReloading()) then
-        if self:GetOwner():KeyDown( IN_USE ) and self:GetOwner():KeyPressed( IN_RELOAD ) then
+        if owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_RELOAD ) then
             self:SelectFireMode()
         end
     end
 
     -- --copy this...
-    if self:GetOwner():KeyPressed( IN_SPEED ) and not (self:GetReloading()) then -- If you are running
+    if owner:KeyPressed( IN_SPEED ) and not (self:GetReloading()) then -- If you are running
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
         self:SetIronsights( true )
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = false
     end
 
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you release run then
+    if owner:KeyReleased( IN_SPEED ) then -- If you release run then
         self:SetIronsights( false )
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
     end -- Shoulder the gun
 
     -- --down to this
-    if not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
         -- --If the key E (Use Key) is not pressed, then
 
-        if self:GetOwner():KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
-            self:GetOwner():SetFOV( self.Secondary.IronFOV, 0.3 )
+        if owner:KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
+            owner:SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
-            self:SetIronsights( true, self:GetOwner() )
+            self:SetIronsights( true, owner )
             self.DrawCrosshair = false
 
             if CLIENT then return end
         end
     end
 
-    if self:GetOwner():KeyReleased( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if owner:KeyReleased( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
         -- --If the right click is released, then
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
         self:SetIronsights( false )
 
         if CLIENT then return end
     end
 
-    if self:GetOwner():KeyDown( IN_ATTACK2 ) and not self:GetOwner():KeyDown( IN_USE ) and not self:GetOwner():KeyDown( IN_SPEED ) then
+    if owner:KeyDown( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

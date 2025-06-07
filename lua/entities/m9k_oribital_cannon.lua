@@ -297,7 +297,7 @@ if SERVER then
         end )
         timer.Simple( 2.25, function() if IsValid( self ) then self:MassiveFuckingExplosion( ground, sky ) end end )
         timer.Simple( 1.5, function()
-            for k, v in pairs( player.GetAll() ) do
+            for k, v in ipairs( player.GetAll() ) do
                 if IsValid( v ) then
                     v:EmitSound( "npc/strider/fire.wav" )
                     --sound.Play("npc/strider/fire.wav", v:GetPos(), 100, 100, 1)
@@ -423,7 +423,7 @@ if SERVER then
         end )
         timer.Simple( 2.25, function() if IsValid( self ) then self:MassiveFuckingExplosionPerson( ground, sky ) end end )
         timer.Simple( 1.5, function()
-            for k, v in pairs( player.GetAll() ) do
+            for k, v in ipairs( player.GetAll() ) do
                 sound.Play( "npc/strider/fire.wav", v:GetPos(), 100, 100 )
             end
         end )
@@ -520,7 +520,7 @@ if SERVER then
         smokering:SetScale( 1 ) --otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
         util.Effect( "m9k_orbital_smokering", smokering )
 
-        for k, v in pairs( player.GetAll() ) do
+        for k, v in ipairs( player.GetAll() ) do
             if IsValid( v ) then
                 v:EmitSound( "ambient/explosions/explode_6.wav" )
                 --sound.Play("ambient/explosions/explode_6.wav", v:GetPos(), 100, 100, 1)
@@ -620,7 +620,7 @@ if SERVER then
         smokering:SetScale( 1 ) --otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
         util.Effect( "m9k_orbital_smokering", smokering )
 
-        for k, v in pairs( player.GetAll() ) do
+        for k, v in ipairs( player.GetAll() ) do
             sound.Play( "ambient/explosions/explode_6.wav", v:GetPos(), 100, 100 )
         end
     end
