@@ -76,15 +76,12 @@ local ammoBoxes = {
     ["m9k_ammo_winchester"] = true
 }
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then
         return
     end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
     local wait = owner:GetViewModel():SequenceDuration() + .75
@@ -92,7 +89,7 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( wait, function()
         if not IsValid( self ) then return end
-        local owner = owner
+        local owner = self:GetOwner()
         if not IsValid( owner ) then return end
 
         local activeWeapon = owner:GetActiveWeapon()
@@ -113,7 +110,7 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( owner:GetViewModel():SequenceDuration(), function()
         if not IsValid( self ) then return end
-        local owner = owner
+        local owner = self:GetOwner()
         if not IsValid( owner ) then return end
 
         local activeWeapon = owner:GetActiveWeapon()
@@ -175,9 +172,7 @@ function SWEP:Suicide()
     if self.SuicideExploded then return end
     self.SuicideExploded = true
 
-    local owner = entity_GetOwner(self)
-
-    local owner = owner
+    local owner = self:GetOwner()
     local effectdata = EffectData()
     effectdata:SetOrigin( owner:GetPos() )
     util.Effect( "ThumperDust", effectdata )
@@ -216,7 +211,7 @@ function SWEP:SecondaryAttack()
         self.Timer = 5
     end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     owner:EmitSound( "C4.PlantSound" )
 
@@ -231,6 +226,6 @@ end
 
 function SWEP:Think()
     if self.BetterBeDead then
-        entity_GetOwner(self):Kill()
+        self:GetOwner():Kill()
     end
 end

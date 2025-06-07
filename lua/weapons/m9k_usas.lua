@@ -80,11 +80,8 @@ SWEP.WElements = {
     }
 }
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:Reload()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:Clip1() < self.Primary.ClipSize and owner:GetAmmoCount( "buckshot" ) > 0 and not self:GetReloading() then
         self:SendWeaponAnim( ACT_SHOTGUN_RELOAD_START )
@@ -112,7 +109,7 @@ function SWEP:Reload()
 end
 
 function SWEP:ReloadFinish()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     self:DefaultReload( ACT_SHOTGUN_RELOAD_FINISH )
     if not owner:IsNPC() then

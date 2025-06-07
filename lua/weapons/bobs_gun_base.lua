@@ -883,7 +883,7 @@ function SWEP:Silencer()
     timer.Simple( owner:GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
 
-        local owner = owner
+        local owner = entity_GetOwner(self)
         if not IsValid( owner ) then return end
         self:SetReloading( false )
         if owner:KeyDown( IN_ATTACK2 ) then

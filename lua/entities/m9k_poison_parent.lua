@@ -12,9 +12,6 @@ ENT.DisableDuplicator = true
 ENT.Big = false
 ENT.TimeLeft = 0
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 if SERVER then
     AddCSLuaFile()
 
@@ -36,7 +33,7 @@ if SERVER then
     end
 
     function ENT:Think()
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
 
         if not IsValid( owner ) then
             self:Remove()

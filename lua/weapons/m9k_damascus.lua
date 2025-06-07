@@ -71,7 +71,6 @@ function SWEP:PrimaryAttack()
     if not owner:IsPlayer() then return end
     if not self:CanPrimaryAttack() then return end
 
-    local owner = owner
     local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local vm = owner:GetViewModel()

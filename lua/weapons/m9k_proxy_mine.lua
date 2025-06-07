@@ -62,12 +62,9 @@ SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
 --and now to the nasty parts of this swep...
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
 
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
