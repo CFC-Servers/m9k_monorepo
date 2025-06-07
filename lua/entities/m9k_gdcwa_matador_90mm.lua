@@ -10,9 +10,6 @@ ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 if SERVER then
     AddCSLuaFile()
 
@@ -21,7 +18,7 @@ if SERVER then
 
         self.flightvector = self:GetUp() * ((250 * 52.5) / 66) * M9K.TickspeedMult
         self.timeleft = CurTime() + 10
-        self.Owner = entity_GetOwner(self)
+        self.Owner = self:GetOwner()
         self:SetModel( "models/props_junk/garbage_glassbottle001a.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,
         self:SetMoveType( MOVETYPE_NONE ) --after all, gmod is a physics
@@ -47,7 +44,7 @@ if SERVER then
         local trace = {}
         trace.start = self:GetPos()
         trace.endpos = self:GetPos() + self.flightvector
-        trace.filter = { entity_GetOwner(self), self }
+        trace.filter = { self:GetOwner(), self }
         local tr = util.TraceLine( trace )
 
 

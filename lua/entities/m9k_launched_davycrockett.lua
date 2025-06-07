@@ -10,9 +10,6 @@ ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 if SERVER then
     AddCSLuaFile()
 
@@ -56,7 +53,7 @@ if SERVER then
         local trace = {}
         trace.start = self:GetPos()
         trace.endpos = self:GetPos() + self.flightvector
-        trace.filter = { entity_GetOwner(self), self }
+        trace.filter = { self:GetOwner(), self }
         local tr = util.TraceLine( trace )
 
 
