@@ -8,6 +8,8 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
+ENT.ExplosionDamage = 600
+ENT.ExplosionRadius = 200
 
 if SERVER then
     AddCSLuaFile()
@@ -23,11 +25,15 @@ if SERVER then
         self:SetColor( Color( 0, 0, 0, 0 ) ) --fix this later
         self.CanTool = false
 
-        timer.Simple( .3, function() if IsValid( self ) then self:Blammo() end end )
+        timer.Simple( .3, function()
+            if IsValid( self ) then
+                self:Blammo()
+            end
+        end )
     end
 
     function ENT:Think()
-        if not IsValid( self.Owner ) then
+        if not IsValid( self:GetOwner() ) then
             self:Remove()
             return
         end
@@ -36,39 +42,27 @@ if SERVER then
 
     function ENT:Blammo()
         local pos = self:GetPos()
-        local damage = 600
-        local radius = 200
-        local nitro_owner
+        local owner = self:GetOwner()
+        if not IsValid( owner ) then return end
 
-        if IsValid( self ) then
-            if IsValid( self.Owner ) then
-                nitro_owner = self.Owner
-            elseif IsValid( self ) then
-                nitro_owner = self
-            end
-        end
-        if not IsValid( nitro_owner ) then return end
-
-        util.BlastDamage( self, nitro_owner, pos, radius, damage )
+        util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
         util.ScreenShake( pos, 500, 500, .25, 500 )
         sound.Play( "ambient/explosions/explode_7.wav", pos, 80 )
 
-        local scorchstart = self:GetPos() + ((Vector( 0, 0, 1 )) * 5)
-        local scorchend = self:GetPos() + ((Vector( 0, 0, -1 )) * 5)
+        local scorchstart = self:GetPos() + ( ( Vector( 0, 0, 1 ) ) * 5 )
+        local scorchend = self:GetPos() + ( ( Vector( 0, 0, -1 ) ) * 5 )
         util.Decal( "Scorch", scorchstart, scorchend )
 
-        for k, v in pairs( ents.FindInSphere( pos, 300 ) ) do
-            if IsValid( v ) then
-                if IsValid( v:GetPhysicsObject() ) then
-                    local pushy = {}
-                    pushy.start = pos
-                    pushy.endpos = v:GetPos()
-                    pushy.filter = self
-                    local pushtrace = util.TraceLine( pushy )
-                    if not pushtrace.HitWorld then
-                        local thing = v:GetPhysicsObject()
-                        thing:AddVelocity( pushtrace.Normal * 400 )
-                    end
+        for _, ent in pairs( ents.FindInSphere( pos, 300 ) ) do
+            if IsValid( ent:GetPhysicsObject() ) then
+                local pushy = {}
+                pushy.start = pos
+                pushy.endpos = ent:GetPos()
+                pushy.filter = self
+                local pushtrace = util.TraceLine( pushy )
+                if not pushtrace.HitWorld then
+                    local thing = ent:GetPhysicsObject()
+                    thing:AddVelocity( pushtrace.Normal * 400 )
                 end
             end
         end
