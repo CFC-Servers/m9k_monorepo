@@ -67,7 +67,6 @@ PhysicsCollide
         local vaporize = ents.Create( "m9k_nitro_vapor" )
         vaporize:SetPos( pos )
         vaporize:SetOwner( owner )
-        vaporize.Owner = owner
         vaporize:Spawn()
 
         self:Remove()
