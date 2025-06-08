@@ -54,17 +54,15 @@ if SERVER then
         util.Decal( "Scorch", scorchstart, scorchend )
 
         for k, v in ipairs( ents.FindInSphere( pos, 300 ) ) do
-            if IsValid( v ) then
-                if IsValid( v:GetPhysicsObject() ) then
-                    local pushy = {}
-                    pushy.start = pos
-                    pushy.endpos = v:GetPos()
-                    pushy.filter = self
-                    local pushtrace = util.TraceLine( pushy )
-                    if not pushtrace.HitWorld then
-                        local thing = v:GetPhysicsObject()
-                        thing:AddVelocity( pushtrace.Normal * 400 )
-                    end
+            if IsValid( v:GetPhysicsObject() ) then
+                local pushy = {}
+                pushy.start = pos
+                pushy.endpos = v:GetPos()
+                pushy.filter = self
+                local pushtrace = util.TraceLine( pushy )
+                if not pushtrace.HitWorld then
+                    local thing = v:GetPhysicsObject()
+                    thing:AddVelocity( pushtrace.Normal * 400 )
                 end
             end
         end
