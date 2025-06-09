@@ -63,11 +63,8 @@ SWEP.RunSightsAng           = Vector( -20.1104, 35.1164, -12.959 )
 
 --and now to the nasty parts of this swep...
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
@@ -82,7 +79,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
     local pos = owner:M9K_GetShootPos()

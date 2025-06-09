@@ -14,9 +14,6 @@ ENT.ExplosionEffectScale = 2 -- Size of the explosion
 ENT.ExplosionRadius = 150
 ENT.ExplosionDamage = 350
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 if SERVER then
     AddCSLuaFile()
 
@@ -34,7 +31,7 @@ if SERVER then
     end
 
     function ENT:Think()
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
 
         local trace = {
             start = self:GetPos(),
@@ -81,7 +78,7 @@ if SERVER then
 
     function ENT:DirectHit( tr )
         if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() ) then
-            tr.Entity:TakeDamage( 150, entity_GetOwner(self), self )
+            tr.Entity:TakeDamage( 150, self:GetOwner(), self )
         end
 
         local effectdata = EffectData()
@@ -115,7 +112,7 @@ if SERVER then
     end
 
     function ENT:Explosion( pos, normal, mattype )
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
 
         if not IsValid( owner ) then
             self:Remove()

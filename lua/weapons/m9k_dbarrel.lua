@@ -68,13 +68,10 @@ local function dmgMultCallback( _, _, new )
 end
 cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "dbarrel" )
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:SecondaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
@@ -113,7 +110,7 @@ end
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
@@ -167,7 +164,7 @@ end
    Desc: Reload is being pressed.
 -----------------------------------------------------------]]
 function SWEP:Reload()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
@@ -207,7 +204,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
@@ -222,7 +219,7 @@ function SWEP:Think()
 end
 
 function SWEP:InsertShell()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end

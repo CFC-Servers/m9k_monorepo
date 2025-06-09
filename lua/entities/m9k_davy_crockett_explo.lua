@@ -8,9 +8,6 @@ ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 --Teta_Bonita, holy shit i wish I were half as good a coder as you.
 
 
@@ -318,7 +315,7 @@ if SERVER then
     end
 
     function ENT:OwnerCheck()
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
         if IsValid( owner ) then
             return owner
         else

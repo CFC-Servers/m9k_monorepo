@@ -59,11 +59,8 @@ SWEP.Primary.Sound = "Weapon_Knife.Slash" --woosh
 local punchtable = { "punchies/1.mp3", "punchies/2.mp3", "punchies/3.mp3", "punchies/4.mp3", "punchies/5.mp3", }
 local woosh = { "punchies/miss1.mp3", "punchies/miss2.mp3" }
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local vm = owner:GetViewModel()
     if self:CanPrimaryAttack() and owner:IsPlayer() then
@@ -91,7 +88,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Jab()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
@@ -136,7 +133,7 @@ function SWEP:Jab()
 end
 
 function SWEP:SecondaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local vm = owner:GetViewModel()
     if self:CanSecondaryAttack() and owner:IsPlayer() then
@@ -150,7 +147,7 @@ function SWEP:SecondaryAttack()
             if SERVER then
                 timer.Simple( 0.1, function()
                     if not IsValid( self ) then return end
-                    local owner = entity_GetOwner(self)
+                    local owner = self:GetOwner()
                     if not IsValid( owner ) then return end
                     if not owner:Alive() then return end
                     if owner:GetActiveWeapon() ~= self then return end
@@ -170,7 +167,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Holster()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -183,7 +180,7 @@ function SWEP:Holster()
 end
 
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not owner:IsNPC() then
         if owner:GetNWBool( "DukesAreUp" ) == nil then

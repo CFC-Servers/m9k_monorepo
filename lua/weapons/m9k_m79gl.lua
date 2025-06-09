@@ -58,11 +58,8 @@ SWEP.SightsAng              = Vector( 1.294, 0.15, 0 )
 SWEP.RunSightsPos           = Vector( 3.279, -5.574, 0 )
 SWEP.RunSightsAng           = Vector( -1.721, 49.917, 0 )
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:Deploy()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
@@ -92,7 +89,7 @@ end
 function SWEP:PrimaryAttack()
     if self:GetNextPrimaryFire() > CurTime() then return end
     if self:CanPrimaryAttack() then
-        local owner = entity_GetOwner(self)
+        local owner = self:GetOwner()
 
         if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
             self:FireRocket()
@@ -110,7 +107,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
@@ -129,7 +126,7 @@ function SWEP:FireRocket()
 end
 
 function SWEP:Reload()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
@@ -169,7 +166,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end

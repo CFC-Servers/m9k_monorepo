@@ -67,11 +67,9 @@ end
 
 SWEP.FireDelay = SWEP.NextFireTime
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
 --and now to the nasty parts of this swep...
 function SWEP:Deploy()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if timer.Exists( "davy_crocket_" .. owner:UniqueID() ) then
         timer.Remove( "davy_crocket_" .. owner:UniqueID() )
@@ -110,7 +108,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:DeployCountDownFunc( count )
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
     if owner:GetActiveWeapon():GetClass() ~= self.Gun then
@@ -130,7 +128,7 @@ function SWEP:DeployCountDownFunc( count )
 end
 
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not owner:KeyDown( IN_SPEED ) then
         if owner:IsPlayer() then
@@ -151,7 +149,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
     local pos = owner:M9K_GetShootPos()
@@ -172,7 +170,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Holster()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -206,7 +204,7 @@ end
 IronSight
 -------------------------------------------------------]]
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
 

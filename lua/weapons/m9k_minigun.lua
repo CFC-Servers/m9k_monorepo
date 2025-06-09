@@ -54,11 +54,8 @@ SWEP.Primary.SpreadIronSights   = .035 -- Ironsight accuracy, should be the same
 SWEP.RunSightsPos           = Vector( 0, -11.148, -8.033 )
 SWEP.RunSightsAng           = Vector( 55.082, 0, 0 )
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:Reload()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     self:DefaultReload( ACT_VM_RELOAD )
     if not owner:IsNPC() then
@@ -88,7 +85,7 @@ function SWEP:MiniGunIdle( wait )
 end
 
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if owner:KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you run then
         self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second

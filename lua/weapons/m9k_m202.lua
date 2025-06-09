@@ -64,11 +64,8 @@ SWEP.WElements              = {
 
 --and now to the nasty parts of this swep...
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
@@ -82,7 +79,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
@@ -103,7 +100,7 @@ end
 function SWEP:Reload()
     self:DefaultReload( ACT_VM_DRAW )
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not owner:IsNPC() then
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()

@@ -62,9 +62,6 @@ SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
 SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
 SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
@@ -74,7 +71,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local vm = owner:GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
@@ -98,7 +95,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:HackNSlash()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
     local pos = owner:M9K_GetShootPos()
     local ang = owner:GetAimVector()
     local damagedice = math.Rand( 0.95, 1.05 )
@@ -142,7 +139,7 @@ end
 function SWEP:SecondaryAttack()
     if self:GetNextPrimaryFire() > CurTime() then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
         self:EmitSound( "Weapon_Knife.Slash" )

@@ -62,11 +62,8 @@ SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
 SWEP.SwordChop              = "weapons/blades/swordchop.mp3"
 SWEP.SwordClash             = "weapons/blades/clash.mp3"
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not owner:IsPlayer() then return end
     if not self:CanPrimaryAttack() then return end
@@ -129,7 +126,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Holster()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
     if not IsValid( owner ) then return end
 
     if CLIENT then
@@ -143,7 +140,7 @@ function SWEP:Holster()
 end
 
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not owner:IsNPC() then
         if owner:GetNWBool( "GuardIsUp" ) == nil then

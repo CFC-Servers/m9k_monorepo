@@ -50,9 +50,6 @@ SWEP.KnifeShink = "weapons/blades/hitwall.mp3"
 SWEP.KnifeSlash = "weapons/blades/slash.mp3"
 SWEP.KnifeStab = "weapons/blades/nastystab.mp3"
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
@@ -64,7 +61,7 @@ end
 function SWEP:IsBackStab( targ )
     if not targ:IsPlayer() and not targ:IsNPC() then return false end
 
-    local oEye = entity_GetOwner(self):EyeAngles()
+    local oEye = self:GetOwner():EyeAngles()
     oEye.p = 0
     oEye = oEye:Forward()
 
@@ -76,7 +73,7 @@ function SWEP:IsBackStab( targ )
 end
 
 function SWEP:SlashTrace()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
     local eyeAngles = owner:EyeAngles()
     local forward = eyeAngles:Forward()
     local shootPos = owner:M9K_GetShootPos()
@@ -117,7 +114,7 @@ function SWEP:Think()
             self.ShouldAttack = false
             local targ = slashtrace.Entity
 
-            local owner = entity_GetOwner(self)
+            local owner = self:GetOwner()
 
             if targ:IsPlayer() or targ:IsNPC() then
                 local damagedice = math.Rand( 0.98, 1.02 )
@@ -167,7 +164,7 @@ function SWEP:PrimaryAttack()
         self.Slash = self.Slash == 1 and 2 or 1
     end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     local vm = owner:GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
@@ -188,7 +185,7 @@ function SWEP:SecondaryAttack()
     self:SetNextPrimaryFire( CurTime() + 1.25 )
     self:SetNextSecondaryFire( CurTime() + 1.25 )
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
     local vm = owner:GetViewModel()
 
     self:SendWeaponAnim( ACT_VM_IDLE )
@@ -209,7 +206,7 @@ function SWEP:ThrowKnife()
     if IsFirstTimePredicted() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
-            local owner = entity_GetOwner(self)
+            local owner = self:GetOwner()
 
             local knife = ents.Create( "m9k_thrown_spec_knife" )
             knife:SetAngles( owner:EyeAngles() )

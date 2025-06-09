@@ -60,11 +60,8 @@ SWEP.RunSightsAng           = Vector( -12.954, -52.088, 0 )
 
 SWEP.Primary.Burst          = false
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:SelectFireMode()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self.Primary.Burst then
         self.Primary.Burst = false
@@ -94,7 +91,7 @@ end
 SWEP.Primary.PrevShots = SWEP.Primary.NumShots
 
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and owner:IsPlayer() then
         self.ShootThese = self.Primary.NumShots

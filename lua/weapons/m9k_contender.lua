@@ -66,11 +66,8 @@ SWEP.SightsAng                = Vector( 0, 0, 0 )
 SWEP.RunSightsPos             = Vector( 3.714, -1.429, 0 )
 SWEP.RunSightsAng             = Vector( -11, 31, 0 )
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
@@ -99,7 +96,7 @@ end
 function SWEP:UseBolt()
     if CLIENT then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) > 0 then
         if not IsValid( self ) or not IsValid( owner ) then return end
@@ -135,7 +132,7 @@ function SWEP:UseBolt()
 end
 
 function SWEP:Reload()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end
 

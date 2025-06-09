@@ -82,14 +82,11 @@ SWEP.VElements                = {
 SWEP.PoorBastard              = false
 SWEP.NextShoot                = 0
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
     self.PoorBastard = false
     if not IsFirstTimePredicted() then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and owner:IsPlayer() and self.NextShoot <= CurTime() then
         if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then

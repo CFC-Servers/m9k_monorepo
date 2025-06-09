@@ -57,11 +57,8 @@ SWEP.SightsAng              = Vector( 0, 0, 0 ) -- No, I don't know why
 SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
-local entMeta = FindMetaTable( "Entity" )
-local entity_GetOwner = entMeta.GetOwner
-
 function SWEP:PrimaryAttack()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
@@ -79,7 +76,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Throw()
-    local owner = entity_GetOwner(self)
+    local owner = self:GetOwner()
 
     self:SendWeaponAnim( ACT_VM_THROW )
     timer.Simple( 0.35, function()
