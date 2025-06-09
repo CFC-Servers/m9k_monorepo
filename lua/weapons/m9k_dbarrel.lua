@@ -22,13 +22,11 @@ SWEP.HoldType               = "shotgun" -- how others view you carrying the weap
 
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = false
-SWEP.ViewModel              = "models/weapons/chands_doublebarrl.mdl" -- Weapon view model
+SWEP.ViewModel              = "models/weapons/v_doublebarrl.mdl" -- Weapon view model
 SWEP.WorldModel             = "models/weapons/w_double_barrel_shotgun.mdl" -- Weapon world model
 SWEP.Base                   = "bobs_shotty_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
-
-SWEP.UseHands               = true
 
 SWEP.Primary.Sound          = "Double_Barrel.Single" -- script that calls the primary fire sound
 SWEP.Primary.RPM            = 180 -- This is in Rounds Per Minute
