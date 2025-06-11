@@ -85,9 +85,9 @@ function SWEP:SlashTrace()
         filter = owner,
     }
 
-    self:GetOwner():LagCompensation( true )
+    owner:LagCompensation( true )
     local slashtrace = util.TraceHull( trace )
-    self:GetOwner():LagCompensation( false )
+    owner:LagCompensation( false )
 
     if IsValid( slashtrace.Entity ) and self:IsBackStab( slashtrace.Entity ) then
         slashtrace.BackStab = true
@@ -113,6 +113,9 @@ function SWEP:Think()
         if slashtrace.Hit then
             self.ShouldAttack = false
             local targ = slashtrace.Entity
+
+            local owner = self:GetOwner()
+
             if targ:IsPlayer() or targ:IsNPC() then
                 local damagedice = math.Rand( 0.98, 1.02 )
                 local pain = self.AttackDamage * damagedice
@@ -130,14 +133,14 @@ function SWEP:Think()
                     local paininfo = DamageInfo()
                     paininfo:SetDamage( pain )
                     paininfo:SetDamageType( DMG_SLASH )
-                    paininfo:SetAttacker( self:GetOwner() )
+                    paininfo:SetAttacker( owner )
                     paininfo:SetInflictor( self )
                     paininfo:SetDamageForce( slashtrace.Normal * 20000 )
                     targ:TakeDamageInfo( paininfo )
                 end
             else
                 self:EmitSound( self.KnifeShink )
-                look = self:GetOwner():GetEyeTrace()
+                look = owner:GetEyeTrace()
                 util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
             end
         end
@@ -161,7 +164,9 @@ function SWEP:PrimaryAttack()
         self.Slash = self.Slash == 1 and 2 or 1
     end
 
-    local vm = self:GetOwner():GetViewModel()
+    local owner = self:GetOwner()
+
+    local vm = owner:GetViewModel()
     self:SendWeaponAnim( ACT_VM_IDLE )
     if self.Slash == 1 then
         vm:SetSequence( vm:LookupSequence( "midslash1" ) )
@@ -170,7 +175,7 @@ function SWEP:PrimaryAttack()
     end
 
     self:EmitSound( self.Primary.Sound )
-    self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+    owner:SetAnimation( PLAYER_ATTACK1 )
 
     self:StartAttack( 0.05, 0.15, self.PrimaryDamage, self.KnifeSlash, self.KnifeSlash )
 end
@@ -201,19 +206,21 @@ function SWEP:ThrowKnife()
     if IsFirstTimePredicted() then
         self:EmitSound( self.Primary.Sound )
         if SERVER then
+            local owner = self:GetOwner()
+
             local knife = ents.Create( "m9k_thrown_spec_knife" )
-            knife:SetAngles( self:GetOwner():EyeAngles() )
-            knife:SetPos( self:GetOwner():M9K_GetShootPos() )
-            knife:SetOwner( self:GetOwner() )
-            knife:SetPhysicsAttacker( self:GetOwner() )
+            knife:SetAngles( owner:EyeAngles() )
+            knife:SetPos( owner:M9K_GetShootPos() )
+            knife:SetOwner( owner )
+            knife:SetPhysicsAttacker( owner )
             knife:Spawn()
             knife:Activate()
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+            owner:SetAnimation( PLAYER_ATTACK1 )
 
             local phys = knife:GetPhysicsObject()
-            phys:SetVelocity( self:GetOwner():GetAimVector() * 1500 )
+            phys:SetVelocity( owner:GetAimVector() * 1500 )
             phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
-            self:GetOwner():StripWeapon( self.Gun )
+            owner:StripWeapon( self.Gun )
         end
     end
 end

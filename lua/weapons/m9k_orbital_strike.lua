@@ -85,11 +85,14 @@ SWEP.NextShoot                = 0
 function SWEP:PrimaryAttack()
     self.PoorBastard = false
     if not IsFirstTimePredicted() then return end
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() and self.NextShoot <= CurTime() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
-            local mark = self:GetOwner():GetEyeTrace()
+
+    local owner = self:GetOwner()
+
+    if self:CanPrimaryAttack() and owner:IsPlayer() and self.NextShoot <= CurTime() then
+        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+            local mark = owner:GetEyeTrace()
             if mark.HitSky then
-                self:GetOwner():EmitSound( "player/suit_denydevice.wav" )
+                owner:EmitSound( "player/suit_denydevice.wav" )
             end
 
             local skytrace = {}
@@ -103,11 +106,11 @@ function SWEP:PrimaryAttack()
                     local Satellite = ents.Create( "m9k_oribital_cannon" )
                     Satellite.Ground = Ground
                     Satellite.Sky = Sky
-                    Satellite.Owner = self:GetOwner()
+                    Satellite.Owner = owner
                     Satellite:SetPos( Sky ) --was sky but for testing, its this
                     Satellite:Spawn()
                 end
-                if SERVER then self:GetOwner():EmitSound( self.Primary.Sound ) end
+                if SERVER then owner:EmitSound( self.Primary.Sound ) end
                 self:TakePrimaryAmmo( 1 )
                 self:SetNextPrimaryFire( CurTime() + 15 )
                 self.NextShoot = CurTime() + 15
@@ -129,21 +132,21 @@ function SWEP:PrimaryAttack()
                         Satellite.PoorBastard = true
                         Satellite.Target = thetarget
                         Satellite.Sky = sky2
-                        Satellite.Owner = self:GetOwner()
+                        Satellite.Owner = owner
                         Satellite:SetPos( sky2 )
                         Satellite:Spawn()
                     end
-                    self:GetOwner():EmitSound( self.Primary.Sound )
+                    owner:EmitSound( self.Primary.Sound )
                     self:TakePrimaryAmmo( 1 )
                     self:SetNextPrimaryFire( CurTime() + 15 )
                     self.NextShoot = CurTime() + 15
                     self:CheckWeaponsAndAmmo()
                     self:Reload()
                 else
-                    self:GetOwner():EmitSound( "player/suit_denydevice.wav" )
+                    owner:EmitSound( "player/suit_denydevice.wav" )
                 end
             else
-                self:GetOwner():EmitSound( "player/suit_denydevice.wav" )
+                owner:EmitSound( "player/suit_denydevice.wav" )
             end
         end
     end

@@ -32,8 +32,8 @@ SWEP.FiresUnderwater        = false
 SWEP.DeployDelay = 1
 SWEP.Primary.Sound          = "BlackVulcan.Single" -- Script that calls the primary fire sound
 SWEP.Primary.RPM            = 3500 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 100 -- Size of a clip
-SWEP.Primary.DefaultClip    = 200 -- Bullets you start with
+SWEP.Primary.ClipSize       = 300 -- Size of a clip
+SWEP.Primary.DefaultClip    = 600 -- Bullets you start with
 SWEP.Primary.KickUp         = 2 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 1 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
@@ -53,22 +53,22 @@ SWEP.Primary.SpreadIronSights   = .035 -- Ironsight accuracy, should be the same
 
 SWEP.RunSightsPos           = Vector( 0, -11.148, -8.033 )
 SWEP.RunSightsAng           = Vector( 55.082, 0, 0 )
-SWEP.Primary.ClipSize       = 300 -- Size of a clip
-SWEP.Primary.DefaultClip    = 600 -- Bullets you start with
 
 function SWEP:Reload()
+    local owner = self:GetOwner()
+
     self:DefaultReload( ACT_VM_RELOAD )
-    if not self:GetOwner():IsNPC() then
-        self.ResetSights = CurTime() + self:GetOwner():GetViewModel():SequenceDuration()
+    if not owner:IsNPC() then
+        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
-    if (self:Clip1() < self.Primary.ClipSize) and not self:GetOwner():IsNPC() then
+    if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
         -- When the current clip < full clip and the rest of your ammo > 0, then
-        self:GetOwner():SetFOV( 0, 0.3 )
+        owner:SetFOV( 0, 0.3 )
         -- Zoom = 0
         self:SetIronsights( false )
         self:SetReloading( true )
     end
-    local waitdammit = (self:GetOwner():GetViewModel():SequenceDuration())
+    local waitdammit = (owner:GetViewModel():SequenceDuration())
     self:MiniGunIdle( waitdammit )
 end
 
@@ -85,16 +85,18 @@ function SWEP:MiniGunIdle( wait )
 end
 
 function SWEP:IronSight()
-    if self:GetOwner():KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you run then
+    local owner = self:GetOwner()
+
+    if owner:KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you run then
         self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down
         self:SetIronsights( true )
-        self:GetOwner():SetFOV( 0, 0.3 ) -- Reset FOV
+        owner:SetFOV( 0, 0.3 ) -- Reset FOV
     end
 
-    if self:GetOwner():KeyReleased( IN_SPEED ) then -- If you stop running then
+    if owner:KeyReleased( IN_SPEED ) then -- If you stop running then
         self:SetIronsights( false )
-        self:GetOwner():SetFOV( 0, 0.3 ) -- Reset FOV
+        owner:SetFOV( 0, 0.3 ) -- Reset FOV
     end
 end

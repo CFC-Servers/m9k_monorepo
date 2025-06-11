@@ -58,7 +58,9 @@ SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
 function SWEP:PrimaryAttack()
-    if self:GetOwner():IsNPC() then return end
+    local owner = self:GetOwner()
+
+    if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
     self:SendWeaponAnim( ACT_VM_PULLPIN )
 
@@ -67,50 +69,52 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( 0.6, function()
         if not IsValid( self ) then return end
-        if IsValid( self:GetOwner() ) then
+        if IsValid( owner ) then
             self:Throw()
         end
     end )
 end
 
 function SWEP:Throw()
+    local owner = self:GetOwner()
+
     self:SendWeaponAnim( ACT_VM_THROW )
     timer.Simple( 0.35, function()
         if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
+        if not IsValid( owner ) then return end
 
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+        owner:SetAnimation( PLAYER_ATTACK1 )
 
-        local aim = self:GetOwner():GetAimVector()
+        local aim = owner:GetAimVector()
         local side = aim:Cross( Vector( 0, 0, 1 ) )
         local up = side:Cross( aim )
-        local pos = self:GetOwner():M9K_GetShootPos() + side * 5 + up * -1
+        local pos = owner:M9K_GetShootPos() + side * 5 + up * -1
 
         local grenade = ents.Create( self.Primary.Round )
         if not grenade:IsValid() then return end
 
-        grenade._m9kOwner = self:GetOwner()
+        grenade._m9kOwner = owner
         grenade.DoNotDuplicate = true
-        grenade:SetOwner( self:GetOwner() )
+        grenade:SetOwner( owner )
         grenade:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         grenade:SetPos( pos )
         grenade:Spawn()
 
         local phys = grenade:GetPhysicsObject()
-        if self:GetOwner():KeyDown( IN_ATTACK2 ) and phys:IsValid() then
-            phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 2000 )
+        if owner:KeyDown( IN_ATTACK2 ) and phys:IsValid() then
+            phys:ApplyForceCenter( owner:GetAimVector() * 2000 )
         else
-            phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 5500 )
+            phys:ApplyForceCenter( owner:GetAimVector() * 5500 )
         end
 
         self:TakePrimaryAmmo( 1 )
 
         timer.Simple( 0.15, function()
             if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
+            if not IsValid( owner ) then return end
 
-            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
-                self:GetOwner():StripWeapon( self.Gun )
+            if self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
+                owner:StripWeapon( self.Gun )
             else
                 self:DefaultReload( ACT_VM_DRAW )
             end

@@ -61,11 +61,13 @@ SWEP.RunSightsAng           = Vector( -12.954, -52.088, 0 )
 SWEP.Primary.Burst          = false
 
 function SWEP:SelectFireMode()
+    local owner = self:GetOwner()
+
     if self.Primary.Burst then
         self.Primary.Burst = false
         self.NextFireSelect = CurTime() + .5
         if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTTALK, "Automatic selected." )
+            owner:PrintMessage( HUD_PRINTTALK, "Automatic selected." )
         end
         self:EmitSound( "Weapon_AR2.Empty" )
         self.Primary.NumShots  = 1
@@ -76,7 +78,7 @@ function SWEP:SelectFireMode()
         self.Primary.Burst = true
         self.NextFireSelect = CurTime() + .5
         if CLIENT then
-            self:GetOwner():PrintMessage( HUD_PRINTTALK, "Burst fire selected." )
+            owner:PrintMessage( HUD_PRINTTALK, "Burst fire selected." )
         end
         self:EmitSound( "Weapon_AR2.Empty" )
         self.Primary.NumShots  = 2
@@ -89,11 +91,13 @@ end
 SWEP.Primary.PrevShots = SWEP.Primary.NumShots
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() and self:GetOwner():IsPlayer() then
+    local owner = self:GetOwner()
+
+    if self:CanPrimaryAttack() and owner:IsPlayer() then
         self.ShootThese = self.Primary.NumShots
 
         if self.Primary.Burst then
-            if self.Primary.NumShots > self:GetOwner():GetActiveWeapon():Clip1() then
+            if self.Primary.NumShots > owner:GetActiveWeapon():Clip1() then
                 self.Primary.NumShots = 1
                 self.ShootThese       = 1
                 self.Primary.Sound    = "an94.single"
@@ -104,30 +108,30 @@ function SWEP:PrimaryAttack()
             end
         end
 
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( self.ShootThese )
             self:FireAnimation()
 
             local fx = EffectData()
             fx:SetEntity( self )
-            fx:SetOrigin( self:GetOwner():M9K_GetShootPos() )
-            fx:SetNormal( self:GetOwner():GetAimVector() )
+            fx:SetOrigin( owner:M9K_GetShootPos() )
+            fx:SetNormal( owner:GetAimVector() )
             fx:SetAttachment( self.MuzzleAttachment )
 
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:GetOwner():MuzzleFlash()
+            owner:SetAnimation( PLAYER_ATTACK1 )
+            owner:MuzzleFlash()
             self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
             self:CheckWeaponsAndAmmo()
             self.RicochetCoin = (math.random( 1, 4 ))
             if self.BoltAction then self:BoltBack() end
         end
-    elseif self:CanPrimaryAttack() and self:GetOwner():IsNPC() then
+    elseif self:CanPrimaryAttack() and owner:IsNPC() then
         self:ShootBulletInformation()
         self:TakePrimaryAmmo( self.ShootThese )
         self:EmitSound( self.Primary.Sound )
-        self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-        self:GetOwner():MuzzleFlash()
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
         self.RicochetCoin = (math.random( 1, 4 ))
     end

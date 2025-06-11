@@ -33,7 +33,7 @@ end
 
 function ENT:Think()
     if self.TimeLeft < CurTime() then
-        for _, ent in pairs( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
+        for _, ent in ipairs( ents.FindInSphere( self:WorldSpaceCenter(), 150 ) ) do
             if ent:IsPlayer() or ent:IsNPC() then
                 local canTrigger = hook.Run( "M9k_ProxyMineCanTrigger", self, ent, self.ProxyBombOwner )
                 if canTrigger == false then continue end

@@ -53,7 +53,7 @@ if SERVER then
         local scorchend = self:GetPos() + ( ( Vector( 0, 0, -1 ) ) * 5 )
         util.Decal( "Scorch", scorchstart, scorchend )
 
-        for _, ent in pairs( ents.FindInSphere( pos, 300 ) ) do
+        for _, ent in ipairs( ents.FindInSphere( pos, 300 ) ) do
             if IsValid( ent:GetPhysicsObject() ) then
                 local pushy = {}
                 pushy.start = pos

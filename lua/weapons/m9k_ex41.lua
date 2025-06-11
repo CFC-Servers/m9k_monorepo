@@ -58,16 +58,17 @@ SWEP.SightsAng              = Vector( 2, -1.1, 0 )
 SWEP.RunSightsPos           = Vector( 3.279, -5.574, 0 )
 SWEP.RunSightsAng           = Vector( -1.721, 49.917, 0 )
 
-
 function SWEP:PrimaryAttack()
     if self:CanPrimaryAttack() then
-        if not self:GetOwner():KeyDown( IN_SPEED ) and not self:GetOwner():KeyDown( IN_RELOAD ) then
+        local owner = self:GetOwner()
+
+        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
             self:FireRocket()
             self:EmitSound( self.Primary.Sound )
             self:TakePrimaryAmmo( 1 )
             self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
-            self:GetOwner():MuzzleFlash()
+            owner:SetAnimation( PLAYER_ATTACK1 )
+            owner:MuzzleFlash()
             self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
         else
             self:Reload()
@@ -77,17 +78,19 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:FireRocket()
-    local aim = self:GetOwner():GetAimVector()
+    local owner = self:GetOwner()
+
+    local aim = owner:GetAimVector()
     local side = aim:Cross( Vector( 0, 0, 1 ) )
     local up = side:Cross( aim )
-    local pos = self:GetOwner():M9K_GetShootPos() + side * 6 + up * -5
+    local pos = owner:M9K_GetShootPos() + side * 6 + up * -5
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
         if not rocket:IsValid() then return false end
         rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
         rocket:SetPos( pos )
-        rocket:SetOwner( self:GetOwner() )
+        rocket:SetOwner( owner )
         rocket:Spawn()
         rocket:Activate()
     end

@@ -66,7 +66,7 @@ if SERVER then
 
     function ENT:PhysicsCollide( data, phys )
         if data.HitEntity ~= nil and data.HitEntity:IsValid() then
-            for _, v in pairs( parentme ) do
+            for _, v in ipairs( parentme ) do
                 if data.HitEntity:GetClass() == v then
                     local box = data.HitEntity
                     box.Planted = true

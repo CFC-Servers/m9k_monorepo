@@ -177,7 +177,7 @@ function EFFECT:Think()
 
         return true
     else
-        for __, particle in pairs( self.smokeparticles ) do
+        for __, particle in ipairs( self.smokeparticles ) do
             particle:SetStartAlpha( 70 )
             particle:SetEndAlpha( 0 )
         end
