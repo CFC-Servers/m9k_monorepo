@@ -90,6 +90,7 @@ function SWEP:PrimaryAttack()
     if self:GetNextPrimaryFire() > CurTime() then return end
     if self:CanPrimaryAttack() then
         local owner = self:GetOwner()
+        if not IsValid( owner ) then return end
 
         if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
             self:FireRocket()

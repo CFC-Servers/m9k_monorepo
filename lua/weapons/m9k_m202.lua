@@ -66,6 +66,7 @@ SWEP.WElements              = {
 
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
 
     if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
         self:FireRocket()
