@@ -59,20 +59,20 @@ SWEP.RunSightsPos           = Vector( 3.279, -5.574, 0 )
 SWEP.RunSightsAng           = Vector( -1.721, 49.917, 0 )
 
 function SWEP:PrimaryAttack()
-    if self:CanPrimaryAttack() then
-        local owner = self:GetOwner()
+    if not self:CanPrimaryAttack() then return end
+    local owner = self:GetOwner()
+    if not IsValid( owner ) then return end
 
-        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
-            self:FireRocket()
-            self:EmitSound( self.Primary.Sound )
-            self:TakePrimaryAmmo( 1 )
-            self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-            owner:SetAnimation( PLAYER_ATTACK1 )
-            owner:MuzzleFlash()
-            self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
-        else
-            self:Reload()
-        end
+    if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+        self:FireRocket()
+        self:EmitSound( self.Primary.Sound )
+        self:TakePrimaryAmmo( 1 )
+        self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+        owner:SetAnimation( PLAYER_ATTACK1 )
+        owner:MuzzleFlash()
+        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+    else
+        self:Reload()
     end
     self:CheckWeaponsAndAmmo()
 end
