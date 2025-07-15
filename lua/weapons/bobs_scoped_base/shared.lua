@@ -198,9 +198,12 @@ function SWEP:BoltBack()
 end
 
 function SWEP:Reload()
+    if self:Clip1() >= self.Primary.ClipSize then return end
+
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
+    if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
     if owner:KeyDown( IN_USE ) then return end
     if self:GetBoltback() then return end
 
