@@ -1,6 +1,0 @@
-"VertexLitGeneric"
-{
-    "$baseTexture" "models\weapons\w_RPG7\rpg"
-    "$bumpmap" "models\weapons\w_RPG7\rpg_n"
-
-}
