@@ -9,31 +9,31 @@ SWEP.Instructions             = ""
 SWEP.MuzzleAttachment         = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment     = "2" -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName                = "Steyr AUG A3" -- Weapon name (Shown on HUD)
-SWEP.Slot                     = 2 -- Slot in the weapon selection menu
-SWEP.SlotPos                  = 26 -- Position in the slot
+SWEP.Slot                     = 2
+SWEP.SlotPos                  = 26
 SWEP.DrawAmmo                 = true -- Should draw the default HL2 ammo counter
-SWEP.DrawCrosshair            = true -- Set false if you want no crosshair from hip
-SWEP.Weight                   = 30 -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo             = true -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom           = true -- Auto switch from if you pick up a better weapon
+SWEP.DrawCrosshair            = true
+SWEP.Weight                   = 30
+SWEP.AutoSwitchTo             = true
+SWEP.AutoSwitchFrom           = true
 SWEP.XHair                    = true -- Used for returning crosshair after scope. Must be the same as DrawCrosshair
-SWEP.BoltAction               = false -- Is this a bolt action rifle?
-SWEP.HoldType                 = "smg" -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
--- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
+SWEP.BoltAction               = false
+SWEP.HoldType                 = "smg"
+
+
 
 SWEP.ViewModelFOV             = 70
 SWEP.ViewModelFlip            = true
-SWEP.ViewModel                = "models/weapons/v_auga3sa.mdl" -- Weapon view model
-SWEP.WorldModel               = "models/weapons/w_auga3.mdl" -- Weapon world model
+SWEP.ViewModel                = "models/weapons/v_auga3sa.mdl"
+SWEP.WorldModel               = "models/weapons/w_auga3.mdl"
 SWEP.Base                     = "bobs_scoped_base"
 SWEP.Spawnable                = true
 SWEP.AdminSpawnable           = true
 
-SWEP.Primary.Sound            = "aug_a3.Single" -- script that calls the primary fire sound
+SWEP.Primary.Sound            = "aug_a3.Single"
 SWEP.Primary.RPM              = 700 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize         = 30 -- Size of a clip
-SWEP.Primary.DefaultClip      = 60 -- Bullets you start with
+SWEP.Primary.ClipSize         = 30
+SWEP.Primary.DefaultClip      = 60
 SWEP.Primary.KickUp           = .4 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown         = .4 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal   = .5 -- Maximum up recoil (stock)
@@ -44,8 +44,8 @@ SWEP.SelectiveFire            = true
 
 SWEP.Secondary.ScopeZoom      = 4
 SWEP.Secondary.UseACOG        = false -- Choose one scope type
-SWEP.Secondary.UseMilDot      = false -- I mean it, only one
-SWEP.Secondary.UseSVD         = false -- If you choose more than one, your scope will not show up at all
+SWEP.Secondary.UseMilDot      = false
+SWEP.Secondary.UseSVD         = false
 SWEP.Secondary.UseParabolic   = false
 SWEP.Secondary.UseElcan       = false
 SWEP.Secondary.UseGreenDuplex = false

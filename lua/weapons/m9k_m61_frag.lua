@@ -9,31 +9,31 @@ SWEP.Instructions           = ""
 SWEP.MuzzleAttachment       = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName              = "Frag Grenade" -- Weapon name (Shown on HUD)
-SWEP.Slot                   = 4 -- Slot in the weapon selection menu
-SWEP.SlotPos                = 21 -- Position in the slot
+SWEP.Slot                   = 4
+SWEP.SlotPos                = 21
 SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawCrosshair          = false -- set false if you want no crosshair
-SWEP.Weight                 = 2 -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
-SWEP.HoldType               = "grenade" -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
--- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
+SWEP.Weight                 = 2
+SWEP.AutoSwitchTo           = true
+SWEP.AutoSwitchFrom         = true
+SWEP.HoldType               = "grenade"
+
+
 
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = true
-SWEP.ViewModel              = "models/weapons/v_invisible_nade.mdl" -- Weapon view model
-SWEP.WorldModel             = "models/weapons/w_grenade.mdl" -- Weapon world model
+SWEP.ViewModel              = "models/weapons/v_invisible_nade.mdl"
+SWEP.WorldModel             = "models/weapons/w_grenade.mdl"
 SWEP.ShowWorldModel         = false
 SWEP.Base                   = "bobs_nade_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = true
 
-SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
+SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 30 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 1 -- Size of a clip
-SWEP.Primary.DefaultClip    = 1 -- Bullets you start with
+SWEP.Primary.ClipSize       = 1
+SWEP.Primary.DefaultClip    = 1
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)

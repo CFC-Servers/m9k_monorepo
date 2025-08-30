@@ -9,31 +9,31 @@ SWEP.Instructions                = ""
 SWEP.MuzzleAttachment            = "1"     -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment            = "2"     -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName                = "Remington 7615P"        -- Weapon name (Shown on HUD)
-SWEP.Slot                = 3                -- Slot in the weapon selection menu
-SWEP.SlotPos                = 46            -- Position in the slot
+SWEP.Slot                = 3
+SWEP.SlotPos                = 46
 SWEP.DrawAmmo                = true        -- Should draw the default HL2 ammo counter
-SWEP.DrawCrosshair            = false        -- Set false if you want no crosshair from hip
+SWEP.DrawCrosshair            = false
 SWEP.XHair                    = false        -- Used for returning crosshair after scope. Must be the same as DrawCrosshair
-SWEP.Weight                = 50            -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo            = true        -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom            = false        -- Auto switch from if you pick up a better weapon
-SWEP.BoltAction                = true        -- Is this a bolt action rifle?
-SWEP.HoldType                 = "ar2"        -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
--- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
+SWEP.Weight                = 50
+SWEP.AutoSwitchTo            = true
+SWEP.AutoSwitchFrom            = false
+SWEP.BoltAction                = true
+SWEP.HoldType                 = "ar2"
+
+
 
 SWEP.ViewModelFOV            = 70
 SWEP.ViewModelFlip            = true
-SWEP.ViewModel                = "models/weapons/v_remington_7615p.mdl"    -- Weapon view model
-SWEP.WorldModel                = "models/weapons/w_remington_7615p.mdl"    -- Weapon world model
+SWEP.ViewModel                = "models/weapons/v_remington_7615p.mdl"
+SWEP.WorldModel                = "models/weapons/w_remington_7615p.mdl"
 SWEP.Base                 = "bobs_scoped_base"
 SWEP.Spawnable                = true
 SWEP.AdminSpawnable            = true
 
-SWEP.Primary.Sound            = "7615p_remington.Single"        -- script that calls the primary fire sound
+SWEP.Primary.Sound            = "7615p_remington.Single"
 SWEP.Primary.RPM                = 50        -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize            = 10        -- Size of a clip
-SWEP.Primary.DefaultClip            = 60    -- Bullets you start with
+SWEP.Primary.ClipSize            = 10
+SWEP.Primary.DefaultClip            = 60
 SWEP.Primary.KickUp                = 1                -- Maximum up recoil (rise)
 SWEP.Primary.KickDown            = 1            -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal        = 1        -- Maximum up recoil (stock)
@@ -43,8 +43,8 @@ SWEP.Primary.Ammo            = "ar2"    -- pistol, 357, smg1, ar2, buckshot, sla
 
 SWEP.Secondary.ScopeZoom            = 7
 SWEP.Secondary.UseACOG            = false -- Choose one scope type
-SWEP.Secondary.UseMilDot        = true    -- I mean it, only one
-SWEP.Secondary.UseSVD            = false    -- If you choose more than one, your scope will not show up at all
+SWEP.Secondary.UseMilDot        = true
+SWEP.Secondary.UseSVD            = false
 SWEP.Secondary.UseParabolic        = false
 SWEP.Secondary.UseElcan            = false
 SWEP.Secondary.UseGreenDuplex    = false

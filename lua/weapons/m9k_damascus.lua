@@ -7,20 +7,20 @@ SWEP.Contact                = ""
 SWEP.Purpose                = ""
 SWEP.Instructions           = "Left click to slash" .. "\n" .. "Hold right mouse to put up guard."
 SWEP.PrintName              = "Damascus Sword" -- Weapon name (Shown on HUD)
-SWEP.Slot                   = 0 -- Slot in the weapon selection menu
-SWEP.SlotPos                = 21 -- Position in the slot
+SWEP.Slot                   = 0
+SWEP.SlotPos                = 21
 SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawCrosshair          = false -- set false if you want no crosshair
-SWEP.Weight                 = 30 -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
-SWEP.HoldType               = "melee2" -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
+SWEP.Weight                 = 30
+SWEP.AutoSwitchTo           = true
+SWEP.AutoSwitchFrom         = true
+SWEP.HoldType               = "melee2"
+
 
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = false
-SWEP.ViewModel              = "models/weapons/v_dmascus.mdl" -- Weapon view model
-SWEP.WorldModel             = "models/weapons/w_damascus_sword.mdl" -- Weapon world model
+SWEP.ViewModel              = "models/weapons/v_dmascus.mdl"
+SWEP.WorldModel             = "models/weapons/w_damascus_sword.mdl"
 SWEP.ShowWorldModel         = true
 SWEP.Base                   = "bobs_gun_base"
 SWEP.Spawnable              = true
@@ -28,8 +28,8 @@ SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = false
 
 SWEP.Primary.RPM            = 150 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 30 -- Size of a clip
-SWEP.Primary.DefaultClip    = 60 -- Bullets you start with
+SWEP.Primary.ClipSize       = 30
+SWEP.Primary.DefaultClip    = 60
 SWEP.Primary.KickUp         = 0.4 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0.3 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0.3 -- Maximum up recoil (stock)

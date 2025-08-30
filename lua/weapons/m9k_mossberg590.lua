@@ -9,28 +9,28 @@ SWEP.Instructions           = ""
 SWEP.MuzzleAttachment       = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName              = "Mossberg 590" -- Weapon name (Shown on HUD)
-SWEP.Slot                   = 3 -- Slot in the weapon selection menu
-SWEP.SlotPos                = 25 -- Position in the slot
+SWEP.Slot                   = 3
+SWEP.SlotPos                = 25
 SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawCrosshair          = true -- set false if you want no crosshair
-SWEP.Weight                 = 30 -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
-SWEP.HoldType               = "shotgun" -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
--- you're mostly going to use ar2, smg, shotgun or pistol. rpg and crossbow make for good sniper rifles
+SWEP.Weight                 = 30
+SWEP.AutoSwitchTo           = true
+SWEP.AutoSwitchFrom         = true
+SWEP.HoldType               = "shotgun"
+
+
 
 SWEP.ViewModelFOV           = 60
 SWEP.ViewModelFlip          = false
-SWEP.ViewModel              = "models/weapons/v_shot_mberg_590.mdl" -- Weapon view model
-SWEP.WorldModel             = "models/weapons/w_mossberg_590.mdl" -- Weapon world model
+SWEP.ViewModel              = "models/weapons/v_shot_mberg_590.mdl"
+SWEP.WorldModel             = "models/weapons/w_mossberg_590.mdl"
 SWEP.Base                   = "bobs_shotty_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 
-SWEP.Primary.Sound          = "Mberg_590.Single" -- script that calls the primary fire sound
+SWEP.Primary.Sound          = "Mberg_590.Single"
 SWEP.Primary.RPM            = 75 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 8 -- Size of a clip
+SWEP.Primary.ClipSize       = 8
 SWEP.Primary.DefaultClip    = 30 -- Default number of bullets in a clip
 SWEP.Primary.KickUp         = 1 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0.8 -- Maximum down recoil (skeet)

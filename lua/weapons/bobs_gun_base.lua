@@ -20,7 +20,7 @@ SWEP.Primary.Damage         = 10
 SWEP.Primary.SpreadHip         = .01 --define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.NumShots       = 1
 SWEP.Primary.RPM            = 0 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 0 -- Size of a clip
+SWEP.Primary.ClipSize       = 0
 SWEP.Primary.DefaultClip    = 0 -- Default number of bullets in a clip
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.KickUpMultiplier       = 2
@@ -30,7 +30,7 @@ SWEP.Primary.KickHorizontal = 0 -- Maximum side recoil (koolaid)
 SWEP.Primary.Automatic      = true -- Automatic/Semi Auto
 SWEP.Primary.Ammo           = "none" -- What kind of ammo
 
--- SWEP.Secondary.ClipSize                 = 0                                     -- Size of a clip
+-- SWEP.Secondary.ClipSize                 = 0
 -- SWEP.Secondary.DefaultClip                      = 0                                     -- Default number of bullets in a clip
 -- SWEP.Secondary.Automatic                        = false                                 -- Automatic/Semi Auto
 SWEP.Secondary.Ammo         = ""

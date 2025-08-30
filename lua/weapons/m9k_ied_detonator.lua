@@ -9,30 +9,30 @@ SWEP.Instructions           = ("Fire to drop ied." .. "\n" .. "Alt fire to deton
 SWEP.MuzzleAttachment       = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName              = "IED Detonator" -- Weapon name (Shown on HUD)
-SWEP.Slot                   = 4 -- Slot in the weapon selection menu
-SWEP.SlotPos                = 25 -- Position in the slot
+SWEP.Slot                   = 4
+SWEP.SlotPos                = 25
 SWEP.DrawAmmo               = true -- Should draw the default HL2 ammo counter
 SWEP.DrawCrosshair          = false -- set false if you want no crosshair
-SWEP.Weight                 = 2 -- rank relative to other weapons. bigger is better
-SWEP.AutoSwitchTo           = true -- Auto switch to if we pick it up
-SWEP.AutoSwitchFrom         = true -- Auto switch from if you pick up a better weapon
-SWEP.HoldType               = "fist" -- how others view you carrying the weapon
--- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
--- you're mostly going to use ar2, smg, shotgun or pistol. rpg and ar2 make for good sniper rifles
+SWEP.Weight                 = 2
+SWEP.AutoSwitchTo           = true
+SWEP.AutoSwitchFrom         = true
+SWEP.HoldType               = "fist"
+
+
 
 SWEP.ViewModelFOV           = 75
 SWEP.ViewModelFlip          = false
-SWEP.ViewModel              = "models/weapons/v_invisib.mdl" -- Weapon view model
-SWEP.WorldModel             = "models/weapons/w_camphon2.mdl" -- Weapon world model
+SWEP.ViewModel              = "models/weapons/v_invisib.mdl"
+SWEP.WorldModel             = "models/weapons/w_camphon2.mdl"
 SWEP.Base                   = "bobs_gun_base"
 SWEP.Spawnable              = true
 SWEP.AdminSpawnable         = true
 SWEP.FiresUnderwater        = true
 
-SWEP.Primary.Sound          = "" -- Script that calls the primary fire sound
+SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
-SWEP.Primary.ClipSize       = 1 -- Size of a clip
-SWEP.Primary.DefaultClip    = 1 -- Bullets you start with
+SWEP.Primary.ClipSize       = 1
+SWEP.Primary.DefaultClip    = 1
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
@@ -44,7 +44,7 @@ SWEP.Primary.Ammo           = "Improvised_Explosive"
 SWEP.Primary.Round          = "m9k_improvised_explosive" --NAME OF ENTITY GOES HERE
 
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
-SWEP.Secondary.ClipSize     = 1 -- Size of a clip
+SWEP.Secondary.ClipSize     = 1
 SWEP.Secondary.DefaultClip  = 1 -- Default number of bullets in a clip
 SWEP.Secondary.Automatic    = false -- Automatic/Semi Auto
 SWEP.Secondary.Ammo         = ""
@@ -63,7 +63,7 @@ SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 --and now to the nasty parts of this swep...
 
 if IsMounted( "cstrike" ) then
-    SWEP.ViewModel         = "models/weapons/v_knife_t.mdl" -- Weapon view model
+    SWEP.ViewModel         = "models/weapons/v_knife_t.mdl"
     SWEP.ViewModelBoneMods = {
         ["v_weapon.knife_Parent"] = { scale = Vector( 0.009, 0.009, 0.009 ), pos = Vector( 0, 0, 1.904 ), angle = Angle( 0, 0, 0 ) },
         ["v_weapon.Right_Middle02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 35.375, 0 ) },
@@ -88,7 +88,7 @@ if IsMounted( "cstrike" ) then
             Vector( 1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
     }
 else
-    SWEP.ViewModel         = "models/weapons/v_invisib.mdl" -- Weapon view model
+    SWEP.ViewModel         = "models/weapons/v_invisib.mdl"
     SWEP.ViewModelBoneMods = {
         ["r-ring-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0.148, 0 ), angle = Angle( 14.43, 0, 0 ) },
         ["r-middle-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -77.495, 0, 0 ) },
