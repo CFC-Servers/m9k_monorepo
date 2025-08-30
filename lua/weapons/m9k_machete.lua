@@ -57,16 +57,16 @@ SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 -- SWEP.KnifeSlash = "Weapon_Knife.Hit"
 -- SWEP.KnifeStab = "Weapon_Knife.Stab"
 
-SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
-SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
-SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
-SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
+SWEP.Primary.Sound          = "weapons/blades/woosh.ogg" --woosh
+SWEP.KnifeShink             = "weapons/blades/hitwall.ogg"
+SWEP.KnifeSlash             = "weapons/blades/slash.ogg"
+SWEP.KnifeStab              = "weapons/blades/nastystab.ogg"
 
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
     self:SetNextPrimaryFire( CurTime() + 1 )
-    self:EmitSound( "weapons/knife/knife_draw_x.mp3", 50, 100 )
+    self:EmitSound( "weapons/knife/knife_draw_x.ogg", 50, 100 )
     return true
 end
 

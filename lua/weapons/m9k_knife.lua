@@ -45,16 +45,16 @@ SWEP.MaxBox = Vector( 10, 5, 5 )
 
 SWEP.Slash = 1
 
-SWEP.Primary.Sound = "weapons/blades/woosh.mp3"
-SWEP.KnifeShink = "weapons/blades/hitwall.mp3"
-SWEP.KnifeSlash = "weapons/blades/slash.mp3"
-SWEP.KnifeStab = "weapons/blades/nastystab.mp3"
+SWEP.Primary.Sound = "weapons/blades/woosh.ogg"
+SWEP.KnifeShink = "weapons/blades/hitwall.ogg"
+SWEP.KnifeSlash = "weapons/blades/slash.ogg"
+SWEP.KnifeStab = "weapons/blades/nastystab.ogg"
 
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
     self:SetNextPrimaryFire( CurTime() + 1 )
-    self:EmitSound( "weapons/knife/knife_draw_x.mp3", 50, 100 )
+    self:EmitSound( "weapons/knife/knife_draw_x.ogg", 50, 100 )
     return true
 end
 

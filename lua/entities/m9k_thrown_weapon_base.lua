@@ -76,7 +76,7 @@ if SERVER then
 
         if ent:IsWorld() then
             if data.Speed > 500 then
-                self:EmitSound( "weapons/blades/impact.mp3" )
+                self:EmitSound( "weapons/blades/impact.ogg" )
                 timer.Simple( 0, function()
                     if not IsValid( self ) then return end
                     self:GetPhysicsObject():SetPos( self:GetPos() + self:GetForward() * self.ExtraPenDepth )

@@ -54,13 +54,13 @@ SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 
 SWEP.Slash                  = 1
 
-SWEP.Primary.Sound          = "weapons/blades/woosh.mp3" --woosh
-SWEP.KnifeShink             = "weapons/blades/hitwall.mp3"
-SWEP.KnifeSlash             = "weapons/blades/slash.mp3"
-SWEP.KnifeStab              = "weapons/blades/nastystab.mp3"
+SWEP.Primary.Sound          = "weapons/blades/woosh.ogg" --woosh
+SWEP.KnifeShink             = "weapons/blades/hitwall.ogg"
+SWEP.KnifeSlash             = "weapons/blades/slash.ogg"
+SWEP.KnifeStab              = "weapons/blades/nastystab.ogg"
 
-SWEP.SwordChop              = "weapons/blades/swordchop.mp3"
-SWEP.SwordClash             = "weapons/blades/clash.mp3"
+SWEP.SwordChop              = "weapons/blades/swordchop.ogg"
+SWEP.SwordClash             = "weapons/blades/clash.ogg"
 
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()

@@ -14,12 +14,12 @@ local function melee( victim, info )
         if victim:IsPlayer() and victim:Alive() then
             if victim:GetNWBool( "GuardIsUp", false ) and victim:GetActiveWeapon():GetClass() == "m9k_damascus" then
                 info:SetDamage( 0 )
-                victim:EmitSound( "weapons/blades/clash.mp3" )
+                victim:EmitSound( "weapons/blades/clash.ogg" )
             else
-                victim:EmitSound( "weapons/blades/swordchop.mp3" )
+                victim:EmitSound( "weapons/blades/swordchop.ogg" )
             end
         else
-            victim:EmitSound( "weapons/blades/swordchop.mp3" )
+            victim:EmitSound( "weapons/blades/swordchop.ogg" )
         end
     end
 end

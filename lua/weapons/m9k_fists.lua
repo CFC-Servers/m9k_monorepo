@@ -56,8 +56,8 @@ SWEP.RunSightsAng           = Vector( -25.577, 0, 0 )
 SWEP.Slash                  = 1
 
 SWEP.Primary.Sound = "Weapon_Knife.Slash" --woosh
-local punchtable = { "punchies/1.mp3", "punchies/2.mp3", "punchies/3.mp3", "punchies/4.mp3", "punchies/5.mp3", }
-local woosh = { "punchies/miss1.mp3", "punchies/miss2.mp3" }
+local punchtable = { "punchies/1.ogg", "punchies/2.ogg", "punchies/3.ogg", "punchies/4.ogg", "punchies/5.ogg", }
+local woosh = { "punchies/miss1.ogg", "punchies/miss2.ogg" }
 
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()

@@ -299,8 +299,8 @@ if SERVER then
         timer.Simple( 1.5, function()
             for k, v in ipairs( player.GetAll() ) do
                 if IsValid( v ) then
-                    v:EmitSound( "npc/strider/fire.wav" )
-                    --sound.Play("npc/strider/fire.wav", v:GetPos(), 100, 100, 1)
+                    v:EmitSound( "npc/strider/fire.ogg" )
+                    --sound.Play("npc/strider/fire.ogg", v:GetPos(), 100, 100, 1)
                 end
             end
         end )
@@ -424,7 +424,7 @@ if SERVER then
         timer.Simple( 2.25, function() if IsValid( self ) then self:MassiveFuckingExplosionPerson( ground, sky ) end end )
         timer.Simple( 1.5, function()
             for k, v in ipairs( player.GetAll() ) do
-                sound.Play( "npc/strider/fire.wav", v:GetPos(), 100, 100 )
+                sound.Play( "npc/strider/fire.ogg", v:GetPos(), 100, 100 )
             end
         end )
     end
