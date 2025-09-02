@@ -103,6 +103,10 @@ function SWEP:Reload()
 
     local owner = self:GetOwner()
 
+    if self:Clip1() <= 0 then
+        return
+    end
+
     if not owner:IsNPC() then
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
