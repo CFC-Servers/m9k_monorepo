@@ -27,7 +27,7 @@ sound.Add( {
     volume = 1.0,
     sound = { "weapons/fokku_tc_f2000/shot-1.ogg", "weapons/fokku_tc_f2000/shot-2.ogg", "weapons/fokku_tc_f2000/shot-3.ogg", "weapons/fokku_tc_f2000/shot-4.ogg" }
 } )
-sound.Add( { name = "f2000.playerbreathing", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_f2000/playerbreathing.mp3" } )
+sound.Add( { name = "f2000.playerbreathing", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_f2000/playerbreathing.ogg" } )
 sound.Add( { name = "f2000.lightcloth", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_f2000/cloth2.ogg" } )
 sound.Add( { name = "f2000.heavycloth", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_f2000/cloth.ogg" } )
 sound.Add( { name = "f2000.magout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_f2000/clipout.ogg" } )
@@ -47,17 +47,17 @@ sound.Add( { name = "Weapon_M14SP.Boltpull", channel = CHAN_ITEM, volume = 1.0, 
 sound.Add( { name = "Weapon_M14.Deploy", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/fokku_tc_m14/sg550_deploy.ogg" } )
 --g36
 sound.Add( { name = "G36.single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/G36/m4a1_unsil-1.ogg" } )
-sound.Add( { name = "G36.Boltback", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Boltback.mp3" } )
-sound.Add( { name = "G36.BoltPull", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/BoltPull.mp3" } )
-sound.Add( { name = "G36.Cloth", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Cloth.mp3" } )
-sound.Add( { name = "G36.PocketRussle", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/PocketRussle.mp3" } )
-sound.Add( { name = "G36.MagOut", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagOut.mp3" } )
-sound.Add( { name = "G36.MagFiddle", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagFiddle.mp3" } )
-sound.Add( { name = "G36.MagSlap", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagSlap.mp3" } )
-sound.Add( { name = "G36.PlaceSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/PlaceSilencer.mp3" } )
-sound.Add( { name = "G36.TightenSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/TightenSilencer.mp3" } )
-sound.Add( { name = "G36.SpinSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/SpinSilencer.mp3" } )
-sound.Add( { name = "G36.Safety", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Safety.mp3" } )
+sound.Add( { name = "G36.Boltback", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Boltback.ogg" } )
+sound.Add( { name = "G36.BoltPull", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/BoltPull.ogg" } )
+sound.Add( { name = "G36.Cloth", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Cloth.ogg" } )
+sound.Add( { name = "G36.PocketRussle", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/PocketRussle.ogg" } )
+sound.Add( { name = "G36.MagOut", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagOut.ogg" } )
+sound.Add( { name = "G36.MagFiddle", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagFiddle.ogg" } )
+sound.Add( { name = "G36.MagSlap", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/MagSlap.ogg" } )
+sound.Add( { name = "G36.PlaceSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/PlaceSilencer.ogg" } )
+sound.Add( { name = "G36.TightenSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/TightenSilencer.ogg" } )
+sound.Add( { name = "G36.SpinSilencer", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/SpinSilencer.ogg" } )
+sound.Add( { name = "G36.Safety", channel = CHAN_ITEM, volume = 1, sound = "weapons/G36/Safety.ogg" } )
 --winchester1873
 sound.Add( { name = "Weapon_73.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/winchester73/w73-1.ogg" } )
 sound.Add( { name = "Weapon_73.Pump", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/winchester73/w73pump.ogg" } )
@@ -85,14 +85,14 @@ sound.Add( { name = "Weapon_FAMTC.forearm", channel = CHAN_ITEM, volume = 1.0, s
 sound.Add( { name = "Dmgfok_vally.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/dmg_val/galil-1.ogg" } )
 sound.Add( { name = "Dmgfok_vally.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_val/galil_clipout.ogg" } )
 sound.Add( { name = "Dmgfok_vally.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_val/galil_clipin.ogg" } )
-sound.Add( { name = "Dmgfok_vally.Boltpull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_val/galil_Boltpull.mp3" } )
+sound.Add( { name = "Dmgfok_vally.Boltpull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_val/galil_Boltpull.ogg" } )
 sound.Add( { name = "Dmgfok_vally.Draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_val/draw.ogg" } )
 --vikhr
 sound.Add( { name = "Dmgfok_vikhr.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/dmg_vikhr/galil-1.ogg" } )
-sound.Add( { name = "Dmgfok_vikhr.Silenced", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil-sil.mp3" } )
+sound.Add( { name = "Dmgfok_vikhr.Silenced", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil-sil.ogg" } )
 sound.Add( { name = "Dmgfok_vikhr.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil_clipout.ogg" } )
 sound.Add( { name = "Dmgfok_vikhr.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil_clipin.ogg" } )
-sound.Add( { name = "Dmgfok_vikhr.Boltpull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil_Boltpull.mp3" } )
+sound.Add( { name = "Dmgfok_vikhr.Boltpull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/galil_Boltpull.ogg" } )
 sound.Add( { name = "Dmgfok_vikhr.Draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dmg_vikhr/draw.ogg" } )
 --magpulmasadaACR
 sound.Add( { name = "Masada.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = ")weapons/masadamagpul/masada_unsil.ogg" } )
@@ -157,7 +157,7 @@ sound.Add( { name = "hk_g3_weapon.Clipout", channel = CHAN_ITEM, volume = 1.0, s
 sound.Add( { name = "hk_g3_weapon.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/galil_clipin.ogg" } )
 sound.Add( { name = "hk_g3_weapon.Boltpull", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/boltpull.ogg" } )
 sound.Add( { name = "hk_g3_weapon.Boltforward", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/boltforward.ogg" } )
-sound.Add( { name = "hk_g3_weapon.cloth", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/Cloth.mp3" } )
+sound.Add( { name = "hk_g3_weapon.cloth", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/Cloth.ogg" } )
 sound.Add( { name = "hk_g3_weapon.draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hk_g3/draw.ogg" } )
 --PKM
 sound.Add( {
@@ -207,7 +207,7 @@ sound.Add( { name = "Weapon_svuxx.Slide", channel = CHAN_ITEM, volume = 1.0, sou
 --Winchestermodel94
 sound.Add( { name = "Weapon_Win94.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/win94/scout_fire-1.ogg" } )
 sound.Add( { name = "Weapon_Win94.Bolt", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/win94/scout_bolt.ogg" } )
-sound.Add( { name = "weapons/hamburgpling.wav", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/win94/hamburgpling.mp3" } )
+sound.Add( { name = "weapons/hamburgpling.ogg", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/win94/hamburgpling.ogg" } )
 sound.Add( { name = "Weapon_Win94.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/win94/scout_clipout.ogg" } )
 --Striker12
 sound.Add( { name = "ShotStriker12.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/striker12/xm1014-1.ogg" } )
@@ -233,11 +233,11 @@ sound.Add( {
     volumel = 1.0,
     sound = { "weapons/g2contender/scout-1.ogg", "weapons/g2contender/scout-2.ogg", "weapons/g2contender/scout-3.ogg" }
 } )
-sound.Add( { name = "contender_g2.Draw", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/Draw.mp3" } )
+sound.Add( { name = "contender_g2.Draw", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/Draw.ogg" } )
 sound.Add( { name = "contender_g2.Hammer", channel = CHAN_USER_BASE + 1, volumel = 1.0, sound = { "weapons/g2contender/Cock-1.ogg", "weapons/g2contender/Cock-2.ogg" } } )
 sound.Add( { name = "contender_g2.Open", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/open_chamber.ogg" } )
-sound.Add( { name = "contender_g2.Shellout", channel = CHAN_USER_BASE + 1, volumel = 1.0, sound = "weapons/g2contender/Bullet_out.mp3" } )
-sound.Add( { name = "contender_g2.Shellin", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/Bullet_in.mp3" } )
+sound.Add( { name = "contender_g2.Shellout", channel = CHAN_USER_BASE + 1, volumel = 1.0, sound = "weapons/g2contender/Bullet_out.ogg" } )
+sound.Add( { name = "contender_g2.Shellin", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/Bullet_in.ogg" } )
 sound.Add( { name = "contender_g2.Close", channel = CHAN_ITEM, volumel = 1.0, sound = "weapons/g2contender/close_chamber.ogg" } )
 sound.Add( {
     name = "contender_g2.Shell",
@@ -272,18 +272,18 @@ sound.Add( { name = "Dmgfok_M24SN.Boltforward", channel = CHAN_ITEM, volume = 1.
 sound.Add( { name = "Weapon_svd01.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/SVD/g3sg1-1.ogg" } )
 sound.Add( { name = "Weapon_SVD.Foley", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/foley.ogg" } )
 sound.Add( { name = "Weapon_SVD.Handle", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/handle.ogg" } )
-sound.Add( { name = "Weapon_SVD.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/Clipout.mp3" } )
+sound.Add( { name = "Weapon_SVD.Clipout", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/Clipout.ogg" } )
 sound.Add( { name = "Weapon_SVD.Cliptap", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/Cliptap.ogg" } )
-sound.Add( { name = "Weapon_SVD.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/ClipIn.mp3" } )
-sound.Add( { name = "Weapon_SVD.Slideback", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/SlideBack.mp3" } )
-sound.Add( { name = "Weapon_SVD.SlideForward", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/SlideForward.mp3" } )
-sound.Add( { name = "Weapon_SVD.Draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/Draw.mp3" } )
+sound.Add( { name = "Weapon_SVD.Clipin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/ClipIn.ogg" } )
+sound.Add( { name = "Weapon_SVD.Slideback", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/SlideBack.ogg" } )
+sound.Add( { name = "Weapon_SVD.SlideForward", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/SlideForward.ogg" } )
+sound.Add( { name = "Weapon_SVD.Draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/SVD/Draw.ogg" } )
 --sl8
 sound.Add( {
     name = "Weapon_hksl8.Single",
     channel = CHAN_USER_BASE + 10,
     volume = 1.0,
-    sound = { "weapons/hksl8/SG552-1.wav", "weapons/hksl8/SG552-2.wav", "weapons/hksl8/SG552-3.wav", "weapons/hksl8/SG552-4.wav" }
+    sound = { "weapons/hksl8/SG552-1.ogg", "weapons/hksl8/SG552-2.ogg", "weapons/hksl8/SG552-3.ogg", "weapons/hksl8/SG552-4.ogg" }
 } )
 sound.Add( { name = "sl8.Draw", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hksl8/draw.ogg" } )
 sound.Add( { name = "sl8.Safety", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/hksl8/safety.ogg" } )
@@ -503,17 +503,17 @@ sound.Add( { name = "WepColtPython.bulletsout", channel = CHAN_ITEM, volume = 1.
 sound.Add( { name = "WepColtPython.bulletsin", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/coltpython/bulletsin.ogg" } )
 --RagingBull
 sound.Add( { name = "weapon_r_bull.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/r_bull/r-bull-1.ogg" } )
-sound.Add( { name = "weapons_r_bull_bullreload_wav", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/r_bull/bullreload.ogg" } )
-sound.Add( { name = "weapons_r_bull_draw_gun_wav", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/r_bull/draw_gun.ogg" } )
+sound.Add( { name = "weapons_r_bull_bullreload_ogg", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/r_bull/bullreload.ogg" } )
+sound.Add( { name = "weapons_r_bull_draw_gun_ogg", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/r_bull/draw_gun.ogg" } )
 --smithandwessonmodel3
 sound.Add( { name = "Model3.Single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/model3/model3-1.ogg" } )
-sound.Add( { name = "Model3.Hammer", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Hammer.mp3" } )
-sound.Add( { name = "Model3.Break_Eject", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Break_eject.mp3" } )
+sound.Add( { name = "Model3.Hammer", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Hammer.ogg" } )
+sound.Add( { name = "Model3.Break_Eject", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Break_eject.ogg" } )
 sound.Add( { name = "Model3.bulletout_1", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/bulletout_1.ogg" } )
 sound.Add( { name = "Model3.bulletout_2", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/bulletout_2.ogg" } )
 sound.Add( { name = "Model3.bulletout_3", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/bulletout_3.ogg" } )
 sound.Add( { name = "Model3.bullets_in", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/bullets_in.ogg" } )
-sound.Add( { name = "Model3.Break_close", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Break_CLose.mp3" } )
+sound.Add( { name = "Model3.Break_close", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/model3/Break_CLose.ogg" } )
 --m29satan
 sound.Add( { name = "Weapon_satan1.single", channel = CHAN_USER_BASE + 10, volume = 1.0, sound = "weapons/satan1/satan-1.ogg" } )
 sound.Add( { name = "Weapon_satan1.blick", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/satan1/blick.ogg" } )
@@ -614,9 +614,9 @@ sound.Add( { name = "EX41.Insertshell", channel = CHAN_ITEM, volume = 1, sound =
 sound.Add( { name = "EX41.Draw", channel = CHAN_ITEM, volume = 1, sound = "weapons/ex41/draw.ogg" } )
 
 --RPG
-sound.Add( { name = "RPGF.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = "GDC/Rockets/RPGF.wav" } )
-sound.Add( { name = "M202F.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = { "GDC/Rockets/M202F.wav", "gdc/rockets/m202f2.ogg" } } )
-sound.Add( { name = "MATADORF.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = "GDC/Rockets/MATADORF.wav" } )
+sound.Add( { name = "RPGF.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = "GDC/Rockets/RPGF.ogg" } )
+sound.Add( { name = "M202F.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = { "GDC/Rockets/M202F.ogg", "gdc/rockets/m202f2.ogg" } } )
+sound.Add( { name = "MATADORF.single", channel = CHAN_USER_BASE + 10, volume = 1.0, soundlevel = 155, sound = "GDC/Rockets/MATADORF.ogg" } )
 
 --Suicide bomb
 sound.Add( { name = "sb.click", channel = CHAN_USER_BASE + 10, volume = "1", sound = "weapons/suicidebomb/c4_click.ogg" } )
