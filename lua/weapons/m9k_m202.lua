@@ -103,7 +103,7 @@ function SWEP:Reload()
 
     local owner = self:GetOwner()
 
-    if self:Clip1() <= 0 then
+    if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then
         return
     end
 
