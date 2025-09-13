@@ -73,6 +73,12 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     if owner:KeyDown( IN_SPEED ) then return end
 
+    if self:CheckWater() then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return false
+    end
+
     self.RicochetCoin = math.random( 1, 4 )
     self:ShootBulletInformation()
     self:EmitSound( self.Primary.Sound )
