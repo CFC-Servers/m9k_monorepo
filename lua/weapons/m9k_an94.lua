@@ -96,7 +96,7 @@ function SWEP:PrimaryAttack()
     if self:CheckWater() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         self:EmitSound( "Weapon_Pistol.Empty" )
-        return false
+        return
     end
 
     if self:CanPrimaryAttack() and owner:IsPlayer() then

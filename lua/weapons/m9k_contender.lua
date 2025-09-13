@@ -76,7 +76,7 @@ function SWEP:PrimaryAttack()
     if self:CheckWater() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         self:EmitSound( "Weapon_Pistol.Empty" )
-        return false
+        return
     end
 
     self.RicochetCoin = math.random( 1, 4 )

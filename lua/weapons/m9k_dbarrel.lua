@@ -74,7 +74,7 @@ function SWEP:SecondaryAttack()
     if self:CheckWater() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         self:EmitSound( "Weapon_Pistol.Empty" )
-        return false
+        return
     end
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
@@ -119,7 +119,7 @@ function SWEP:PrimaryAttack()
     if self:CheckWater() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         self:EmitSound( "Weapon_Pistol.Empty" )
-        return false
+        return
     end
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
