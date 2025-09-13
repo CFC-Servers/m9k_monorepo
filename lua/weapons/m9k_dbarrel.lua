@@ -68,14 +68,9 @@ cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "dbarrel" )
 
 function SWEP:SecondaryAttack()
     if not self:CanPrimaryAttack() then return end
-
+    if self:CheckWater() then return end
+    
     local owner = self:GetOwner()
-
-    if self:CheckWater() then
-        self:SetNextPrimaryFire( CurTime() + 0.2 )
-        self:EmitSound( "Weapon_Pistol.Empty" )
-        return
-    end
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
@@ -113,14 +108,9 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    if self:CheckWater() then return end
 
     local owner = self:GetOwner()
-
-    if self:CheckWater() then
-        self:SetNextPrimaryFire( CurTime() + 0.2 )
-        self:EmitSound( "Weapon_Pistol.Empty" )
-        return
-    end
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end

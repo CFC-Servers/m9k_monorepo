@@ -401,17 +401,12 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    if self:CheckWater() then return end
 
     local owner = entity_GetOwner(self)
 
     if owner:KeyDown( IN_SPEED ) then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
-        return false
-    end
-
-    if self:CheckWater() then
-        self:SetNextPrimaryFire( CurTime() + 0.2 )
-        self:EmitSound( "Weapon_Pistol.Empty" )
         return false
     end
 
@@ -451,7 +446,13 @@ function SWEP:CheckWeaponsAndAmmo()
 end
 
 function SWEP:CheckWater()
-    return entity_GetOwner(self):WaterLevel() == 3 and not self.FiresUnderwater 
+    if entity_GetOwner(self):WaterLevel() == 3 and not self.FiresUnderwater then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return true
+    end
+
+    return false
 end
 
 --[[---------------------------------------------------------

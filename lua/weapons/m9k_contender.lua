@@ -70,14 +70,9 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
     if owner:IsNPC() then return end
+    if self:CheckWater() then return end
     if not self:CanPrimaryAttack() then return end
     if owner:KeyDown( IN_SPEED ) then return end
-
-    if self:CheckWater() then
-        self:SetNextPrimaryFire( CurTime() + 0.2 )
-        self:EmitSound( "Weapon_Pistol.Empty" )
-        return
-    end
 
     self.RicochetCoin = math.random( 1, 4 )
     self:ShootBulletInformation()
