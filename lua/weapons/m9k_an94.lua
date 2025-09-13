@@ -93,6 +93,12 @@ SWEP.Primary.PrevShots = SWEP.Primary.NumShots
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
+    if self:CheckWater() then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return false
+    end
+
     if self:CanPrimaryAttack() and owner:IsPlayer() then
         self.ShootThese = self.Primary.NumShots
 

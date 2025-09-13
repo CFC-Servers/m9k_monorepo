@@ -409,7 +409,7 @@ function SWEP:PrimaryAttack()
         return false
     end
 
-    if not self:CheckWater() then
+    if self:CheckWater() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         self:EmitSound( "Weapon_Pistol.Empty" )
         return false
