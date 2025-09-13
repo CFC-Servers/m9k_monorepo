@@ -71,6 +71,12 @@ function SWEP:SecondaryAttack()
 
     local owner = self:GetOwner()
 
+    if self:CheckWater() then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return false
+    end
+
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
 
@@ -109,6 +115,12 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
     local owner = self:GetOwner()
+
+    if self:CheckWater() then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return false
+    end
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
     if timer.Exists( timerName ) then return end
