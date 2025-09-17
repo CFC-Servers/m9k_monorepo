@@ -84,6 +84,7 @@ function SWEP:PrimaryAttack()
             timer.Create( "hack-n-slash", .23, 1, function()
                 if not IsValid( self ) then return end
                 if not IsValid( owner ) then return end
+                if not IsValid( owner:GetActiveWeapon() ) then return end
                 if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
                     self:HackNSlash()
                 end
