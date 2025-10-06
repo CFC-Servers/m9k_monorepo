@@ -128,3 +128,19 @@ end
 
 function SWEP:SecondaryAttack()
 end
+
+function SWEP:Deploy()
+    self:SetIronsights( false )
+    self.DrawCrosshair = self.OrigCrossHair
+    self:SetHoldType( self.HoldType )
+
+    if not self:GetReloading() then
+        self:SendWeaponAnim( ACT_VM_DRAW )
+
+        if self.DeployDelay then
+            self:SetNextPrimaryFire( CurTime() + self.DeployDelay )
+        end
+    end
+
+    return true
+end
