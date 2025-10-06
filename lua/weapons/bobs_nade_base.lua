@@ -78,6 +78,7 @@ end
 function SWEP:Throw()
     local owner = self:GetOwner()
 
+    self:SetReloading( true ) -- Prevent players from manually reloading to skip the RPM cooldown
     self:SendWeaponAnim( ACT_VM_THROW )
     timer.Simple( 0.35, function()
         if not IsValid( self ) then return end
@@ -109,7 +110,7 @@ function SWEP:Throw()
 
         self:TakePrimaryAmmo( 1 )
 
-        timer.Simple( 0.15, function()
+        timer.Simple( self:GetNextPrimaryFire() - CurTime(), function()
             if not IsValid( self ) then return end
             if not IsValid( owner ) then return end
 
