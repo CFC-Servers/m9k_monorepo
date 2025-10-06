@@ -116,8 +116,10 @@ function SWEP:Throw()
 
             if self:Clip1() == 0 and owner:GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 then
                 owner:StripWeapon( self.Gun )
-            else
+            elseif owner:GetActiveWeapon() == self then
                 self:DefaultReload( ACT_VM_DRAW )
+            else
+                self:SetReloading( false )
             end
         end )
     end )
@@ -135,7 +137,11 @@ function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
 
     if not self:GetReloading() then
-        self:SendWeaponAnim( ACT_VM_DRAW )
+        if self:Clip1() == 0 then
+            self:DefaultReload( ACT_VM_DRAW )
+        else
+            self:SendWeaponAnim( ACT_VM_DRAW )
+        end
 
         if self.DeployDelay then
             self:SetNextPrimaryFire( CurTime() + self.DeployDelay )
