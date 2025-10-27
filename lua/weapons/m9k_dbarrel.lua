@@ -68,7 +68,8 @@ cvars.AddChangeCallback( "M9KDamageMultiplier", dmgMultCallback, "dbarrel" )
 
 function SWEP:SecondaryAttack()
     if not self:CanPrimaryAttack() then return end
-
+    if self:CheckWater() then return end
+    
     local owner = self:GetOwner()
 
     local timerName = "ShotgunReload_" .. owner:UniqueID()
@@ -107,6 +108,7 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    if self:CheckWater() then return end
 
     local owner = self:GetOwner()
 
