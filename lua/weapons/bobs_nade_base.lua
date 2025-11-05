@@ -64,7 +64,7 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     self:SendWeaponAnim( ACT_VM_PULLPIN )
 
-    self:SetNextPrimaryFire( CurTime() + 1 / ( ( self.Primary.RPM ) / 60 ) )
+    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     if CLIENT then return end
 
     timer.Simple( 0.6, function()
@@ -120,7 +120,7 @@ function SWEP:Throw()
 
                 local timerTotals = 0.6 + 0.35 + 0.15
 
-                local nextFire = CurTime() + 1 / ( ( self.Primary.RPM ) / 60 )
+                local nextFire = CurTime() + 1 / ( self.Primary.RPM / 60 )
 
                 nextFire = math.max( nextFire - timerTotals, 0 )
                 self:SetNextPrimaryFire( nextFire )
