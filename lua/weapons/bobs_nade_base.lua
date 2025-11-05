@@ -64,7 +64,7 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     self:SendWeaponAnim( ACT_VM_PULLPIN )
 
-    self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
+    self:SetNextPrimaryFire( CurTime() + 1 / ( (self.Primary.RPM * 2) / 60 ) )
     if CLIENT then return end
 
     timer.Simple( 0.6, function()
@@ -117,6 +117,14 @@ function SWEP:Throw()
                 owner:StripWeapon( self.Gun )
             else
                 self:DefaultReload( ACT_VM_DRAW )
+
+                local timerTotals = 0.6 + 0.35 + 0.15
+
+                -- we are multiplying RPM by 2 to maintain the same delay for old weapons.
+                local nextFire = CurTime() + 1 / ( (self.Primary.RPM * 2) / 60 )
+
+                nextFire = math.max( nextFire - timerTotals, 0 )
+                self:SetNextPrimaryFire( nextFire )
             end
         end )
     end )
@@ -126,4 +134,11 @@ function SWEP:Think()
 end
 
 function SWEP:SecondaryAttack()
+end
+
+-- disable clicking sounds
+function SWEP:CanPrimaryAttack()
+    if self:Clip1() <= 0 then return false end
+
+    return true
 end
