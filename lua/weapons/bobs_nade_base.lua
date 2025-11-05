@@ -32,7 +32,7 @@ SWEP.FiresUnderwater        = false
 
 SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
-SWEP.RPMMultiplier = 1.8 -- used to maintain behavior of old nades
+SWEP.RPMMultiplier          = 1.8 -- used to maintain behavior of old nades
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 1
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
