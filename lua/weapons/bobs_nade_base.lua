@@ -32,6 +32,7 @@ SWEP.FiresUnderwater        = false
 
 SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
+SWEP.RPMMultiplier = 1.8 -- used to maintain behavior of old nades
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 1
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
@@ -64,7 +65,7 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     self:SendWeaponAnim( ACT_VM_PULLPIN )
 
-    self:SetNextPrimaryFire( CurTime() + 1 / ( (self.Primary.RPM * 2) / 60 ) )
+    self:SetNextPrimaryFire( CurTime() + 1 / ( ( self.Primary.RPM * self.RPMMultiplier ) / 60 ) )
     if CLIENT then return end
 
     timer.Simple( 0.6, function()
@@ -121,7 +122,7 @@ function SWEP:Throw()
                 local timerTotals = 0.6 + 0.35 + 0.15
 
                 -- we are multiplying RPM by 2 to maintain the same delay for old weapons.
-                local nextFire = CurTime() + 1 / ( (self.Primary.RPM * 2) / 60 )
+                local nextFire = CurTime() + 1 / ( ( self.Primary.RPM * self.RPMMultiplier ) / 60 )
 
                 nextFire = math.max( nextFire - timerTotals, 0 )
                 self:SetNextPrimaryFire( nextFire )
