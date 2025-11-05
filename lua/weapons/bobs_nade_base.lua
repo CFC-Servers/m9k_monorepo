@@ -121,7 +121,6 @@ function SWEP:Throw()
 
                 local timerTotals = 0.6 + 0.35 + 0.15
 
-                -- we are multiplying RPM by 2 to maintain the same delay for old weapons.
                 local nextFire = CurTime() + 1 / ( ( self.Primary.RPM * self.RPMMultiplier ) / 60 )
 
                 nextFire = math.max( nextFire - timerTotals, 0 )
