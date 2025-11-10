@@ -790,7 +790,7 @@ function SWEP:Reload()
     local owner = entity_GetOwner( self )
     if owner:KeyDown( IN_USE ) then return end -- Mode switch
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
-    if self:GetIronsights() then return end
+    if self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) then return end
 
     if owner:IsNPC() then
         self:DefaultReload( ACT_VM_RELOAD )
