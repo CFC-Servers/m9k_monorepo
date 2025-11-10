@@ -98,12 +98,12 @@ function SWEP:Initialize()
     self:SetHoldType( self.HoldType )
     self.OrigCrossHair = self.DrawCrosshair
 
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
     if SERVER and owner:IsNPC() then
         self:SetNPCMinBurst( 3 )
         self:SetNPCMaxBurst( 10 ) -- None of this really matters but you need it here anyway
-        self:SetNPCFireRate( 1 / (self.Primary.RPM / 60) )
+        self:SetNPCFireRate( 1 / ( self.Primary.RPM / 60 ) )
         -- --self:SetCurrentWeaponProficiency( WEAPON_PROFICIENCY_VERY_GOOD )
     end
 
@@ -185,7 +185,7 @@ function SWEP:Deploy()
     end
     self:SetReloading( false )
 
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
     if not owner:IsNPC() and owner ~= nil and self.ResetSights and owner:GetViewModel() ~= nil then
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
@@ -194,7 +194,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:Holster()
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -207,7 +207,7 @@ function SWEP:Holster()
 end
 
 function SWEP:OnRemove()
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -219,7 +219,7 @@ end
 
 if CLIENT then
     function SWEP:IsFirstPerson()
-        local owner = entity_GetOwner(self)
+        local owner = entity_GetOwner( self )
         local isLocalPlayer = owner == LocalPlayer()
         local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
 
