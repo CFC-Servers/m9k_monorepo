@@ -75,6 +75,7 @@ PhysicsCollide
         effectdata:SetScale( self.ExplosionEffectScale )
         effectdata:SetRadius( 67 )
         effectdata:SetMagnitude( self.ExplosionEffectMagnitude )
+        effectdata:SetHitBox( 3 )
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
         util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
         util.ScreenShake( pos, 500, 500, .25, 500 )

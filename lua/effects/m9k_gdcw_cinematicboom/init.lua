@@ -37,10 +37,14 @@ function EFFECT:Init( data )
     self.DebrizzlemyNizzle = 10 + data:GetScale() -- Debrizzle my Nizzle is how many "trails" to make			--
     self.Size = 5 * self.Scale -- Size is exclusively for the explosion "trails" size			--
     self.Emitter = ParticleEmitter( self.Pos ) -- Emitter must be there so you don't get an error			--
-    if self.Scale < 1.2 then
-        sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
-    else
-        sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
+    self.PlaySound = data:GetHitBox() ~= 3 -- PlaySound determines whether to play sound or not		--
+
+    if self.PlaySound then
+        if self.Scale < 1.2 then
+            sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
+        else
+            sound.Play( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )
+        end
     end
 
     local mat = math.ceil( self.Radius )
