@@ -42,7 +42,7 @@ SWEP.Primary.Ammo           = "Grenade"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = ("") --NAME OF ENTITY GOES HERE
+SWEP.Primary.Round          = ("")
 
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
 
