@@ -79,7 +79,7 @@ PhysicsCollide
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
         util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
         util.ScreenShake( pos, 500, 500, .25, 500 )
-        sound.Play( "ambient/explosions/explode_7.wav", pos, 75 )
+        sound.Play( "ambient/explosions/explode_7.wav", pos, 80, 130 )
 
         local scorchstart = self:GetPos() + ( ( Vector( 0, 0, 1 ) ) * 5 )
         local scorchend = self:GetPos() + ( ( Vector( 0, 0, -1 ) ) * 5 )
