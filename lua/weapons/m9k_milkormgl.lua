@@ -45,7 +45,7 @@ SWEP.RecoilRecoverySpeed = 1 -- How fast does the gun return to the center
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = "m9k_milkor_nade"
+SWEP.Primary.Round = "m9k_milkor_nade"
 
 SWEP.Secondary.IronFOV      = 50 -- How much you 'zoom' in. Less is more!
 SWEP.ShellTime              = .5

@@ -14,7 +14,7 @@ SWEP.Spawnable              = false
 SWEP.AdminSpawnable         = false
 
 SWEP.Primary.Sound          = "" -- Sound of the gun
-SWEP.Primary.Round          = "" -- What kind of bullet?
+SWEP.Primary.Round = "" -- What kind of bullet?
 SWEP.Primary.Cone           = 0.2 -- Accuracy of NPCs
 SWEP.Primary.Damage         = 10
 SWEP.Primary.SpreadHip         = .01 --define from-the-hip accuracy (1 is terrible, .0001 is exact)

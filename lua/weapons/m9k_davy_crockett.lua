@@ -40,7 +40,7 @@ SWEP.Primary.Ammo           = "Nuclear_Warhead"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = "m9k_launched_davycrockett"
+SWEP.Primary.Round = "m9k_launched_davycrockett"
 
 SWEP.Secondary.IronFOV      = 40 -- How much you 'zoom' in. Less is more!
 

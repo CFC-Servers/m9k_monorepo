@@ -41,7 +41,7 @@ SWEP.Primary.Ammo           = "ProxMine"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
 
-SWEP.Primary.Round          = "m9k_proxy_mine"
+SWEP.Primary.Round = "m9k_proxy_mine"
 
 SWEP.Secondary.IronFOV      = 0 -- How much you 'zoom' in. Less is more!
 

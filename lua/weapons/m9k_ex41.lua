@@ -42,7 +42,7 @@ SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "40mmGrenade"
 
 SWEP.Secondary.IronFOV      = 70 -- How much you 'zoom' in. Less is more!
-SWEP.Primary.Round          = "m9k_launched_ex41"
+SWEP.Primary.Round = "m9k_launched_ex41"
 SWEP.data                   = {} --The starting firemode
 SWEP.data.ironsights        = 1
 
