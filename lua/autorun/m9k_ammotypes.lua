@@ -27,5 +27,3 @@ if CLIENT then
     language.Add( "m202_rocket_ammo", "M202 Rocket" )
     language.Add( "rpg_rocket_ammo", "RPG Rocket" )
 end
-
-game.AddParticles( "particles/nitro_main.pcf" )
