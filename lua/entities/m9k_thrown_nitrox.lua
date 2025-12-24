@@ -9,6 +9,10 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
+ENT.ExplosionDamage = 600
+ENT.ExplosionRadius = 200
+ENT.ExplosionEffectScale = 1.5
+ENT.ExplosionEffectMagnitude = 5
 
 if SERVER then
     AddCSLuaFile()
@@ -40,7 +44,7 @@ if SERVER then
     --[[---------------------------------------------------------
 PhysicsCollide
 -----------------------------------------------------------]]
-    function ENT:PhysicsCollide( data, phys )
+    function ENT:PhysicsCollide()
         self:EmitSound( "GlassBottle.Break" )
 
         timer.Simple( 0, function()
@@ -62,12 +66,37 @@ PhysicsCollide
         end
 
         local pos = self:LocalToWorld( self:OBBCenter() )
-        ParticleEffect( "nitro_main_m9k", pos, Angle( 0, 0, 0 ), nil )
+        local normal = Vector( 0, 0, 1 )
 
-        local vaporize = ents.Create( "m9k_nitro_vapor" )
-        vaporize:SetPos( pos )
-        vaporize:SetOwner( owner )
-        vaporize:Spawn()
+        local effectdata = EffectData()
+        effectdata:SetOrigin( pos )
+        effectdata:SetNormal( normal )
+        effectdata:SetEntity( self )
+        effectdata:SetScale( self.ExplosionEffectScale )
+        effectdata:SetRadius( 67 )
+        effectdata:SetMagnitude( self.ExplosionEffectMagnitude )
+        util.Effect( "m9k_gdcw_cinematicboom", effectdata )
+        util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
+        util.ScreenShake( pos, 500, 500, .25, 500 )
+        sound.Play( "ambient/explosions/explode_7.wav", pos, 75 )
+
+        local scorchstart = self:GetPos() + ( ( Vector( 0, 0, 1 ) ) * 5 )
+        local scorchend = self:GetPos() + ( ( Vector( 0, 0, -1 ) ) * 5 )
+        util.Decal( "Scorch", scorchstart, scorchend )
+
+        for _, ent in ipairs( ents.FindInSphere( pos, 300 ) ) do
+            if IsValid( ent:GetPhysicsObject() ) then
+                local pushy = {}
+                pushy.start = pos
+                pushy.endpos = ent:GetPos()
+                pushy.filter = self
+                local pushtrace = util.TraceLine( pushy )
+                if not pushtrace.HitWorld then
+                    local thing = ent:GetPhysicsObject()
+                    thing:AddVelocity( pushtrace.Normal * 400 )
+                end
+            end
+        end
 
         self:Remove()
     end

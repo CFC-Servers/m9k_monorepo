@@ -13,7 +13,6 @@ local pocketBlacklist = {
     ["m9k_mad_c4"] = true,
     ["m9k_milkor_nade"] = true,
     ["m9k_nervegasnade"] = true,
-    ["m9k_nitro_vapor"] = true,
     ["m9k_oribital_cannon"] = true,
     ["m9k_poison_parent"] = true,
     ["m9k_proxy"] = true,
