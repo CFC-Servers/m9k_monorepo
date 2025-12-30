@@ -516,6 +516,11 @@ cvars.AddChangeCallback( "M9KDisablePenetration", function( _, _, new )
     disablepen = tobool( new )
 end )
 
+local disablericochet = GetConVar( "M9KDisableRicochet" ):GetBool()
+cvars.AddChangeCallback( "M9KDisableRicochet", function( _, _, new )
+    disablericochet = tobool( new )
+end )
+
 function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, direction )
     if CLIENT then return end
     if bulletTrace.HitSky then return end
@@ -531,8 +536,10 @@ function SWEP:BulletCallback( iteration, attacker, bulletTrace, dmginfo, directi
         if penetrated then return end
     end
 
-    local ricochet = self:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
-    if ricochet then return end
+    if not disablericochet then
+        local ricochet = self:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
+        if ricochet then return end
+    end
 end
 
 function SWEP:BulletPenetrate( iteration, attacker, bulletTrace, dmginfo, direction )
