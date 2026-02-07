@@ -316,9 +316,9 @@ sound.Add( { name = "Weapon_a5.draw", channel = CHAN_WEAPON, volume = 1.0, sound
 --doublebarrelshotgun
 sound.Add( { name = "Double_Barrel.Single", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/dbarrel/xm1014-1.ogg" } )
 sound.Add( { name = "dbarrel_dblast", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/dbarrel/dblast.ogg" } )
-sound.Add( { name = "Double_Barrel.InsertShell", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/dbarrel/xm1014_insertshell.ogg" } )
-sound.Add( { name = "Double_Barrel.barreldown", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/dbarrel/barreldown.ogg" } )
-sound.Add( { name = "Double_Barrel.barrelup", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/dbarrel/barrelup.ogg" } )
+sound.Add( { name = "Double_Barrel.InsertShell", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dbarrel/xm1014_insertshell.ogg" } )
+sound.Add( { name = "Double_Barrel.barreldown", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dbarrel/barreldown.ogg" } )
+sound.Add( { name = "Double_Barrel.barrelup", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/dbarrel/barrelup.ogg" } )
 --pancorjackhammer
 sound.Add( { name = "Weapon_Jackhammer.Single", channel = CHAN_WEAPON, volume = .65, sound = "weapons/jackhammer/xm1014-1.ogg" } )
 sound.Add( { name = "Weapon_Jackhammer.Clipout", channel = CHAN_WEAPON, volume = .65, sound = "weapons/jackhammer/clipout.ogg" } )
