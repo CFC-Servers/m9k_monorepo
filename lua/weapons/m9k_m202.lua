@@ -110,41 +110,41 @@ function SWEP:Reload()
     if not owner:IsNPC() then
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
+
     if SERVER then
-        if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
+        if ( self:Clip1() < self.Primary.ClipSize ) and not owner:IsNPC() then
             owner:SetFOV( 0, 0.3 )
             self:SetIronsights( false )
             self:SetReloading( true )
         end
-        local waitdammit = (owner:GetViewModel():SequenceDuration())
-        timer.Simple( waitdammit + .1,
-            function()
-                if IsValid( self ) and IsValid( owner ) then
-                    if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
-                        self:SetReloading( false )
-                        if owner:KeyDown( IN_ATTACK2 ) then
-                            if CLIENT then return end
-                            if self.Scoped == false then
-                                owner:SetFOV( self.Secondary.IronFOV, 0.3 )
-                                self.IronSightsPos = self.SightsPos -- Bring it up
-                                self.IronSightsAng = self.SightsAng -- Bring it up
-                                self:SetIronsights( true )
-                                self.DrawCrosshair = false
-                            else
-                                return
-                            end
-                        elseif owner:KeyDown( IN_SPEED ) then
-                            self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-                            self.IronSightsPos = self.RunSightsPos -- Hold it down
-                            self.IronSightsAng = self.RunSightsAng -- Hold it down
-                            self:SetIronsights( true )
-                            owner:SetFOV( 0, 0.3 )
-                        else
-                            return
-                        end
-                    end
+
+        local waitdammit = owner:GetViewModel():SequenceDuration()
+        timer.Simple( waitdammit + .1, function()
+            if not IsValid( self ) or not IsValid( owner ) then return end
+
+            self:SetReloading( false )
+
+            if owner:KeyDown( IN_SPEED ) then
+                self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+                self.IronSightsPos = self.RunSightsPos -- Hold it down
+                self.IronSightsAng = self.RunSightsAng -- Hold it down
+                self:SetIronsights( true )
+                owner:SetFOV( 0, 0.3 )
+
+                return
+            end
+
+            if owner:KeyDown( IN_ATTACK2 ) then
+                if CLIENT then return end
+                if self.Scoped == false then
+                    owner:SetFOV( self.Secondary.IronFOV, 0.3 )
+                    self.IronSightsPos = self.SightsPos -- Bring it up
+                    self.IronSightsAng = self.SightsAng -- Bring it up
+                    self:SetIronsights( true )
+                    self.DrawCrosshair = false
                 end
-            end )
+            end
+        end )
     end
 end
 

@@ -827,11 +827,14 @@ function SWEP:Reload()
 
         self:SetReloading( false )
 
-        if owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+        local running = owner:KeyDown( IN_SPEED )
+
+        if not running and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
             owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
             self:SetIronsights( true )
+
             if CLIENT then
                 self.DrawCrosshair = false
             end
@@ -839,7 +842,7 @@ function SWEP:Reload()
             return
         end
 
-        if not self.CanShootWhileRunning and owner:KeyDown( IN_SPEED ) then
+        if not self.CanShootWhileRunning and running then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end

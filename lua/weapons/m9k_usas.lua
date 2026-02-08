@@ -127,19 +127,25 @@ function SWEP:ReloadFinish()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
+
         self:SetReloading( false )
+
+        if owner:KeyDown( IN_SPEED ) then
+            self:SetNextPrimaryFire( CurTime() + 0.3 )
+            self.IronSightsPos = self.RunSightsPos
+            self.IronSightsAng = self.RunSightsAng
+            self:SetIronsights( true )
+            owner:SetFOV( 0, 0.3 )
+
+            return
+        end
+
         if owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
             owner:SetFOV( self.Secondary.IronFOV, 0.3 )
             self.IronSightsPos = self.SightsPos
             self.IronSightsAng = self.SightsAng
             self:SetIronsights( true, owner )
             self.DrawCrosshair = false
-        elseif owner:KeyDown( IN_SPEED ) then
-            self:SetNextPrimaryFire( CurTime() + 0.3 )
-            self.IronSightsPos = self.RunSightsPos
-            self.IronSightsAng = self.RunSightsAng
-            self:SetIronsights( true )
-            owner:SetFOV( 0, 0.3 )
         end
     end )
 end
