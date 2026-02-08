@@ -16,9 +16,7 @@ SWEP.DrawCrosshair          = true -- set false if you want no crosshair
 SWEP.Weight                 = 30
 SWEP.AutoSwitchTo           = true
 SWEP.AutoSwitchFrom         = true
-SWEP.HoldType               = "crossbow"
-
-
+SWEP.HoldType               = "shotgun"
 
 SWEP.ViewModelFOV           = 65
 SWEP.ViewModelFlip          = false
@@ -34,9 +32,9 @@ SWEP.Primary.Sound          = "BlackVulcan.Single"
 SWEP.Primary.RPM            = 3500 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 300
 SWEP.Primary.DefaultClip    = 600
-SWEP.Primary.KickUp         = 2 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 1 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 1.5 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 0.5 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 0.5 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = true -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "ar2" -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal piercing shotgun pellets
@@ -54,32 +52,5 @@ SWEP.Primary.SpreadIronSights   = .035 -- Ironsight accuracy, should be the same
 SWEP.RunSightsPos           = Vector( 0, -11.148, -8.033 )
 SWEP.RunSightsAng           = Vector( 55.082, 0, 0 )
 
-function SWEP:Reload()
-    local owner = self:GetOwner()
-
-    self:DefaultReload( ACT_VM_RELOAD )
-    if not owner:IsNPC() then
-        self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
-    end
-    if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
-        -- When the current clip < full clip and the rest of your ammo > 0, then
-        owner:SetFOV( 0, 0.3 )
-        -- Zoom = 0
-        self:SetIronsights( false )
-        self:SetReloading( true )
-    end
-    local waitdammit = (owner:GetViewModel():SequenceDuration())
-    self:MiniGunIdle( waitdammit )
-end
-
-function SWEP:MiniGunIdle( wait )
-    timer.Simple( wait + .05, function()
-        if not IsValid( self ) then return end
-        self:SetReloading( false )
-        if SERVER then
-            self:SendWeaponAnim( ACT_VM_IDLE )
-        else
-            return
-        end
-    end )
+function SWEP:IronSight()
 end
