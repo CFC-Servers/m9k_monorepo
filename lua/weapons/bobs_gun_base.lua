@@ -827,7 +827,7 @@ function SWEP:Reload()
 
         self:SetReloading( false )
 
-        if owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+        if not owner:KeyDown( IN_SPEED ) and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
             owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
