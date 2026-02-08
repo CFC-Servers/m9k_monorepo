@@ -224,7 +224,7 @@ function SWEP:SecondaryAttack()
     end
 end
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
     if self.BetterBeDead then
         self:GetOwner():Kill()
     end

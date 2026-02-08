@@ -151,5 +151,5 @@ function SWEP:SecondaryAttack()
     return false
 end
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
 end

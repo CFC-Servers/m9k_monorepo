@@ -130,7 +130,7 @@ function SWEP:Throw()
     end )
 end
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
 end
 
 function SWEP:SecondaryAttack()

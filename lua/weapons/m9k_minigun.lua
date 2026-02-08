@@ -83,20 +83,3 @@ function SWEP:MiniGunIdle( wait )
         end
     end )
 end
-
-function SWEP:IronSight()
-    local owner = self:GetOwner()
-
-    if self:IsRunning() and not (self:GetReloading()) then -- If you run then
-        self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second
-        self.IronSightsPos = self.RunSightsPos -- Hold it down
-        self.IronSightsAng = self.RunSightsAng -- Hold it down
-        self:SetIronsights( true )
-        owner:SetFOV( 0, 0.3 ) -- Reset FOV
-    end
-
-    if owner:KeyReleased( IN_SPEED ) then -- If you stop running then
-        self:SetIronsights( false )
-        owner:SetFOV( 0, 0.3 ) -- Reset FOV
-    end
-end

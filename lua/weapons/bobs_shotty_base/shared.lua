@@ -44,15 +44,10 @@ SWEP.InsertingShell         = false
 
 SWEP.NextReload             = 0
 
---[[---------------------------------------------------------
-   Name: SWEP:Think()
-   Desc: Called every frame.
------------------------------------------------------------]]
-
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetOwner = entMeta.GetOwner
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
     local owner = entity_GetOwner(self)
 
     if not IsValid( owner ) then return end

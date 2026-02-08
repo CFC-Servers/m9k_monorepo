@@ -104,7 +104,7 @@ SWEP.AttackDamage = 0
 SWEP.ShouldAttack = false
 SWEP.AttackSound = ""
 SWEP.AttackBackstabSound = ""
-function SWEP:Think()
+function SWEP:ThinkCustom()
     if not self.ShouldAttack then return end
 
     local curtime = CurTime()

@@ -154,6 +154,7 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Bool", "Reloading" )
     self:NetworkVar( "Float", "IronsightsTime" )
     self:NetworkVar( "Bool", "Boltback" )
+    self:NetworkVar( "Bool", "Running" )
 end
 
 function SWEP:SetIronsights( b )
@@ -224,7 +225,34 @@ function SWEP:IsRunning()
     if not IsValid( owner ) then return false end
     if not owner:IsPlayer() then return false end
 
-    return owner:KeyDown( IN_SPEED )
+    local sprintDown = owner:KeyDown( IN_SPEED )
+    if owner:KeyDown( IN_FORWARD ) or owner:KeyDown( IN_BACK ) or owner:KeyDown( IN_MOVELEFT ) or owner:KeyDown( IN_MOVERIGHT ) then
+        return sprintDown
+    end
+
+    return false
+end
+
+function SWEP:StartedRunning()
+    local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return end
+    if not owner:IsPlayer() then return end
+
+    local isRunning = self:IsRunning()
+    local wasRunning = self:GetRunning()
+
+    return isRunning and not wasRunning
+end
+
+function SWEP:StoppedRunning()
+    local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return end
+    if not owner:IsPlayer() then return end
+
+    local isRunning = self:IsRunning()
+    local wasRunning = self:GetRunning()
+
+    return not isRunning and wasRunning
 end
 
 if CLIENT then
@@ -967,7 +995,7 @@ function SWEP:IronSight()
     end
 
     -- Set run effect
-    if not self.CanShootWhileRunning and owner:KeyPressed( IN_SPEED ) and not self:GetReloading() then
+    if not self.CanShootWhileRunning and self:StartedRunning() and not self:GetReloading() then
         if self:GetNextPrimaryFire() <= ( CurTime() + self.IronSightTime ) then
             self:SetNextPrimaryFire( CurTime() + self.IronSightTime )
         end
@@ -979,7 +1007,7 @@ function SWEP:IronSight()
     end
 
     -- Unset run effect
-    if not selfTbl.CanShootWhileRunning and self:GetIronsights() and owner:KeyReleased( IN_SPEED ) then
+    if not selfTbl.CanShootWhileRunning and self:StoppedRunning() then
         self:SetIronsights( false )
         owner:SetFOV( 0, self.IronSightTime )
         selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
@@ -1024,8 +1052,14 @@ end
 --[[---------------------------------------------------------
 Think
 -------------------------------------------------------]]
-function SWEP:Think()
+function SWEP:ThinkCustom()
     self:IronSight()
+end
+
+function SWEP:Think()
+    self:ThinkCustom()
+
+    self:SetRunning( self:IsRunning() )
 end
 
 if CLIENT then

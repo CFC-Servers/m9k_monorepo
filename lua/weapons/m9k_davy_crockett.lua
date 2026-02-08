@@ -227,7 +227,7 @@ function SWEP:IronSight()
     end
 
     -- --copy this...
-    if owner:KeyPressed( IN_SPEED ) and not (self:GetReloading()) then -- If you are running
+    if self:StartedRunning() and not (self:GetReloading()) then -- If you are running
         if self:GetNextPrimaryFire() <= (CurTime() + 0.3) then
             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
         end
@@ -238,7 +238,7 @@ function SWEP:IronSight()
         self.DrawCrosshair = false
     end
 
-    if owner:KeyReleased( IN_SPEED ) then -- If you release run then
+    if self:StoppedRunning() then -- If you release run then
         self:SetIronsights( false )
         owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair

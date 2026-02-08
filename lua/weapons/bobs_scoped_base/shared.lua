@@ -290,7 +290,7 @@ function SWEP:IronSight()
     end
 
     -- Set run effect
-    if owner:KeyPressed( IN_SPEED ) and not self:GetReloading() then
+    if self:StartedRunning() and not self:GetReloading() then
         if self:GetNextPrimaryFire() <= ( CurTime() + self.IronSightTime ) then
             self:SetNextPrimaryFire( CurTime() + self.IronSightTime )
         end
@@ -303,7 +303,7 @@ function SWEP:IronSight()
     end
 
     -- Unset run effect
-    if owner:KeyReleased( IN_SPEED ) then
+    if self:StoppedRunning() then
         self:SetIronsights( false )
         owner:SetFOV( 0, self.IronSightTime )
         self.DrawCrosshair = self.XHair

@@ -201,7 +201,7 @@ function SWEP:Reload()
     end
 end
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
     local owner = self:GetOwner()
 
     if not IsValid( owner ) then return end

@@ -73,5 +73,5 @@ SWEP.WElements = {
     ["nerveagent"] = { type = "Model", model = "models/healthvial.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(3.22, 2.107, -4.025), angle = Angle(0, 0, 0), size = Vector(0.865, 0.865, 0.865), color = Color(255, 255, 255, 255), surpresslightning = false, material = "models/weapons/gv/nerve_vial.vmt", skin = 0, bodygroup = {} }
 }
 
-function SWEP:Think()
+function SWEP:ThinkCustom()
 end
