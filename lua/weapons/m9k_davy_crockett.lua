@@ -130,7 +130,7 @@ end
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
-    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not owner:KeyDown( IN_SPEED ) then
+    if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and not self:IsRunning() then
         if owner:IsPlayer() then
             if GetConVar( "DavyCrockettAllowed" ) == nil or (GetConVar( "DavyCrockettAllowed" ):GetBool()) then
                 self:FireRocket()
@@ -245,7 +245,7 @@ function SWEP:IronSight()
     end -- Shoulder the gun
 
     -- --down to this
-    if not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
+    if not owner:KeyDown( IN_USE ) and not self:IsRunning() then
         -- --If the key E (Use Key) is not pressed, then
 
         if owner:KeyPressed( IN_ATTACK2 ) and not (self:GetReloading()) then
@@ -259,7 +259,7 @@ function SWEP:IronSight()
         end
     end
 
-    if owner:KeyReleased( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
+    if owner:KeyReleased( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not self:IsRunning() then
         -- --If the right click is released, then
         owner:SetFOV( 0, 0.3 )
         self.DrawCrosshair = self.OrigCrossHair
@@ -268,7 +268,7 @@ function SWEP:IronSight()
         if CLIENT then return end
     end
 
-    if owner:KeyDown( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not owner:KeyDown( IN_SPEED ) then
+    if owner:KeyDown( IN_ATTACK2 ) and not owner:KeyDown( IN_USE ) and not self:IsRunning() then
         self.SwayScale = 0.05
         self.BobScale  = 0.05
     else

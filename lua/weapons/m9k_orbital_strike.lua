@@ -89,7 +89,7 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and owner:IsPlayer() and self.NextShoot <= CurTime() then
-        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+        if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
             local mark = owner:GetEyeTrace()
             if mark.HitSky then
                 owner:EmitSound( "player/suit_denydevice.wav" )

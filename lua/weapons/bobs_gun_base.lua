@@ -219,6 +219,14 @@ function SWEP:OnRemove()
     end
 end
 
+function SWEP:IsRunning()
+    local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return false end
+    if not owner:IsPlayer() then return false end
+
+    return owner:KeyDown( IN_SPEED )
+end
+
 if CLIENT then
     function SWEP:IsFirstPerson()
         local owner = entity_GetOwner( self )
@@ -405,9 +413,9 @@ end
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
-    if not self.CanShootWhileRunning and owner:KeyDown( IN_SPEED ) then
+    if not self.CanShootWhileRunning and self:IsRunning() then
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         return false
     end
@@ -827,7 +835,7 @@ function SWEP:Reload()
 
         self:SetReloading( false )
 
-        if not owner:KeyDown( IN_SPEED ) and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+        if not self:IsRunning() and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
             owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
@@ -839,7 +847,7 @@ function SWEP:Reload()
             return
         end
 
-        if not self.CanShootWhileRunning and owner:KeyDown( IN_SPEED ) then
+        if not self.CanShootWhileRunning and self:IsRunning() then
             if self:GetNextPrimaryFire() <= CurTime() + .03 then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
@@ -895,7 +903,7 @@ function SWEP:Silencer()
             else
                 return
             end
-        elseif not self.CanShootWhileRunning and owner:KeyDown( IN_SPEED ) then
+        elseif not self.CanShootWhileRunning and self:IsRunning() then
             if self:GetNextPrimaryFire() <= CurTime() + self.IronSightTime then
                 self:SetNextPrimaryFire( CurTime() + self.IronSightTime ) -- Make it so you can't shoot for another quarter second
             end
@@ -978,7 +986,7 @@ function SWEP:IronSight()
     end
 
     -- Set iron sights
-    if not self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) and ( not owner:KeyDown( IN_SPEED ) or selfTbl.CanShootWhileRunning ) and not self:GetReloading() then
+    if not self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) and ( not self:IsRunning() or selfTbl.CanShootWhileRunning ) and not self:GetReloading() then
         owner:SetFOV( selfTbl.Secondary.IronFOV, self.IronSightTime )
         selfTbl.IronSightsPos = selfTbl.SightsPos
         selfTbl.IronSightsAng = selfTbl.SightsAng
@@ -993,7 +1001,7 @@ function SWEP:IronSight()
         self:SetIronsights( false )
     end
 
-    if pressingM2 and not pressingE and not owner:KeyDown( IN_SPEED ) then
+    if pressingM2 and not pressingE and not self:IsRunning() then
         selfTbl.SwayScale = 0.05
         selfTbl.BobScale  = 0.05
     else

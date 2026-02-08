@@ -76,7 +76,7 @@ function SWEP:SecondaryAttack()
 
     if owner:IsPlayer() then
         if self:Clip1() == 2 then
-            if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+            if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
                 self:ShootBulletInformation2()
                 self:TakePrimaryAmmo( 2 )
                 self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
@@ -114,7 +114,7 @@ function SWEP:PrimaryAttack()
     if timer.Exists( timerName ) then return end
 
     if owner:IsPlayer() then
-        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+        if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( 1 )
 

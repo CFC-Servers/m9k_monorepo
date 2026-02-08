@@ -68,7 +68,7 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
     if not IsValid( owner ) then return end
 
-    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
+    if self:CanPrimaryAttack() and not self:IsRunning() then
         self:FireRocket()
         self:EmitSound( "M202F.single" )
         self:TakePrimaryAmmo( 1 )
@@ -123,7 +123,7 @@ function SWEP:Reload()
                     if owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
                         self:SetReloading( false )
 
-                        if owner:KeyDown( IN_SPEED ) then
+                        if self:IsRunning() then
                             self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                             self.IronSightsPos = self.RunSightsPos -- Hold it down
                             self.IronSightsAng = self.RunSightsAng -- Hold it down

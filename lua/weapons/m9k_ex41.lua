@@ -63,7 +63,7 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
     if not IsValid( owner ) then return end
 
-    if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+    if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
         self:FireRocket()
         self:EmitSound( self.Primary.Sound )
         self:TakePrimaryAmmo( 1 )

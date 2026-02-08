@@ -71,7 +71,7 @@ function SWEP:PrimaryAttack()
 
     if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
-    if owner:KeyDown( IN_SPEED ) then return end
+    if self:IsRunning() then return end
 
     self.RicochetCoin = math.random( 1, 4 )
     self:ShootBulletInformation()
@@ -111,7 +111,7 @@ function SWEP:UseBolt()
             if not IsValid( self ) or not IsValid( owner ) then return end
             self:SetReloading( false )
 
-            if owner:KeyDown( IN_SPEED ) then
+            if self:IsRunning() then
                 self.IronSightsPos = self.RunSightsPos -- Hold it down
                 self.IronSightsAng = self.RunSightsAng -- Hold it down
                 self:SetIronsights( false )
@@ -187,7 +187,7 @@ function SWEP:Reload()
                 if not IsValid( self ) then return end
                 self:SetReloading( false )
 
-                if owner:KeyDown( IN_SPEED ) then
+                if self:IsRunning() then
                     if self:GetNextPrimaryFire() <= (CurTime() + .03) then
                         self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                     end

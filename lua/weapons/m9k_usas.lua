@@ -129,7 +129,7 @@ function SWEP:ReloadFinish()
         if not IsValid( owner ) then return end
         self:SetReloading( false )
 
-        if owner:KeyDown( IN_SPEED ) then
+        if self:IsRunning() then
             self:SetNextPrimaryFire( CurTime() + 0.3 )
             self.IronSightsPos = self.RunSightsPos
             self.IronSightsAng = self.RunSightsAng

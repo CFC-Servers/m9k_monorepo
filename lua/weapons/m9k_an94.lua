@@ -108,7 +108,7 @@ function SWEP:PrimaryAttack()
             end
         end
 
-        if not owner:KeyDown( IN_SPEED ) and not owner:KeyDown( IN_RELOAD ) then
+        if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
             self:ShootBulletInformation()
             self:TakePrimaryAmmo( self.ShootThese )
             self:FireAnimation()

@@ -87,7 +87,7 @@ end
 function SWEP:IronSight()
     local owner = self:GetOwner()
 
-    if owner:KeyDown( IN_SPEED ) and not (self:GetReloading()) then -- If you run then
+    if self:IsRunning() and not (self:GetReloading()) then -- If you run then
         self:SetNextPrimaryFire( CurTime() + 0.5 ) -- Make it so you can't shoot for another quarter second
         self.IronSightsPos = self.RunSightsPos -- Hold it down
         self.IronSightsAng = self.RunSightsAng -- Hold it down

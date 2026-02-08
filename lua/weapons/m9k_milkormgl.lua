@@ -64,7 +64,7 @@ SWEP.RunSightsAng           = Vector( -5.738, -37.869, 0 )
 function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
-    if self:CanPrimaryAttack() and not owner:KeyDown( IN_SPEED ) then
+    if self:CanPrimaryAttack() and not self:IsRunning() then
         self:FireRocket()
         self:EmitSound( self.Primary.Sound )
         self:TakePrimaryAmmo( 1 )
