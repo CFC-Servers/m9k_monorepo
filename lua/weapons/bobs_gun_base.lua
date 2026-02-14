@@ -199,6 +199,9 @@ end
 function SWEP:Holster()
     local owner = entity_GetOwner( self )
 
+    self:SetRecoilPitch( 0 )
+    self:SetRecoilYaw( 0 )
+
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
         if IsValid( vm ) then
@@ -835,6 +838,10 @@ function SWEP:Reload()
     else
         self:DefaultReload( ACT_VM_RELOAD )
     end
+
+    -- Gotta do this due to https://github.com/Facepunch/garrysmod-issues/issues/6729 :(
+    self:SetRecoilPitch( 0 )
+    self:SetRecoilYaw( 0 )
 
     if CLIENT then
         self.DrawCrosshair = false
