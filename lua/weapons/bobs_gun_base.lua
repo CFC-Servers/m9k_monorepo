@@ -804,8 +804,9 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         recoilYaw = recoilYaw * 0.5
     end
 
-    recoilPitch = recoilPitch * 0.9
-    recoilYaw = recoilYaw * 0.9
+    -- Adjust old viewpunch based numbers for the new recoil system
+    recoilPitch = recoilPitch * 0.75
+    recoilYaw = recoilYaw * 0.75
 
     self:SetRecoilPitch( recoilPitch )
     self:SetRecoilYaw( recoilYaw )
