@@ -70,6 +70,7 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
     if owner:IsNPC() then return end
+    if self:CheckWater() then return end
     if not self:CanPrimaryAttack() then return end
     if self:IsRunning() then return end
 

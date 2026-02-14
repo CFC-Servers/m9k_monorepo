@@ -445,6 +445,7 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    if self:CheckWater() then return end
 
     local owner = entity_GetOwner( self )
 
@@ -486,6 +487,16 @@ function SWEP:CheckWeaponsAndAmmo()
             owner:StripWeapon( self.Gun )
         end )
     end
+end
+
+function SWEP:CheckWater()
+    if entity_GetOwner(self):WaterLevel() == 3 and not self.FiresUnderwater then
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        return true
+    end
+
+    return false
 end
 
 --[[---------------------------------------------------------
