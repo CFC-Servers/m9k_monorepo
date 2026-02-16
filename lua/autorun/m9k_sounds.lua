@@ -60,8 +60,8 @@ sound.Add( { name = "G36.SpinSilencer", channel = CHAN_WEAPON, volume = 1, sound
 sound.Add( { name = "G36.Safety", channel = CHAN_WEAPON, volume = 1, sound = "weapons/G36/Safety.ogg" } )
 --winchester1873
 sound.Add( { name = "Weapon_73.Single", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/winchester73/w73-1.ogg" } )
-sound.Add( { name = "Weapon_73.Pump", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/winchester73/w73pump.ogg" } )
-sound.Add( { name = "Weapon_73.Insertshell", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/winchester73/w73insertshell.ogg" } )
+sound.Add( { name = "Weapon_73.Pump", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/winchester73/w73pump.ogg" } )
+sound.Add( { name = "Weapon_73.Insertshell", channel = CHAN_ITEM, volume = 1.0, sound = "weapons/winchester73/w73insertshell.ogg" } )
 --l85
 sound.Add( { name = "Weapon_l85.Single", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/L85A2/aug-1.ogg" } )
 sound.Add( { name = "Weapon_l85.magin", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/L85A2/magin.ogg" } )
