@@ -58,6 +58,7 @@ function SWEP:ThinkCustom()
     if (owner:KeyPressed( IN_ATTACK )) and (self:GetNextPrimaryFire() <= CurTime()) and (timer.Exists( timerName )) and not self:IsRunning() then
         if self:CanPrimaryAttack() then --well first, if we actually can attack, then...
             timer.Remove( timerName ) -- kill the timer, and
+            self:SetReloading( false ) -- stop reloading, and
             self:PrimaryAttack() -- ATTAAAAACK!
         end
     end
