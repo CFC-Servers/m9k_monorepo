@@ -237,7 +237,7 @@ function SWEP:Reload()
 
         self:ReloadClip()
         self:SetReloading( false )
-        
+
         if self:IsRunning() then
             if self:GetNextPrimaryFire() <= ( CurTime() + 0.3 ) then
                 self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
@@ -250,7 +250,7 @@ function SWEP:Reload()
 
             return
         end
-        
+
         if owner:KeyDown( IN_ATTACK2 ) then
             owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
