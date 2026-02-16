@@ -126,10 +126,6 @@ function SWEP:Reload()
 
     self:SetReloading( true )
 
-    -- Gotta do this due to https://github.com/Facepunch/garrysmod-issues/issues/6729 :(
-    self:SetRecoilPitch( 0 )
-    self:SetRecoilYaw( 0 )
-
     if owner:IsPlayer() then
         if self:GetNextPrimaryFire() <= (CurTime() + 2) then
             self:SetNextPrimaryFire( CurTime() + 2 ) -- wait TWO seconds before you can shoot again

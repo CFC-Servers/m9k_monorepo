@@ -443,6 +443,19 @@ function SWEP:FireAnimation()
     end
 end
 
+function SWEP:CanPrimaryAttack()
+    if self:Clip1() <= 0 then
+        self:EmitSound( "Weapon_Pistol.Empty" )
+        self:SetNextPrimaryFire( CurTime() + 0.2 )
+        self:Reload()
+        return false
+    end
+
+    if self:GetReloading() then return false end
+
+    return true
+end
+
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
 
@@ -819,6 +832,21 @@ function SWEP:SecondaryAttack()
     return false
 end
 
+function SWEP:ReloadAnim()
+    if self.SilencerAttached then
+        self:SendWeaponAnim( ACT_VM_RELOAD_SILENCED )
+    else
+        self:SendWeaponAnim( ACT_VM_RELOAD )
+    end
+end
+
+function SWEP:ReloadClip()
+    local owner = entity_GetOwner( self )
+    local ammoToLoad = math.min( self.Primary.ClipSize - self:Clip1(), owner:GetAmmoCount( self:GetPrimaryAmmoType() ) )
+    self:SetClip1( self:Clip1() + ammoToLoad )
+    owner:RemoveAmmo( ammoToLoad, self:GetPrimaryAmmoType() )
+end
+
 function SWEP:Reload()
     if self:GetReloading() then return end
     if self:Clip1() >= self.Primary.ClipSize then return end
@@ -828,20 +856,7 @@ function SWEP:Reload()
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
     if self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) then return end
 
-    if owner:IsNPC() then
-        self:DefaultReload( ACT_VM_RELOAD )
-        return
-    end
-
-    if self.SilencerAttached then
-        self:DefaultReload( ACT_VM_RELOAD_SILENCED )
-    else
-        self:DefaultReload( ACT_VM_RELOAD )
-    end
-
-    -- Gotta do this due to https://github.com/Facepunch/garrysmod-issues/issues/6729 :(
-    self:SetRecoilPitch( 0 )
-    self:SetRecoilYaw( 0 )
+    self:ReloadAnim()
 
     if CLIENT then
         self.DrawCrosshair = false
@@ -856,6 +871,7 @@ function SWEP:Reload()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
 
+        self:ReloadClip()
         self:SetReloading( false )
 
         if not self:IsRunning() and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then

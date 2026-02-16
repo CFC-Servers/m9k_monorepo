@@ -199,6 +199,7 @@ end
 
 function SWEP:Reload()
     if self:Clip1() >= self.Primary.ClipSize then return end
+    if self:GetReloading() then return end
 
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
@@ -207,7 +208,9 @@ function SWEP:Reload()
     if owner:KeyDown( IN_USE ) then return end
     if self:GetBoltback() then return end
 
-    self:DefaultReload( ACT_VM_RELOAD )
+    self:SetReloading( true )
+    self:ReloadAnim()
+
     if not owner:IsNPC() then
         self.Idle = CurTime() + owner:GetViewModel():SequenceDuration()
     end
@@ -223,10 +226,6 @@ function SWEP:Reload()
         self:SetDrawViewmodel( true )
     end
 
-    -- Gotta do this due to https://github.com/Facepunch/garrysmod-issues/issues/6729 :(
-    self:SetRecoilPitch( 0 )
-    self:SetRecoilYaw( 0 )
-
     local waitdammit
     if owner:GetViewModel() == nil then
         waitdammit = 3
@@ -236,6 +235,7 @@ function SWEP:Reload()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) or not IsValid( owner ) then return end
 
+        self:ReloadClip()
         self:SetReloading( false )
         
         if self:IsRunning() then
