@@ -223,6 +223,10 @@ function SWEP:Reload()
         self:SetDrawViewmodel( true )
     end
 
+    -- Gotta do this due to https://github.com/Facepunch/garrysmod-issues/issues/6729 :(
+    self:SetRecoilPitch( 0 )
+    self:SetRecoilYaw( 0 )
+
     local waitdammit
     if owner:GetViewModel() == nil then
         waitdammit = 3
