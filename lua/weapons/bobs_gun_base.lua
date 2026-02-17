@@ -842,6 +842,8 @@ end
 
 function SWEP:ReloadClip()
     local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return end
+
     local ammoToLoad = math.min( self.Primary.ClipSize - self:Clip1(), owner:GetAmmoCount( self:GetPrimaryAmmoType() ) )
     self:SetClip1( self:Clip1() + ammoToLoad )
     owner:RemoveAmmo( ammoToLoad, self:GetPrimaryAmmoType() )
