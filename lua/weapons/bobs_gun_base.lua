@@ -197,9 +197,6 @@ end
 function SWEP:Holster()
     local owner = entity_GetOwner( self )
 
-    self:SetRecoilPitch( 0 )
-    self:SetRecoilYaw( 0 )
-
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
         if IsValid( vm ) then
@@ -870,7 +867,16 @@ function SWEP:Reload()
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
     if self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) then return end
 
-    self:ReloadAnim()
+    if owner:IsNPC() then
+        self:DefaultReload( ACT_VM_RELOAD )
+        return
+    end
+
+    if self.SilencerAttached then
+        self:DefaultReload( ACT_VM_RELOAD_SILENCED )
+    else
+        self:DefaultReload( ACT_VM_RELOAD )
+    end
 
     if CLIENT then
         self.DrawCrosshair = false
