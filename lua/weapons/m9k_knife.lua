@@ -135,6 +135,7 @@ function SWEP:ThinkCustom()
                     paininfo:SetDamageType( DMG_SLASH )
                     paininfo:SetAttacker( owner )
                     paininfo:SetInflictor( self )
+                    paininfo:SetWeapon( self )
                     paininfo:SetDamageForce( slashtrace.Normal * 20000 )
                     targ:TakeDamageInfo( paininfo )
                 end
