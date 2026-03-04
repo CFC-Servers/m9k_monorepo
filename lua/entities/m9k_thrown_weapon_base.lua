@@ -133,4 +133,3 @@ if CLIENT then
         self:DrawModel()
     end
 end
-
