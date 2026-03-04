@@ -31,9 +31,8 @@ if SERVER then
         if phys:IsValid() then
             phys:Wake()
             phys:SetMass( 10 )
+            phys:AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
         end
-
-        self:GetPhysicsObject():SetMass( 2 )
 
         self:SetUseType( SIMPLE_USE )
     end
@@ -134,3 +133,4 @@ if CLIENT then
         self:DrawModel()
     end
 end
+
