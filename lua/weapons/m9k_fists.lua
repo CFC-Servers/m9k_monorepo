@@ -115,6 +115,7 @@ function SWEP:Jab()
             paininfo:SetDamage( pain )
             paininfo:SetAttacker( owner )
             paininfo:SetInflictor( self )
+            paininfo:SetWeapon( self )
             paininfo:SetDamageForce( slashtrace.Normal * 5000 )
 
             if targ:IsPlayer() then

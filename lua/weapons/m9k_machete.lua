@@ -126,6 +126,7 @@ function SWEP:HackNSlash()
                     paininfo:SetDamageType( DMG_SLASH )
                     paininfo:SetAttacker( owner )
                     paininfo:SetInflictor( self )
+                    paininfo:SetWeapon( self )
                     paininfo:SetDamageForce( slashtrace.Normal * 35000 )
                     targ:TakeDamageInfo( paininfo )
                 else
