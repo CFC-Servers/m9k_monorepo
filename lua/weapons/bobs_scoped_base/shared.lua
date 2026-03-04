@@ -324,7 +324,7 @@ function SWEP:IronSight()
     end
 
     -- Unset iron sights
-    if owner:KeyReleased( IN_ATTACK2 ) and not self:IsRunning() and not self:GetBoltback() then
+    if owner:KeyReleased( IN_ATTACK2 ) and ( not self:IsRunning() or selfTbl.CanShootWhileRunning ) and not self:GetBoltback() then
         owner:SetFOV( 0, self.IronSightTime )
         self.DrawCrosshair = self.XHair
         self:SetIronsights( false )
