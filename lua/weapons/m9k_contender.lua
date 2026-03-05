@@ -71,7 +71,7 @@ function SWEP:PrimaryAttack()
 
     if owner:IsNPC() then return end
     if not self:CanPrimaryAttack() then return end
-    if not self:IsRunning() and not self.CanShootWhileRunning then return end
+    if self:IsRunning() and not self.CanShootWhileRunning then return end
 
     self.RicochetCoin = math.random( 1, 4 )
     self:ShootBulletInformation()
