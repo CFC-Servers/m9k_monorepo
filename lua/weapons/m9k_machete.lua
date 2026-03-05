@@ -143,7 +143,7 @@ function SWEP:SecondaryAttack()
 
     local owner = self:GetOwner()
 
-    if not self:IsRunning() and not owner:KeyDown( IN_RELOAD ) then
+    if ( not self:IsRunning() or self.CanShootWhileRunning ) and not owner:KeyDown( IN_RELOAD ) then
         self:EmitSound( "Weapon_Knife.Slash" )
 
         if SERVER then
