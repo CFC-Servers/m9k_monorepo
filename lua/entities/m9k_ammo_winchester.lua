@@ -101,7 +101,7 @@ if SERVER then
 -----------------------------------------------------------]]
     function ENT:Use( activator, caller )
         if (activator:IsPlayer()) and not self.Planted then
-            activator:GiveAmmo( 100, "AirboatGun" )
+            activator:GiveAmmo( 100, "XBowBolt" )
             self:Remove()
         end
     end

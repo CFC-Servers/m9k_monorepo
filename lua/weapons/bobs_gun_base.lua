@@ -272,8 +272,7 @@ if CLIENT then
         pistol = "EjectBrass_9mm",
         smg = "EjectBrass_556",
         ar2 = "EjectBrass_762Nato",
-        shotgun = "EjectBrass_12Gauge",
-        AirboatGun = "EjectBrass_338Mag"
+        shotgun = "EjectBrass_12Gauge"
     }
 
     net.Receive( "m9k_muzzleflash", function()
@@ -292,7 +291,7 @@ if CLIENT then
         if not isFirstPerson then
             local shellAtt = self:GetAttachment( 2 )
             if shellAtt then
-                local shellEffectType = thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
+                local shellEffectType = self:GetClass() == "m9k_winchester73" and "EjectBrass_338Mag" or thirdPersonShellType[self.Primary.Ammo] or "ShellEject"
                 local shellEffect = EffectData()
                 shellEffect:SetOrigin( shellAtt.Pos )
                 shellEffect:SetAngles( shellAtt.Ang )
@@ -532,8 +531,7 @@ local iterationCount = {
     ["smg1"] = 4,
     ["ar2"] = 5,
     ["buckshot"] = 1,
-    ["slam"] = 1,
-    ["AirboatGun"] = 8
+    ["slam"] = 1
 }
 
 local penetrationDepthTbl = {
@@ -543,8 +541,7 @@ local penetrationDepthTbl = {
     ["smg1"] = 14,
     ["ar2"] = 16,
     ["buckshot"] = 5,
-    ["slam"] = 5,
-    ["AirboatGun"] = 17
+    ["slam"] = 5
 }
 
 local penetrationDamageMult = {
