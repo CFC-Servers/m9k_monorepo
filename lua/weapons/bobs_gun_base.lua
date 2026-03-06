@@ -1204,7 +1204,7 @@ if CLIENT then
         local sz = wide < 245 and wide or 256
 
         alpha = alpha / 255
-        selection_material:SetVector("$color2", Vector(alpha, alpha, alpha))
+        selection_material:SetVector( "$color2", Vector( alpha, alpha, alpha ) )
 
         -- Draw that mother
         render.SetMaterial( selection_material )
