@@ -39,7 +39,7 @@ SWEP.Primary.KickUp           = 1 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown         = 1 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal   = 1 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic        = false -- Automatic/Semi Auto
-SWEP.Primary.Ammo             = "SniperPenetratedRound" -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
+SWEP.Primary.Ammo             = "XBowBolt" -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal piercing shotgun pellets
 
 SWEP.Secondary.ScopeZoom      = 9

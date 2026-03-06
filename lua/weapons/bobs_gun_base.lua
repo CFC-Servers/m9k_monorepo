@@ -526,7 +526,7 @@ end
    Desc: A convenience func to handle bullet callbacks.
 -------------------------------------------------------]]
 local iterationCount = {
-    ["SniperPenetratedRound"] = 10,
+    ["XBowBolt"] = 10,
     ["pistol"] = 2,
     ["357"] = 5,
     ["smg1"] = 4,
@@ -537,7 +537,7 @@ local iterationCount = {
 }
 
 local penetrationDepthTbl = {
-    ["SniperPenetratedRound"] = 20,
+    ["XBowBolt"] = 20,
     ["pistol"] = 9,
     ["357"] = 12,
     ["smg1"] = 14,
@@ -662,7 +662,7 @@ local ricochetAmmoTable = {
     ["pistol"] = true,
     ["buckshot"] = true,
     ["slam"] = true,
-    ["SniperPenetratedRound"] = true
+    ["XBowBolt"] = true
 }
 
 function SWEP:BulletRicochet( iteration, attacker, bulletTrace, dmginfo, direction )
