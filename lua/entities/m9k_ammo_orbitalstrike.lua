@@ -5,7 +5,7 @@ ENT.Category       = "M9K Ammunition"
 
 ENT.Spawnable      = true
 ENT.AdminOnly      = false
-ENT.IconOverride = "entities/m9k_oribital_cannon.png"
+ENT.IconOverride = "entities/m9k_orbital_strike.png"
 ENT.DoNotDuplicate = true
 
 if SERVER then
