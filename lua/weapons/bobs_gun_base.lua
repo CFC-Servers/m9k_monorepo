@@ -1185,8 +1185,11 @@ if CLIENT then
     end
 
     function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
-        if not self.WepSelectIconMaterial then
+        local selection_material = self.WepSelectIconMaterial
+
+        if not selection_material then
             self:SetupWepSelectIcon()
+            selection_material = self.WepSelectIconMaterial
         end
 
         -- Borders
@@ -1200,10 +1203,11 @@ if CLIENT then
         local tall2 = tall - shift
         local sz = wide < 245 and wide or 256
 
-        render.SetMaterial( self.WepSelectIconMaterial )
-        render.SetBlend(alpha / 255)
+        alpha = alpha / 255
+        selection_material:SetVector("$color2", Vector(alpha, alpha, alpha))
 
         -- Draw that mother
+        render.SetMaterial( selection_material )
         render.OverrideBlend( true, BLEND_ONE_MINUS_DST_COLOR, BLEND_ONE, BLENDFUNC_ADD, BLEND_ZERO, BLEND_ONE, BLENDFUNC_ADD )
         render.DrawScreenQuadEx( x + (wide - sz) * 0.5, y2 + (tall2 - sz) * 0.5, sz, sz )
         render.OverrideBlend( false )
