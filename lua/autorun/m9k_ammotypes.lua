@@ -13,6 +13,7 @@ game.AddAmmoType( { name = "m202_rocket", dmgtype = DMG_BLAST } )
 game.AddAmmoType( { name = "rpg_rocket", dmgtype = DMG_BLAST } )
 
 if CLIENT then
+    list.Set( "ContentCategoryIcons", "M9K Ammunition", "icon16/gun.png" )
     language.Add( "40mmGrenade_ammo", "40mm Grenade" )
     language.Add( "C4Explosive_ammo", "C4" )
     language.Add( "ProxMine_ammo", "Proximity Mine" )
