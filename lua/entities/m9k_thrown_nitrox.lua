@@ -31,6 +31,7 @@ if SERVER then
         if (phys:IsValid()) then
             phys:SetMass( 5 )
             phys:Wake()
+            phys:AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
             phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
         end
         self:Think()
