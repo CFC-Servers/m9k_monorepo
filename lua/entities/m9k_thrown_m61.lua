@@ -22,6 +22,7 @@ if SERVER then
 
         local phys = self:GetPhysicsObject()
         if (phys:IsValid()) then
+            phys:AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
             phys:Wake()
         end
 
