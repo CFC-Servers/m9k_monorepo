@@ -6,7 +6,7 @@ ENT.Purpose           = ""
 ENT.Instructions      = ""
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DoNotDuplicate    = true
+ENT.DisableDuplicator    = true
 ENT.DisableDuplicator = true
 
 ENT.PoorBastard       = false

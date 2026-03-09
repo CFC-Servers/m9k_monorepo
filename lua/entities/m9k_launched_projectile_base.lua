@@ -3,7 +3,7 @@ ENT.PrintName         = "M9k Launched Projectile Base"
 
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DoNotDuplicate    = true
+ENT.DisableDuplicator    = true
 ENT.DisableDuplicator = true
 
 ENT.FlightDrop = ( 80 * 52.5 ) / 66

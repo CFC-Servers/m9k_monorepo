@@ -3,7 +3,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Spawnable = false
 ENT.AdminOnly = true
-ENT.DoNotDuplicate = true
+ENT.DisableDuplicator = true
 ENT.DisableDuplicator = true
 ENT.CanTool = false
 ENT.InFlight = true
