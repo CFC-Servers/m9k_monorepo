@@ -5,7 +5,6 @@ ENT.Author            = "Teta_Bonita"
 
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
 --Teta_Bonita, holy shit i wish I were half as good a coder as you.

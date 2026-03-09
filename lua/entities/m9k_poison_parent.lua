@@ -6,7 +6,6 @@ ENT.Purpose           = "this is here to tell the point hurt entity who owns it,
 ENT.Instructions      = ""
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 
 ENT.Big = false
