@@ -7,7 +7,6 @@ ENT.Instructions      = "LAUNCH"
 
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DisableDuplicator    = true
 ENT.DisableDuplicator = true
 
 if SERVER then

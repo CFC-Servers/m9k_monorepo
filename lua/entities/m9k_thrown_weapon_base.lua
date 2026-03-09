@@ -4,7 +4,6 @@ ENT.Type = "anim"
 ENT.Spawnable = false
 ENT.AdminOnly = true
 ENT.DisableDuplicator = true
-ENT.DisableDuplicator = true
 ENT.CanTool = false
 ENT.InFlight = true
 ENT.GiveClassType = "m9k_harpoon"

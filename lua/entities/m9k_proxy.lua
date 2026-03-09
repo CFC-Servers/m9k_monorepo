@@ -7,7 +7,6 @@ ENT.Instructions = ""
 ENT.Spawnable = false
 ENT.AdminOnly = true
 ENT.DisableDuplicator = true
-ENT.DisableDuplicator = true
 ENT.CanTool = false
 
 if CLIENT then return end
