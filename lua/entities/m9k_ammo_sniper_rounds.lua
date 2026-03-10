@@ -5,7 +5,6 @@ ENT.Category       = "M9K Ammunition"
 
 ENT.Spawnable      = true
 ENT.AdminOnly      = false
-ENT.DoNotDuplicate = true
 
 if SERVER then
     AddCSLuaFile()

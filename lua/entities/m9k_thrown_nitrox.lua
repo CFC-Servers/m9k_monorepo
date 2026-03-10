@@ -7,7 +7,6 @@ ENT.Instructions      = ""
 
 ENT.Spawnable         = false
 ENT.AdminOnly         = true
-ENT.DoNotDuplicate    = true
 ENT.DisableDuplicator = true
 ENT.ExplosionDamage = 600
 ENT.ExplosionRadius = 200
