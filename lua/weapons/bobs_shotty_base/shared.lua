@@ -27,6 +27,7 @@ SWEP.Primary.Automatic      = true -- Automatic/Semi Auto
 SWEP.Primary.Ammo           = "none" -- What kind of ammo
 SWEP.Primary.Reloading      = false -- Reloading func
 
+
 -- SWEP.Secondary.ClipSize            = 0
 -- SWEP.Secondary.DefaultClip            = 0                    -- Default number of bullets in a clip
 -- SWEP.Secondary.Automatic            = false                    -- Automatic/Semi Auto
