@@ -1,141 +1,17 @@
-ENT.Type           = "anim"
-ENT.Base           = "base_anim"
-ENT.PrintName      = "357"
-ENT.Category       = "M9K Ammunition"
+AddCSLuaFile()
 
-ENT.Spawnable      = true
-ENT.AdminOnly      = false
+ENT.Base = "m9k_ammo_base"
+ENT.PrintName = "357"
+ENT.Category = "M9K Ammunition"
+ENT.Spawnable = true
 
 if SERVER then
-    AddCSLuaFile()
-
-    function ENT:SpawnFunction( ply, tr )
-        if (not tr.Hit) then return end
-
-        local SpawnPos = tr.HitPos + tr.HitNormal * 16
-
-        local ent = ents.Create( "m9k_ammo_357" )
-
-        ent:SetPos( SpawnPos )
-        ent:Spawn()
-        ent:Activate()
-        ent.Planted = false
-
-        return ent
-    end
-
-    --[[---------------------------------------------------------
-   Name: Initialize
------------------------------------------------------------]]
-    function ENT:Initialize()
-        local model = "models/Items/357ammo.mdl"
-
-        self:SetModel( model )
-
-        self:PhysicsInit( SOLID_VPHYSICS )
-        self:SetMoveType( MOVETYPE_VPHYSICS )
-        self:SetSolid( SOLID_VPHYSICS )
-        self:DrawShadow( false )
-
-        self:SetCollisionGroup( COLLISION_GROUP_WEAPON )
-
-        local phys = self:GetPhysicsObject()
-
-        if (phys:IsValid()) then
-            phys:Wake()
-        end
-
-        self:SetUseType( SIMPLE_USE )
-    end
-
-    --[[---------------------------------------------------------
-   Name: PhysicsCollide
------------------------------------------------------------]]
-    function ENT:PhysicsCollide( data, physobj )
-        -- Play sound on bounce
-        if (data.Speed > 80 and data.DeltaTime > 0.2) then
-            self:EmitSound( "Default.ImpactSoft" )
-        end
-    end
-
-    --[[---------------------------------------------------------
-   Name: OnTakeDamage
------------------------------------------------------------]]
-    function ENT:OnTakeDamage( dmginfo )
-        if dmginfo:GetAttacker():GetClass() == "m9k_ammo_explosion" then return end
-
-        self:TakePhysicsDamage( dmginfo )
-        if GetConVar( "M9KAmmoDetonation" ) == nil then return end
-        if not (GetConVar( "M9KAmmoDetonation" ):GetBool()) then return end
-        blaster = dmginfo:GetAttacker()
-        pos = self:GetPos() + Vector( 0, 0, 10 )
-
-        local dice = math.random( 1, 5 )
-
-        if dmginfo:GetDamage() > 75 or dice == 1 then
-            self:Remove()
-
-            local effectdata = EffectData()
-            effectdata:SetOrigin( self:GetPos() )
-            util.Effect( "ThumperDust", effectdata )
-            util.Effect( "Explosion", effectdata )
-
-            timer.Simple( 0.01, function()
-                for _ = 1, 100 do
-                    local trace = util.TraceLine( {
-                        start = pos,
-                        endpos = pos + Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( 0, 1 ) ) * 64000
-                    } )
-
-                    if trace.Hit and not trace.HitSky then
-                        util.Decal( "Impact.Concrete", trace.HitPos + trace.HitNormal, trace.HitPos - trace.HitNormal )
-                        trace.Entity:TakeDamage( 30 * math.Rand( 0.85, 1.15 ), blaster, self )
-                    end
-                end
-            end )
-        end
-    end
-
-    --[[---------------------------------------------------------
-   Name: Use
------------------------------------------------------------]]
-    function ENT:Use( activator, caller )
-        if (activator:IsPlayer()) and not self.Planted then
-            -- Give the collecting player some free health
-            activator:GiveAmmo( 100, "357" )
-            self:Remove()
-        end
-    end
-end
-
-if CLIENT then
-    --[[---------------------------------------------------------
-   Name: Initialize
------------------------------------------------------------]]
-    function ENT:Initialize()
-    end
-
-    --[[---------------------------------------------------------
-   Name: DrawPre
------------------------------------------------------------]]
-    function ENT:Draw()
-        self:DrawModel()
-
-        local ledcolor = Color( 230, 45, 45, 255 )
-
-        local TargetPos = self:GetPos() + (self:GetUp() * 4) + (self:GetRight() * -2.5) + (self:GetForward() * -3.3) ---1.2
-
-        local FixAngles = self:GetAngles()
-        local FixRotation = Vector( 48, -90, 0 )
-
-        FixAngles:RotateAroundAxis( FixAngles:Right(), FixRotation.x )
-        FixAngles:RotateAroundAxis( FixAngles:Up(), FixRotation.y )
-        FixAngles:RotateAroundAxis( FixAngles:Forward(), FixRotation.z )
-
-        self.Text = "357"
-
-        cam.Start3D2D( TargetPos, FixAngles, .07 )
-        draw.SimpleText( self.Text, "DermaLarge", 31, -22, ledcolor, 1, 1 )
-        cam.End3D2D()
-    end
+    ENT.Model = "models/items/357ammo.mdl"
+    ENT.AmmoType = "357"
+    ENT.AmmoCount = 100
+else
+    ENT.Text = "357"
+    ENT.TextFont = "DermaLarge"
+    ENT.PosOffset = Vector( 4, -2.5, -3.3 )
+    ENT.AngOffset = Vector( 48, -90, 0 )
 end
