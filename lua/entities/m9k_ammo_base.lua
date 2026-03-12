@@ -20,28 +20,67 @@ if SERVER then
             return
         end
 
-        if dmginfo:GetDamage() > 75 or math.random( 1, 5 ) == 1 then
-            local attacker = dmg:GetAttacker()
-            local pos = self:GetPos() + Vector( 0, 0, 10 )
+        if self.ExplosionEffect then
+            if ( dmg:IsExplosionDamage() or math.random( 1, 15 ) == 1 ) and not self.BlowedUp then
+                local pos = self:GetPos()
+                self.BlowedUp = true
 
-            local effectdata = EffectData()
-            effectdata:SetOrigin( pos )
-            util.Effect( "ThumperDust", effectdata )
-            util.Effect( "Explosion", effectdata )
+                local bombexplosion = EffectData()
+                bombexplosion:SetOrigin( pos )
+                bombexplosion:SetRadius( 1000 )
+                bombexplosion:SetMagnitude( 1000 )
+                util.Effect( "HelicopterMegaBomb", bombexplosion )
 
-            for i = 1, 100 do
+                local explosion = EffectData()
+                explosion:SetOrigin( pos )
+                explosion:SetStart( pos )
+                util.Effect( "Explosion", explosion, true, true )
+
                 local trace = util.TraceLine( {
                     start = pos,
-                    endpos = pos + Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( 0, 1 ) ) * 64000,
+                    endpos = pos + self:GetUp() * -5,
                     filter = self
                 } )
 
-                if IsValid( trace.Entity ) then
-                    trace.Entity:TakeDamage( 30 * math.Rand( 0.85, 1.15 ), attacker, self )
-                end
-            end
+                local cinematicexplosion = EffectData()
+                cinematicexplosion:SetOrigin( pos )
+                cinematicexplosion:SetNormal( trace.Hit and trace.HitNormal or vector_up )
+                cinematicexplosion:SetEntity( self )
+                cinematicexplosion:SetScale( 4 )
+                cinematicexplosion:SetRadius( 67 )
+                cinematicexplosion:SetMagnitude( 18 )
+                util.Effect( "m9k_gdcw_cinematicboom", cinematicexplosion )
 
-            self:Remove()
+                util.BlastDamage( self, dmg:GetAttacker(), pos, 1000, 800 )
+                util.ScreenShake( pos, 2000, 255, 2.5, 1250)
+
+                self:EmitSound( "C4.Explode" )
+                self:Remove()
+            end
+        else
+            if dmg:GetDamage() > 75 or math.random( 1, 5 ) == 1 then
+                local attacker = dmg:GetAttacker()
+                local pos = self:GetPos() + Vector( 0, 0, 10 )
+
+                local effectdata = EffectData()
+                effectdata:SetOrigin( pos )
+                util.Effect( "ThumperDust", effectdata )
+                util.Effect( "Explosion", effectdata )
+
+                for i = 1, 100 do
+                    local trace = util.TraceLine( {
+                        start = pos,
+                        endpos = pos + Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( 0, 1 ) ) * 64000,
+                        filter = self
+                    } )
+
+                    if IsValid( trace.Entity ) then
+                        trace.Entity:TakeDamage( 30 * math.Rand( 0.85, 1.15 ), attacker, self )
+                    end
+                end
+
+                self:Remove()
+            end
         end
     end
 
