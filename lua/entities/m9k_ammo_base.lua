@@ -16,12 +16,12 @@ if SERVER then
     function ENT:OnTakeDamage( dmg )
         self:TakePhysicsDamage( dmg )
 
-        if not ammo_detonation:GetBool() then
+        if not ammo_detonation:GetBool() or self.BlowedUp then
             return
         end
 
         if self.ExplosionEffect then
-            if ( dmg:IsExplosionDamage() or math.random( 1, 15 ) == 1 ) and not self.BlowedUp then
+            if ( dmg:IsExplosionDamage() or math.random( 1, 15 ) == 1 ) then
                 local pos = self:GetPos()
                 self.BlowedUp = true
 
@@ -61,6 +61,7 @@ if SERVER then
             if dmg:GetDamage() > 75 or math.random( 1, 5 ) == 1 then
                 local attacker = dmg:GetAttacker()
                 local pos = self:GetPos() + Vector( 0, 0, 10 )
+                self.BlowedUp = true
 
                 local effectdata = EffectData()
                 effectdata:SetOrigin( pos )
