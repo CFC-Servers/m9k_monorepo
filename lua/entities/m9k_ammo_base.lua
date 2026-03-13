@@ -71,7 +71,7 @@ if SERVER then
                 for i = 1, 100 do
                     local trace = util.TraceLine( {
                         start = pos,
-                        endpos = pos + Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( 0, 1 ) ) * 64000,
+                        endpos = pos + Vector( math.Rand( -64000, 64000 ), math.Rand( -64000, 64000 ), math.Rand( 0, 64000 ) ),
                         filter = self
                     } )
 
