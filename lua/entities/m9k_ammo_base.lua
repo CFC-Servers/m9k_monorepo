@@ -51,8 +51,9 @@ if SERVER then
                 cinematicexplosion:SetMagnitude( 18 )
                 util.Effect( "m9k_gdcw_cinematicboom", cinematicexplosion )
 
-                util.BlastDamage( self, dmg:GetAttacker(), pos, 1000, 800 )
-                util.ScreenShake( pos, 2000, 255, 2.5, 1250)
+                local attacker = dmg:GetAttacker()
+                util.BlastDamage( self, IsValid( attacker ) and attacker or self, pos, 1000, 800 )
+                util.ScreenShake( pos, 2000, 255, 2.5, 1250 )
 
                 self:EmitSound( "C4.Explode" )
                 self:Remove()
