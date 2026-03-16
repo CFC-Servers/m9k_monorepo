@@ -788,7 +788,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
             }
         else
             local engineSpread = m9k_enginespread:GetBool()
-            local spreadDir = engineSpread and aimcone or Vector( 0, 0, 0 )
+            local spreadDir = engineSpread and Vector( aimcone, aimcone, 0 ) or Vector( 0, 0, 0 )
             local dir = engineSpread and bulletDir or getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
             bullet = {
                 Inflictor = self,
