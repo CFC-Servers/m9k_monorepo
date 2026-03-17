@@ -169,8 +169,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Suicide()
-    if self.SuicideExploded then return end
-    self.SuicideExploded = true
+    self.BetterBeDead = true
 
     local owner = self:GetOwner()
     local effectdata = EffectData()
