@@ -78,22 +78,26 @@ function SWEP:Deploy()
     self:SendWeaponAnim( ACT_VM_DRAW )
 
     if GetConVar( "DavyCrockettAllowed" ):GetBool() then
-        self.FireDelay = CurTime() + self.NextFireTime
-        self:SetNextPrimaryFire( self.FireDelay )
-        owner:PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in " .. self.Countdown .. " seconds." )
-        owner.DCCount = self.Countdown - 1
-        timer.Create( "davy_crocket_" .. owner:UniqueID(), 1, self.Countdown, function()
-            if not IsValid( self ) then return end
-            if not IsValid( owner ) then return end
-            if not IsValid( owner:GetActiveWeapon() ) then return end
-            if owner:GetActiveWeapon():GetClass() ~= self.Gun then
-                timer.Remove( "davy_crocket_" .. owner:UniqueID() )
-                return
-            end
+        if GetConVar( "DavyCrocketAdminOnly" ):GetBool() and not owner:IsAdmin() then
+            owner:PrintMessage( HUD_PRINTCENTER, "Nukes are admin only on this server." )
+        else
+            self.FireDelay = CurTime() + self.NextFireTime
+            self:SetNextPrimaryFire( self.FireDelay )
+            owner:PrintMessage( HUD_PRINTCENTER, "Warhead will be armed in " .. self.Countdown .. " seconds." )
+            owner.DCCount = self.Countdown - 1
+            timer.Create( "davy_crocket_" .. owner:UniqueID(), 1, self.Countdown, function()
+                if not IsValid( self ) then return end
+                if not IsValid( owner ) then return end
+                if not IsValid( owner:GetActiveWeapon() ) then return end
+                if owner:GetActiveWeapon():GetClass() ~= self.Gun then
+                    timer.Remove( "davy_crocket_" .. owner:UniqueID() )
+                    return
+                end
 
-            self:DeployCountDownFunc( owner.DCCount )
-            owner.DCCount = owner.DCCount - 1
-        end )
+                self:DeployCountDownFunc( owner.DCCount )
+                owner.DCCount = owner.DCCount - 1
+            end )
+        end
     else
         owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
     end
@@ -132,14 +136,18 @@ function SWEP:PrimaryAttack()
 
     if self:CanPrimaryAttack() and self.FireDelay <= CurTime() and ( not self:IsRunning() or self.CanShootWhileRunning ) then
         if owner:IsPlayer() then
-            if GetConVar( "DavyCrockettAllowed" ) == nil or (GetConVar( "DavyCrockettAllowed" ):GetBool()) then
-                self:FireRocket()
-                self:EmitSound( "RPGF.single" )
-                self:TakePrimaryAmmo( 1 )
-                self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-                owner:SetAnimation( PLAYER_ATTACK1 )
-                owner:MuzzleFlash()
-                self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+            if GetConVar( "DavyCrockettAllowed" ):GetBool() then
+                if GetConVar( "DavyCrocketAdminOnly" ):GetBool() and not owner:IsAdmin() then
+                    owner:PrintMessage( HUD_PRINTCENTER, "Nukes are admin only on this server." )
+                else
+                    self:FireRocket()
+                    self:EmitSound( "RPGF.single" )
+                    self:TakePrimaryAmmo( 1 )
+                    self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+                    owner:SetAnimation( PLAYER_ATTACK1 )
+                    owner:MuzzleFlash()
+                    self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+                end
             else
                 owner:PrintMessage( HUD_PRINTCENTER, "Nukes are not allowed on this server." )
             end
@@ -191,14 +199,6 @@ SWEP.WElements = {
     ["nuke"] = { type = "Model", model = "models/failure/mk6/m62.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector( 28.054, 0.268, -5.1 ), angle = Angle( -90, 0, 0 ), size = Vector( 0.504,
         0.504, 0.504 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
-
-if GetConVar( "DavyCrocketAdminOnly" ) == nil then
-    print( "DavyCrocketAdminOnly is missing! You may have hit the lua limit!" )
-else
-    if GetConVar( "DavyCrocketAdminOnly" ):GetInt() == 1 then
-        SWEP.Spawnable = false
-    end
-end
 
 --[[---------------------------------------------------------
 IronSight

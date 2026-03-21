@@ -89,6 +89,11 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and owner:IsPlayer() and self.NextShoot <= CurTime() then
+        if GetConVar( "OrbitalStrikeAdminOnly" ):GetBool() and not owner:IsAdmin() then
+            owner:PrintMessage( HUD_PRINTCENTER, "Orbital strikes are admin only on this server." )
+            return
+        end
+
         if ( not self:IsRunning() or self.CanShootWhileRunning ) and not owner:KeyDown( IN_RELOAD ) then
             local mark = owner:GetEyeTrace()
             if mark.HitSky then
@@ -149,13 +154,5 @@ function SWEP:PrimaryAttack()
                 owner:EmitSound( "player/suit_denydevice.wav" )
             end
         end
-    end
-end
-
-if GetConVar( "OrbitalStrikeAdminOnly" ) == nil then
-    print( "OrbitalStrikeAdminOnly is missing! You may have hit the lua limit!" )
-else
-    if GetConVar( "OrbitalStrikeAdminOnly" ):GetInt() == 1 then
-        SWEP.Spawnable = false
     end
 end
