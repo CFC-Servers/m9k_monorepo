@@ -81,22 +81,28 @@ if SERVER then
 end
 
 if CLIENT then
-    function ENT:Draw()
-        self:DrawModel() -- Draw the model.
-    end
-
-    function ENT:Initialize()
-        pos = self:GetPos()
-        self.emitter = ParticleEmitter( pos )
+    function ENT:OnRemove()
+        if self.emitter then
+            self.emitter:Finish()
+        end
     end
 
     function ENT:Think()
-        if (self:GetNWBool( "smoke" )) then
-            pos = self:GetPos()
-            for i = 0, (5) do
-                local particle = self.emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos + (self:GetUp() * -100 * i) )
-                if (particle) then
-                    particle:SetVelocity( (self:GetUp() * -2000) + (VectorRand() * 100) )
+        if self:GetNWBool( "smoke" ) then
+            local up = self:GetUp()
+            local pos = self:GetPos()
+            local emitter = self.emitter
+
+            if not emitter then
+                emitter = ParticleEmitter( pos )
+                self.emitter = emitter
+            end
+
+            for i = 0, 5 do
+                local particle = emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos + (up * -100 * i) )
+
+                if particle then
+                    particle:SetVelocity( up * -2000 + VectorRand( -100, 100 ) )
                     particle:SetDieTime( math.Rand( 2, 5 ) )
                     particle:SetStartAlpha( math.Rand( 5, 7 ) )
                     particle:SetEndAlpha( 0 )
@@ -112,4 +118,3 @@ if CLIENT then
         end
     end
 end
-
