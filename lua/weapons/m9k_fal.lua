@@ -37,7 +37,7 @@ SWEP.Primary.DefaultClip    = 60
 SWEP.Primary.KickUp         = 0.5 -- Maximum up recoil (rise)
 SWEP.Primary.KickDown       = 0.3 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0.5 -- Maximum up recoil (stock)
-SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
+SWEP.Primary.Automatic      = true -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "ar2" -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
 -- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a light metal piercing shotgun pellets
 
