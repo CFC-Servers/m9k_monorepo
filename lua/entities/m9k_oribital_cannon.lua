@@ -298,7 +298,7 @@ if SERVER then
         timer.Simple( 1.5, function()
             for k, v in ipairs( player.GetAll() ) do
                 if IsValid( v ) then
-                    v:EmitSound( "npc/strider/fire.ogg" )
+                    v:EmitSound( "npc/strider/fire.wav" )
                     --sound.Play("npc/strider/fire.ogg", v:GetPos(), 100, 100, 1)
                 end
             end
