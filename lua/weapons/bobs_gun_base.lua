@@ -1177,21 +1177,19 @@ if CLIENT then
 
         local stored = weapons.GetStored( self:GetClass() )
         if not stored.WepSelectIconMaterial then
-            local path = self.WeaponIconPath and self.WeaponIconPath or "vgui/hud/" .. self:GetClass()
+            local path = self.WeaponIconPath and self.WeaponIconPath or "vgui/hud/" .. self:GetClass() .. ".png"
             stored.WepSelectIconMaterial = Material( path )
         end
 
         self.WepSelectIconMaterial = stored.WepSelectIconMaterial
     end
 
-    function SWEP:DrawWeaponSelection( x, y, wide, _tall, alpha )
-        -- Set us up the texture
-        surface.SetDrawColor( 255, 255, 255, alpha )
-        if self.WepSelectIconMaterial then
-            surface.SetMaterial( self.WepSelectIconMaterial )
-        else
+    function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
+        local selection_material = self.WepSelectIconMaterial
+
+        if not selection_material then
             self:SetupWepSelectIcon()
-            surface.SetTexture( surface.GetTextureID( "weapons/swep" ) )
+            selection_material = self.WepSelectIconMaterial
         end
 
         -- Borders
@@ -1199,8 +1197,20 @@ if CLIENT then
         x = x + 10
         wide = wide - 20
 
+        -- Some locals
+        local shift = math.floor( tall / 4 )
+        local y2 = y + shift
+        local tall2 = tall - shift
+        local sz = wide < 245 and wide or 256
+
+        alpha = alpha / 255
+        selection_material:SetVector( "$color2", Vector( alpha, alpha, alpha ) )
+
         -- Draw that mother
-        surface.DrawTexturedRect( x, y,  wide, wide / 2 )
+        render.SetMaterial( selection_material )
+        render.OverrideBlend( true, BLEND_ONE_MINUS_DST_COLOR, BLEND_ONE, BLENDFUNC_ADD, BLEND_ZERO, BLEND_ONE, BLENDFUNC_ADD )
+        render.DrawScreenQuadEx( x + (wide - sz) * 0.5, y2 + (tall2 - sz) * 0.5, sz, sz )
+        render.OverrideBlend( false )
     end
 
     SWEP.vRenderOrder = nil
