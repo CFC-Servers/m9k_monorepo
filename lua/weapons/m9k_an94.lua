@@ -91,6 +91,8 @@ end
 SWEP.Primary.PrevShots = SWEP.Primary.NumShots
 
 function SWEP:PrimaryAttack()
+    if self:CheckWater() then return end
+    
     local owner = self:GetOwner()
 
     if self:CanPrimaryAttack() and owner:IsPlayer() then
