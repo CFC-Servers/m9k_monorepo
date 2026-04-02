@@ -24,6 +24,8 @@ SWEP.Primary.ClipSize       = 0
 SWEP.Primary.DefaultClip    = 0 -- Default number of bullets in a clip
 SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
 SWEP.KickUpMultiplier       = 2
+SWEP.Reloadoffset           = 0 -- The mag gets refilled when the animation is done. This is an offset in seconds,
+--if its set to 1, the mag will get refilled 1 second before
 
 SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 0 -- Maximum side recoil (koolaid)
@@ -868,7 +870,7 @@ function SWEP:Reload()
     self:SetIronsights( false )
     self:SetReloading( true )
 
-    local waitdammit = owner:GetViewModel():SequenceDuration()
+    local waitdammit = owner:GetViewModel():SequenceDuration() - self.Reloadoffset
     timer.Simple( waitdammit, function()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
