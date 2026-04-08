@@ -65,6 +65,11 @@ local CLIENT                = CLIENT
 local SERVER                = SERVER
 local MASK_SHOT             = MASK_SHOT
 local IN_USE                = IN_USE
+local IN_SPEED              = IN_SPEED
+local IN_FORWARD            = IN_FORWARD
+local IN_BACK               = IN_BACK
+local IN_MOVELEFT           = IN_MOVELEFT
+local IN_MOVERIGHT          = IN_MOVERIGHT
 
 if SERVER then
     util.AddNetworkString( "m9k_muzzleflash" )
@@ -91,6 +96,9 @@ SWEP.WElements = {}
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetTable = entMeta.GetTable
 local entity_GetOwner = entMeta.GetOwner
+
+local playerMeta = FindMetaTable( "Player" )
+local player_KeyDown = playerMeta.KeyDown
 
 function SWEP:Initialize()
     self.Reloadaftershoot = 0 -- Can't reload when firing
@@ -230,8 +238,8 @@ function SWEP:IsRunning()
     if not IsValid( owner ) then return false end
     if not owner:IsPlayer() then return false end
 
-    local sprintDown = owner:KeyDown( IN_SPEED )
-    if owner:KeyDown( IN_FORWARD ) or owner:KeyDown( IN_BACK ) or owner:KeyDown( IN_MOVELEFT ) or owner:KeyDown( IN_MOVERIGHT ) then
+    local sprintDown = player_KeyDown( owner, IN_SPEED )
+    if player_KeyDown( owner, IN_FORWARD ) or player_KeyDown( owner, IN_BACK ) or player_KeyDown( owner, IN_MOVELEFT ) or player_KeyDown( owner, IN_MOVERIGHT ) then
         return sprintDown
     end
 
