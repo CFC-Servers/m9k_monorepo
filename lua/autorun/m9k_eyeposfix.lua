@@ -1,4 +1,5 @@
 local PLAYER = FindMetaTable( "Player" )
+local PLAYER_GetShootPos = PLAYER.GetShootPos
 
 function PLAYER:M9K_GetShootPos()
     local realShootPos = self.M9K_RealShootpos
@@ -6,10 +7,10 @@ function PLAYER:M9K_GetShootPos()
         return realShootPos
     end
 
-    return self:GetShootPos()
+    return PLAYER_GetShootPos( self )
 end
 
 
 hook.Add( "SetupMove", "M9K_ShootPosPredFix", function( ply, _mv, _cmd )
-    ply.M9K_RealShootpos = ply:GetShootPos()
+    ply.M9K_RealShootpos = PLAYER_GetShootPos( ply )
 end )
