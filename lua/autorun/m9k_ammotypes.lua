@@ -14,6 +14,7 @@ game.AddAmmoType( { name = "rpg_rocket", dmgtype = DMG_BLAST } )
 
 if CLIENT then
     list.Set( "ContentCategoryIcons", "M9K Ammunition", "icon16/box.png" )
+    language.Add( "AirboatGun_ammo", "Winchester Ammo" )
     language.Add( "SniperPenetratedRound_ammo", "Sniper Ammo" )
     language.Add( "40mmGrenade_ammo", "40mm Grenade" )
     language.Add( "C4Explosive_ammo", "C4" )
