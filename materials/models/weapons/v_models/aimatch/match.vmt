@@ -1,5 +1,4 @@
 "VertexLitGeneric"
 {
-    "$baseTexture" "models\weapons\v_models\aimatch/match"
     "$no_draw" "1"
 }
