@@ -8,6 +8,6 @@ ENT.Spawnable = true
 if SERVER then
     ENT.Model = "models/items/ammocrates/crate40mm.mdl"
     ENT.ExplosionEffect = true
-    ENT.AmmoType = "40mmGrenade"
+    ENT.AmmoType = "SMG1_Grenade"
     ENT.AmmoCount = 64
 end
