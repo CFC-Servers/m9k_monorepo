@@ -92,7 +92,7 @@ function SWEP:PrimaryAttack()
             proxy:Spawn()
 
             local boxes
-            parentme = {}
+            local parentme = {}
             parentme[1] = "m9k_ammo_40mm"
             parentme[2] = "m9k_ammo_c4"
             parentme[3] = "m9k_ammo_frags"

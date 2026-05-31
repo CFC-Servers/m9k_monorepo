@@ -531,33 +531,32 @@ if SERVER then
         end
 
         if not IsValid( ground ) then return end
-        pos = self:GetPos()
-        lowerleft = pos + Vector( 870, 500, 0 )
-        lowerright = pos + Vector( -870, 500, 0 )
-        top = pos + Vector( 0, -1000, 0 )
+        local pos = self:GetPos()
+        local lowerleft = pos + Vector( 870, 500, 0 )
+        local lowerright = pos + Vector( -870, 500, 0 )
 
-        tr1 = {}
+        local tr1 = {}
         tr1.start = lowerleft
         tr1.endpos = ground:GetPos()
         tr1.filter = { self, ground }
         tr1 = util.TraceLine( tr1 )
 
-        tr2 = {}
+        local tr2 = {}
         tr2.start = lowerleft
         tr2.endpos = ground:GetPos()
         tr2.filter = { self, ground }
         tr2 = util.TraceLine( tr2 )
 
-        tr3 = {}
+        local tr3 = {}
         tr3.start = lowerright
         tr3.endpos = ground:GetPos()
-        tr3.filter = self, ground
+        tr3.filter = { self, ground }
         tr3 = util.TraceLine( tr3 )
 
-        tr4 = {}
+        local tr4 = {}
         tr4.start = lowerright
         tr4.endpos = ground:GetPos()
-        tr4.filter = self, ground
+        tr4.filter = { self, ground }
         tr4 = util.TraceLine( tr4 )
 
         if tr2.Entity ~= ground then

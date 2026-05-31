@@ -103,7 +103,7 @@ function SWEP:PrimaryAttack()
             local skytrace = {}
             skytrace.start = mark.HitPos
             skytrace.endpos = mark.HitPos + Vector( 0, 0, 65000 )
-            skycheck = util.TraceLine( skytrace )
+            local skycheck = util.TraceLine( skytrace )
             if skycheck.HitSky then
                 if SERVER then
                     local Sky = skycheck.HitPos - Vector( 0, 0, 10 )
@@ -123,12 +123,12 @@ function SWEP:PrimaryAttack()
                 self:Reload()
             elseif mark.Entity:IsPlayer() or mark.Entity:IsNPC() then
                 self.PoorBastard = true
-                thetarget = mark.Entity
-                skytrace2 = {}
+                local thetarget = mark.Entity
+                local skytrace2 = {}
                 skytrace2.start = thetarget:GetPos()
                 skytrace2.endpos = thetarget:GetPos() + Vector( 0, 0, 65000 )
                 skytrace2.filter = thetarget
-                skycheck2 = util.TraceLine( skytrace2 )
+                local skycheck2 = util.TraceLine( skytrace2 )
                 if skycheck2.HitSky then --someone's gonna be in big trouble
                     local sky2 = skycheck2.HitPos - Vector( 0, 0, 10 )
                     if SERVER then

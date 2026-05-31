@@ -101,7 +101,7 @@ function SWEP:PrimaryAttack()
         owner:LagCompensation( false )
 
         if slashtrace.Hit then
-            targ = slashtrace.Entity
+            local targ = slashtrace.Entity
             if targ:IsPlayer() or targ:IsNPC() then
                 self:EmitSound( self.SwordChop )
                 if SERVER then

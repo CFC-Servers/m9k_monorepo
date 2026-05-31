@@ -141,7 +141,7 @@ function SWEP:ThinkCustom()
                 end
             else
                 self:EmitSound( self.KnifeShink )
-                look = owner:GetEyeTrace()
+                local look = owner:GetEyeTrace()
                 util.Decal( "ManhackCut", look.HitPos + look.HitNormal, look.HitPos - look.HitNormal )
             end
         end

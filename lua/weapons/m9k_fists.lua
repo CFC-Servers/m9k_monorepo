@@ -108,7 +108,7 @@ function SWEP:Jab()
     owner:LagCompensation( false )
 
     if slashtrace.Hit then
-        targ = slashtrace.Entity
+        local targ = slashtrace.Entity
         if targ:IsPlayer() or targ:IsNPC() then
             self:EmitSound( Sound( table.Random( punchtable ) ) )
             local paininfo = DamageInfo()
