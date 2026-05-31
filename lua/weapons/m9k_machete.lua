@@ -121,7 +121,7 @@ function SWEP:HackNSlash()
                 if targ:IsPlayer() or targ:IsNPC() then
                     --find a way to splash a little blood
                     self:EmitSound( self.KnifeSlash ) --stab noise
-                    paininfo = DamageInfo()
+                    local paininfo = DamageInfo()
                     paininfo:SetDamage( pain )
                     paininfo:SetDamageType( DMG_SLASH )
                     paininfo:SetAttacker( owner )

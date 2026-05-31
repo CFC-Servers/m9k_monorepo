@@ -30,12 +30,12 @@ local function make_rt(name_func, xs, ys, depth, alpha)
 	return GetRenderTargetEx(name_func(), xs, ys, depth and RT_SIZE_DEFAULT or RT_SIZE_NO_CHANGE, depth and MATERIAL_RT_DEPTH_SEPARATE or MATERIAL_RT_DEPTH_NONE, 12 + 2, 0, IMAGE_FORMAT_RGBA8888)
 end
 
-MAT_MODELCOLOR = CreateMaterial(unique_name(), "VertexLitGeneric", {
+local MAT_MODELCOLOR = CreateMaterial(unique_name(), "VertexLitGeneric", {
 	["$basetexture"] = "lights/white",
 	["$translucent"] = "1",
 })
 
-MAT_TEXTURE = CreateMaterial(unique_name(), "UnlitGeneric", {
+local MAT_TEXTURE = CreateMaterial(unique_name(), "UnlitGeneric", {
 	["$basetexture"] = "lights/white",
 	["$vertexcolor"] = "1",
 	["$translucent"] = "1",
@@ -87,9 +87,9 @@ local read_pixel = render.ReadPixel
 -- The game likes to black out our textures sometimes (eg. when changing screen res).
 -- Make a little 1x1 square that is white when the textures still exist, so if the game blacks it out we'll know, without having to capture an entire large texture.
 -- Still takes about 0.5ms to check it though.
-INDICATOR_TEXTURE = GetRenderTargetEx(unique_name(), 1, 1, 0, 2, 1, 0, IMAGE_FORMAT_RGB888)
+local INDICATOR_TEXTURE = GetRenderTargetEx(unique_name(), 1, 1, 0, 2, 1, 0, IMAGE_FORMAT_RGB888)
 
-INDICATOR_MATERIAL = CreateMaterial(unique_name(), "VertexLitGeneric", {
+local INDICATOR_MATERIAL = CreateMaterial(unique_name(), "VertexLitGeneric", {
 	["$basetexture"] = "lights/white",
 })
 
@@ -356,7 +356,7 @@ local function sck_local_to_world(ipos, iang, pos, ang)
 	return pos, ang
 end
 
-function GetIcon(p)
+local function GetIcon(p)
 	check_textures_valid()
 	if cache[p.cachekey] then return cache[p.cachekey] end
 	local mainent = ClientsideModel(p.mainmodel)
@@ -596,7 +596,7 @@ function GetIcon(p)
 					end)
 
 					local bitmask, bitcount = get_bitmap()
-					x0, x1 = 0, 0.67
+					local x0, x1 = 0, 0.67
 
 					fixang = estimate_bitmask_angle(bitmask, x0, x1)
 				end)
