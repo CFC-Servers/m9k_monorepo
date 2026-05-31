@@ -114,13 +114,13 @@ if SERVER then
 
     function ENT:CannonTargeting3( ground, sky )
         if SERVER then
-            targ = ents.Create( "info_target" )
+            local targ = ents.Create( "info_target" )
             targ:SetKeyValue( "targetname", tostring( targ ) )
             targ:SetPos( ground )
             targ:Spawn()
             targ:Fire( "Kill", "", 3 )
 
-            laser = ents.Create( "env_laser" )
+            local laser = ents.Create( "env_laser" )
             laser:SetKeyValue( "texture", "sprites/laserbeam.spr" )
             laser:SetKeyValue( "TextureScroll", "30" )
             laser:SetKeyValue( "noiseamplitude", "0" )
@@ -154,14 +154,14 @@ if SERVER then
     function ENT:CannonTargetingPerson3( target, sky )
         if not IsValid( target ) then return end
         if SERVER then
-            targ = ents.Create( "info_target" )
+            local targ = ents.Create( "info_target" )
             targ:SetKeyValue( "targetname", tostring( targ ) )
             targ:SetPos( target:GetPos() )
             targ:Spawn()
             targ:Fire( "Kill", "", 3 )
             targ:SetParent( target )
 
-            laser = ents.Create( "env_laser" )
+            local laser = ents.Create( "env_laser" )
             laser:SetKeyValue( "texture", "sprites/laserbeam.spr" )
             laser:SetKeyValue( "TextureScroll", "30" )
             laser:SetKeyValue( "noiseamplitude", "0" )
@@ -194,10 +194,9 @@ if SERVER then
     end
 
     function ENT:GiantLaser( ground, sky )
-        pos = self:GetPos()
-        lowerleft = Vector( 870, 500, 0 )
-        lowerright = Vector( -870, 500, 0 )
-        top = Vector( 0, -1000, 0 )
+        local lowerleft = Vector( 870, 500, 0 )
+        local lowerright = Vector( -870, 500, 0 )
+        local top = Vector( 0, -1000, 0 )
 
         local targ = ents.Create( "info_target" )
         targ:SetKeyValue( "targetname", tostring( targ ) )
@@ -308,26 +307,25 @@ if SERVER then
     function ENT:GiantLaserPerson( ground, sky )
         if not IsValid( ground ) then return end
 
-        pos = self:GetPos()
-        lowerleft = Vector( 870, 500, 0 )
-        lowerright = Vector( -870, 500, 0 )
-        top = Vector( 0, -1000, 0 )
+        local lowerleft = Vector( 870, 500, 0 )
+        local lowerright = Vector( -870, 500, 0 )
+        local top = Vector( 0, -1000, 0 )
 
-        targ = ents.Create( "info_target" )
+        local targ = ents.Create( "info_target" )
         targ:SetKeyValue( "targetname", tostring( targ ) )
         targ:SetPos( ground:GetPos() )
         targ:Spawn()
         targ:Fire( "Kill", "", 2.25 )
         targ:SetParent( ground )
 
-        targ2 = ents.Create( "info_target" )
+        local targ2 = ents.Create( "info_target" )
         targ2:SetKeyValue( "targetname", tostring( targ2 ) )
         targ2:SetPos( self:GetPos() )
         targ2:Spawn()
         targ2:Fire( "Kill", "", 2.25 )
         targ2:SetParent( self )
 
-        laser0 = ents.Create( "env_laser" )
+        local laser0 = ents.Create( "env_laser" )
         laser0:SetKeyValue( "texture", "sprites/laser.vmt" )
         laser0:SetKeyValue( "TextureScroll", "30" )
         laser0:SetKeyValue( "noiseamplitude", "0" )
@@ -342,7 +340,7 @@ if SERVER then
         laser0:Fire( "Kill", "", 2.25 )
         laser0:SetParent( ground )
 
-        laser = ents.Create( "env_laser" )
+        local laser = ents.Create( "env_laser" )
         laser:SetKeyValue( "texture", "sprites/laser.vmt" )
         laser:SetKeyValue( "TextureScroll", "30" )
         laser:SetKeyValue( "noiseamplitude", "0" )
@@ -366,7 +364,7 @@ if SERVER then
 
         timer.Simple( .75, function()
             if IsValid( self ) then
-                laser2 = ents.Create( "env_laser" )
+                local laser2 = ents.Create( "env_laser" )
                 laser2:SetKeyValue( "texture", "sprites/laser.vmt" )
                 laser2:SetKeyValue( "TextureScroll", "30" )
                 laser2:SetKeyValue( "noiseamplitude", "0" )
@@ -385,7 +383,7 @@ if SERVER then
 
         timer.Simple( 1.25, function()
             if IsValid( self ) then
-                laser3 = ents.Create( "env_laser" )
+                local laser3 = ents.Create( "env_laser" )
                 laser3:SetKeyValue( "texture", "sprites/laser.vmt" )
                 laser3:SetKeyValue( "TextureScroll", "30" )
                 laser3:SetKeyValue( "noiseamplitude", "0" )
@@ -404,7 +402,7 @@ if SERVER then
 
         timer.Simple( 1.75, function()
             if IsValid( self ) then
-                laser4 = ents.Create( "env_laser" )
+                local laser4 = ents.Create( "env_laser" )
                 laser4:SetKeyValue( "texture", "sprites/laser.vmt" )
                 laser4:SetKeyValue( "TextureScroll", "30" )
                 laser4:SetKeyValue( "noiseamplitude", "0" )
@@ -434,30 +432,29 @@ if SERVER then
             return
         end
 
-        pos = self:GetPos()
-        lowerleft = pos + Vector( 870, 500, 0 )
-        lowerright = pos + Vector( -870, 500, 0 )
-        top = pos + Vector( 0, -1000, 0 )
+        local pos = self:GetPos()
+        local lowerleft = pos + Vector( 870, 500, 0 )
+        local lowerright = pos + Vector( -870, 500, 0 )
 
-        tr1 = {}
+        local tr1 = {}
         tr1.start = lowerleft
         tr1.endpos = ground
         tr1.filter = self
         tr1 = util.TraceLine( tr1 )
 
-        tr2 = {}
+        local tr2 = {}
         tr2.start = lowerleft
         tr2.endpos = ground
         tr2.filter = self
         tr2 = util.TraceLine( tr2 )
 
-        tr3 = {}
+        local tr3 = {}
         tr3.start = lowerright
         tr3.endpos = ground
         tr3.filter = self
         tr3 = util.TraceLine( tr3 )
 
-        tr4 = {}
+        local tr4 = {}
         tr4.start = lowerright
         tr4.endpos = ground
         tr4.filter = self
@@ -486,14 +483,14 @@ if SERVER then
         exploeffect:SetStart( ground )
         util.Effect( "Explosion", exploeffect, true, true )
 
-        local effectdata = EffectData()
-        effectdata:SetOrigin( ground ) -- Where is hits
-        effectdata:SetNormal( Vector( 0, 0, 1 ) ) -- Direction of particles
-        effectdata:SetEntity( self.Owner ) -- Who done it?
-        effectdata:SetScale( 8 ) -- Size of explosion
-        effectdata:SetRadius( 67 ) -- What texture it hits
-        effectdata:SetMagnitude( 8 ) -- Length of explosion trails
-        util.Effect( "m9k_gdcw_cinematicboom", effectdata )
+        local effectdata2 = EffectData()
+        effectdata2:SetOrigin( ground ) -- Where is hits
+        effectdata2:SetNormal( Vector( 0, 0, 1 ) ) -- Direction of particles
+        effectdata2:SetEntity( self.Owner ) -- Who done it?
+        effectdata2:SetScale( 8 ) -- Size of explosion
+        effectdata2:SetRadius( 67 ) -- What texture it hits
+        effectdata2:SetMagnitude( 8 ) -- Length of explosion trails
+        util.Effect( "m9k_gdcw_cinematicboom", effectdata2 )
         --generic default, you are a god among men
 
         util.BlastDamage( self, (self:OwnerCheck()), ground, 4000, 500 )
@@ -542,13 +539,13 @@ if SERVER then
         tr1 = {}
         tr1.start = lowerleft
         tr1.endpos = ground:GetPos()
-        tr1.filter = self, ground
+        tr1.filter = { self, ground }
         tr1 = util.TraceLine( tr1 )
 
         tr2 = {}
         tr2.start = lowerleft
         tr2.endpos = ground:GetPos()
-        tr2.filter = self, ground
+        tr2.filter = { self, ground }
         tr2 = util.TraceLine( tr2 )
 
         tr3 = {}

@@ -1341,6 +1341,7 @@ if CLIENT then
 
         local owner = entity_GetOwner(self)
 
+        local bone_ent
         if IsValid( owner ) then
             bone_ent = owner
         else

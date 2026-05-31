@@ -173,7 +173,7 @@ function SWEP:ThinkCustom()
     if not owner:IsPlayer() then return end
 
     if self.InsertingShell == true and owner:Alive() then
-        vm = owner:GetViewModel() -- its a messy way to do it, but holy shit, it works!
+        local vm = owner:GetViewModel() -- its a messy way to do it, but holy shit, it works!
         vm:ResetSequence( vm:LookupSequence( "after_reload" ) ) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
         vm:SetPlaybackRate( .01 ) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
         self.InsertingShell = false -- You get paid for this, what's your excuse?

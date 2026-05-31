@@ -89,7 +89,7 @@ if SERVER then
         boomEffect:SetScale( 2 )
         boomEffect:SetRadius( 67 )
         boomEffect:SetMagnitude( 18 )
-        util.Effect( "m9k_gdcw_cinematicboom", effectdata )
+        util.Effect( "m9k_gdcw_cinematicboom", boomEffect )
 
         util.ScreenShake( self:WorldSpaceCenter(), 2000, 255, 2.5, 1250 )
         util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), 500, 500 )
@@ -106,7 +106,7 @@ if SERVER then
         downtrace.start = startpos
         downtrace.endpos = startpos + self:GetUp() * -5
         downtrace.filter = self
-        tracedown = util.TraceLine( downtrace )
+        local tracedown = util.TraceLine( downtrace )
 
         if tracedown.Hit then
             return tracedown.HitNormal
