@@ -16,7 +16,7 @@ SWEP.DrawCrosshair          = false -- set false if you want no crosshair
 SWEP.Weight                 = 2
 SWEP.AutoSwitchTo           = true
 SWEP.AutoSwitchFrom         = true
-SWEP.HoldType               = "fist"
+SWEP.HoldType               = "pistol"
 
 
 
