@@ -73,13 +73,12 @@ function SWEP:PrimaryAttack()
 
             if SERVER then
                 timer.Simple( 0.1, function()
-                    if IsValid( self ) and IsValid( owner ) and owner:Alive() then
-                        local weapon = owner:GetActiveWeapon()
+                    if not IsValid( self ) or not IsValid( owner ) or not owner:Alive() then return end
 
-                        if IsValid( weapon ) and weapon:GetClass() == self.Gun then
-                            self:Jab()
-                        end
-                    end
+                    local weapon = owner:GetActiveWeapon()
+                    if not IsValid( weapon ) or weapon:GetClass() ~= self.Gun then return end
+
+                    self:Jab()
                 end )
             end
             owner:SetAnimation( PLAYER_ATTACK1 )
