@@ -73,10 +73,12 @@ function SWEP:PrimaryAttack()
 
             if SERVER then
                 timer.Simple( 0.1, function()
-                    if not IsValid( self ) then return end
+                    if IsValid( self ) and IsValid( owner ) and owner:Alive() then
+                        local weapon = owner:GetActiveWeapon()
 
-                    if IsValid( owner ) and owner:Alive() and owner:GetActiveWeapon():GetClass() == self.Gun then
-                        self:Jab()
+                        if IsValid( weapon ) and weapon:GetClass() == self.Gun then
+                            self:Jab()
+                        end
                     end
                 end )
             end
