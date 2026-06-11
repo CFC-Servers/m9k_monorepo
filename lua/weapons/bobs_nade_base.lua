@@ -102,10 +102,12 @@ function SWEP:Throw()
         grenade:Spawn()
 
         local phys = grenade:GetPhysicsObject()
+        local ownerVel = owner:GetVelocity() * 2
+
         if owner:KeyDown( IN_ATTACK2 ) and phys:IsValid() then
-            phys:ApplyForceCenter( owner:GetAimVector() * 2000 )
+            phys:ApplyForceCenter( ownerVel + owner:GetAimVector() * 2000 )
         else
-            phys:ApplyForceCenter( owner:GetAimVector() * 5500 )
+            phys:ApplyForceCenter( ownerVel + owner:GetAimVector() * 5500 )
         end
 
         self:TakePrimaryAmmo( 1 )
