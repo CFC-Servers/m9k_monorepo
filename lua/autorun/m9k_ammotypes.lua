@@ -4,13 +4,10 @@ game.AddAmmoType( { name = "C4Explosive", dmgtype = DMG_BLAST } )
 game.AddAmmoType( { name = "ProxMine", dmgtype = DMG_BLAST } )
 game.AddAmmoType( { name = "Improvised_Explosive", dmgtype = DMG_BLAST } )
 game.AddAmmoType( { name = "Nuclear_Warhead", dmgtype = DMG_BLAST } )
-game.AddAmmoType( { name = "NerveGas", dmgtype = DMG_BULLET } )
+game.AddAmmoType( { name = "NerveGas", dmgtype = DMG_POISON } )
 game.AddAmmoType( { name = "StickyGrenade", dmgtype = DMG_BLAST } )
-game.AddAmmoType( { name = "Harpoon", dmgtype = DMG_BULLET } )
+game.AddAmmoType( { name = "Harpoon", dmgtype = DMG_SLASH } )
 game.AddAmmoType( { name = "nitroG", dmgtype = DMG_BLAST } )
-game.AddAmmoType( { name = "matador_rocket", dmgtype = DMG_BLAST } )
-game.AddAmmoType( { name = "m202_rocket", dmgtype = DMG_BLAST } )
-game.AddAmmoType( { name = "rpg_rocket", dmgtype = DMG_BLAST } )
 
 if CLIENT then
     list.Set( "ContentCategoryIcons", "M9K Ammunition", "icon16/box.png" )
@@ -26,7 +23,4 @@ if CLIENT then
     language.Add( "SatCannon_ammo", "Orbital Strike Cannon" )
     language.Add( "Harpoon_ammo", "Harpoon" )
     language.Add( "nitroG_ammo", "Nitro" )
-    language.Add( "matador_rocket_ammo", "Matador Rocket" )
-    language.Add( "m202_rocket_ammo", "M202 Rocket" )
-    language.Add( "rpg_rocket_ammo", "RPG Rocket" )
 end
