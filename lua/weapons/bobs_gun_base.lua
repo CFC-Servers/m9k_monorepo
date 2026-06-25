@@ -776,6 +776,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
     aimcone = aimcone or 0
 
     local owner = entity_GetOwner( self )
+    if not owner then return end
 
     if IsFirstTimePredicted() then
         local bulletDir = ( owner:GetAimVector():Angle() + owner:GetViewPunchAngles() ):Forward()
