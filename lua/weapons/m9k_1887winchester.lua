@@ -19,6 +19,7 @@ SWEP.HoldType               = "shotgun"
 
 
 
+
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = true
 SWEP.ViewModel              = "models/weapons/v_1887winchester.mdl"
