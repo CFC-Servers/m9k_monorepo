@@ -1,4 +1,4 @@
-EFFECT.Mat = Material( "effects/yellowflare" )
+local mat = Material( "effects/yellowflare" )
 
 --[[---------------------------------------------------------
    EFFECT:Init(data)
@@ -85,7 +85,7 @@ function EFFECT:Render()
     local fDelta = ( self.DieTime - CurTime() ) / self.TracerTime
     fDelta = math.Clamp( fDelta, 0, 1 )
 
-    render.SetMaterial( self.Mat )
+    render.SetMaterial( mat )
 
     local color = Color( 255, 255, 255, 255 * fDelta )
     render.DrawBeam( self.StartPos, self.EndPos, 5 * fDelta, 0.5, 0.5, color )
