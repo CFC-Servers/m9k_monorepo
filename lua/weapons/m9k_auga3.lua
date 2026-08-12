@@ -19,6 +19,9 @@ SWEP.AutoSwitchFrom           = true
 SWEP.XHair                    = true -- Used for returning crosshair after scope. Must be the same as DrawCrosshair
 SWEP.BoltAction               = false
 SWEP.HoldType                 = "smg"
+SWEP.Reloadoffset           =  0.4 -- The mag gets refilled when the animation is done. 
+--This is an offset in seconds, if its set to 1, the mag will get refilled 1 second before the animation ends
+
 
 
 
