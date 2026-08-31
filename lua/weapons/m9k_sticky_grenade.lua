@@ -52,17 +52,6 @@ SWEP.Primary.Damage        = 0    -- Base damage per bullet
 SWEP.Primary.SpreadHip        = 0    -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.SpreadIronSights = 0 -- Ironsight accuracy, should be the same for shotguns
 
--- enter bone mod and other custom stuff below. Irons aren't used for grenades
-
--- SWEP.WElements = {
-    -- ["mr blue"] = { type = "Model", model = "models/weapons/w_sticky_grenade.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(3.213, 1.845, -1.851), angle = Angle(-2.809, -93.604, -157.971), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
--- }
-
-SWEP.ViewModelBoneMods = {
-    ["v_weapon.Flashbang_Parent"] = { scale = Vector(1, 1, 1), pos = Vector(0, 0, 0.391), angle = Angle(0, 0, 0) },
-    ["v_weapon.Root17"] = { scale = Vector(1, 1, 1), pos = Vector(0, 0, 0), angle = Angle(7.864, 11.555, 0) }
-}
-
 SWEP.WElements = {
     ["mr blue"] = { type = "Model", model = "models/weapons/w_sticky_grenade.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(20.322, 2.828, -1.349), angle = Angle(180, -3.81, 5.743), size = Vector(1.376, 1.376, 1.376), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
