@@ -1516,54 +1516,18 @@ if CLIENT then
         end
     end
 
-    local allbones
-    local hasGarryFixedBoneScalingYet = false
-
     function SWEP:UpdateBonePositions( vm )
-        if self.ViewModelBoneMods then
-            if (not vm:GetBoneCount()) then return end
+        local viewModelBoneMods = self.ViewModelBoneMods
+        if viewModelBoneMods then
+            if not vm:GetBoneCount() then return end
 
-            -- -- !! WORKAROUND !! ----
-            -- -- We need to check all model names :/
-            local loopthrough = self.ViewModelBoneMods
-            if (not hasGarryFixedBoneScalingYet) then
-                allbones = {}
-                for i = 0, vm:GetBoneCount() do
-                    local bonename = vm:GetBoneName( i )
-                    if (self.ViewModelBoneMods[bonename]) then
-                        allbones[bonename] = self.ViewModelBoneMods[bonename]
-                    else
-                        allbones[bonename] = {
-                            scale = Vector( 1, 1, 1 ),
-                            pos = Vector( 0, 0, 0 ),
-                            angle = Angle( 0, 0, 0 )
-                        }
-                    end
-                end
-
-                loopthrough = allbones
-            end
-            --!! ----------- !! --
-
+            local loopthrough = viewModelBoneMods
             for k, v in pairs( loopthrough ) do
                 local bone = vm:LookupBone( k )
-                if (not bone) then continue end
+                if not bone then continue end
 
-                -- -- !! WORKAROUND !! ----
                 local s = Vector( v.scale.x, v.scale.y, v.scale.z )
                 local p = Vector( v.pos.x, v.pos.y, v.pos.z )
-                local ms = Vector( 1, 1, 1 )
-                if (not hasGarryFixedBoneScalingYet) then
-                    local cur = vm:GetBoneParent( bone )
-                    while (cur >= 0) do
-                        local pscale = loopthrough[vm:GetBoneName( cur )].scale
-                        ms = ms * pscale
-                        cur = vm:GetBoneParent( cur )
-                    end
-                end
-
-                s = s * ms
-                --!! ----------- !! --
 
                 if vm:GetManipulateBoneScale( bone ) ~= s then
                     vm:ManipulateBoneScale( bone, s )
