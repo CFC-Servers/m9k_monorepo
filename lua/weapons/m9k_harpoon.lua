@@ -60,14 +60,6 @@ SWEP.VElements = {
     }
 }
 
-SWEP.ViewModelBoneMods = {
-    ["ValveBiped.Bip01_R_Hand"] = {
-        scale = Vector( 0.009, 0.009, 0.009 ),
-        pos = Vector( 0, 0, 0 ),
-        angle = Angle( 0, 0, 0 )
-    },
-}
-
 function SWEP:Deploy()
     self:SetHoldType( self.HoldType )
     self:SendWeaponAnim( ACT_VM_DRAW )
@@ -152,4 +144,12 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:ThinkCustom()
+end
+
+function SWEP:PreDrawViewModel( vm )
+    vm:SetMaterial( "engine/occlusionproxy" )
+end
+
+function SWEP:PostDrawViewModel( vm )
+    vm:SetMaterial( "" )
 end

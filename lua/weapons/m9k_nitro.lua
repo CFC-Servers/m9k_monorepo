@@ -59,8 +59,6 @@ SWEP.VElements              = {
         97.573 ), size = Vector( 0.666, 0.666, 0.666 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
 
---gimme a fucking break!
-
 SWEP.ViewModelBoneMods      = {
     ["v_weapon.Left_Middle01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 17.5, 0 ) },
     ["v_weapon.Left_Ring01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 23.271, 0 ) },
