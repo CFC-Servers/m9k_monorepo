@@ -50,12 +50,6 @@ SWEP.Primary.NumShots = 0 -- How many bullets to shoot per trigger pull
 SWEP.Primary.Damage = 0 -- Base damage per bullet
 SWEP.Primary.SpreadHip = 0 -- Define from-the-hip accuracy (1 is terrible, .0001 is exact)
 SWEP.Primary.SpreadIronSights = 0 -- Ironsight accuracy, should be the same for shotguns
---none of this matters for IEDs and other ent-tossing sweps
-
-SWEP.SightsPos = Vector(0, 0, 0)    -- These are the same as IronSightPos and IronSightAng
-SWEP.SightsAng = Vector(0, 0, 0)    -- No, I don't know why
-SWEP.RunSightsPos = Vector(0, 0, 0)
-SWEP.RunSightsAng = Vector(0, 0, 0)
 
 local ammoBoxes = {
     ["m9k_ammo_40mm"] = true,
@@ -89,7 +83,6 @@ function SWEP:PrimaryAttack()
 
     timer.Simple( wait, function()
         if not IsValid( self ) then return end
-        local owner = self:GetOwner()
         if not IsValid( owner ) then return end
 
         local activeWeapon = owner:GetActiveWeapon()
