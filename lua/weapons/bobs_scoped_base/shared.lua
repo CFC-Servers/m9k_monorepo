@@ -29,6 +29,8 @@ SWEP.Primary.KickDown         = 0 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal   = 0 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic        = true -- Automatic/Semi Auto
 SWEP.Primary.Ammo             = "none" -- What kind of ammo
+SWEP.Reloadoffset             = 0 -- The mag gets refilled when the animation is done. 
+--This is an offset in seconds, if its set to 1, the mag will get refilled 1 second before the animation ends
 
 -- SWEP.Secondary.ClipSize            = 0
 -- SWEP.Secondary.DefaultClip            = 0                    -- Default number of bullets in a clip
@@ -207,7 +209,7 @@ function SWEP:Reload()
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
     if owner:KeyDown( IN_USE ) then return end
     if self:GetBoltback() then return end
-
+    
     self:SetReloading( true )
     self:ReloadAnim()
 
@@ -230,9 +232,10 @@ function SWEP:Reload()
     if owner:GetViewModel() == nil then
         waitdammit = 3
     else
-        waitdammit = owner:GetViewModel():SequenceDuration()
+        waitdammit = owner:GetViewModel():SequenceDuration() - self.Reloadoffset
     end
     timer.Simple( waitdammit + .1, function()
+        
         if not IsValid( self ) or not IsValid( owner ) then return end
 
         self:ReloadClip()

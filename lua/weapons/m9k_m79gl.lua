@@ -177,6 +177,7 @@ function SWEP:ThinkCustom()
         vm:ResetSequence( vm:LookupSequence( "after_reload" ) ) -- Fuck you, garry, why the hell can't I reset a sequence in multiplayer?
         vm:SetPlaybackRate( .01 ) -- or if I can, why does facepunch have to be such a shitty community, and your wiki have to be an unreadable goddamn mess?
         self.InsertingShell = false -- You get paid for this, what's your excuse?
+        -- yo this guy is fucking crazy -ced
     end
 
     self:IronSight()
