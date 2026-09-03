@@ -31,8 +31,8 @@ SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 30 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 4
-SWEP.Primary.KickUp         = 5 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 5 -- Maximum down recoil (skeet)
+SWEP.Primary.KickUp         = 3 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 3 -- Maximum down recoil (skeet)
 SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
 SWEP.RecoilKickSpeed = 40
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
