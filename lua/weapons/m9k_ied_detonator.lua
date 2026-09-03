@@ -90,15 +90,15 @@ function SWEP:PrimaryAttack()
     local up = side:Cross( aim )
     local pos = self:GetOwner():M9K_GetShootPos() + side * -5 + up * -10
 
-    local rocket = ents.Create( self.Primary.Round )
-    if not rocket:IsValid() then return false end
+    local bomb = ents.Create( self.Primary.Round )
+    if not bomb:IsValid() then return false end
 
-    rocket:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
-    rocket:SetPos( pos )
-    rocket.BombOwner = self:GetOwner()
-    rocket:Spawn()
+    bomb:SetAngles( aim:Angle() + Angle( 90, 0, 0 ) )
+    bomb:SetPos( pos )
+    bomb.BombOwner = self:GetOwner()
+    bomb:Spawn()
 
-    local phys = rocket:GetPhysicsObject()
+    local phys = bomb:GetPhysicsObject()
     phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 1500 )
     self:SendWeaponAnim( ACT_VM_DRAW )
 
