@@ -323,24 +323,24 @@ if CLIENT then
 
         local muzzleAtt
         if isFirstPerson then
-            muzzleAtt = entity_GetOwner(self):GetViewModel():GetAttachment( 1 )
+            muzzleAtt = entity_GetOwner( self ):GetViewModel():GetAttachment( 1 )
         else
             muzzleAtt = self:GetAttachment( 1 )
         end
 
         if muzzleAtt then
-            local dLight = DynamicLight( self:EntIndex() )
-            if dLight then
+            local light = DynamicLight( self:EntIndex() )
+            if light then
                 local lightTime = 1000 / 0.4
-                dLight.Pos = muzzleAtt.Pos
-                dLight.r = 252
-                dLight.g = 194
-                dLight.b = 66
-                dLight.Brightness = 2
-                dLight.Decay = lightTime
-                dLight.Size = isSilenced and 128 or 256
-                dLight.DieTime = CurTime() + lightTime
-                dLight.NoModel = true
+                light.Pos = muzzleAtt.Pos
+                light.r = 252
+                light.g = 194
+                light.b = 66
+                light.Brightness = 2
+                light.Decay = lightTime
+                light.Size = isSilenced and 128 or 256
+                light.DieTime = CurTime() + lightTime
+                light.NoModel = not isFirstPerson
             end
 
             -- Should be enabled once all the muzzle attachment positions are properly aligned in the world models
