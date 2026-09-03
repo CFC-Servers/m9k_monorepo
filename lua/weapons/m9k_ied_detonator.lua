@@ -5,7 +5,7 @@ SWEP.Category               = "M9K Specialties"
 SWEP.Author                 = ""
 SWEP.Contact                = ""
 SWEP.Purpose                = ""
-SWEP.Instructions           = ("Fire to drop ied." .. "\n" .. "Alt fire to detonate")
+SWEP.Instructions           = "Fire to drop ied." .. "\n" .. "Alt fire to detonate"
 SWEP.MuzzleAttachment       = "1" -- Should be "1" for CSS models or "muzzle" for hl2 models
 SWEP.ShellEjectAttachment   = "2" -- Should be "2" for CSS models or "1" for hl2 models
 SWEP.PrintName              = "IED Detonator" -- Weapon name (Shown on HUD)
@@ -49,18 +49,12 @@ SWEP.Secondary.DefaultClip  = 1 -- Default number of bullets in a clip
 SWEP.Secondary.Automatic    = false -- Automatic/Semi Auto
 SWEP.Secondary.Ammo         = ""
 
-SWEP.Primary.NumShots       = 0 -- How many bullets to shoot per trigger pull
-SWEP.Primary.Damage         = 0 -- Base damage per bullet
-SWEP.Primary.SpreadHip         = 0 -- Define from-the-hip accuracy 1 is terrible, .0001 is exact)
-SWEP.Primary.SpreadIronSights   = 0 -- Ironsight accuracy, should be the same for shotguns
---none of this matters for IEDs and other ent-tossing sweps
+SWEP.Primary.NumShots = 0
+SWEP.Primary.Damage = 0
+SWEP.Primary.SpreadHip = 0
+SWEP.Primary.SpreadIronSights = 0
 
-SWEP.SightsPos              = Vector( 0, 0, 0 ) -- These are the same as IronSightPos and IronSightAng
-SWEP.SightsAng              = Vector( 0, 0, 0 ) -- No, I don't know why
-SWEP.RunSightsPos           = Vector( 0, 0, 0 )
-SWEP.RunSightsAng           = Vector( 0, 0, 0 )
-
-SWEP.ViewModel         = "models/weapons/v_invisib.mdl"
+SWEP.ViewModel = "models/weapons/v_invisib.mdl"
 SWEP.ViewModelBoneMods = {
     ["r-ring-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0.148, 0 ), angle = Angle( 14.43, 0, 0 ) },
     ["r-middle-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -77.495, 0, 0 ) },
@@ -81,7 +75,11 @@ SWEP.VElements         = {
 }
 
 function SWEP:PrimaryAttack()
-    if not self:CanPrimaryAttack() then return end
+    if self:Clip1() <= 0 then
+        self:Reload()
+        return false
+    end
+
     self:TakePrimaryAmmo( 1 )
     self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
 
@@ -102,37 +100,32 @@ function SWEP:PrimaryAttack()
 
     local phys = rocket:GetPhysicsObject()
     phys:ApplyForceCenter( self:GetOwner():GetAimVector() * 1500 )
+    self:SendWeaponAnim( ACT_VM_DRAW )
 
-    timer.Simple( 0.25, function()
+    timer.Simple( 1 / ( self.Primary.RPM / 60 ), function()
         if not IsValid( self ) then return end
-        if not IsValid( self:GetOwner() ) then return end
-        if self:GetOwner():Alive() and self:GetOwner():GetActiveWeapon():GetClass() == self.Gun then
-            self:Reload()
-        end
+        self:Reload()
     end )
 end
 
+function SWEP:Reload()
+    if self:Clip1() >= 1 then return end
+
+    local ammo = self:GetOwner():GetAmmoCount( self.Primary.Ammo )
+    if ammo <= 0 then return end
+
+    self:GetOwner():RemoveAmmo( 1, self.Primary.Ammo )
+    self:SetClip1( 1 )
+end
+
 if SERVER then
-    local weaponStrip = GetConVar( "M9KWeaponStrip" )
     function SWEP:SecondaryAttack()
-        local foundBomb = false
         for _, v in pairs( ents.FindByClass( "m9k_improvised_explosive" ) ) do
             if v.BombOwner == self:GetOwner() then
                 v.Boom = true
-                foundBomb = true
             end
         end
 
-        if foundBomb then
-            self:SendWeaponAnim( ACT_VM_DRAW )
-        end
-
-        timer.Simple( 0.01, function()
-            if not IsValid( self ) then return end
-            if not IsValid( self:GetOwner() ) then return end
-            if self:Clip1() == 0 and self:GetOwner():GetAmmoCount( self:GetPrimaryAmmoType() ) == 0 and weaponStrip:GetBool() then
-                self:GetOwner():StripWeapon( self.Gun )
-            end
-        end )
+        self:CheckWeaponsAndAmmo()
     end
 end

@@ -505,8 +505,7 @@ local weaponStrip = GetConVar( "M9KWeaponStrip" )
 function SWEP:CheckWeaponsAndAmmo()
     if self:Clip1() ~= 0 then return end
 
-    local owner = entity_GetOwner(self)
-
+    local owner = entity_GetOwner( self )
     local hasAmmo = owner:GetAmmoCount( self:GetPrimaryAmmoType() ) > 0
     if hasAmmo then
         self:Reload()
