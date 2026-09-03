@@ -18,8 +18,6 @@ SWEP.AutoSwitchTo           = true
 SWEP.AutoSwitchFrom         = true
 SWEP.HoldType               = "rpg"
 
-
-
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = false
 SWEP.ViewModel              = "models/weapons/v_MAT.mdl"
@@ -33,9 +31,9 @@ SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 60 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 4
-SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 2 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 1 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "RPG_Round"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
@@ -74,16 +72,22 @@ function SWEP:PrimaryAttack()
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         owner:SetAnimation( PLAYER_ATTACK1 )
         owner:MuzzleFlash()
-        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+        self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     end
-    self:CheckWeaponsAndAmmo()
+
+    timer.Simple( 0.2, function()
+        if not IsValid( self ) then return end
+        self:CheckWeaponsAndAmmo()
+    end )
 end
 
 function SWEP:FireRocket()
     local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
-    local pos = owner:M9K_GetShootPos()
+    local side = aim:Cross( Vector( 0, 0, 1 ) )
+    local up = side:Cross( aim )
+    local pos = owner:M9K_GetShootPos() + side * 9 + up * -1
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
@@ -95,6 +99,8 @@ function SWEP:FireRocket()
         rocket:Activate()
         util.ScreenShake( owner:M9K_GetShootPos(), 1000, 10, 0.3, 500 )
     end
+
+    self:AddRecoil()
 end
 
 function SWEP:SecondaryAttack()

@@ -35,9 +35,9 @@ SWEP.Primary.Sound          = "40mmGrenade.Single"
 SWEP.Primary.RPM            = 15 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 1
-SWEP.Primary.KickUp         = 0.3 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 0.3 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 0.3 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 1 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 1 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 0.5 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "40mmGrenade"
 
@@ -124,6 +124,8 @@ function SWEP:FireRocket()
         rocket:Spawn()
         rocket:Activate()
     end
+
+    self:AddRecoil()
 end
 
 function SWEP:Reload()

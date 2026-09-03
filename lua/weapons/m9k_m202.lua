@@ -34,9 +34,9 @@ SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 300 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 4
 SWEP.Primary.DefaultClip    = 4
-SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 3 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 1 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = true -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "RPG_Round"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
@@ -96,6 +96,8 @@ function SWEP:FireRocket()
         rocket:Spawn()
         rocket:Activate()
     end
+
+    self:AddRecoil()
 end
 
 function SWEP:Reload()

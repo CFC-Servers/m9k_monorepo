@@ -18,8 +18,6 @@ SWEP.AutoSwitchTo           = true
 SWEP.AutoSwitchFrom         = true
 SWEP.HoldType               = "rpg"
 
-
-
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = false
 SWEP.ViewModel              = "models/weapons/v_RL7.mdl"
@@ -33,9 +31,10 @@ SWEP.Primary.Sound          = ""
 SWEP.Primary.RPM            = 30 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 1
 SWEP.Primary.DefaultClip    = 4
-SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 3 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 3 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 1 -- Maximum up recoil (stock)
+SWEP.RecoilKickSpeed = 40
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "RPG_Round"
 -- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
@@ -71,7 +70,11 @@ function SWEP:PrimaryAttack()
         owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
-    self:CheckWeaponsAndAmmo()
+
+    timer.Simple( 0.2, function()
+        if not IsValid( self ) then return end
+        self:CheckWeaponsAndAmmo()
+    end )
 end
 
 function SWEP:FireRocket()
@@ -91,6 +94,8 @@ function SWEP:FireRocket()
         rocket:Spawn()
         rocket:Activate()
     end
+
+    self:AddRecoil()
 end
 
 function SWEP:SecondaryAttack()
