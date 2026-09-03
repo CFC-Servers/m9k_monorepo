@@ -60,54 +60,25 @@ SWEP.SightsAng              = Vector( 0, 0, 0 ) -- No, I don't know why
 SWEP.RunSightsPos           = Vector( 0, 0, 0 )
 SWEP.RunSightsAng           = Vector( 0, 0, 0 )
 
---and now to the nasty parts of this swep...
-
-if IsMounted( "cstrike" ) then
-    SWEP.ViewModel         = "models/weapons/v_knife_t.mdl"
-    SWEP.ViewModelBoneMods = {
-        ["v_weapon.knife_Parent"] = { scale = Vector( 0.009, 0.009, 0.009 ), pos = Vector( 0, 0, 1.904 ), angle = Angle( 0, 0, 0 ) },
-        ["v_weapon.Right_Middle02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 35.375, 0 ) },
-        ["v_weapon.Right_Pinky03"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 31.504, 0 ) },
-        ["v_weapon.Right_Index02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 2.875, 26.035, 0 ) },
-        ["v_weapon.Right_Index01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0.912, 30.708, 0 ) },
-        ["v_weapon.Right_Ring01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 6.368, 23.934, 0 ) },
-        ["v_weapon.Right_Index03"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 47.61, 0 ) },
-        ["v_weapon.Right_Pinky02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 27.075, 0 ) },
-        ["v_weapon.Right_Thumb03"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 7.138, -15.06, -13.447 ) },
-        ["v_weapon.Left_Arm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -16.826, -30, 2.539 ), angle = Angle( 0, 0, 0 ) },
-        ["v_weapon.Right_Middle01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 29.128, 0 ) },
-        ["v_weapon.Right_Ring03"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -1.68, 5.666, 0 ) },
-        ["v_weapon.Right_Pinky01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 23.523, 0 ) },
-        ["v_weapon.Right_Middle03"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, -1.736, 0 ) },
-        ["v_weapon.Right_Thumb01"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -0.519, 0, 0 ), angle = Angle( -10.695, 2.921, 3.049 ) },
-        ["v_weapon.Right_Thumb02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( -0.009, 0, 0 ), angle = Angle( -5.969, 3.542, -26.505 ) },
-        ["v_weapon.Right_Ring02"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 35.75, 0 ) }
-    }
-    SWEP.VElements         = {
-        ["phone"] = { type = "Model", model = "models/weapons/w_camphon2.mdl", bone = "v_weapon.knife_Parent", rel = "", pos = Vector( 2.884, 1.353, 1.207 ), angle = Angle( 13.812, 168.289, 83.724 ), size =
-            Vector( 1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-    }
-else
-    SWEP.ViewModel         = "models/weapons/v_invisib.mdl"
-    SWEP.ViewModelBoneMods = {
-        ["r-ring-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0.148, 0 ), angle = Angle( 14.43, 0, 0 ) },
-        ["r-middle-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -77.495, 0, 0 ) },
-        ["r-pinky-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -101.027, 0, 0 ) },
-        ["r-ring-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -86.765, 0, 0 ) },
-        ["r-index-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -3.405, 0, 0 ) },
-        ["r-forearm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 3.042, 100.974 ) },
-        ["r-thumb-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 38.379, 0, 0 ) },
-        ["r-index-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -108.598, 0, 0 ) },
-        ["r-middle-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 4.488, 0, 0 ) },
-        ["r-pinky-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 25.802, 0, 0 ) },
-        ["r-thumb-tip"] = { scale = Vector( 1, 0.845, 0.989 ), pos = Vector( 0, 0, 0 ), angle = Angle( -17.769, 0, 0 ) },
-        ["r-thumb-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -13.4, 32.006, -34.099 ) }
-    }
-    SWEP.VElements         = {
-        ["phone"] = { type = "Model", model = "models/weapons/w_camphon2.mdl", bone = "Da Machete", rel = "", pos = Vector( -4.327, 6.361, 15.64 ), angle = Angle( 141.658, -25.886, -28.254 ), size =
-            Vector( 1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-    }
-end
+SWEP.ViewModel         = "models/weapons/v_invisib.mdl"
+SWEP.ViewModelBoneMods = {
+    ["r-ring-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0.148, 0 ), angle = Angle( 14.43, 0, 0 ) },
+    ["r-middle-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -77.495, 0, 0 ) },
+    ["r-pinky-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -101.027, 0, 0 ) },
+    ["r-ring-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -86.765, 0, 0 ) },
+    ["r-index-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -3.405, 0, 0 ) },
+    ["r-forearm"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 0, 3.042, 100.974 ) },
+    ["r-thumb-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 38.379, 0, 0 ) },
+    ["r-index-mid"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -108.598, 0, 0 ) },
+    ["r-middle-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 4.488, 0, 0 ) },
+    ["r-pinky-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( 25.802, 0, 0 ) },
+    ["r-thumb-tip"] = { scale = Vector( 1, 0.845, 0.989 ), pos = Vector( 0, 0, 0 ), angle = Angle( -17.769, 0, 0 ) },
+    ["r-thumb-low"] = { scale = Vector( 1, 1, 1 ), pos = Vector( 0, 0, 0 ), angle = Angle( -13.4, 32.006, -34.099 ) }
+}
+SWEP.VElements         = {
+    ["phone"] = { type = "Model", model = "models/weapons/w_camphon2.mdl", bone = "Da Machete", rel = "", pos = Vector( -4.327, 6.361, 15.64 ), angle = Angle( 141.658, -25.886, -28.254 ), size =
+        Vector( 1, 1, 1 ), color = Color( 255, 255, 255, 255 ), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
+}
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
