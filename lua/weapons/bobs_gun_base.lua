@@ -41,6 +41,7 @@ SWEP.Secondary.Ammo         = ""
 SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blowback system instead?
 SWEP.RecoilBack = 3 -- How much the gun kicks back in iron sights
 SWEP.RecoilRecoverySpeed = 2 -- How fast does the gun return to the center
+SWEP.RecoilKickSpeed = 40 -- How fast accumulated recoil is applied to the view (higher = snappier kick)
 SWEP.RecoilAmount = 0 -- Internal, do not touch
 SWEP.IronSightTime = 0.15
 
@@ -92,6 +93,9 @@ SWEP.IronSightsAng = Vector( 0, 0, 0 )
 
 SWEP.VElements = {}
 SWEP.WElements = {}
+
+SWEP.ActiveRecoilPitch = 0
+SWEP.ActiveRecoilYaw = 0
 
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetTable = entMeta.GetTable
@@ -163,9 +167,6 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Float", "IronsightsTime" )
     self:NetworkVar( "Bool", "Boltback" )
     self:NetworkVar( "Bool", "Running" )
-    self:NetworkVar( "Float", "RecoilPitch" )
-    self:NetworkVar( "Float", "RecoilYaw" )
-    self:NetworkVar( "Float", "RecoilStart" )
 end
 
 function SWEP:SetIronsights( b )
@@ -210,9 +211,6 @@ end
 
 function SWEP:Holster()
     local owner = entity_GetOwner( self )
-
-    self:SetRecoilPitch( 0 )
-    self:SetRecoilYaw( 0 )
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -833,24 +831,27 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         hook.Run( "M9K_BulletFired", self, owner )
     end
 
-    local recoilPitch = util.SharedRandom( "m9k_recoil_pitch", -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier, 100 )
-    local recoilYaw = util.SharedRandom( "m9k_recoil_yaw", -self.Primary.KickHorizontal, self.Primary.KickHorizontal, 200 )
+    self:AddRecoil()
+end
+
+function SWEP:SecondaryAttack()
+    return false
+end
+
+function SWEP:AddRecoil()
+    if not CLIENT then return end
+    if not IsFirstTimePredicted() then return end
+
+    local recoilPitch = math.Rand( -self.Primary.KickDown, -self.Primary.KickUp * self.KickUpMultiplier )
+    local recoilYaw = math.Rand( -self.Primary.KickHorizontal, self.Primary.KickHorizontal )
 
     if self:GetIronsightsActive() and not self.Scoped then
         recoilPitch = recoilPitch * 0.5
         recoilYaw = recoilYaw * 0.5
     end
 
-    -- Adjust old viewpunch based numbers for the new recoil system
-    recoilPitch = recoilPitch * 0.75
-    recoilYaw = recoilYaw * 0.75
-
-    self:SetRecoilPitch( recoilPitch )
-    self:SetRecoilYaw( recoilYaw )
-end
-
-function SWEP:SecondaryAttack()
-    return false
+    self.ActiveRecoilPitch = self.ActiveRecoilPitch + recoilPitch
+    self.ActiveRecoilYaw = self.ActiveRecoilYaw + recoilYaw
 end
 
 function SWEP:ReloadAnim()
@@ -1091,47 +1092,41 @@ function SWEP:ThinkCustom()
     self:IronSight()
 end
 
-local recoilDecayRate = 90
-function SWEP:HandleRecoil()
-    local owner = entity_GetOwner( self )
-    if not IsValid( owner ) then return end
-    if not owner:IsPlayer() then return end
-
-    local recoilPitch = self:GetRecoilPitch()
-    local recoilYaw = self:GetRecoilYaw()
-
-    if math.abs( recoilPitch ) < 0.001 and math.abs( recoilYaw ) < 0.001 then
-        self:SetRecoilPitch( 0 )
-        self:SetRecoilYaw( 0 )
-        return
-    end
-
-    local lerpRate = math.exp( -recoilDecayRate * FrameTime() )
-    recoilPitch = Lerp( lerpRate, recoilPitch, 0 )
-    self:SetRecoilPitch( recoilPitch )
-
-    recoilYaw = Lerp( lerpRate, recoilYaw, 0 )
-    self:SetRecoilYaw( recoilYaw )
-
-    local newAngle = Angle( recoilPitch, recoilYaw, 0 )
-
-    if owner:IsPlayer() then
-        if SERVER then return end
-        if owner ~= LocalPlayer() then return end
-        if not IsFirstTimePredicted() then return end
-    end
-
-    owner:SetEyeAngles( owner:EyeAngles() + newAngle )
-end
-
 function SWEP:Think()
-    self:HandleRecoil()
     self:ThinkCustom()
 
     self:SetRunning( self:IsRunning() )
 end
 
 if CLIENT then
+    function SWEP:HandleRecoil()
+        local owner = entity_GetOwner( self )
+        if not IsValid( owner ) then return end
+        if not owner:IsPlayer() then return end
+
+        local recoilPitch = self.ActiveRecoilPitch or 0
+        local recoilYaw = self.ActiveRecoilYaw or 0
+
+        if math.abs( recoilPitch ) < 0.001 and math.abs( recoilYaw ) < 0.001 then
+            self.ActiveRecoilPitch = 0
+            self.ActiveRecoilYaw = 0
+            return
+        end
+
+        local decay = math.exp( -self.RecoilKickSpeed * FrameTime() )
+        local newPitch = recoilPitch * decay
+        local newYaw = recoilYaw * decay
+
+        self.ActiveRecoilPitch = newPitch
+        self.ActiveRecoilYaw = newYaw
+
+        owner:SetEyeAngles( owner:EyeAngles() + Angle( recoilPitch - newPitch, recoilYaw - newYaw, 0 ) )
+    end
+
+    function SWEP:DrawHUDBackground()
+        self:HandleRecoil()
+    end
+
     local host_timescale = GetConVar( "host_timescale" )
     function SWEP:GetViewModelPosition( pos, ang )
         local selfTable = entity_GetTable( self )
