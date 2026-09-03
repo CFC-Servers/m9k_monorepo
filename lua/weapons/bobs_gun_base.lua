@@ -242,10 +242,19 @@ function SWEP:IsRunning()
     if not IsValid( owner ) then return false end
     if not owner:IsPlayer() then return false end
 
+    local crouching = owner:Crouching()
+    if crouching then return false end
+
     local sprintDown = player_KeyDown( owner, IN_SPEED )
-    if player_KeyDown( owner, IN_FORWARD ) or player_KeyDown( owner, IN_BACK ) or player_KeyDown( owner, IN_MOVELEFT ) or player_KeyDown( owner, IN_MOVERIGHT ) then
-        return sprintDown
-    end
+    if not sprintDown then return false end
+
+    local forwardDown = player_KeyDown( owner, IN_FORWARD )
+    local backDown = player_KeyDown( owner, IN_BACK )
+    if forwardDown ~= backDown then return true end
+
+    local leftDown = player_KeyDown( owner, IN_MOVELEFT )
+    local rightDown = player_KeyDown( owner, IN_MOVERIGHT )
+    if leftDown ~= rightDown then return true end
 
     return false
 end
