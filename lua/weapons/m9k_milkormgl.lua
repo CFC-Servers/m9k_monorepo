@@ -33,18 +33,14 @@ SWEP.Primary.Sound          = "40mmGrenade.Single"
 SWEP.Primary.RPM            = 250 -- This is in Rounds Per Minute
 SWEP.Primary.ClipSize       = 6
 SWEP.Primary.DefaultClip    = 6
-SWEP.Primary.KickUp         = 0 -- Maximum up recoil (rise)
-SWEP.Primary.KickDown       = 0 -- Maximum down recoil (skeet)
-SWEP.Primary.KickHorizontal = 0 -- Maximum up recoil (stock)
+SWEP.Primary.KickUp         = 1.5 -- Maximum up recoil (rise)
+SWEP.Primary.KickDown       = 0.5 -- Maximum down recoil (skeet)
+SWEP.Primary.KickHorizontal = 0.5 -- Maximum up recoil (stock)
 SWEP.Primary.Automatic      = false -- Automatic = true; Semi Auto = false
 SWEP.Primary.Ammo           = "40mmGrenade"
 
 SWEP.IronsightsBlowback = true -- Disabled the default activity and use the blowback system instead?
 SWEP.RecoilBack = 2.75 -- How much the gun kicks back in iron sights
-SWEP.RecoilRecoverySpeed = 1 -- How fast does the gun return to the center
--- pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, AirboatGun
--- Pistol, buckshot, and slam always ricochet. Use AirboatGun for a metal piercing shotgun slug
-
 SWEP.Primary.Round = "m9k_milkor_nade"
 
 SWEP.Secondary.IronFOV      = 50 -- How much you 'zoom' in. Less is more!
@@ -94,4 +90,6 @@ function SWEP:FireRocket()
         rocket:Spawn()
         rocket:Activate()
     end
+
+    self:AddRecoil()
 end
