@@ -70,7 +70,11 @@ function SWEP:PrimaryAttack()
         owner:MuzzleFlash()
         self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
     end
-    self:CheckWeaponsAndAmmo()
+
+    timer.Simple( 0.2, function()
+        if not IsValid( self ) then return end
+        self:CheckWeaponsAndAmmo()
+    end )
 end
 
 function SWEP:FireRocket()

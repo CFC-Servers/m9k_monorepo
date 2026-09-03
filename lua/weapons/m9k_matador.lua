@@ -72,16 +72,22 @@ function SWEP:PrimaryAttack()
         self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
         owner:SetAnimation( PLAYER_ATTACK1 )
         owner:MuzzleFlash()
-        self:SetNextPrimaryFire( CurTime() + 1 / (self.Primary.RPM / 60) )
+        self:SetNextPrimaryFire( CurTime() + 1 / ( self.Primary.RPM / 60 ) )
     end
-    self:CheckWeaponsAndAmmo()
+
+    timer.Simple( 0.2, function()
+        if not IsValid( self ) then return end
+        self:CheckWeaponsAndAmmo()
+    end )
 end
 
 function SWEP:FireRocket()
     local owner = self:GetOwner()
 
     local aim = owner:GetAimVector()
-    local pos = owner:M9K_GetShootPos()
+    local side = aim:Cross( Vector( 0, 0, 1 ) )
+    local up = side:Cross( aim )
+    local pos = owner:M9K_GetShootPos() + side * 9 + up * -1
 
     if SERVER then
         local rocket = ents.Create( self.Primary.Round )
