@@ -105,7 +105,6 @@ PhysicsCollide
 OnTakeDamage
 -----------------------------------------------------------]]
     function ENT:OnTakeDamage( dmginfo )
-        if not IsValid( dmginfo ) then return end
         if not IsValid( dmginfo:GetInflictor() ) then return end
         if dmginfo:GetInflictor() == "m9k_released_poison" then return end
         self:QueueExplosion()
