@@ -139,20 +139,21 @@ if CLIENT then
                 self.emitter = emitter
             end
 
-            local particle = emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos + ( forward * -120 ) )
-
-            if particle then
-                particle:SetVelocity( forward * -2000 + VectorRand( -100, 100 ) )
-                particle:SetDieTime( math.Rand( 2, 5 ) )
-                particle:SetStartAlpha( math.Rand( 7, 10 ) )
-                particle:SetEndAlpha( 0 )
-                particle:SetStartSize( math.Rand( 30, 40 ) )
-                particle:SetEndSize( math.Rand( 130, 150 ) )
-                particle:SetRoll( math.Rand( 0, 360 ) )
-                particle:SetRollDelta( math.Rand( -1, 1 ) )
-                particle:SetColor( 200, 200, 200 )
-                particle:SetAirResistance( 200 )
-                particle:SetGravity( Vector( 100, 0, 0 ) )
+            if IsValid( emitter ) then
+                local particle = emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos + ( forward * -120 ) )
+                if particle then
+                    particle:SetVelocity( forward * -2000 + VectorRand( -100, 100 ) )
+                    particle:SetDieTime( math.Rand( 2, 5 ) )
+                    particle:SetStartAlpha( math.Rand( 7, 10 ) )
+                    particle:SetEndAlpha( 0 )
+                    particle:SetStartSize( math.Rand( 30, 40 ) )
+                    particle:SetEndSize( math.Rand( 130, 150 ) )
+                    particle:SetRoll( math.Rand( 0, 360 ) )
+                    particle:SetRollDelta( math.Rand( -1, 1 ) )
+                    particle:SetColor( 200, 200, 200 )
+                    particle:SetAirResistance( 200 )
+                    particle:SetGravity( Vector( 100, 0, 0 ) )
+                end
             end
         end
     end
