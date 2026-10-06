@@ -251,7 +251,7 @@ function SWEP:Reload()
             return
         end
 
-        if owner:KeyDown( IN_ATTACK2 ) then
+        if owner:KeyDown( IN_ATTACK2 ) and owner:GetActiveWeapon() == self then
             owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
