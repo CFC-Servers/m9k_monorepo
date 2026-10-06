@@ -234,6 +234,7 @@ function SWEP:Reload()
     end
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) or not IsValid( owner ) then return end
+        if owner:GetActiveWeapon() ~= self then return end
 
         self:ReloadClip()
         self:SetReloading( false )
