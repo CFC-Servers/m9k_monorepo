@@ -101,7 +101,7 @@ if CLIENT then
             end
 
             for i = 0, 10 do
-                if not IsValid( emitter ) then
+                if IsValid( emitter ) then
                     local particle = emitter:Add( "particle/smokesprites_000" .. math.random( 1, 9 ), pos + ( forward * -100 * i ) )
                     if particle then
                         particle:SetVelocity( forward * -2000 )
