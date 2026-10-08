@@ -122,31 +122,31 @@ function SWEP:Reload()
         timer.Simple( waitdammit + .1, function()
             if not IsValid( self ) then return end
             if not IsValid( owner ) then return end
+            if not self:GetReloading() then return end
             if owner:GetActiveWeapon() ~= self then return self:SetReloading( false ) end
 
             self:SetReloading( false )
 
-                if self:IsRunning() then
-                    self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
-                    self.IronSightsPos = self.RunSightsPos -- Hold it down
-                    self.IronSightsAng = self.RunSightsAng -- Hold it down
+            if self:IsRunning() then
+                self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
+                self.IronSightsPos = self.RunSightsPos -- Hold it down
+                self.IronSightsAng = self.RunSightsAng -- Hold it down
+                self:SetIronsights( true )
+                owner:SetFOV( 0, 0.3 )
+
+                return
+            end
+
+            if owner:KeyDown( IN_ATTACK2 ) then
+                if CLIENT then return end
+                if self.Scoped == false then
+                    owner:SetFOV( self.Secondary.IronFOV, 0.3 )
+                    self.IronSightsPos = self.SightsPos -- Bring it up
+                    self.IronSightsAng = self.SightsAng -- Bring it up
                     self:SetIronsights( true )
-                    owner:SetFOV( 0, 0.3 )
-
+                    self.DrawCrosshair = false
+                else
                     return
-                end
-
-                if owner:KeyDown( IN_ATTACK2 ) then
-                    if CLIENT then return end
-                    if self.Scoped == false then
-                        owner:SetFOV( self.Secondary.IronFOV, 0.3 )
-                        self.IronSightsPos = self.SightsPos -- Bring it up
-                        self.IronSightsAng = self.SightsAng -- Bring it up
-                        self:SetIronsights( true )
-                        self.DrawCrosshair = false
-                    else
-                        return
-                    end
                 end
             end
         end )

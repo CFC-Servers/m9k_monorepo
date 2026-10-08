@@ -197,12 +197,7 @@ function SWEP:Deploy()
         self:SetNextPrimaryFire( CurTime() + self.DeployDelay )
     end
 
-    if self:GetReloading() then
-        self:ReloadAnim()
-    end
-
     local owner = entity_GetOwner( self )
-
     if not owner:IsNPC() and owner ~= nil and self.ResetSights and owner:GetViewModel() ~= nil then
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
@@ -211,6 +206,8 @@ end
 
 function SWEP:Holster()
     local owner = entity_GetOwner( self )
+    self:SetReloading( false )
+    self:SetIronsights( false )
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -894,6 +891,7 @@ function SWEP:Reload()
     timer.Simple( waitdammit, function()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
+        if not self:GetReloading() then return end
         if owner:GetActiveWeapon() ~= self then return self:SetReloading( false ) end
 
         self:ReloadClip()

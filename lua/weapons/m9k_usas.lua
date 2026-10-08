@@ -127,6 +127,7 @@ function SWEP:ReloadFinish()
     timer.Simple( waitdammit + .1, function()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
+        if not self:GetReloading() then return end
         if owner:GetActiveWeapon() ~= self then return self:SetReloading( false ) end
         self:SetReloading( false )
 
