@@ -113,13 +113,13 @@ function SWEP:Reload()
         self.ResetSights = CurTime() + owner:GetViewModel():SequenceDuration()
     end
     if SERVER then
-        if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
+        if self:Clip1() < self.Primary.ClipSize and not owner:IsNPC() then
             owner:SetFOV( 0, 0.3 )
             self:SetIronsights( false )
             self:SetReloading( true )
         end
-        local waitdammit = (owner:GetViewModel():SequenceDuration())
-        timer.Simple( waitdammit + .1, function()
+        local waitdammit = owner:GetViewModel():SequenceDuration()
+        timer.Create( "m9k_reload_" .. self:GetClass() .. self:EntIndex(), waitdammit, 1, function()
             if not IsValid( self ) then return end
             if not IsValid( owner ) then return end
             if not self:GetReloading() then return end

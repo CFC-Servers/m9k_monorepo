@@ -124,7 +124,7 @@ function SWEP:ReloadFinish()
     end
 
     local waitdammit = owner:GetViewModel():SequenceDuration()
-    timer.Simple( waitdammit + .1, function()
+    timer.Create( "m9k_reload_" .. self:GetClass() .. self:EntIndex(), waitdammit, 1, function()
         if not IsValid( self ) then return end
         if not IsValid( owner ) then return end
         if not self:GetReloading() then return end

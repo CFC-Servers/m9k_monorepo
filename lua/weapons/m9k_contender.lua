@@ -175,7 +175,7 @@ function SWEP:Reload()
         end
 
         if SERVER then
-            if (self:Clip1() < self.Primary.ClipSize) and not owner:IsNPC() then
+            if self:Clip1() < self.Primary.ClipSize and not owner:IsNPC() then
                 -- --When the current clip < full clip and the rest of your ammo > 0, then
                 owner:SetFOV( 0, 0.3 )
                 -- --Zoom = 0
@@ -183,12 +183,12 @@ function SWEP:Reload()
                 self:SetReloading( true )
             end
             local waitdammit = owner:GetViewModel():SequenceDuration()
-            timer.Simple( waitdammit + .1, function()
+            timer.Create( "m9k_reload_" .. self:GetClass() .. self:EntIndex(), waitdammit, 1, function()
                 if not IsValid( self ) then return end
                 self:SetReloading( false )
 
                 if self:IsRunning() and not self.CanShootWhileRunning then
-                    if self:GetNextPrimaryFire() <= (CurTime() + .03) then
+                    if self:GetNextPrimaryFire() <= CurTime() + .03 then
                         self:SetNextPrimaryFire( CurTime() + 0.3 ) -- Make it so you can't shoot for another quarter second
                     end
                     self.IronSightsPos = self.RunSightsPos -- Hold it down
