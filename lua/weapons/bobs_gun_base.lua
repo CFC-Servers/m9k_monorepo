@@ -208,6 +208,9 @@ function SWEP:Holster()
     local owner = entity_GetOwner( self )
     self:SetReloading( false )
     self:SetIronsights( false )
+    self:SetIronsightsTime( 0 )
+    self.IronSightsPos = Vector( 0, 0, 0 )
+    self.IronSightsAng = Vector( 0, 0, 0 )
 
     if CLIENT and IsValid( owner ) and not owner:IsNPC() then
         local vm = owner:GetViewModel()
@@ -886,6 +889,9 @@ function SWEP:Reload()
     owner:SetFOV( 0, self.IronSightTime )
     self:SetIronsights( false )
     self:SetReloading( true )
+
+    self.IronSightsAng = Vector( 0, 0, 0 )
+    self.IronSightsPos = Vector( 0, 0, 0 )
 
     local waitdammit = owner:GetViewModel():SequenceDuration()
     timer.Create( "m9k_reload_" .. self:GetClass() .. self:EntIndex(), waitdammit, 1, function()
