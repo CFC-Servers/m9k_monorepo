@@ -20,6 +20,7 @@ SWEP.HoldType               = "shotgun"
 
 
 
+
 SWEP.ViewModelFOV           = 70
 SWEP.ViewModelFlip          = true
 SWEP.ViewModel              = "models/weapons/v_brown_auto5.mdl"

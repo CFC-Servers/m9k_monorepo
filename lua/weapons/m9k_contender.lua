@@ -19,6 +19,8 @@ SWEP.AutoSwitchTo             = true
 SWEP.AutoSwitchFrom           = true
 SWEP.BoltAction               = true
 SWEP.HoldType                 = "rpg"
+SWEP.Reloadoffset             = 0.35 -- The mag gets refilled when the animation is done. 
+--This is an offset in seconds, if its set to 1, the mag will get refilled 1 second before the animation ends
 
 
 
@@ -106,7 +108,7 @@ function SWEP:UseBolt()
         self:SetIronsights( false )
         owner:DrawViewModel( true )
 
-        local boltactiontime = owner:GetViewModel():SequenceDuration()
+        local boltactiontime = owner:GetViewModel():SequenceDuration() - self.Reloadoffset
         timer.Simple( boltactiontime, function()
             if not IsValid( self ) or not IsValid( owner ) then return end
             self:SetReloading( false )
