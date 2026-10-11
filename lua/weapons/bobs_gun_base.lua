@@ -738,14 +738,15 @@ end
    Name: SWEP:ShootBullet()
    Desc: A convenience func to shoot bullets.
 -------------------------------------------------------]]
-local shotBiasMin  = GetConVar( "ai_shot_bias_min" ):GetFloat()
-local shotBiasMax  = GetConVar( "ai_shot_bias_max" ):GetFloat()
+local shotBiasMin = GetConVar( "ai_shot_bias_min" ):GetFloat()
+local shotBiasMax = GetConVar( "ai_shot_bias_max" ):GetFloat()
 
-local function getSpread( gun, dir, vec )
+local function getSpread( gun, dir, aimcone )
     local owner = entity_GetOwner( gun )
 
-    local right = dir:Angle():Right()
-    local up = dir:Angle():Up()
+    local dirAng = dir:Angle()
+    local right = dirAng:Right()
+    local up = dirAng:Up()
 
     local x, y, z
     local bias = 1
@@ -754,11 +755,12 @@ local function getSpread( gun, dir, vec )
     local flatness = math.abs( bias ) * 0.5
 
     local cmd = owner:GetCurrentCommand()
-    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. owner:GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
-    local s = 0
+    local seed = "m9k_spread_" .. util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. owner:GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
+    local seedNum = 0
+
     local function getRnd()
-        s = s + 1
-        return util.SharedRandom( "m9k_spread_" .. seed, -1, 1, s )
+        seedNum = seedNum + 1
+        return util.SharedRandom( seed, -1, 1, seedNum )
     end
 
     for _ = 1, 1000 do -- Not infinite, just in case
@@ -771,10 +773,19 @@ local function getSpread( gun, dir, vec )
         end
 
         z = x * x + y * y
-        if z <= 1 then break end
+
+        if z <= 1 then
+            break
+        end
     end
 
-    return ( dir + x * vec.x * right + y * vec.y * up ):GetNormalized()
+    up:Mul( y * aimcone )
+    right:Mul( x * aimcone )
+    right:Add( up )
+    right:Add( dir )
+    right:Normalize()
+
+    return right
 end
 
 function SWEP:ShootBullet( damage, bulletCount, aimcone )
@@ -808,7 +819,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         else
             local engineSpread = m9k_enginespread:GetBool()
             local spreadDir = engineSpread and Vector( aimcone, aimcone, 0 ) or Vector( 0, 0, 0 )
-            local dir = engineSpread and bulletDir or getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
+            local dir = engineSpread and bulletDir or getSpread( self, bulletDir, aimcone )
             bullet = {
                 Inflictor = self,
                 Num = bulletCount,
