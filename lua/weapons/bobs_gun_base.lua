@@ -167,15 +167,12 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Float", "IronsightsTime" )
     self:NetworkVar( "Bool", "Boltback" )
     self:NetworkVar( "Bool", "Running" )
+    self.GetIronsights = self.GetIronsightsActive
 end
 
 function SWEP:SetIronsights( b )
     self:SetIronsightsActive( b )
     self:SetIronsightsTime( CurTime() )
-end
-
-function SWEP:GetIronsights()
-    return self:GetIronsightsActive()
 end
 
 function SWEP:Equip()
