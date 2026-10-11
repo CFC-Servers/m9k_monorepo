@@ -279,10 +279,7 @@ end
 if CLIENT then
     function SWEP:IsFirstPerson()
         local owner = entity_GetOwner( self )
-        local isLocalPlayer = owner == LocalPlayer()
-        local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
-
-        return isFirstPerson
+        return owner == LocalPlayer() and not owner:ShouldDrawLocalPlayer()
     end
     local thirdPersonShellType = {
         pistol = "EjectBrass_9mm",
