@@ -259,10 +259,8 @@ function SWEP:StartedRunning()
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
 
-    local isRunning = self:IsRunning()
-    local wasRunning = self:GetRunning()
-
-    return isRunning and not wasRunning
+    local selfTbl = entity_GetTable( self )
+    return selfTbl.IsRunning( self ) and not selfTbl.GetRunning( self )
 end
 
 function SWEP:StoppedRunning()
@@ -270,10 +268,8 @@ function SWEP:StoppedRunning()
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
 
-    local isRunning = self:IsRunning()
-    local wasRunning = self:GetRunning()
-
-    return not isRunning and wasRunning
+    local selfTbl = entity_GetTable( self )
+    return not selfTbl.IsRunning( self ) and selfTbl.GetRunning( self )
 end
 
 if CLIENT then
