@@ -461,10 +461,11 @@ function SWEP:AdjustMouseSensitivity()
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
-    if self:IsRunning() and not self.CanShootWhileRunning then return end
-    if not self:GetIronsights() then return end
+    local selfTbl = entity_GetTable( self )
+    if not selfTbl.CanShootWhileRunning and selfTbl.IsRunning( self ) then return end
+    if not selfTbl.GetIronsights( self ) then return end
 
     if player_KeyDown( owner, IN_ATTACK2 ) then
-        return 1 / ( self.Secondary.ScopeZoom / 2 )
+        return 1 / ( selfTbl.Secondary.ScopeZoom / 2 )
     end
 end
