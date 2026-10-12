@@ -1009,6 +1009,8 @@ end
 
 function SWEP:IronSight()
     local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return end
+
     local selfTbl = entity_GetTable( self )
 
     -- Reset animation

@@ -279,6 +279,8 @@ IronSight
 
 function SWEP:IronSight()
     local owner = entity_GetOwner( self )
+    if not IsValid( owner ) then return end
+
     local selfTbl = entity_GetTable( self )
 
     -- Reset animation
@@ -298,7 +300,7 @@ function SWEP:IronSight()
         end
 
         -- Firemode logic
-        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and owner:KeyPressed( IN_RELOAD ) then
+        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) and owner:KeyPressed( IN_RELOAD ) then
             selfTbl.SelectFireMode( self )
             return
         end
@@ -331,7 +333,7 @@ function SWEP:IronSight()
 
     if selfTbl.GetIronsights( self ) then
         -- Unset iron sights (scope)
-        if owner:KeyReleased( IN_ATTACK2 ) and not selfTbl.GetBoltback( self ) then
+        if owner:KeyReleased( IN_ATTACK2 ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetBoltback( self ) then
             selfTbl.SetIronsights( self, false )
             self:SetDrawViewmodel( true )
 
@@ -340,8 +342,7 @@ function SWEP:IronSight()
         end
     else
         -- Set iron sights (scope)
-        if player_KeyDown( owner, IN_ATTACK2 ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self )
-        then
+        if owner:KeyPressed( IN_ATTACK2 ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) then
             selfTbl.IronSightsPos = selfTbl.SightsPos
             selfTbl.IronSightsAng = selfTbl.SightsAng
             selfTbl.SetIronsights( self, true )
