@@ -1145,14 +1145,14 @@ if CLIENT then
 
     local host_timescale = GetConVar( "host_timescale" )
     function SWEP:GetViewModelPosition( pos, ang )
-        local selfTable = entity_GetTable( self )
+        local selfTbl = entity_GetTable( self )
 
-        local bIron = selfTable.bIron
-        if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
+        local bIron = selfTbl.bIron
+        if not selfTbl.IronSightsPos or bIron == nil then return pos, ang end
 
-        local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
-        local fIronTime = selfTable.fIronTime
-        local ironSightsTime = selfTable.IronSightTime
+        local time = selfTbl.CurrentTime + ( SysTime() - selfTbl.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
+        local fIronTime = selfTbl.fIronTime
+        local ironSightsTime = selfTbl.IronSightTime
 
         if ( not bIron ) and fIronTime < time - ironSightsTime then
         return pos, ang
@@ -1165,13 +1165,13 @@ if CLIENT then
         if not bIron then mul = 1 - mul end
         end
 
-        local Offset = selfTable.IronSightsPos
+        local Offset = selfTbl.IronSightsPos
 
-        if selfTable.IronSightsAng then
+        if selfTbl.IronSightsAng then
             ang = ang * 1
-            ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * mul )
-            ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * mul )
-            ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * mul )
+            ang:RotateAroundAxis( ang:Right(), selfTbl.IronSightsAng.x * mul )
+            ang:RotateAroundAxis( ang:Up(), selfTbl.IronSightsAng.y * mul )
+            ang:RotateAroundAxis( ang:Forward(), selfTbl.IronSightsAng.z * mul )
         end
 
         local Right = ang:Right()
@@ -1243,28 +1243,28 @@ if CLIENT then
         local vm = owner:GetViewModel()
         if not IsValid( vm ) then return end
 
-        local selfTable = entity_GetTable( self )
-        if not selfTable.VElements then return end
+        local selfTbl = entity_GetTable( self )
+        if not selfTbl.VElements then return end
 
         self:UpdateBonePositions( vm )
 
-        if not selfTable.vRenderOrder then
+        if not selfTbl.vRenderOrder then
             -- -- we build a render order because sprites need to be drawn after models
-            selfTable.vRenderOrder = {}
+            selfTbl.vRenderOrder = {}
 
-            for k, v in pairs( selfTable.VElements ) do
+            for k, v in pairs( selfTbl.VElements ) do
                 if v.type == "Model" then
-                    table.insert( selfTable.vRenderOrder, 1, k )
+                    table.insert( selfTbl.vRenderOrder, 1, k )
                 elseif v.type == "Sprite" or v.type == "Quad" then
-                    table.insert( selfTable.vRenderOrder, k )
+                    table.insert( selfTbl.vRenderOrder, k )
                 end
             end
         end
 
-        for _, name in ipairs( selfTable.vRenderOrder ) do
-            local v = selfTable.VElements[name]
+        for _, name in ipairs( selfTbl.vRenderOrder ) do
+            local v = selfTbl.VElements[name]
             if not v then
-                selfTable.vRenderOrder = nil
+                selfTbl.vRenderOrder = nil
                 break
             end
             if v.hide then continue end
@@ -1274,7 +1274,7 @@ if CLIENT then
 
             if not v.bone then continue end
 
-            local pos, ang = self:GetBoneOrientation( selfTable.VElements, v, vm )
+            local pos, ang = self:GetBoneOrientation( selfTbl.VElements, v, vm )
 
             if not pos then continue end
 
