@@ -1116,23 +1116,26 @@ if CLIENT then
         if not IsValid( owner ) then return end
         if not owner:IsPlayer() then return end
 
-        local recoilPitch = self.ActiveRecoilPitch or 0
-        local recoilYaw = self.ActiveRecoilYaw or 0
+        local selfTbl = entity_GetTable( self )
+        local recoilPitch = selfTbl.ActiveRecoilPitch or 0
+        local recoilYaw = selfTbl.ActiveRecoilYaw or 0
 
         if math.abs( recoilPitch ) < 0.001 and math.abs( recoilYaw ) < 0.001 then
-            self.ActiveRecoilPitch = 0
-            self.ActiveRecoilYaw = 0
+            selfTbl.ActiveRecoilPitch = 0
+            selfTbl.ActiveRecoilYaw = 0
             return
         end
 
-        local decay = math.exp( -self.RecoilKickSpeed * FrameTime() )
+        local decay = math.exp( -selfTbl.RecoilKickSpeed * FrameTime() )
         local newPitch = recoilPitch * decay
         local newYaw = recoilYaw * decay
 
-        self.ActiveRecoilPitch = newPitch
-        self.ActiveRecoilYaw = newYaw
+        selfTbl.ActiveRecoilPitch = newPitch
+        selfTbl.ActiveRecoilYaw = newYaw
 
-        owner:SetEyeAngles( owner:EyeAngles() + Angle( recoilPitch - newPitch, recoilYaw - newYaw, 0 ) )
+        local eyeangles = owner:EyeAngles()
+        eyeangles:Add( Angle( recoilPitch - newPitch, recoilYaw - newYaw, 0 ) )
+        owner:SetEyeAngles( eyeangles )
     end
 
     function SWEP:DrawHUDBackground()
