@@ -1144,6 +1144,7 @@ if CLIENT then
     end
 
     local host_timescale = GetConVar( "host_timescale" )
+
     function SWEP:GetViewModelPosition( pos, ang )
         local selfTbl = entity_GetTable( self )
 
@@ -1155,17 +1156,18 @@ if CLIENT then
         local ironSightsTime = selfTbl.IronSightTime
 
         if ( not bIron ) and fIronTime < time - ironSightsTime then
-        return pos, ang
+            return pos, ang
         end
 
         local mul = 1.0
+
         if fIronTime > time - ironSightsTime then
-        mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
+            mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
 
-        if not bIron then mul = 1 - mul end
+            if not bIron then
+                mul = 1 - mul
+            end
         end
-
-        local Offset = selfTbl.IronSightsPos
 
         if selfTbl.IronSightsAng then
             ang = ang * 1
@@ -1174,23 +1176,33 @@ if CLIENT then
             ang:RotateAroundAxis( ang:Forward(), selfTbl.IronSightsAng.z * mul )
         end
 
-        local Right = ang:Right()
-        local Up = ang:Up()
-        local Forward = ang:Forward()
+        local x, y, z = selfTbl.IronSightsPos:Unpack()
 
-        pos = pos + Offset.x * Right * mul
-        pos = pos + Offset.y * Forward * mul
-        pos = pos + Offset.z * Up * mul
+        local rigth = ang:Right()
+        rigth:Mul( mul )
+        rigth:Mul( x )
 
-        if self.RecoilAmount > 0 and self:GetIronsightsActive() then
-            local forward = ang:Forward()
-            local recoilOffset = forward * -self.RecoilAmount
-            pos = pos + recoilOffset
+        local forward = ang:Forward()
+        forward:Mul( mul )
+        forward:Mul( y )
 
-            local easer = math.ease.OutCubic( self.RecoilRecoverySpeed * ( CurTime() - self.PrevThinkBlowback ) )
+        local up = ang:Up()
+        up:Mul( mul )
+        up:Mul( z )
 
-            if easer ~= self.RecoilAmount then
-                self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 3 ) --truncated so the value actually returns to zero
+        pos:Add( rigth )
+        pos:Add( forward )
+        pos:Add( up )
+
+        if selfTbl.RecoilAmount > 0 and selfTbl.GetIronsightsActive( self ) then
+            local recoilOffset = ang:Forward()
+            recoilOffset:Mul( -selfTbl.RecoilAmount )
+            pos:Add( recoilOffset )
+
+            local easer = math.ease.OutCubic( selfTbl.RecoilRecoverySpeed * ( CurTime() - selfTbl.PrevThinkBlowback ) )
+
+            if easer ~= selfTbl.RecoilAmount then
+                selfTbl.RecoilAmount = math.Truncate( Lerp( easer, selfTbl.RecoilAmount, 0 ), 3 ) --truncated so the value actually returns to zero
             end
         end
 
