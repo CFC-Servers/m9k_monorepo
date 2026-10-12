@@ -382,7 +382,7 @@ function SWEP:DrawHUD()
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
-    local selfTbl = self:GetTable()
+    local selfTbl = entity_GetTable( self )
     if not player_KeyDown( owner, IN_ATTACK2 ) then return end
 
     if selfTbl.GetIronsights( self ) == true and ( ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not player_KeyDown( owner, IN_USE ) ) then
