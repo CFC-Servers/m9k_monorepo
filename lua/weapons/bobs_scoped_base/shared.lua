@@ -188,7 +188,7 @@ function SWEP:BoltBack()
             timer.Simple( boltactiontime - 0.2, function()
                 if not IsValid( self ) or not IsValid( owner ) then return end
                 self:SetBoltback( false )
-                if owner:KeyDown( IN_ATTACK2 ) and ( not self:IsRunning() or self.CanShootWhileRunning ) and not self:GetReloading() then
+                if player_KeyDown( owner, IN_ATTACK2 ) and ( not self:IsRunning() or self.CanShootWhileRunning ) and not self:GetReloading() then
                     owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                     self.IronSightsPos = self.SightsPos -- Bring it up
                     self.IronSightsAng = self.SightsAng -- Bring it up
@@ -209,7 +209,7 @@ function SWEP:Reload()
     if not IsValid( owner ) then return end
 
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
-    if owner:KeyDown( IN_USE ) then return end
+    if player_KeyDown( owner, IN_USE ) then return end
     if self:GetBoltback() then return end
 
     self:SetReloading( true )
@@ -262,7 +262,7 @@ function SWEP:Reload()
             return
         end
 
-        if owner:KeyDown( IN_ATTACK2 ) then
+        if player_KeyDown( owner, IN_ATTACK2 ) then
             owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
@@ -383,8 +383,8 @@ function SWEP:DrawHUD()
     if not IsValid( owner ) then return end
 
     local selfTable = self:GetTable()
-    if not owner:KeyDown( IN_ATTACK2 ) then return end
-    if self:GetIronsights() == true and ( ( not self:IsRunning() or selfTable.CanShootWhileRunning ) and not owner:KeyDown( IN_USE ) ) then
+    if not player_KeyDown( owner, IN_ATTACK2 ) then return end
+    if self:GetIronsights() == true and ( ( not self:IsRunning() or selfTable.CanShootWhileRunning ) and not player_KeyDown( owner, IN_USE ) ) then
         if selfTable.Secondary.UseACOG then
             -- Draw the FAKE SCOPE THANG
             surface.SetDrawColor( 0, 0, 0, 255 )
@@ -475,7 +475,7 @@ function SWEP:AdjustMouseSensitivity()
     if self:IsRunning() and not self.CanShootWhileRunning then return end
     if not self:GetIronsights() then return end
 
-    if owner:KeyDown( IN_ATTACK2 ) then
+    if player_KeyDown( owner, IN_ATTACK2 ) then
         return 1 / ( self.Secondary.ScopeZoom / 2 )
     end
 end
