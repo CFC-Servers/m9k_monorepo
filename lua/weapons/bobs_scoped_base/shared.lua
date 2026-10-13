@@ -342,7 +342,7 @@ function SWEP:IronSight()
         end
     else
         -- Set iron sights (scope)
-        if owner:KeyPressed( IN_ATTACK2 ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) then
+        if pressingM2 and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) then
             selfTbl.IronSightsPos = selfTbl.SightsPos
             selfTbl.IronSightsAng = selfTbl.SightsAng
             selfTbl.SetIronsights( self, true )
