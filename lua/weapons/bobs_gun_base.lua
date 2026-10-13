@@ -1171,10 +1171,10 @@ if CLIENT then
         end
 
         if selfTbl.IronSightsAng then
-            ang = ang * 1
-            ang:RotateAroundAxis( ang:Right(), selfTbl.IronSightsAng.x * mul )
-            ang:RotateAroundAxis( ang:Up(), selfTbl.IronSightsAng.y * mul )
-            ang:RotateAroundAxis( ang:Forward(), selfTbl.IronSightsAng.z * mul )
+            local x, y, z = selfTbl.IronSightsAng:Unpack()
+            ang:RotateAroundAxis( ang:Right(), z * mul )
+            ang:RotateAroundAxis( ang:Up(), y * mul )
+            ang:RotateAroundAxis( ang:Forward(), z * mul )
         end
 
         local x, y, z = selfTbl.IronSightsPos:Unpack()
