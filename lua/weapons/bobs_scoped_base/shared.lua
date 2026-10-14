@@ -386,7 +386,7 @@ function SWEP:DrawHUD()
     local selfTbl = entity_GetTable( self )
     if not player_KeyDown( owner, IN_ATTACK2 ) then return end
 
-    if selfTbl.GetIronsights( self ) == true and ( ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not player_KeyDown( owner, IN_USE ) ) then
+    if selfTbl.GetIronsights( self ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) then
         local secondary = selfTbl.Secondary
 
         if secondary.UseACOG then
