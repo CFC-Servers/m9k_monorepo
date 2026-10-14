@@ -55,9 +55,13 @@ SWEP.data.ironsights          = 1
 SWEP.ScopeScale               = 0.5
 SWEP.ReticleScale             = 0.5
 
+local IS_SINGLEPLAYER = game.SinglePlayer()
 local entMeta = FindMetaTable( "Entity" )
 local entity_GetTable = entMeta.GetTable
 local entity_GetOwner = entMeta.GetOwner
+
+local playerMeta = FindMetaTable( "Player" )
+local player_KeyDown = playerMeta.KeyDown
 
 function SWEP:Initialize()
     self:SetReloading( false )
@@ -184,7 +188,7 @@ function SWEP:BoltBack()
             timer.Simple( boltactiontime - 0.2, function()
                 if not IsValid( self ) or not IsValid( owner ) then return end
                 self:SetBoltback( false )
-                if owner:KeyDown( IN_ATTACK2 ) and ( not self:IsRunning() or self.CanShootWhileRunning ) and not self:GetReloading() then
+                if player_KeyDown( owner, IN_ATTACK2 ) and ( not self:IsRunning() or self.CanShootWhileRunning ) and not self:GetReloading() then
                     owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
                     self.IronSightsPos = self.SightsPos -- Bring it up
                     self.IronSightsAng = self.SightsAng -- Bring it up
@@ -205,7 +209,7 @@ function SWEP:Reload()
     if not IsValid( owner ) then return end
 
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
-    if owner:KeyDown( IN_USE ) then return end
+    if player_KeyDown( owner, IN_USE ) then return end
     if self:GetBoltback() then return end
 
     self:SetReloading( true )
@@ -258,7 +262,7 @@ function SWEP:Reload()
             return
         end
 
-        if owner:KeyDown( IN_ATTACK2 ) then
+        if player_KeyDown( owner, IN_ATTACK2 ) then
             owner:SetFOV( 75 / self.Secondary.ScopeZoom, 0.15 )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
@@ -274,83 +278,99 @@ IronSight
 -----------------------------------------------------------]]
 
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
     if not IsValid( owner ) then return end
+
     local selfTbl = entity_GetTable( self )
-    if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
+
+    -- Reset animation
+    if selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
+        self:SendWeaponAnim( selfTbl.SilencerAttached and ACT_VM_IDLE_SILENCED or ACT_VM_IDLE )
+    end
 
-        if selfTbl.SilencerAttached then
-            self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
-        else
-            self:SendWeaponAnim( ACT_VM_IDLE )
+    local pressingE = player_KeyDown( owner, IN_USE )
+    local pressingM2 = player_KeyDown( owner, IN_ATTACK2 )
+
+    if pressingE then
+        -- Silencer logic
+        if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingM2 then
+            selfTbl.Silencer( self )
+            return
+        end
+
+        -- Firemode logic
+        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) and owner:KeyPressed( IN_RELOAD ) then
+            selfTbl.SelectFireMode( self )
+            return
         end
     end
 
-    local pressingE = owner:KeyDown( IN_USE )
-    local pressingM2 = owner:KeyDown( IN_ATTACK2 )
+    if not selfTbl.CanShootWhileRunning then
+        -- Set run effect
+        if selfTbl.StartedRunning( self ) and not selfTbl.GetReloading( self ) then
+            if self:GetNextPrimaryFire() <= ( CurTime() + selfTbl.IronSightTime ) then
+                self:SetNextPrimaryFire( CurTime() + selfTbl.IronSightTime )
+            end
 
-    if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingE and pressingM2 then
-        self:Silencer()
-        return
-    end
+            selfTbl.IronSightsPos = selfTbl.RunSightsPos
+            selfTbl.IronSightsAng = selfTbl.RunSightsAng
+            selfTbl.SetIronsights( self, true )
 
-    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not self:GetReloading() and not self:GetBoltback() and pressingE and owner:KeyPressed( IN_RELOAD ) then
-        self:SelectFireMode()
-        return
-    end
-
-    -- Set run effect
-    if not selfTbl.CanShootWhileRunning and self:StartedRunning() and not self:GetReloading() then
-        if self:GetNextPrimaryFire() <= ( CurTime() + self.IronSightTime ) then
-            self:SetNextPrimaryFire( CurTime() + self.IronSightTime )
+            owner:SetFOV( 0, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = false
+            self:SetDrawViewmodel( true )
         end
-        selfTbl.IronSightsPos = selfTbl.RunSightsPos
-        selfTbl.IronSightsAng = selfTbl.RunSightsAng
-        self:SetIronsights( true )
-        owner:SetFOV( 0, self.IronSightTime )
-        selfTbl.DrawCrosshair = false
-        self:SetDrawViewmodel( true )
+
+        -- Unset run effect
+        if selfTbl.StoppedRunning( self ) then
+            selfTbl.SetIronsights( self, false )
+
+            owner:SetFOV( 0, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = selfTbl.XHair
+        end
     end
 
-    -- Unset run effect
-    if not selfTbl.CanShootWhileRunning and self:StoppedRunning() then
-        self:SetIronsights( false )
-        owner:SetFOV( 0, self.IronSightTime )
-        self.DrawCrosshair = self.XHair
+    if selfTbl.GetIronsights( self ) then
+        -- Unset iron sights (scope)
+        if owner:KeyReleased( IN_ATTACK2 ) and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetBoltback( self ) then
+            selfTbl.SetIronsights( self, false )
+            self:SetDrawViewmodel( true )
+
+            owner:SetFOV( 0, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = selfTbl.XHair
+        end
+    else
+        -- Set iron sights (scope)
+        if pressingM2 and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) then
+            selfTbl.IronSightsPos = selfTbl.SightsPos
+            selfTbl.IronSightsAng = selfTbl.SightsAng
+            selfTbl.SetIronsights( self, true )
+            self:SetDrawViewmodel( false )
+
+            owner:SetFOV( 75 / selfTbl.Secondary.ScopeZoom, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = false
+        end
     end
 
-    -- Set iron sights
-    if ( not self:IsRunning() or selfTbl.CanShootWhileRunning ) and owner:KeyPressed( IN_ATTACK2 ) and not self:GetReloading() and not self:GetBoltback() then
-        owner:SetFOV( 75 / selfTbl.Secondary.ScopeZoom, self.IronSightTime )
-        selfTbl.IronSightsPos = selfTbl.SightsPos
-        selfTbl.IronSightsAng = selfTbl.SightsAng
-        selfTbl.DrawCrosshair = false
-        self:SetIronsights( true )
-        self:SetDrawViewmodel( false )
-    end
-
-    -- Unset iron sights
-    if owner:KeyReleased( IN_ATTACK2 ) and ( not self:IsRunning() or selfTbl.CanShootWhileRunning ) and not self:GetBoltback() then
-        owner:SetFOV( 0, self.IronSightTime )
-        self.DrawCrosshair = self.XHair
-        self:SetIronsights( false )
-        self:SetDrawViewmodel( true )
-    end
-
-    if pressingM2 and not pressingE and not self:IsRunning() then
+    if pressingM2 and not pressingE and not selfTbl.IsRunning( self ) then
         selfTbl.SwayScale = 0.05
         selfTbl.BobScale  = 0.05
     else
         selfTbl.SwayScale = 1.0
         selfTbl.BobScale  = 1.0
+
+        if selfTbl.CanShootWhileRunning and pressingM2 then
+            selfTbl.SwayScale = 0.25
+            selfTbl.BobScale  = 0.25
+        end
     end
 
-    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not game.SinglePlayer() ) then return end
-    self.bIron = self:GetIronsightsActive()
-    self.fIronTime = self:GetIronsightsTime()
-    self.CurrentTime = CurTime()
-    self.CurrentSysTime = SysTime()
+    if SERVER or ( not IsFirstTimePredicted() and not IS_SINGLEPLAYER ) then return end
+    selfTbl.bIron = selfTbl.GetIronsightsActive( self )
+    selfTbl.fIronTime = selfTbl.GetIronsightsTime( self )
+    selfTbl.CurrentTime = CurTime()
+    selfTbl.CurrentSysTime = SysTime()
 end
 
 function SWEP:SetDrawViewmodel( bool )
@@ -363,88 +383,77 @@ function SWEP:DrawHUD()
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
-    local selfTable = self:GetTable()
-    if not owner:KeyDown( IN_ATTACK2 ) then return end
-    if self:GetIronsights() == true and ( ( not self:IsRunning() or selfTable.CanShootWhileRunning ) and not owner:KeyDown( IN_USE ) ) then
-        if selfTable.Secondary.UseACOG then
+    local selfTbl = entity_GetTable( self )
+    if not player_KeyDown( owner, IN_ATTACK2 ) then return end
+
+    if selfTbl.GetIronsights( self ) == true and ( ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not player_KeyDown( owner, IN_USE ) ) then
+        local secondary = selfTbl.Secondary
+
+        if secondary.UseACOG then
             -- Draw the FAKE SCOPE THANG
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
 
             -- Draw the CHEVRON
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_acogchevron" ) )
-            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
+            surface.DrawTexturedRect( selfTbl.ReticleTable.x, selfTbl.ReticleTable.y, selfTbl.ReticleTable.w, selfTbl.ReticleTable.h )
 
             -- Draw the ACOG REFERENCE LINES
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_acogcross" ) )
-            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
-        end
-
-        if selfTable.Secondary.UseMilDot then
+            surface.DrawTexturedRect( selfTbl.ReticleTable.x, selfTbl.ReticleTable.y, selfTbl.ReticleTable.w, selfTbl.ReticleTable.h )
+        elseif secondary.UseMilDot then
             -- Draw the MIL DOT SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_scopesight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseSVD then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseSVD then
             -- Draw the SVD SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_svdsight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseParabolic then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseParabolic then
             -- Draw the PARABOLIC SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_parabolicsight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseElcan then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseElcan then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_elcanreticle" ) )
-            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
+            surface.DrawTexturedRect( selfTbl.ReticleTable.x, selfTbl.ReticleTable.y, selfTbl.ReticleTable.w, selfTbl.ReticleTable.h )
 
             -- Draw the ELCAN SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_elcansight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseGreenDuplex then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseGreenDuplex then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_nvgilluminatedduplex" ) )
-            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
+            surface.DrawTexturedRect( selfTbl.ReticleTable.x, selfTbl.ReticleTable.y, selfTbl.ReticleTable.w, selfTbl.ReticleTable.h )
 
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseAimpoint then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseAimpoint then
             -- Draw the RETICLE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/aimpoint" ) )
-            surface.DrawTexturedRect( selfTable.ReticleTable.x, selfTable.ReticleTable.y, selfTable.ReticleTable.w, selfTable.ReticleTable.h )
+            surface.DrawTexturedRect( selfTbl.ReticleTable.x, selfTbl.ReticleTable.y, selfTbl.ReticleTable.w, selfTbl.ReticleTable.h )
 
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/gdcw_closedsight" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
-        end
-
-        if selfTable.Secondary.UseMatador then
+            surface.DrawTexturedRect( selfTbl.LensTable.x, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
+        elseif secondary.UseMatador then
             -- Draw the SCOPE
             surface.SetDrawColor( 0, 0, 0, 255 )
             surface.SetTexture( surface.GetTextureID( "scope/rocketscope" ) )
-            surface.DrawTexturedRect( selfTable.LensTable.x - 1, selfTable.LensTable.y, selfTable.LensTable.w, selfTable.LensTable.h )
+            surface.DrawTexturedRect( selfTbl.LensTable.x - 1, selfTbl.LensTable.y, selfTbl.LensTable.w, selfTbl.LensTable.h )
         end
     end
 end
@@ -453,10 +462,11 @@ function SWEP:AdjustMouseSensitivity()
     local owner = entity_GetOwner(self)
     if not IsValid( owner ) then return end
 
-    if self:IsRunning() and not self.CanShootWhileRunning then return end
-    if not self:GetIronsights() then return end
+    local selfTbl = entity_GetTable( self )
+    if not selfTbl.CanShootWhileRunning and selfTbl.IsRunning( self ) then return end
+    if not selfTbl.GetIronsights( self ) then return end
 
-    if owner:KeyDown( IN_ATTACK2 ) then
-        return 1 / ( self.Secondary.ScopeZoom / 2 )
+    if player_KeyDown( owner, IN_ATTACK2 ) then
+        return 1 / ( selfTbl.Secondary.ScopeZoom / 2 )
     end
 end

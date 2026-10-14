@@ -167,15 +167,12 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Float", "IronsightsTime" )
     self:NetworkVar( "Bool", "Boltback" )
     self:NetworkVar( "Bool", "Running" )
+    self.GetIronsights = self.GetIronsightsActive
 end
 
 function SWEP:SetIronsights( b )
     self:SetIronsightsActive( b )
     self:SetIronsightsTime( CurTime() )
-end
-
-function SWEP:GetIronsights()
-    return self:GetIronsightsActive()
 end
 
 function SWEP:Equip()
@@ -262,10 +259,8 @@ function SWEP:StartedRunning()
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
 
-    local isRunning = self:IsRunning()
-    local wasRunning = self:GetRunning()
-
-    return isRunning and not wasRunning
+    local selfTbl = entity_GetTable( self )
+    return selfTbl.IsRunning( self ) and not selfTbl.GetRunning( self )
 end
 
 function SWEP:StoppedRunning()
@@ -273,19 +268,14 @@ function SWEP:StoppedRunning()
     if not IsValid( owner ) then return end
     if not owner:IsPlayer() then return end
 
-    local isRunning = self:IsRunning()
-    local wasRunning = self:GetRunning()
-
-    return not isRunning and wasRunning
+    local selfTbl = entity_GetTable( self )
+    return not selfTbl.IsRunning( self ) and selfTbl.GetRunning( self )
 end
 
 if CLIENT then
     function SWEP:IsFirstPerson()
         local owner = entity_GetOwner( self )
-        local isLocalPlayer = owner == LocalPlayer()
-        local isFirstPerson = isLocalPlayer and not owner:ShouldDrawLocalPlayer()
-
-        return isFirstPerson
+        return owner == LocalPlayer() and not owner:ShouldDrawLocalPlayer()
     end
     local thirdPersonShellType = {
         pistol = "EjectBrass_9mm",
@@ -525,7 +515,7 @@ end
 -------------------------------------------------------]]
 function SWEP:ShootBulletInformation()
     local currentCone
-    if self:GetIronsightsActive() == true and entity_GetOwner( self ):KeyDown( IN_ATTACK2 ) then
+    if self:GetIronsightsActive() == true and player_KeyDown( entity_GetOwner( self ), IN_ATTACK2 ) then
         currentCone = self.Primary.SpreadIronSights
     else
         currentCone = self.Primary.SpreadHip
@@ -738,14 +728,15 @@ end
    Name: SWEP:ShootBullet()
    Desc: A convenience func to shoot bullets.
 -------------------------------------------------------]]
-local shotBiasMin  = GetConVar( "ai_shot_bias_min" ):GetFloat()
-local shotBiasMax  = GetConVar( "ai_shot_bias_max" ):GetFloat()
+local shotBiasMin = GetConVar( "ai_shot_bias_min" ):GetFloat()
+local shotBiasMax = GetConVar( "ai_shot_bias_max" ):GetFloat()
 
-local function getSpread( gun, dir, vec )
+local function getSpread( gun, dir, aimcone )
     local owner = entity_GetOwner( gun )
 
-    local right = dir:Angle():Right()
-    local up = dir:Angle():Up()
+    local dirAng = dir:Angle()
+    local right = dirAng:Right()
+    local up = dirAng:Up()
 
     local x, y, z
     local bias = 1
@@ -754,11 +745,12 @@ local function getSpread( gun, dir, vec )
     local flatness = math.abs( bias ) * 0.5
 
     local cmd = owner:GetCurrentCommand()
-    local seed = util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. owner:GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
-    local s = 0
+    local seed = "m9k_spread_" .. util.CRC(  gun:GetCreationID() .. gun:EntIndex() .. CurTime() .. owner:GetUserGroup() .. cmd:CommandNumber() .. cmd:TickCount() )
+    local seedNum = 0
+
     local function getRnd()
-        s = s + 1
-        return util.SharedRandom( "m9k_spread_" .. seed, -1, 1, s )
+        seedNum = seedNum + 1
+        return util.SharedRandom( seed, -1, 1, seedNum )
     end
 
     for _ = 1, 1000 do -- Not infinite, just in case
@@ -771,10 +763,19 @@ local function getSpread( gun, dir, vec )
         end
 
         z = x * x + y * y
-        if z <= 1 then break end
+
+        if z <= 1 then
+            break
+        end
     end
 
-    return ( dir + x * vec.x * right + y * vec.y * up ):GetNormalized()
+    up:Mul( y * aimcone )
+    right:Mul( x * aimcone )
+    right:Add( up )
+    right:Add( dir )
+    right:Normalize()
+
+    return right
 end
 
 function SWEP:ShootBullet( damage, bulletCount, aimcone )
@@ -808,7 +809,7 @@ function SWEP:ShootBullet( damage, bulletCount, aimcone )
         else
             local engineSpread = m9k_enginespread:GetBool()
             local spreadDir = engineSpread and Vector( aimcone, aimcone, 0 ) or Vector( 0, 0, 0 )
-            local dir = engineSpread and bulletDir or getSpread( self, bulletDir, Vector( aimcone, aimcone, 0 ) )
+            local dir = engineSpread and bulletDir or getSpread( self, bulletDir, aimcone )
             bullet = {
                 Inflictor = self,
                 Num = bulletCount,
@@ -876,9 +877,9 @@ function SWEP:Reload()
     if self:Clip1() >= self.Primary.ClipSize then return end
 
     local owner = entity_GetOwner( self )
-    if owner:KeyDown( IN_USE ) then return end -- Mode switch
+    if player_KeyDown( owner, IN_USE ) then return end -- Mode switch
     if owner:GetAmmoCount( self:GetPrimaryAmmoType() ) <= 0 then return end
-    if self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) then return end
+    if self:GetIronsights() and player_KeyDown( owner, IN_ATTACK2 ) then return end
 
     self:ReloadAnim()
 
@@ -903,7 +904,7 @@ function SWEP:Reload()
         self:ReloadClip()
         self:SetReloading( false )
 
-        if not self:IsRunning() and owner:KeyDown( IN_ATTACK2 ) and self.Scoped == false then
+        if not self:IsRunning() and player_KeyDown( owner, IN_ATTACK2 ) and self.Scoped == false then
             owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
             self.IronSightsPos = self.SightsPos -- Bring it up
             self.IronSightsAng = self.SightsAng -- Bring it up
@@ -960,7 +961,7 @@ function SWEP:Silencer()
         if not IsValid( owner ) then return end
 
         self:SetReloading( false )
-        if owner:KeyDown( IN_ATTACK2 ) then
+        if player_KeyDown( owner, IN_ATTACK2 ) then
             if CLIENT then return end
             if self.Scoped == false then
                 owner:SetFOV( self.Secondary.IronFOV, self.IronSightTime )
@@ -1007,86 +1008,96 @@ function SWEP:SelectFireMode()
 end
 
 function SWEP:IronSight()
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
     if not IsValid( owner ) then return end
 
     local selfTbl = entity_GetTable( self )
-    if not owner:IsNPC() and selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
+
+    -- Reset animation
+    if selfTbl.ResetSights and CurTime() >= selfTbl.ResetSights then
         selfTbl.ResetSights = nil
+        self:SendWeaponAnim( selfTbl.SilencerAttached and ACT_VM_IDLE_SILENCED or ACT_VM_IDLE )
+    end
 
-        if selfTbl.SilencerAttached then
-            self:SendWeaponAnim( ACT_VM_IDLE_SILENCED )
-        else
-            self:SendWeaponAnim( ACT_VM_IDLE )
+    local pressingE = player_KeyDown( owner, IN_USE )
+    local pressingM2 = player_KeyDown( owner, IN_ATTACK2 )
+
+    if pressingE then
+        -- Silencer logic
+        if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingM2 then
+            selfTbl.Silencer( self )
+            return
+        end
+
+        -- Firemode logic
+        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and owner:KeyPressed( IN_RELOAD ) then
+            selfTbl.SelectFireMode( self )
+            return
         end
     end
 
-    local pressingE = owner:KeyDown( IN_USE )
-    local pressingM2 = owner:KeyDown( IN_ATTACK2 )
+    if not selfTbl.CanShootWhileRunning then
+        -- Set run effect
+        if selfTbl.StartedRunning( self ) and not selfTbl.GetReloading( self ) then
+            if self:GetNextPrimaryFire() <= ( CurTime() + selfTbl.IronSightTime ) then
+                self:SetNextPrimaryFire( CurTime() + selfTbl.IronSightTime )
+            end
 
-    if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingE and pressingM2 then
-        self:Silencer()
-        return
-    end
+            selfTbl.IronSightsPos = selfTbl.RunSightsPos
+            selfTbl.IronSightsAng = selfTbl.RunSightsAng
+            selfTbl.SetIronsights( self, true )
 
-    if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not self:GetReloading() and pressingE and owner:KeyPressed( IN_RELOAD ) then
-        self:SelectFireMode()
-        return
-    end
-
-    -- Set run effect
-    if not self.CanShootWhileRunning and self:StartedRunning() and not self:GetReloading() then
-        if self:GetNextPrimaryFire() <= ( CurTime() + self.IronSightTime ) then
-            self:SetNextPrimaryFire( CurTime() + self.IronSightTime )
+            owner:SetFOV( 0, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = false
         end
-        selfTbl.IronSightsPos = selfTbl.RunSightsPos
-        selfTbl.IronSightsAng = selfTbl.RunSightsAng
-        self:SetIronsights( true )
-        owner:SetFOV( 0, self.IronSightTime )
-        selfTbl.DrawCrosshair = false
+
+        -- Unset run effect
+        if selfTbl.StoppedRunning( self ) then
+            selfTbl.SetIronsights( self, false )
+
+            owner:SetFOV( 0, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
+        end
     end
 
-    -- Unset run effect
-    if not selfTbl.CanShootWhileRunning and self:StoppedRunning() then
-        self:SetIronsights( false )
-        owner:SetFOV( 0, self.IronSightTime )
-        selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
+    if selfTbl.GetIronsights( self ) then
+        -- Unset iron sights
+        if owner:KeyReleased( IN_ATTACK2 ) then
+            selfTbl.SetIronsights( self, false )
+
+            owner:SetFOV( 0, self.IronSightTime )
+            selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
+        end
+    else
+        -- Set iron sights
+        if pressingM2 and ( selfTbl.CanShootWhileRunning or not selfTbl.IsRunning( self ) ) and not selfTbl.GetReloading( self ) then
+            selfTbl.IronSightsPos = selfTbl.SightsPos
+            selfTbl.IronSightsAng = selfTbl.SightsAng
+            selfTbl.SetIronsights( self, true )
+
+            owner:SetFOV( selfTbl.Secondary.IronFOV, selfTbl.IronSightTime )
+            selfTbl.DrawCrosshair = false
+        end
     end
 
-    -- Set iron sights
-    if not self:GetIronsights() and owner:KeyDown( IN_ATTACK2 ) and ( not self:IsRunning() or selfTbl.CanShootWhileRunning ) and not self:GetReloading() then
-        owner:SetFOV( selfTbl.Secondary.IronFOV, self.IronSightTime )
-        selfTbl.IronSightsPos = selfTbl.SightsPos
-        selfTbl.IronSightsAng = selfTbl.SightsAng
-        self:SetIronsights( true )
-        selfTbl.DrawCrosshair = false
-    end
-
-    -- Unset iron sights
-    if self:GetIronsights() and owner:KeyReleased( IN_ATTACK2 ) then
-        owner:SetFOV( 0, self.IronSightTime )
-        selfTbl.DrawCrosshair = selfTbl.OrigCrossHair
-        self:SetIronsights( false )
-    end
-
-    if pressingM2 and not pressingE and not self:IsRunning() then
+    if pressingM2 and not pressingE and not selfTbl.IsRunning( self ) then
         selfTbl.SwayScale = 0.05
-        selfTbl.BobScale  = 0.05
+        selfTbl.BobScale = 0.05
     else
         selfTbl.SwayScale = 1.0
-        selfTbl.BobScale  = 1.0
+        selfTbl.BobScale = 1.0
 
         if selfTbl.CanShootWhileRunning and pressingM2 then
             selfTbl.SwayScale = 0.25
-            selfTbl.BobScale  = 0.25
+            selfTbl.BobScale = 0.25
         end
     end
 
-    if ( not CLIENT ) or ( not IsFirstTimePredicted() and not IS_SINGLEPLAYER ) then return end
-    self.bIron = self:GetIronsightsActive()
-    self.fIronTime = self:GetIronsightsTime()
-    self.CurrentTime = CurTime()
-    self.CurrentSysTime = SysTime()
+    if SERVER or ( not IsFirstTimePredicted() and not IS_SINGLEPLAYER ) then return end
+    selfTbl.bIron = selfTbl.GetIronsightsActive( self )
+    selfTbl.fIronTime = selfTbl.GetIronsightsTime( self )
+    selfTbl.CurrentTime = CurTime()
+    selfTbl.CurrentSysTime = SysTime()
 end
 
 --[[---------------------------------------------------------
@@ -1098,7 +1109,6 @@ end
 
 function SWEP:Think()
     self:ThinkCustom()
-
     self:SetRunning( self:IsRunning() )
 end
 
@@ -1108,23 +1118,26 @@ if CLIENT then
         if not IsValid( owner ) then return end
         if not owner:IsPlayer() then return end
 
-        local recoilPitch = self.ActiveRecoilPitch or 0
-        local recoilYaw = self.ActiveRecoilYaw or 0
+        local selfTbl = entity_GetTable( self )
+        local recoilPitch = selfTbl.ActiveRecoilPitch or 0
+        local recoilYaw = selfTbl.ActiveRecoilYaw or 0
 
         if math.abs( recoilPitch ) < 0.001 and math.abs( recoilYaw ) < 0.001 then
-            self.ActiveRecoilPitch = 0
-            self.ActiveRecoilYaw = 0
+            selfTbl.ActiveRecoilPitch = 0
+            selfTbl.ActiveRecoilYaw = 0
             return
         end
 
-        local decay = math.exp( -self.RecoilKickSpeed * FrameTime() )
+        local decay = math.exp( -selfTbl.RecoilKickSpeed * FrameTime() )
         local newPitch = recoilPitch * decay
         local newYaw = recoilYaw * decay
 
-        self.ActiveRecoilPitch = newPitch
-        self.ActiveRecoilYaw = newYaw
+        selfTbl.ActiveRecoilPitch = newPitch
+        selfTbl.ActiveRecoilYaw = newYaw
 
-        owner:SetEyeAngles( owner:EyeAngles() + Angle( recoilPitch - newPitch, recoilYaw - newYaw, 0 ) )
+        local eyeangles = owner:EyeAngles()
+        eyeangles:Add( Angle( recoilPitch - newPitch, recoilYaw - newYaw, 0 ) )
+        owner:SetEyeAngles( eyeangles )
     end
 
     function SWEP:DrawHUDBackground()
@@ -1132,53 +1145,65 @@ if CLIENT then
     end
 
     local host_timescale = GetConVar( "host_timescale" )
+
     function SWEP:GetViewModelPosition( pos, ang )
-        local selfTable = entity_GetTable( self )
+        local selfTbl = entity_GetTable( self )
 
-        local bIron = selfTable.bIron
-        if not selfTable.IronSightsPos or bIron == nil then return pos, ang end
+        local bIron = selfTbl.bIron
+        if not selfTbl.IronSightsPos or bIron == nil then return pos, ang end
 
-        local time = selfTable.CurrentTime + ( SysTime() - selfTable.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
-        local fIronTime = selfTable.fIronTime
-        local ironSightsTime = selfTable.IronSightTime
+        local time = selfTbl.CurrentTime + ( SysTime() - selfTbl.CurrentSysTime ) * game.GetTimeScale() * host_timescale:GetFloat()
+        local fIronTime = selfTbl.fIronTime
+        local ironSightsTime = selfTbl.IronSightTime
 
         if ( not bIron ) and fIronTime < time - ironSightsTime then
-        return pos, ang
+            return pos, ang
         end
 
         local mul = 1.0
+
         if fIronTime > time - ironSightsTime then
-        mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
+            mul = math.Clamp( ( time - fIronTime ) / ironSightsTime, 0, 1 )
 
-        if not bIron then mul = 1 - mul end
+            if not bIron then
+                mul = 1 - mul
+            end
         end
 
-        local Offset = selfTable.IronSightsPos
-
-        if selfTable.IronSightsAng then
-            ang = ang * 1
-            ang:RotateAroundAxis( ang:Right(), selfTable.IronSightsAng.x * mul )
-            ang:RotateAroundAxis( ang:Up(), selfTable.IronSightsAng.y * mul )
-            ang:RotateAroundAxis( ang:Forward(), selfTable.IronSightsAng.z * mul )
+        if selfTbl.IronSightsAng then
+            local x, y, z = selfTbl.IronSightsAng:Unpack()
+            ang:RotateAroundAxis( ang:Right(), x * mul )
+            ang:RotateAroundAxis( ang:Up(), y * mul )
+            ang:RotateAroundAxis( ang:Forward(), z * mul )
         end
 
-        local Right = ang:Right()
-        local Up = ang:Up()
-        local Forward = ang:Forward()
+        local x, y, z = selfTbl.IronSightsPos:Unpack()
 
-        pos = pos + Offset.x * Right * mul
-        pos = pos + Offset.y * Forward * mul
-        pos = pos + Offset.z * Up * mul
+        local rigth = ang:Right()
+        rigth:Mul( mul )
+        rigth:Mul( x )
 
-        if self.RecoilAmount > 0 and self:GetIronsightsActive() then
-            local forward = ang:Forward()
-            local recoilOffset = forward * -self.RecoilAmount
-            pos = pos + recoilOffset
+        local forward = ang:Forward()
+        forward:Mul( mul )
+        forward:Mul( y )
 
-            local easer = math.ease.OutCubic( self.RecoilRecoverySpeed * ( CurTime() - self.PrevThinkBlowback ) )
+        local up = ang:Up()
+        up:Mul( mul )
+        up:Mul( z )
 
-            if easer ~= self.RecoilAmount then
-                self.RecoilAmount = math.Truncate( Lerp( easer, self.RecoilAmount, 0 ), 3 ) --truncated so the value actually returns to zero
+        pos:Add( rigth )
+        pos:Add( forward )
+        pos:Add( up )
+
+        if selfTbl.RecoilAmount > 0 and selfTbl.GetIronsightsActive( self ) then
+            local recoilOffset = ang:Forward()
+            recoilOffset:Mul( -selfTbl.RecoilAmount )
+            pos:Add( recoilOffset )
+
+            local easer = math.ease.OutCubic( selfTbl.RecoilRecoverySpeed * ( CurTime() - selfTbl.PrevThinkBlowback ) )
+
+            if easer ~= selfTbl.RecoilAmount then
+                selfTbl.RecoilAmount = math.Truncate( Lerp( easer, selfTbl.RecoilAmount, 0 ), 3 ) --truncated so the value actually returns to zero
             end
         end
 
@@ -1231,28 +1256,28 @@ if CLIENT then
         local vm = owner:GetViewModel()
         if not IsValid( vm ) then return end
 
-        local selfTable = entity_GetTable( self )
-        if not selfTable.VElements then return end
+        local selfTbl = entity_GetTable( self )
+        if not selfTbl.VElements then return end
 
         self:UpdateBonePositions( vm )
 
-        if not selfTable.vRenderOrder then
+        if not selfTbl.vRenderOrder then
             -- -- we build a render order because sprites need to be drawn after models
-            selfTable.vRenderOrder = {}
+            selfTbl.vRenderOrder = {}
 
-            for k, v in pairs( selfTable.VElements ) do
+            for k, v in pairs( selfTbl.VElements ) do
                 if v.type == "Model" then
-                    table.insert( selfTable.vRenderOrder, 1, k )
+                    table.insert( selfTbl.vRenderOrder, 1, k )
                 elseif v.type == "Sprite" or v.type == "Quad" then
-                    table.insert( selfTable.vRenderOrder, k )
+                    table.insert( selfTbl.vRenderOrder, k )
                 end
             end
         end
 
-        for _, name in ipairs( selfTable.vRenderOrder ) do
-            local v = selfTable.VElements[name]
+        for _, name in ipairs( selfTbl.vRenderOrder ) do
+            local v = selfTbl.VElements[name]
             if not v then
-                selfTable.vRenderOrder = nil
+                selfTbl.vRenderOrder = nil
                 break
             end
             if v.hide then continue end
@@ -1262,7 +1287,7 @@ if CLIENT then
 
             if not v.bone then continue end
 
-            local pos, ang = self:GetBoneOrientation( selfTable.VElements, v, vm )
+            local pos, ang = self:GetBoneOrientation( selfTbl.VElements, v, vm )
 
             if not pos then continue end
 
