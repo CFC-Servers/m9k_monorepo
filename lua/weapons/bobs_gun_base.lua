@@ -856,6 +856,11 @@ function SWEP:AddRecoil()
 end
 
 function SWEP:ReloadAnim()
+    local owner = entity_GetOwner( self )
+    if IsValid( owner ) and owner:IsPlayer() then
+        owner:SetAnimation( PLAYER_RELOAD )
+    end
+
     if self.SilencerAttached then
         self:SendWeaponAnim( ACT_VM_RELOAD_SILENCED )
     else
