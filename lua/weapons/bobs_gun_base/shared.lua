@@ -99,6 +99,7 @@ function SWEP:Initialize()
     self.Reloadaftershoot = 0 -- Can't reload when firing
     self:SetHoldType( self.HoldType )
     self:SetReloading( false )
+    self:SetAutomatic( self.Primary.Automatic )
     self.OrigCrossHair = self.DrawCrosshair
 
     local owner = entity_GetOwner( self )
@@ -158,6 +159,7 @@ function SWEP:SetupDataTables()
     self:NetworkVar( "Float", "IronsightsTime" )
     self:NetworkVar( "Bool", "Boltback" )
     self:NetworkVar( "Bool", "Running" )
+    self:NetworkVar( "Bool", "Automatic" )
     self.GetIronsights = self.GetIronsightsActive
 end
 
@@ -390,6 +392,8 @@ function SWEP:PrimaryAttack()
         self:SetNextPrimaryFire( CurTime() + 0.2 )
         return false
     end
+
+    self.Primary.Automatic = self:GetAutomatic()
 
     self:ShootBulletInformation()
     self:TakePrimaryAmmo( 1 )
@@ -909,23 +913,22 @@ function SWEP:Silencer()
 end
 
 function SWEP:SelectFireMode()
-    local owner = entity_GetOwner(self)
+    local owner = entity_GetOwner( self )
 
-    if self.Primary.Automatic then
-        self.Primary.Automatic = false
-        self.NextAction = CurTime() + .5
-        if CLIENT then
+    if self:GetAutomatic() then
+        self:SetAutomatic( false )
+        if SERVER then
             owner:PrintMessage( HUD_PRINTTALK, "Semi-automatic selected." )
         end
-        self:EmitSound( "Weapon_AR2.Empty" )
     else
-        self.Primary.Automatic = true
-        self.NextAction = CurTime() + .5
-        if CLIENT then
+        self:SetAutomatic( true )
+        if SERVER then
             owner:PrintMessage( HUD_PRINTTALK, "Automatic selected." )
         end
-        self:EmitSound( "Weapon_AR2.Empty" )
     end
+
+    self.NextAction = CurTime() + 0.5
+    self:EmitSound( "Weapon_AR2.Empty" )
 end
 
 function SWEP:IronSight()
