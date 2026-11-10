@@ -52,9 +52,8 @@ SWEP.Scoped                 = false
 SWEP.ShellTime              = .35
 SWEP.CanBeSilenced          = false
 SWEP.SilencerAttached               = false
-SWEP.NextSilence            = 0
+SWEP.NextAction            = 0
 SWEP.SelectiveFire          = false
-SWEP.NextFireSelect         = 0
 SWEP.OrigCrossHair          = true
 SWEP.CanShootWhileRunning   = false
 
@@ -856,7 +855,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Silencer()
-    if self.NextSilence > CurTime() then return end
+    if self.NextAction > CurTime() then return end
 
     local owner = entity_GetOwner( self )
 
@@ -876,7 +875,7 @@ function SWEP:Silencer()
     if self:GetNextPrimaryFire() <= siltimer then
         self:SetNextPrimaryFire( siltimer )
     end
-    self.NextSilence = siltimer
+    self.NextAction = siltimer
 
     timer.Simple( owner:GetViewModel():SequenceDuration() + 0.1, function()
         if not IsValid( self ) then return end
@@ -914,14 +913,14 @@ function SWEP:SelectFireMode()
 
     if self.Primary.Automatic then
         self.Primary.Automatic = false
-        self.NextFireSelect = CurTime() + .5
+        self.NextAction = CurTime() + .5
         if CLIENT then
             owner:PrintMessage( HUD_PRINTTALK, "Semi-automatic selected." )
         end
         self:EmitSound( "Weapon_AR2.Empty" )
     else
         self.Primary.Automatic = true
-        self.NextFireSelect = CurTime() + .5
+        self.NextAction = CurTime() + .5
         if CLIENT then
             owner:PrintMessage( HUD_PRINTTALK, "Automatic selected." )
         end
@@ -946,13 +945,13 @@ function SWEP:IronSight()
 
     if pressingE then
         -- Silencer logic
-        if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingM2 then
+        if selfTbl.CanBeSilenced and selfTbl.NextAction < CurTime() and pressingM2 then
             selfTbl.Silencer( self )
             return
         end
 
         -- Firemode logic
-        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and owner:KeyPressed( IN_RELOAD ) then
+        if selfTbl.SelectiveFire and selfTbl.NextAction < CurTime() and not selfTbl.GetReloading( self ) and owner:KeyPressed( IN_RELOAD ) then
             selfTbl.SelectFireMode( self )
             return
         end

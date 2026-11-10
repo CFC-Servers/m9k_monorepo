@@ -294,13 +294,13 @@ function SWEP:IronSight()
 
     if pressingE then
         -- Silencer logic
-        if selfTbl.CanBeSilenced and selfTbl.NextSilence < CurTime() and pressingM2 then
+        if selfTbl.CanBeSilenced and selfTbl.NextAction < CurTime() and pressingM2 then
             selfTbl.Silencer( self )
             return
         end
 
         -- Firemode logic
-        if selfTbl.SelectiveFire and selfTbl.NextFireSelect < CurTime() and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) and owner:KeyPressed( IN_RELOAD ) then
+        if selfTbl.SelectiveFire and selfTbl.NextAction < CurTime() and not selfTbl.GetReloading( self ) and not selfTbl.GetBoltback( self ) and owner:KeyPressed( IN_RELOAD ) then
             selfTbl.SelectFireMode( self )
             return
         end

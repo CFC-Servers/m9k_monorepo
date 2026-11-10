@@ -65,7 +65,7 @@ function SWEP:SelectFireMode()
 
     if self.Primary.Burst then
         self.Primary.Burst = false
-        self.NextFireSelect = CurTime() + .5
+        self.NextAction = CurTime() + .5
         if CLIENT then
             owner:PrintMessage( HUD_PRINTTALK, "Automatic selected." )
         end
@@ -76,7 +76,7 @@ function SWEP:SelectFireMode()
         self.Primary.RPM       = 600
     else
         self.Primary.Burst = true
-        self.NextFireSelect = CurTime() + .5
+        self.NextAction = CurTime() + .5
         if CLIENT then
             owner:PrintMessage( HUD_PRINTTALK, "Burst fire selected." )
         end

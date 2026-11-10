@@ -214,13 +214,7 @@ function SWEP:IronSight()
         end
     end
 
-    if self.CanBeSilenced and self.NextSilence < CurTime() then
-        if owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_ATTACK2 ) then
-            self:Silencer()
-        end
-    end
-
-    if self.SelectiveFire and self.NextFireSelect < CurTime() and not (self:GetReloading()) then
+    if self.SelectiveFire and self.NextAction < CurTime() and not (self:GetReloading()) then
         if owner:KeyDown( IN_USE ) and owner:KeyPressed( IN_RELOAD ) then
             self:SelectFireMode()
         end
