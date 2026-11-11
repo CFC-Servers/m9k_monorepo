@@ -66,6 +66,7 @@ local player_KeyDown = playerMeta.KeyDown
 function SWEP:Initialize()
     self:SetReloading( false )
     self:SetBoltback( false )
+    self:SetAutomatic( self.Primary.Automatic )
     if CLIENT then
         -- We need to get these so we can scale everything to the player's current resolution.
         local iScreenWidth = surface.ScreenWidth()
