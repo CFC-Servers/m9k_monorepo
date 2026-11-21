@@ -353,7 +353,7 @@ sound.Add( { name = "Weapon_M_60.Boxin", channel = CHAN_AUTO, volume = 1.0, soun
 sound.Add( { name = "Weapon_M_60.Chain", channel = CHAN_AUTO, volume = 1.0, sound = "weapons/m60/m60_chain.ogg" } )
 sound.Add( { name = "Weapon_M_60.Coverdown", channel = CHAN_AUTO, volume = 1.0, sound = "weapons/m60/m60_coverdown.ogg" } )
 --m249
-sound.Add( { name = "Weapon_249M.Single", channel = CHAN_WEAPON, volume = 1.0, sound = "weapons/schmung.M249/m249-1.ogg" } )
+sound.Add( { name = "Weapon_249M.Single", channel = CHAN_WEAPON, volume = 1.0, sound = ")weapons/m249/m249-1.wav" } )
 sound.Add( { name = "Weapon_249M.Coverdown", channel = CHAN_AUTO, volume = 1.0, sound = "weapons/schmung.M249/m249_coverdown.ogg" } )
 sound.Add( { name = "Weapon_249M.Chain", channel = CHAN_AUTO, volume = 1.0, sound = "weapons/schmung.M249/m249_chain.ogg" } )
 sound.Add( { name = "Weapon_249M.Coverup", channel = CHAN_AUTO, volume = 1.0, sound = "weapons/schmung.M249/m249_coverup.ogg" } )
