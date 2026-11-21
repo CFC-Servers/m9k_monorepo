@@ -13,7 +13,7 @@ ENT.FlightSpeed = 115
 ENT.FlightJitterHorizontal = 0.3
 ENT.FlightJitterVertical = 0.1
 ENT.FlightGravity = 0.111
-ENT.FlightDragDivisor = 147 * 39.37
+ENT.FlightDragDivisor = 147
 ENT.FlightAcceleration = 2
 
 if SERVER then
@@ -94,7 +94,7 @@ if SERVER then
         end
 
         self:SetPos( self:GetPos() + self.flightvector )
-        self.flightvector = self.flightvector - self.flightvector / (self.FlightDragDivisor / (1 / game.tickInterval())) + self:GetUp() * self.FlightAcceleration + Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) +
+        self.flightvector = self.flightvector - self.flightvector / (self.FlightDragDivisor * 39.37 / (1 / game.tickInterval())) + self:GetUp() * self.FlightAcceleration + Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) +
             Vector( 0, 0, -self.FlightGravity )
         self:SetAngles( self.flightvector:Angle() + Angle( 90, 0, 0 ) )
         self:NextThink( CurTime() )
