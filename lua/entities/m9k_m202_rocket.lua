@@ -9,7 +9,7 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
-ENT.FlightSpeed = ( 115 * 52.5 ) / 66
+ENT.FlightSpeed = 115 * 52.5
 ENT.FlightJitterHorizontal = 0.2
 ENT.FlightJitterVertical = 0.1
 ENT.FlightGravity = 0.111
@@ -23,7 +23,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetForward() * self.FlightSpeed * M9K.TickspeedMult
+        self.flightvector = self:GetForward() * (self.FlightSpeed / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 15
         self.Owner = self:GetOwner()
         self:SetModel( "models/Weapons/W_missile.mdl" )

@@ -5,7 +5,7 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
-ENT.FlightDrop = ( 80 * 52.5 ) / 66
+ENT.FlightDrop = 80 * 52.5
 
 ENT.ExplosionEffectMagnitude = 14 -- Length of explosion trails
 ENT.ExplosionEffectScale = 2 -- Size of the explosion
@@ -26,7 +26,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.Flightvector = self:GetUp() * self.FlightDrop * M9K.TickspeedMult
+        self.Flightvector = self:GetUp() * (self.FlightDrop / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 15
         self:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,

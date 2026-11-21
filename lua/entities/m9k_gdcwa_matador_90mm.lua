@@ -12,7 +12,7 @@ ENT.DisableDuplicator = true
 ENT.ExplosionRadius = 450
 ENT.ExplosionDamage = 350
 
-ENT.FlightSpeed = ( 250 * 52.5 ) / 66
+ENT.FlightSpeed = 250 * 52.5
 ENT.FlightJitterHorizontal = 0.1
 ENT.FlightJitterVertical = 0.05
 ENT.FlightGravity = 0.111
@@ -24,7 +24,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetUp() * self.FlightSpeed * M9K.TickspeedMult
+        self.flightvector = self:GetUp() * ( self.FlightSpeed  / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 10
         self.Owner = self:GetOwner()
         self:SetModel( "models/props_junk/garbage_glassbottle001a.mdl" )
