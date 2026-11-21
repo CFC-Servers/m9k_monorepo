@@ -12,12 +12,8 @@ ENT.ExplosionEffectMagnitude = 12
 ENT.ExplosionRadius = 175
 ENT.ExplosionDamage = 200
 
-ENT.FlightJitterHorizontal = 0.1
-ENT.FlightJitterVertical = 0.1
-ENT.FlightGravity = 0.035
-
 if SERVER then
     function ENT:GetFlightRand()
-        return Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) + Vector( 0, 0, -self.FlightGravity )
+        return Vector( math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.035 )
     end
 end

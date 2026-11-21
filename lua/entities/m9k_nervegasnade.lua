@@ -9,8 +9,6 @@ ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
 
-ENT.PhysicsMass = 4
-
 if SERVER then
     AddCSLuaFile()
 
@@ -28,7 +26,7 @@ if SERVER then
 
         local phys = self:GetPhysicsObject()
         if (phys:IsValid()) then
-            phys:SetMass( self.PhysicsMass )
+            phys:SetMass( 4 )
             phys:Wake()
         end
         self:Think()

@@ -9,11 +9,6 @@ ENT.AdminOnly = true
 ENT.DisableDuplicator = true
 ENT.CanTool = false
 
-ENT.InitialBombHealth = 100
-ENT.DetectionBounds = Vector( 100, 100, 100 )
-ENT.ExplosionRadius = 200
-ENT.ExplosionDamage = 250
-
 if CLIENT then return end
 
 AddCSLuaFile()
@@ -32,12 +27,13 @@ function ENT:Initialize()
     end
 
     self.TimeLeft = CurTime() + 3
-    self.BombHealth = self.InitialBombHealth
+    self.BombHealth = 100
 end
 
+local maxDistVec = Vector( 100, 100, 100 )
 function ENT:Think()
     if self.TimeLeft < CurTime() then
-        for _, ent in ipairs( ents.FindInBox( self:GetPos() - self.DetectionBounds, self:GetPos() + self.DetectionBounds ) ) do
+        for _, ent in ipairs( ents.FindInBox( self:GetPos() - maxDistVec, self:GetPos() + maxDistVec ) ) do
             if ent:IsPlayer() or ent:IsNPC() then
                 local canTrigger = hook.Run( "M9k_ProxyMineCanTrigger", self, ent, self.ProxyBombOwner )
                 if canTrigger == false then continue end
@@ -80,7 +76,7 @@ function ENT:Explosion()
     effectBoom:SetMagnitude( 18 )
     util.Effect( "m9k_gdcw_cinematicboom", effectBoom )
 
-    util.BlastDamage( self, self.ProxyBombOwner, self:GetPos(), self.ExplosionRadius, self.ExplosionDamage )
+    util.BlastDamage( self, self.ProxyBombOwner, self:GetPos(), 200, 250 )
     util.ScreenShake( self:GetPos(), 2000, 255, 2.5, 1250 )
 
     self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )

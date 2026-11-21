@@ -9,15 +9,6 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
-ENT.ExplosionSettings = {}
-ENT.ExplosionSettings.Radius = 500
-ENT.ExplosionSettings.Damage = 170
-ENT.ExplosionSettings.RadiusSmall = 100
-ENT.ExplosionSettings.DamageSmall = 60
-
-ENT.BounceNormalScale = 0.4
-ENT.BounceVelocityScale = -0.6
-
 if SERVER then
     AddCSLuaFile()
 
@@ -68,7 +59,7 @@ if SERVER then
         util.Effect( "HelicopterMegaBomb", effectdata )
         util.Effect( "ThumperDust", effectdata )
 
-        util.BlastDamage( self, self.BombOwner, self:GetPos(), self.ExplosionSettings.Radius, self.ExplosionSettings.Damage )
+        util.BlastDamage( self, self.BombOwner, self:GetPos(), 500, 170 )
         util.ScreenShake( self:GetPos(), 3000, 255, 2.25, 2000 )
 
         self.IEDSounds = {}
@@ -101,7 +92,7 @@ if SERVER then
         util.Effect( "HelicopterMegaBomb", effectdata )
         util.Effect( "ThumperDust", effectdata )
 
-        util.BlastDamage( self, self.BombOwner, self:GetPos(), self.ExplosionSettings.RadiusSmall, self.ExplosionSettings.DamageSmall )
+        util.BlastDamage( self, self.BombOwner, self:GetPos(), 100, 60 )
         util.ScreenShake( self:GetPos(), 1500, 255, 2.25, 800 )
 
         self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", 70, 35, 100 )
@@ -165,7 +156,7 @@ PhysicsUpdate
 PhysicsCollide
 -----------------------------------------------------------]]
     function ENT:PhysicsCollide( data, phys )
-        local impulse = -data.Speed * data.HitNormal * self.BounceNormalScale + (data.OurOldVelocity * self.BounceVelocityScale)
+        local impulse = -data.Speed * data.HitNormal * .4 + (data.OurOldVelocity * -.6)
         phys:ApplyForceCenter( impulse )
     end
 end

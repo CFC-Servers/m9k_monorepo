@@ -11,11 +11,6 @@ ENT.DisableDuplicator = true
 ENT.Big = false
 ENT.TimeLeft = 0
 
-ENT.GasRadius = 150
-ENT.BigGasRadius = 600
-ENT.DamageMin = 20
-ENT.DamageMax = 30
-
 if SERVER then
     AddCSLuaFile()
 
@@ -48,7 +43,7 @@ if SERVER then
             self:Remove()
         end
 
-        local nearby = ents.FindInSphere( self:GetPos(), self.Big and self.BigGasRadius or self.GasRadius )
+        local nearby = ents.FindInSphere( self:GetPos(), self.Big and 600 or 150 )
         for _, ent in ipairs( nearby ) do
             if ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
                 local trace = util.TraceLine( {
@@ -59,7 +54,7 @@ if SERVER then
 
                 if not trace.Hit then
                     local dmg = DamageInfo()
-                    dmg:SetDamage( math.random( self.DamageMin, self.DamageMax ) )
+                    dmg:SetDamage( math.random( 20, 30 ) )
                     dmg:SetDamageType( DMG_POISON )
                     dmg:SetInflictor( self )
                     dmg:SetAttacker( owner )

@@ -6,11 +6,9 @@ ENT.GiveAmmoType = "Harpoon"
 ENT.WorldModel = "models/props_junk/harpoon002a.mdl"
 ENT.ExtraPenDepth = 25
 
-ENT.ImpactDamageDivisor = 10
-
 if SERVER then
     function ENT:DamageFunction( target, damager, physData )
-        local damage = physData.Speed / self.ImpactDamageDivisor
+        local damage = physData.Speed / 10
         target:TakeDamage( damage, damager, self )
     end
 end

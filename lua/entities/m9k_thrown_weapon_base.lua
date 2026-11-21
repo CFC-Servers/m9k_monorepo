@@ -11,17 +11,12 @@ ENT.GiveAmmoType = "Harpoon"
 ENT.WorldModel = "models/props_junk/harpoon002a.mdl"
 ENT.ExtraPenDepth = 25
 
-ENT.ImpactDamageDivisor = 4
-ENT.PhysicsMass = 2
-ENT.StickMinSpeed = 500
-ENT.ImpactVelocityDivisor = 4
-
 local hitSounds = { "physics/metal/metal_grenade_impact_hard1.wav", "physics/metal/metal_grenade_impact_hard2.wav", "physics/metal/metal_grenade_impact_hard3.wav" };
 local fleshHitSounds = { "physics/flesh/flesh_impact_bullet1.wav", "physics/flesh/flesh_impact_bullet2.wav", "physics/flesh/flesh_impact_bullet3.wav" }
 
 if SERVER then
     function ENT:DamageFunction( target, damager, physData )
-        local damage = physData.Speed / self.ImpactDamageDivisor
+        local damage = physData.Speed / 4
         target:TakeDamage( damage, damager, self )
     end
 
@@ -34,7 +29,7 @@ if SERVER then
 
         if phys:IsValid() then
             phys:Wake()
-            phys:SetMass( self.PhysicsMass )
+            phys:SetMass( 2 )
             phys:AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
         end
 
@@ -78,7 +73,7 @@ if SERVER then
         end
 
         if ent:IsWorld() then
-            if data.Speed > self.StickMinSpeed then
+            if data.Speed > 500 then
                 self:EmitSound( "weapons/blades/impact.ogg" )
                 timer.Simple( 0, function()
                     if not IsValid( self ) then return end
@@ -107,7 +102,7 @@ if SERVER then
 
                 self:EmitSound( fleshHitSounds[math.random( 1, #fleshHitSounds )] )
                 self:Disable()
-                self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / self.ImpactVelocityDivisor )
+                self:GetPhysicsObject():SetVelocity( data.OurOldVelocity / 4 )
 
                 self:DamageFunction( ent, damager, data )
             end
