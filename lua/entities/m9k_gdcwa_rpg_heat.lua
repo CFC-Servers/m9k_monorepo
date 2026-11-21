@@ -12,7 +12,7 @@ ENT.DisableDuplicator = true
 ENT.ExplosionRadius = 600
 ENT.ExplosionDamage = 150
 
-ENT.FlightSpeed = 115 * 52.5
+ENT.FlightSpeed = 115
 ENT.FlightJitterHorizontal = 0.3
 ENT.FlightJitterVertical = 0.1
 ENT.FlightGravity = 0.111

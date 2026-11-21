@@ -9,7 +9,7 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
-ENT.FlightSpeed = 115 * 52.5
+ENT.FlightSpeed = 115
 ENT.FlightJitterHorizontal = 0.3
 ENT.FlightJitterVertical = 0.1
 ENT.FlightGravity = 0.111
@@ -22,7 +22,7 @@ if SERVER then
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetUp() * (self.FlightSpeed / (1 / game.tickInterval())) * M9K.TickspeedMult
+        self.flightvector = self:GetUp() * (self.FlightSpeed * 52.5 / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 5
         self:SetModel( "models/failure/mk6/m62.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,
