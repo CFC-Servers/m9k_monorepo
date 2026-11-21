@@ -138,8 +138,6 @@ AddSound( "Dmgfok_M16A4.Clipin", CHAN_AUTO, 1, "weapons/dmg_m16a4/magin.ogg" )
 AddSound( "Dmgfok_M16A4.Boltrelease", CHAN_AUTO, 1, "weapons/dmg_m16a4/boltrelease.ogg" )
 AddSound( "Dmgfok_M16A4.Boltpull", CHAN_AUTO, 1, "weapons/dmg_m16a4/boltpull.ogg" )
 
--- Congratulations, you have found a secret message! Bob says hi, and hopes you are having fun with this addon.
-
 -- AK-47
 AddSound( "Tactic_AK47.Single", CHAN_WEAPON, 1, "weapons/fokku_tc_ak47/ak47-1.ogg" )
 AddSound( "Tactic_AK47.Clipout", CHAN_AUTO, 1, "weapons/fokku_tc_ak47/ak47_clipout.ogg" )
