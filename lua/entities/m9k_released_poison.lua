@@ -8,6 +8,10 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.GasDamage = 70
+ENT.GasRadius = 225
+ENT.BigGasRadius = 600
+
 if SERVER then
     AddCSLuaFile()
 
@@ -46,15 +50,15 @@ if SERVER then
     function ENT:MakePoison()
         local pos = self.PosToKeep
         if pos == nil then pos = self:GetPos() end
-        local damage = 70
-        local radius = 225
+        local damage = self.GasDamage
+        local radius = self.GasRadius
 
         if self.Big then
-            radius = 600
-            damage = 70
+            radius = self.BigGasRadius
+            damage = self.GasDamage
         else
-            radius = 225
-            damage = 70
+            radius = self.GasRadius
+            damage = self.GasDamage
         end
 
         local poisonowner
