@@ -1,6 +1,13 @@
 ENT.Base = "base_anim"
 ENT.PhysicsSounds = true
 
+ENT.DetonationDamageThreshold = 75
+ENT.CookoffDamage = 30
+ENT.CookoffDamageMinMultiplier = 0.85
+ENT.CookoffDamageMaxMultiplier = 1.15
+ENT.ExplosionRadius = 1000
+ENT.ExplosionDamage = 800
+
 if SERVER then
     AddCSLuaFile()
 
@@ -52,14 +59,14 @@ if SERVER then
                 util.Effect( "m9k_gdcw_cinematicboom", cinematicexplosion )
 
                 local attacker = dmg:GetAttacker()
-                util.BlastDamage( self, IsValid( attacker ) and attacker or self, pos, 1000, 800 )
+                util.BlastDamage( self, IsValid( attacker ) and attacker or self, pos, self.ExplosionRadius, self.ExplosionDamage )
                 util.ScreenShake( pos, 2000, 255, 2.5, 1250 )
 
                 self:EmitSound( "C4.Explode" )
                 self:Remove()
             end
         else
-            if dmg:GetDamage() > 75 or math.random( 1, 5 ) == 1 then
+            if dmg:GetDamage() > self.DetonationDamageThreshold or math.random( 1, 5 ) == 1 then
                 local attacker = dmg:GetAttacker()
                 local pos = self:GetPos() + Vector( 0, 0, 10 )
                 self.BlowedUp = true
@@ -77,7 +84,7 @@ if SERVER then
                     } )
 
                     if IsValid( trace.Entity ) then
-                        trace.Entity:TakeDamage( 30 * math.Rand( 0.85, 1.15 ), attacker, self )
+                        trace.Entity:TakeDamage( self.CookoffDamage * math.Rand( self.CookoffDamageMinMultiplier, self.CookoffDamageMaxMultiplier ), attacker, self )
                     end
                 end
 

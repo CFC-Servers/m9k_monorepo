@@ -9,13 +9,22 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.ExplosionRadius = 450
+ENT.ExplosionDamage = 350
+
+ENT.FlightSpeed = ( 250 * 52.5 ) / 66
+ENT.FlightJitterHorizontal = 0.1
+ENT.FlightJitterVertical = 0.05
+ENT.FlightGravity = 0.111
+ENT.FlightDragDivisor = 200
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetUp() * ((250 * 52.5) / 66) * M9K.TickspeedMult
+        self.flightvector = self:GetUp() * self.FlightSpeed * M9K.TickspeedMult
         self.timeleft = CurTime() + 10
         self.Owner = self:GetOwner()
         self:SetModel( "models/props_junk/garbage_glassbottle001a.mdl" )
@@ -57,7 +66,7 @@ if SERVER then
                 self:Remove()
                 return
             end
-            util.BlastDamage( self, self.Owner, tr.HitPos, 450, 350 )
+            util.BlastDamage( self, self.Owner, tr.HitPos, self.ExplosionRadius, self.ExplosionDamage )
             local effectdata = EffectData()
             effectdata:SetOrigin( tr.HitPos ) -- Where is hits
             effectdata:SetNormal( tr.HitNormal ) -- Direction of particles
@@ -73,7 +82,7 @@ if SERVER then
         end
 
         self:SetPos( self:GetPos() + self.flightvector )
-        self.flightvector = self.flightvector - (self.flightvector / 200) + Vector( math.Rand( -0.1, 0.1 ), math.Rand( -0.1, 0.1 ), math.Rand( -0.05, 0.05 ) ) + Vector( 0, 0, -0.111 )
+        self.flightvector = self.flightvector - (self.flightvector / self.FlightDragDivisor) + Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) + Vector( 0, 0, -self.FlightGravity )
         self:SetAngles( self.flightvector:Angle() + Angle( 90, 0, 0 ) )
         self:NextThink( CurTime() )
         return true

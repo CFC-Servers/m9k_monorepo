@@ -13,6 +13,11 @@ ENT.ExplosionRadius = 200
 ENT.ExplosionEffectScale = 1.5
 ENT.ExplosionEffectMagnitude = 5
 
+ENT.PhysicsMass = 5
+ENT.InitialAngularVelocity = Vector( 0, 500, 0 )
+ENT.PushRadius = 300
+ENT.PushVelocity = 400
+
 if SERVER then
     AddCSLuaFile()
 
@@ -28,10 +33,10 @@ if SERVER then
 
         local phys = self:GetPhysicsObject()
         if (phys:IsValid()) then
-            phys:SetMass( 5 )
+            phys:SetMass( self.PhysicsMass )
             phys:Wake()
             phys:AddGameFlag( FVPHYSICS_NO_IMPACT_DMG )
-            phys:AddAngleVelocity( Vector( 0, 500, 0 ) )
+            phys:AddAngleVelocity( self.InitialAngularVelocity )
         end
         self:Think()
     end
@@ -77,14 +82,14 @@ PhysicsCollide
         effectdata:SetMagnitude( self.ExplosionEffectMagnitude )
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
         util.BlastDamage( self, owner, pos, self.ExplosionRadius, self.ExplosionDamage )
-        util.ScreenShake( pos, 500, 500, .25, 500 )
+        util.ScreenShake( pos, 500, 500, 0.25, 500 )
         sound.Play( "ambient/explosions/explode_7.wav", pos, 80, 130 )
 
         local scorchstart = self:GetPos() + ( ( Vector( 0, 0, 1 ) ) * 5 )
         local scorchend = self:GetPos() + ( ( Vector( 0, 0, -1 ) ) * 5 )
         util.Decal( "Scorch", scorchstart, scorchend )
 
-        for _, ent in ipairs( ents.FindInSphere( pos, 300 ) ) do
+        for _, ent in ipairs( ents.FindInSphere( pos, self.PushRadius ) ) do
             if IsValid( ent:GetPhysicsObject() ) then
                 local pushy = {}
                 pushy.start = pos
@@ -93,7 +98,7 @@ PhysicsCollide
                 local pushtrace = util.TraceLine( pushy )
                 if not pushtrace.HitWorld then
                     local thing = ent:GetPhysicsObject()
-                    thing:AddVelocity( pushtrace.Normal * 400 )
+                    thing:AddVelocity( pushtrace.Normal * self.PushVelocity )
                 end
             end
         end
