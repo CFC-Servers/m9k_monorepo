@@ -1,5 +1,5 @@
-local function AddSound( name, channel, volume, sound, level )
-    sound.Add( { name = name, channel = channel, volume = volume, soundlevel = level, sound = sound } )
+local function AddSound( name, channel, volume, sound_path, level )
+    sound.Add( { name = name, channel = channel, volume = volume, soundlevel = level, sound = sound_path } )
 end
 
 -- AN-94
