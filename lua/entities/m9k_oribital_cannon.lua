@@ -11,6 +11,11 @@ ENT.DisableDuplicator = true
 ENT.PoorBastard       = false
 ENT.Target            = false
 
+ENT.ExplosionRadius = 4000
+ENT.ExplosionDamage = 500
+ENT.SmallExplosionRadius = 1000
+ENT.SmallExplosionDamage = 150
+
 if SERVER then
     AddCSLuaFile()
 
@@ -49,7 +54,7 @@ if SERVER then
             tip:SetPos( ground )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -67,7 +72,7 @@ if SERVER then
             tip:SetPos( target:GetPos() )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -84,7 +89,7 @@ if SERVER then
             tip:SetPos( ground )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -101,7 +106,7 @@ if SERVER then
             tip:SetPos( target:GetPos() )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -141,7 +146,7 @@ if SERVER then
             tip:SetPos( ground )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -182,7 +187,7 @@ if SERVER then
             tip:SetPos( target:GetPos() )
             tip:SetKeyValue( "model", "light_glow01.vmt" )
             tip:SetKeyValue( "rendercolor", "255 0 0" )
-            tip:SetKeyValue( "scale", ".1" )
+            tip:SetKeyValue( "scale", "0.1" )
             tip:SetKeyValue( "rendermode", "9" )
             tip:Spawn()
             tip:Activate()
@@ -237,7 +242,7 @@ if SERVER then
         smokering:SetScale( 2 ) --otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
         util.Effect( "m9k_orbital_smokering", smokering )
 
-        timer.Simple( .75, function()
+        timer.Simple( 0.75, function()
             if IsValid( self ) then
                 local laser2 = ents.Create( "env_laser" )
                 laser2:SetKeyValue( "texture", "sprites/laser.vmt" )
@@ -289,7 +294,7 @@ if SERVER then
                 laser4:SetPos( self:GetPos() )
                 laser4:Spawn()
                 laser4:Fire( "turnon", 0 )
-                laser4:Fire( "Kill", "", .5 )
+                laser4:Fire( "Kill", "", 0.5 )
                 laser4:SetParent( self )
             end
         end )
@@ -362,7 +367,7 @@ if SERVER then
         smokering:SetScale( 2 ) --otherwise you'll get the pinch thing. just leave it as it is for smoke, i'm trying to save on lua files dammit!
         util.Effect( "m9k_orbital_smokering", smokering )
 
-        timer.Simple( .75, function()
+        timer.Simple( 0.75, function()
             if IsValid( self ) then
                 local laser2 = ents.Create( "env_laser" )
                 laser2:SetKeyValue( "texture", "sprites/laser.vmt" )
@@ -414,7 +419,7 @@ if SERVER then
                 laser4:SetPos( self:GetPos() )
                 laser4:Spawn()
                 laser4:Fire( "turnon", 0 )
-                laser4:Fire( "Kill", "", .5 )
+                laser4:Fire( "Kill", "", 0.5 )
                 laser4:SetParent( self )
             end
         end )
@@ -493,7 +498,7 @@ if SERVER then
         util.Effect( "m9k_gdcw_cinematicboom", effectdata2 )
         --generic default, you are a god among men
 
-        util.BlastDamage( self, (self:OwnerCheck()), ground, 4000, 500 )
+        util.BlastDamage( self, (self:OwnerCheck()), ground, self.ExplosionRadius, self.ExplosionDamage )
 
         local shake = ents.Create( "env_shake" )
         shake:SetOwner( self.Owner )
@@ -592,7 +597,7 @@ if SERVER then
         util.Effect( "m9k_gdcw_cinematicboom", effectdata )
         --generic default, you are a god among men
 
-        util.BlastDamage( self, (self:OwnerCheck()), ground:GetPos(), 4000, 500 )
+        util.BlastDamage( self, (self:OwnerCheck()), ground:GetPos(), self.ExplosionRadius, self.ExplosionDamage )
 
         local shake = ents.Create( "env_shake" )
         shake:SetOwner( self.Owner )
@@ -630,7 +635,7 @@ if SERVER then
         -- effectdata:SetMagnitude(4)			-- Length of explosion trails
         -- util.Effect( "m9k_gdcw_cinematicboom", effectdata )
 
-        util.BlastDamage( self, (self:OwnerCheck()), targ, 1000, 150 )
+        util.BlastDamage( self, (self:OwnerCheck()), targ, self.SmallExplosionRadius, self.SmallExplosionDamage )
 
         local effectdata = EffectData()
         effectdata:SetOrigin( targ )

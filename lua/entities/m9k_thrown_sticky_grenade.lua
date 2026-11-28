@@ -8,6 +8,9 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.ExplosionRadius = 220
+ENT.ExplosionDamage = 220
+
 if SERVER then
     AddCSLuaFile()
 
@@ -117,7 +120,7 @@ if SERVER then
         if IsValid( parent ) and parent:IsPlayer() then
             blastPos = parent:WorldSpaceCenter()
         end
-        util.BlastDamage( self, owner, blastPos, 220, 220 )
+        util.BlastDamage( self, owner, blastPos, self.ExplosionRadius, self.ExplosionDamage )
         util.ScreenShake( self:GetPos(), 1000, 255, 2.5, 1200 )
 
         self:EmitSound( "ambient/explosions/explode_" .. math.random( 1, 4 ) .. ".wav", self.Pos, 100, 100 )

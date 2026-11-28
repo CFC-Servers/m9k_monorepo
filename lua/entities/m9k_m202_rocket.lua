@@ -9,13 +9,21 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.FlightSpeed = 115
+ENT.FlightJitterHorizontal = 0.2
+ENT.FlightJitterVertical = 0.1
+ENT.FlightGravity = 0.111
+ENT.FlightDragDivisor = 500
+ENT.ExplosionRadius = 600
+ENT.ExplosionDamage = 250
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetForward() * ((115 * 52.5) / 66) * M9K.TickspeedMult
+        self.flightvector = self:GetForward() * (self.FlightSpeed * 52.5 / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 15
         self.Owner = self:GetOwner()
         self:SetModel( "models/Weapons/W_missile.mdl" )
@@ -65,7 +73,7 @@ if SERVER then
             effectdata:SetRadius( tr.MatType ) -- What texture it hits
             effectdata:SetMagnitude( 18 ) -- Length of explosion trails
             util.Effect( "m9k_gdcw_tpaboom", effectdata )
-            util.BlastDamage( self, self:OwnerGet(), tr.HitPos, 600, 250 )
+            util.BlastDamage( self, self:OwnerGet(), tr.HitPos, self.ExplosionRadius, self.ExplosionDamage )
             util.Decal( "Scorch", tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal )
             self:SetNWBool( "smoke", false )
 
@@ -74,7 +82,7 @@ if SERVER then
         end
 
         self:SetPos( self:GetPos() + self.flightvector )
-        self.flightvector = self.flightvector - (self.flightvector / 500) + Vector( math.Rand( -0.2, 0.2 ), math.Rand( -0.2, 0.2 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.111 )
+        self.flightvector = self.flightvector - (self.flightvector / self.FlightDragDivisor) + Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) + Vector( 0, 0, -self.FlightGravity )
         self:SetAngles( self.flightvector:Angle() + Angle( 0, 0, 0 ) )
         self:NextThink( CurTime() )
         return true

@@ -9,6 +9,9 @@ ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 ENT.CanTool           = false
 
+ENT.ExplosionRadius = 500
+ENT.ExplosionDamage = 500
+
 function ENT:SetupDataTables()
     self:DTVar( "Int", 0, "Timer" )
 end
@@ -92,7 +95,7 @@ if SERVER then
         util.Effect( "m9k_gdcw_cinematicboom", boomEffect )
 
         util.ScreenShake( self:WorldSpaceCenter(), 2000, 255, 2.5, 1250 )
-        util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), 500, 500 )
+        util.BlastDamage( self, self.BombOwner, self:WorldSpaceCenter(), self.ExplosionRadius, self.ExplosionDamage )
 
         self:EmitSound( "C4.Explode", 70 )
 
@@ -127,13 +130,13 @@ if CLIENT then
         FixAngles:RotateAroundAxis( FixAngles:Up(), FixRotation.y )
         FixAngles:RotateAroundAxis( FixAngles:Forward(), FixRotation.z )
 
-        local TargetPos = self:GetPos() + (self:GetUp() * 7) + (self:GetRight() * -.5) + (self:GetForward() * 1.15)
+        local TargetPos = self:GetPos() + (self:GetUp() * 7) + (self:GetRight() * -0.5) + (self:GetForward() * 1.15)
 
         local m, s = self:FormatTime( self.C4CountDown )
 
         self.Text = string.format( "%02d", m ) .. ":" .. string.format( "%02d", s )
 
-        cam.Start3D2D( TargetPos, FixAngles, .07 )
+        cam.Start3D2D( TargetPos, FixAngles, 0.07 )
         draw.SimpleText( self.Text, "CloseCaption_Normal", 31, -22, Color( 165, 0, 0, 255 ), 1, 1 )
         cam.End3D2D()
     end

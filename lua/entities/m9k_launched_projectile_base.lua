@@ -5,7 +5,7 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
-ENT.FlightDrop = ( 80 * 52.5 ) / 66
+ENT.FlightDrop = 80
 
 ENT.ExplosionEffectMagnitude = 14 -- Length of explosion trails
 ENT.ExplosionEffectScale = 2 -- Size of the explosion
@@ -13,13 +13,20 @@ ENT.ExplosionEffectScale = 2 -- Size of the explosion
 ENT.ExplosionRadius = 150
 ENT.ExplosionDamage = 350
 
+ENT.FlightJitterHorizontal = 0.2
+ENT.FlightJitterVertical = 0.1
+ENT.FlightGravity = 0.111
+ENT.FlightDragDivisor = 350
+ENT.DirectHitDamage = 150
+ENT.DirectHitMass = 3
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
 
-        self.Flightvector = self:GetUp() * self.FlightDrop * M9K.TickspeedMult
+        self.Flightvector = self:GetUp() * (self.FlightDrop * 52.5 / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 15
         self:SetModel( "models/weapons/w_40mm_grenade_launched.mdl" )
         self:PhysicsInit( SOLID_VPHYSICS ) -- Make us work with physics,
@@ -59,7 +66,7 @@ if SERVER then
 
         if self.InFlight then
             self:SetPos( self:GetPos() + self.Flightvector )
-            self.Flightvector = self.Flightvector - ( self.Flightvector / 350 ) + self:GetFlightRand()
+            self.Flightvector = self.Flightvector - ( self.Flightvector / self.FlightDragDivisor ) + self:GetFlightRand()
             self:SetAngles( self.Flightvector:Angle() + Angle( 90, 0, 0 ) )
         end
 
@@ -72,12 +79,12 @@ if SERVER then
     end
 
     function ENT:GetFlightRand()
-        return Vector( math.Rand( -0.2, 0.2 ), math.Rand( -0.2, 0.2 ), math.Rand( -0.1, 0.1 ) ) + Vector( 0, 0, -0.111 )
+        return Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) + Vector( 0, 0, -self.FlightGravity )
     end
 
     function ENT:DirectHit( tr )
         if ( tr.Entity:IsPlayer() or tr.Entity:IsNPC() ) then
-            tr.Entity:TakeDamage( 150, self:GetOwner(), self )
+            tr.Entity:TakeDamage( self.DirectHitDamage, self:GetOwner(), self )
         end
 
         local effectdata = EffectData()
@@ -103,7 +110,7 @@ if SERVER then
 
         local phys = self:GetPhysicsObject()
         phys:Wake()
-        phys:SetMass( 3 )
+        phys:SetMass( self.DirectHitMass )
 
         self.InFlight = false
         self:SetNWBool( "smoke", false )

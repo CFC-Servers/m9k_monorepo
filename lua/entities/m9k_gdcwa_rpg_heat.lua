@@ -9,13 +9,23 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.ExplosionRadius = 600
+ENT.ExplosionDamage = 150
+
+ENT.FlightSpeed = 115
+ENT.FlightJitterHorizontal = 0.3
+ENT.FlightJitterVertical = 0.1
+ENT.FlightGravity = 0.111
+ENT.FlightDragDivisor = 147
+ENT.FlightAcceleration = 2
+
 if SERVER then
     AddCSLuaFile()
 
     function ENT:Initialize()
         self.CanTool = false
 
-        self.flightvector = self:GetForward() * ((115 * 52.5) / 66) * M9K.TickspeedMult
+        self.flightvector = self:GetForward() * (self.FlightSpeed / (1 / game.tickInterval())) * M9K.TickspeedMult
         self.timeleft = CurTime() + 10
         self.Owner = self:GetOwner()
         self:SetModel( "models/Weapons/W_missile_closed.mdl" )
@@ -58,7 +68,7 @@ if SERVER then
                 self:Remove()
                 return
             end
-            util.BlastDamage( self, self.Owner, tr.HitPos, 600, 150 )
+            util.BlastDamage( self, self.Owner, tr.HitPos, self.ExplosionRadius, self.ExplosionDamage )
             local effectdata = EffectData()
             effectdata:SetOrigin( tr.HitPos ) -- Where is hits
             effectdata:SetNormal( tr.HitNormal ) -- Direction of particles
@@ -74,8 +84,8 @@ if SERVER then
         end
 
         self:SetPos( self:GetPos() + self.flightvector )
-        self.flightvector = self.flightvector - self.flightvector / ((147 * 39.37) / 66) + self:GetForward() * 2 + Vector( math.Rand( -0.3, 0.3 ), math.Rand( -0.3, 0.3 ), math.Rand( -0.1, 0.1 ) ) +
-            Vector( 0, 0, -0.111 )
+        self.flightvector = self.flightvector - self.flightvector / (self.FlightDragDivisor * 39.37 / (1 / game.tickInterval())) + self:GetForward() * self.FlightAcceleration + Vector( math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterHorizontal, self.FlightJitterHorizontal ), math.Rand( -self.FlightJitterVertical, self.FlightJitterVertical ) ) +
+            Vector( 0, 0, -self.FlightGravity )
         self:SetAngles( self.flightvector:Angle() + Angle( 0, 0, 0 ) )
         self:NextThink( CurTime() )
         return true

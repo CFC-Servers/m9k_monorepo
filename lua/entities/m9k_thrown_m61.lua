@@ -8,6 +8,11 @@ ENT.Spawnable         = false
 ENT.AdminOnly         = true
 ENT.DisableDuplicator = true
 
+ENT.BounceNormalScale = 0.4
+ENT.BounceVelocityScale = -0.6
+ENT.ExplosionRadius = 350
+ENT.ExplosionDamage = 100
+
 if SERVER then
     AddCSLuaFile()
 
@@ -71,7 +76,7 @@ if SERVER then
         local scorchstart = self:GetPos() + ((Vector( 0, 0, 1 )) * 5)
         local scorchend = self:GetPos() + ((Vector( 0, 0, -1 )) * 5)
 
-        util.BlastDamage( self, owner, self:GetPos(), 350, 100 )
+        util.BlastDamage( self, owner, self:GetPos(), self.ExplosionRadius, self.ExplosionDamage )
         util.ScreenShake( self:GetPos(), 500, 500, 1.25, 500 )
         self:Remove()
         util.Decal( "Scorch", scorchstart, scorchend )
@@ -85,7 +90,7 @@ PhysicsCollide
             self:EmitSound( "HEGrenade.Bounce" )
         end
 
-        local impulse = -data.Speed * data.HitNormal * .4 + (data.OurOldVelocity * -.6)
+        local impulse = -data.Speed * data.HitNormal * self.BounceNormalScale + (data.OurOldVelocity * self.BounceVelocityScale)
         phys:ApplyForceCenter( impulse )
     end
 end
